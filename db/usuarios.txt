@@ -1,0 +1,1 @@
+[{"nombre":"Enzo Perez","usuario":"enzito","pass":"1234","token":"j0KNIpLbGU8J4GFS924S","perfil":{"cuso":["cu01"]},"class":"Usuario"}]

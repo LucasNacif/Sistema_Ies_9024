@@ -1,0 +1,1 @@
+[{"nombre":"Fideos","cantidad":5,"impuestos":true},{"nombre":"Azucar","cantidad":5,"impuestos":false},{"nombre":"Aceite","cantidad":5,"impuestos":false},{"nombre":"Mermelada","cantidad":6,"impuestos":false}]

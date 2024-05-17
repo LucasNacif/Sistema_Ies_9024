@@ -1,0 +1,15 @@
+SequenceDiagram{
+lifeline browser
+lifeline server
+lifeline seguridad
+lifeline controlador
+lifeline modelo
+
+
+browser --> server 'post/login'
+server --> seguridad 'registrado(req.body)'
+seguridad --> modelo 'getUsuarios()'       
+seguridad <-r- modelo '[{Usuario}]'        
+server <-r- seguridad 'false'
+browser <-r- server 'Error...!!!.html' 
+}

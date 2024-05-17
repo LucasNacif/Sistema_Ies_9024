@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Nuevo Objeto</h1>
+    <form action="{{url}}/agregar" method="POST">
+        <p><label>Nombre:&nbsp;</label><input type="text"   name="nombre"></p>
+        <p><label>Edad:&nbsp;  </label><input type="number" name="edad">  </p>
+        <p><label>email:&nbsp; </label><input type="email"  name="email"> </p>
+
+           
+        <p><input type="checkbox" name="afiliado" value="si"><label>&nbsp;Afiliado</label></p>
+        
+
+        <p></p><input type="radio" name="nacionalidad" value="argentino" checked><label>Argentino</label></p>
+        <p></p><input type="radio" name="nacionalidad" value="limítrofe">        <label>Países Limítrofes</label></p>
+        <p></p><input type="radio" name="nacionalidad" value="resto">            <label>Resto del Mundo</label></p>
+        <br>
+        <input type="submit" value="Enviar">
+    </form>
+
+</body>
+</html>
