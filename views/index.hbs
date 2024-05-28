@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< Updated upstream
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -17,4 +18,38 @@
 
 
 </body>
+=======
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,minimum-scale=1">
+		<title>Ies 9-024 App</title>
+        <link rel="shortcut icon" type="image/png" href="./Resources/logoceil.png" />
+		{{!-- Libreria de fuentes --}}
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+        <!-- include the stylesheet file -->
+        <link href="./Styles/styleLogin.css" rel="stylesheet" type="text/css">
+        
+	</head>
+	<body>
+		<div class="login">
+            <div class="Image">
+                <img src="./Resources/logoceil.png">
+            </div>
+
+			<form action="/auth" method="post">
+				<label for="username">
+					<i class="fas fa-user"></i>
+				</label>
+				<input type="text" name="username" placeholder="Username" id="username" required>
+				<label for="password">
+					<i class="fas fa-lock"></i>
+				</label>
+				<input type="password" name="password" placeholder="Password" id="password" required>
+				<input type="submit" value="Login">
+			</form>
+
+		</div>
+	</body>
+>>>>>>> Stashed changes
 </html>
