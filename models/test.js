@@ -1,5 +1,5 @@
 const Clases = require('./clases.js');
-const Helper = require('../helper.js');
+const Helper = require('./helper.js');
 const Modelo = require('./modelo.js');
 
 function testPerfil() {

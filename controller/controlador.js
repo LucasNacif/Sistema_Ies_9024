@@ -1,5 +1,5 @@
-const Clases = require('./clases.js')
-const Modelo = require('./modelo.js')
+const Clases = require('../models/clases.js')
+const Modelo = require('../models/modelo.js')
 
 
 
