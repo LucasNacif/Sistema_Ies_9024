@@ -2,11 +2,11 @@ const express = require("express");
 const path = require('path')
 const Handlebars = require('handlebars');
 const fs = require('fs');
-const Seguridad = require("./seguridad.js");
+const Seguridad = require("../seguridad.js");
 
 const app = express();
 
-const Controlador = require('./controlador');
+const Controlador = require('../controlador.js');
 
 app.use(express.json());
 app.use(express.urlencoded({extended : false}))
