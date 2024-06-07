@@ -2,21 +2,21 @@ const express = require("express");
 const path = require('path')
 const Handlebars = require('handlebars');
 const fs = require('fs');
-const Seguridad = require("./seguridad.js");
+const Seguridad = require("./models/seguridad.js");
 
 const app = express();
 
-const Controlador = require('./controlador');
+const Controlador = require('./controller/controlador.js');
 
 app.use(express.json());
 app.use(express.urlencoded({extended : false}))
 
 const port = 3000;
 
-app.use("/", express.static(path.join(__dirname, "/views")));
+app.use(express.static('public'));
 
 // Especifica la ubicación de tus archivos .hbs
-app.set("views", path.join(__dirname, "views")); // Ruta a la carpeta "views"
+app.set("views", path.join(__dirname, "./views")); // Ruta a la carpeta "views"
 
 let _url = path.join(__dirname,'./views/');
 
@@ -51,7 +51,7 @@ app.post('/login', (req,res)=>{
 
     if(registrado==true){
         console.log("server <-r- seguridad 'true'");
-        var archivo = fs.readFileSync('./views/menu.hbs','utf-8',(err,data)=>{
+        var archivo = fs.readFileSync('../views/menu.hbs','utf-8',(err,data)=>{
             if(err){
                 console.log(err);         
             }else{
@@ -72,7 +72,7 @@ app.post('/login', (req,res)=>{
 app.get('/nuevo', (req,res)=>{
     console.log("llegó un post/nuevo");
     
-    var archivo = fs.readFileSync('./views/nuevo.hbs','utf-8',(err,data)=>{
+    var archivo = fs.readFileSync('../views/nuevo.hbs','utf-8',(err,data)=>{
         if(err){
             console.log(err);         
         }else{
@@ -111,5 +111,6 @@ app.post('/agregar',(req, res)=>{
 
 
 app.listen(port, ()=>{
-    console.log('Escuchando en el puerto ${port}')
+    console.log(`Escuchando en el puerto ${port}`);
+
 });
