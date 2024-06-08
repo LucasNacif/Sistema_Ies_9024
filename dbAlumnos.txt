@@ -1,0 +1,1 @@
+[{"nombre":"Joel","cohorte":2,"email":"maticastillo145@gmail.com","papeles":"si"},{"nombre":"matias","cohorte":2022,"email":"asdad@gmail.com","papeles":"si"},{"nombre":"Cader","cohorte":2020,"email":"cader@gmail.com123","papeles":"si"}]
