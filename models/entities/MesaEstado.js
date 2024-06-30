@@ -1,3 +1,19 @@
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+let mesaEstadoSchema = new Schema({
+  fechaInicio: Date,
+  horaInicio: Number,
+  mesa: {
+    type: Schema.Types.ObjectId,
+    ref: "Mesa",
+  },
+  estadoMesa: {
+    type: Schema.Types.ObjectId,
+    ref: "EstadoMesa",
+  },
+});
+
 class MesaEstado{
     constructor(idMesaEstado, fechaInicio, horaInicio, idMesa, idEstadoMesa) {
         this.idMesaEstado=idMesaEstado;
@@ -7,4 +23,5 @@ class MesaEstado{
         this.idEstadoMesa=idEstadoMesa;
     }
 }
-module.exports(MesaEstado);
+//module.exports(MesaEstado);
+module.exports = mongoose.model("MesaEstado", mesaEstadoSchema);
