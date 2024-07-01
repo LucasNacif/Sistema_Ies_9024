@@ -6,33 +6,21 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Nuevo Objeto</h1>
-    <form action="{{url}}/agregar" method="POST">
+
+<h1>Nuevo Alumno</h1>
+    <form action="/user/agregar" method="POST">
         <p><label>Nombre:&nbsp;</label><input type="text"   name="nombre"></p>
-        <p><label>Edad:&nbsp;  </label><input type="number" name="edad">  </p>
         <p><label>email:&nbsp; </label><input type="email"  name="email"> </p>
-
-           
-        <p><input type="checkbox" name="afiliado" value="si"><label>&nbsp;Afiliado</label></p>
-        
-
-        <p></p><input type="radio" name="nacionalidad" value="argentino" checked><label>Argentino</label></p>
-        <p></p><input type="radio" name="nacionalidad" value="limítrofe">        <label>Países Limítrofes</label></p>
-        <p></p><input type="radio" name="nacionalidad" value="resto">            <label>Resto del Mundo</label></p>
+        <p><label>Cohorte:&nbsp; </label><input type="text"  name="corte"> </p>
+        <p><label>Num Documento:&nbsp; </label><input type="text"  name="numDocumento"> </p>
+        <p><input type="checkbox" name="tituloSecundario" value="si"><label>&nbsp;tituloSecundario</label></p>
+        <p><input type="checkbox" name="psicofisico" value="si"><label>&nbsp;psicofisico</label></p>
+        <p><input type="checkbox" name="partidaNacim" value="si"><label>&nbsp;partidaNacim</label></p>
+        <p><input type="checkbox" name="dniActualizado" value="si"><label>&nbsp;dniActualizado</label></p>
+        <p><input type="checkbox" name="analiticoFiel" value="si"><label>&nbsp;analiticoFiel</label></p>
+        <p><input type="checkbox" name="antecedenPen" value="si"><label>&nbsp;antecedenPen</label></p>
         <br>
         <input type="submit" value="Enviar">
     </form>
-
-     <h1>Nuevo Alumno</h1>
-    <form action="/user/agregar" method="POST">
-        <p><label>Nombre:&nbsp;</label><input type="text"   name="nombre"></p>
-        <p><label>Cohorte:&nbsp;  </label><input type="number" name="cohorte"></p>
-        <p><label>email:&nbsp; </label><input type="email"  name="email"> </p>
-
-           
-        <p><input type="checkbox" name="papeles" value="si"><label>&nbsp;Papeles</label></p>
-        <br>
-        <input type="submit" value="Enviar">
-    </form>    
 </body>
 </html>

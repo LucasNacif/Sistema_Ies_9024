@@ -18,8 +18,11 @@
   },
   "homepage": "https://github.com/EnzoVonkunoschy/p2_2023_repo#readme",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-handlebars": "^7.1.2",
+    "mongodb": "^6.7.0",
+    "mongoose": "^8.4.4",
     "nodemon": "^3.1.0"
   }
 }
