@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Alumnos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .error-message {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Alumnos</h1>
+    {{#if error}}
+        <p class="error-message">{{error}}</p>
+    {{else}}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre Completo</th>
+                    <th>Nombre</th>
+                    <th>Documento</th>
+                    <th>Corte</th>
+                    <th>Email</th>
+                    <th>Título Secundario</th>
+                    <th>Psicofísico</th>
+                    <th>Partida de Nacimiento</th>
+                    <th>DNI Actualizado</th>
+                    <th>Analítico Fiel</th>
+                    <th>Antecedentes Penales</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each alumnos}}
+                    <tr>
+                        <td>{{nombreCompleto}}</td>
+                        <td>{{nombre}}</td>
+                        <td>{{numDocAlumn}}</td>
+                        <td>{{corte}}</td>
+                        <td>{{email}}</td>
+                        <td>{{#if tituloSecundario}}Sí{{else}}No{{/if}}</td>
+                        <td>{{#if psicofisico}}Sí{{else}}No{{/if}}</td>
+                        <td>{{#if partidaNacim}}Sí{{else}}No{{/if}}</td>
+                        <td>{{#if dniActualizado}}Sí{{else}}No{{/if}}</td>
+                        <td>{{#if analiticoFiel}}Sí{{else}}No{{/if}}</td>
+                        <td>{{#if antecedenPen}}Sí{{else}}No{{/if}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{/if}}
+</body>
+</html>

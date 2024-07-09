@@ -1,34 +1,87 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width,minimum-scale=1">
-		<title>Ies 9-024 App</title>
-        <link rel="shortcut icon" type="image/png" href="./Resources/logoceil.png" />
-		{{!-- Libreria de fuentes --}}
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-        <!-- include the stylesheet file -->
-        <link href="./Styles/styleLogin.css" rel="stylesheet" >
-    
-	</head>
-	<body>
-		<div class="login">
-            <div class="Image">
-                <img src="./Resources/logoceil.png">
-            </div>
+<html lang="en">
 
-			<form action="/auth" method="post">
-				<label for="username">
-					<i class="fas fa-user"></i>
-				</label>
-				<input type="text" name="username" placeholder="Username" id="username" required>
-				<label for="password">
-					<i class="fas fa-lock"></i>
-				</label>
-				<input type="password" name="password" placeholder="Password" id="password" required>
-				<input type="submit" value="Login">
-			</form>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar sesión</title>
+  <link rel="stylesheet" href="/Styles/styleLogin.css" />
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="/login.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      $('.login-info-box').fadeOut();
+      $('.login-show').addClass('show-log-panel');
 
-		</div>
-	</body>
+      $('.login-reg-panel input[type="radio"]').on('change', function () {
+        if ($('#log-login-show').is(':checked')) {
+          $('.register-info-box').fadeOut();
+          $('.login-info-box').fadeIn();
+          $('.white-panel').addClass('right-log');
+          $('.register-show').addClass('show-log-panel');
+          $('.login-show').removeClass('show-log-panel');
+        } else if ($('#log-reg-show').is(':checked')) {
+          $('.register-info-box').fadeIn();
+          $('.login-info-box').fadeOut();
+          $('.white-panel').removeClass('right-log');
+          $('.login-show').addClass('show-log-panel');
+          $('.register-show').removeClass('show-log-panel');
+        }
+      });
+    });
+  </script>
+</head>
+
+<body>
+
+  <div class="login-reg-panel">
+    <div class="login-info-box">
+      <h2>Tienes una cuenta?</h2>
+      <p>Inicia sesion presionando aqui</p>
+      <label id="label-register" for="log-reg-show">Login</label>
+      <input type="radio" name="active-log-panel" id="log-reg-show" checked="checked" />
+    </div>
+
+    <div class="register-info-box">
+      <h2>No tienes una cuenta?</h2>
+      <p>Registrate con el boton de aqui abajo</p>
+      <label id="label-login" for="log-login-show">Register</label>
+      <input type="radio" name="active-log-panel" id="log-login-show" />
+    </div>
+
+    <div class="white-panel">
+
+      <div class="login-show">
+        <center>
+          <img src="/Resources/logoceil.png" alt="Login Logo" style="width: 100px; margin-bottom: 20px;">
+          <h2>Iniciar Sesion</h2>
+        </center>
+        <form id="login-form">
+          <input type="text" name="user" placeholder="Email" />
+          <input type="password" name="password" placeholder="Password" />
+          <input type="submit" value="Login" />
+        </form>
+        <a href="#">Olvisdaste tu contraseña?</a>
+      </div>
+
+
+      <div class="register-show">
+        <center>
+          <img src="/Resources/logoceil.png" alt="Login Logo" style="width: 100px; margin-bottom: 20px;">
+          <h2>Registrarme</h2>
+        </center>
+        <form id="signup-form">
+          <input type="text" name="user" placeholder="Usuario" />
+          <input type="text" name="email" placeholder="Email" />
+          <input type="password" name="password" placeholder="Contraseña" />
+          <input type="submit" value="Register" />
+        </form>
+      </div>
+
+    </div>
+  </div>
+</body>
+
 </html>
