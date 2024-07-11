@@ -1,23 +1,49 @@
 class Alumno {
-  constructor(nom, coh, em, pap) {
-    this.nombre = nom;
-    this.cohorte = coh;
-    this.email = em;
-    this.papeles = pap;
+  constructor(
+    numDocAlumn,
+    emailAlumm,
+    nombreCompleto,
+    nombre,
+    corte,
+    tituloSecundario,
+    psicofisico,
+    partidaNacim,
+    dniActualizado,
+    analiticoFiel,
+    antecedenPen
+  ) {
+    this.numDocAlumn = numDocAlumn;
+    this.emailAlumm = emailAlumm;
+    this.nombreCompleto = nombreCompleto;
+    this.nombre = nombre;
+    this.corte = corte;
+    this.tituloSecundario = tituloSecundario;
+    this.psicofisico = psicofisico;
+    this.partidaNacim = partidaNacim;
+    this.dniActualizado = dniActualizado;
+    this.analiticoFiel = analiticoFiel;
+    this.antecedenPen = antecedenPen;
   }
 
   static fromJSON(json) {
     if (json.class == "Alumno") {
-      let nuevoAlumno = new Alumno();
-      nuevoAlumno.nombre = json.nombre;
-      nuevoAlumno.cohorte = json.cohorte;
-      nuevoAlumno.email = json.email;
-      nuevoAlumno.papeles = json.papeles;
-
-      return nuevoAlumno;
+      return new Alumno(
+        json.numDocAlumn,
+        json.emailAlumm,
+        json.nombreCompleto,
+        json.nombre,
+        json.corte,
+        json.tituloSecundario,
+        json.psicofisico,
+        json.partidaNacim,
+        json.dniActualizado,
+        json.analiticoFiel,
+        json.antecedenPen
+      );
     }
   }
 }
+
 
 class Usuario {
   constructor(nombre, usuario, pass, token, perfil) {

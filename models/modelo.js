@@ -37,26 +37,16 @@ function guardar(data) {
 
 function obtenerAlumnos() {
   try {
-    let str_Alumnos = fs.readFileSync("./dbAlumnos.txt", "utf-8");
+    const str_Alumnos = fs.readFileSync("./dbAlumnos.txt", "utf-8");
     if (!str_Alumnos) {
       console.error("El archivo está vacío o no se pudo leer");
       return [];
     }
-
-    console.log("Contenido del archivo:", str_Alumnos); // Debug: Ver contenido del archivo
-
-    // Validar JSON antes de parsear
-    try {
-      const alumnos = JSON.parse(str_Alumnos);
-      console.log("Alumnos parseados:", alumnos); // Debug: Ver alumnos parseados
-      return alumnos;
-    } catch (parseError) {
-      console.error("Error al parsear el JSON:", parseError);
-      throw parseError;
-    }
+    return JSON.parse(str_Alumnos);
+    
   } catch (error) {
-    console.error("Error al leer el archivo:", error);
-    throw error;
+    console.error("Error al procesar el archivo:", error);
+    return [];
   }
 }
 module.exports = { guardar, obtenerAlumnos, guardarUsuario, getUsuarios };

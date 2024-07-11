@@ -1,61 +1,27 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 // Definición del esquema
-const alumnoSchema = new mongoose.Schema({
-  idAlumno: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
-  numDocAlumn: {
-    type: String,
-    required: true,
-  },
-  emailAlumm: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  nombreCompleto: {
-    type: String,
-    required: true,
-  },
-  nombre: {
-    type: String,
-    required: true,
-  },
-  corte: {
-    type: String,
-    required: true,
-  },
-  tituloSecundario: {
-    type: Boolean,
-    required: true,
-  },
-  psicofisico: {
-    type: Boolean,
-    required: true,
-  },
-  partidaNacim: {
-    type: Boolean,
-    required: true,
-  },
-  dniActualizado: {
-    type: Boolean,
-    required: true,
-  },
-  analiticoFiel: {
-    type: Boolean,
-    required: true,
-  },
-  antecedenPen: {
-    type: Boolean,
-    required: true,
-  },
-}, { timestamps: true });
+const alumnoSchema = new Schema({
+  numDocAlumn: String,
+  emailAlumm: String,
+  nombreCompleto: String,
+  nombre: String,
+  corte: String,
+  tituloSecundario: Boolean,
+  psicofisico: Boolean,
+  partidaNacim: Boolean,
+  dniActualizado: Boolean,
+  analiticoFiel: Boolean,
+  antecedenPen: Boolean,
 
-// Clase Alumno
-class Alumno {
+  AlumnoEstado: [{
+    type: Schema.Types.ObjectId,
+    ref: "AlumnoEstado",
+  }],
+});
+
+class Alumno {  
   constructor(
     idAlumno,
     numDocAlumn,
@@ -86,7 +52,8 @@ class Alumno {
 
 }
 
-alumnoSchema.loadClass(Alumno);
+// alumnoSchema.loadClass(Alumno); esto sirve para manipular el schema 
+// como clase de node
 
 // Crear y exportar el modelo
 const AlumnoModel = mongoose.model('Alumno', alumnoSchema);
