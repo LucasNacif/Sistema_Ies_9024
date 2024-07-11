@@ -1,6 +1,7 @@
 const fs = require("fs");
 const Clases = require("./clases.js");
 
+
 function guardarUsuario(data) {
   let str_usuarios = fs.readFileSync("./db/usuarios.txt", "utf-8");
   let usuarios = [];

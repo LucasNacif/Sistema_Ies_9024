@@ -49,7 +49,7 @@
     </style>
 </head>
 <body>
-    <form method="post" action="/user/agregar">
+    <form method="post" action="/alumno/agregar">
         <label for="nombreCompleto">Nombre Completo:</label>
         <input type="text" id="nombreCompleto" name="nombreCompleto" required>
         
@@ -63,22 +63,22 @@
         <input type="text" id="corte" name="corte" required>
         
         <label for="tituloSecundario">Título Secundario:</label>
-        <input type="checkbox" id="tituloSecundario" name="tituloSecundario">
+        <input type="checkbox"  name="tituloSecundario" value="true">
         
         <label for="psicofisico">Psicofísico:</label>
-        <input type="checkbox" id="psicofisico" name="psicofisico">
+        <input type="checkbox" id="psicofisico" name="psicofisico" value="true">
         
         <label for="partidaNacim">Partida de Nacimiento:</label>
-        <input type="checkbox" id="partidaNacim" name="partidaNacim">
+        <input type="checkbox" id="partidaNacim" name="partidaNacim" value="true">
         
         <label for="dniActualizado">DNI Actualizado:</label>
-        <input type="checkbox" id="dniActualizado" name="dniActualizado">
+        <input type="checkbox" id="dniActualizado" name="dniActualizado" value="true">
         
         <label for="analiticoFiel">Analítico Fiel:</label>
-        <input type="checkbox" id="analiticoFiel" name="analiticoFiel">
+        <input type="checkbox" id="analiticoFiel" name="analiticoFiel" value="true">
         
         <label for="antecedenPen">Antecedentes Penales:</label>
-        <input type="checkbox" id="antecedenPen" name="antecedenPen">
+        <input type="checkbox" id="antecedenPen" name="antecedenPen" value="true">
         
         <input type="submit" value="Enviar">
     </form>
