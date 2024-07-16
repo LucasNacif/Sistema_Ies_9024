@@ -1,70 +1,378 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Alumnos</title>
+    <title>Gestión de Alumnos - IES 9-024 Lavalle</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .logo-container {
+            flex: 0 0 auto;
+        }
+        .logo {
+            max-width: 100px;
+            margin-right: 20px;
+        }
+        .title-container {
+            flex: 1;
+            text-align: center;
+        }
+        h1 {
+            color: #e67e22; /* Naranja */
+            margin: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         th, td {
-            padding: 8px 12px;
+            padding: 12px;
             border: 1px solid #ddd;
             text-align: left;
         }
         th {
-            background-color: #f4f4f4;
+            background-color: #2ecc71; /* Verde */
+            color: white;
         }
         .error-message {
-            color: red;
+            color: #e74c3c; /* Rojo */
             font-weight: bold;
+        }
+        .btn {
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .btn-add {
+            background-color: #3498db; /* Azul */
+            color: white;
+        }
+        .btn-edit {
+            background-color: #f39c12; /* Naranja claro */
+            color: white;
+        }
+        .btn-delete {
+            background-color: #e74c3c; /* Rojo */
+            color: white;
+        }
+        form {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: none; /* Oculto por defecto */
+        }
+        input[type="text"], input[type="email"], select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: inline-block;
+            width: 200px;
+        }
+        #carreraFilter {
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>Lista de Alumnos</h1>
-    {{#if error}}
-        <p class="error-message">{{error}}</p>
-    {{else}}
-        <table>
-            <thead>
-                <tr>
-                    <th>Nombre Completo</th>
-                    <th>Nombre</th>
-                    <th>Documento</th>
-                    <th>Corte</th>
-                    <th>Email</th>
-                    <th>Título Secundario</th>
-                    <th>Psicofísico</th>
-                    <th>Partida de Nacimiento</th>
-                    <th>DNI Actualizado</th>
-                    <th>Analítico Fiel</th>
-                    <th>Antecedentes Penales</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each alumnos}}
+    <div class="header">
+        <div class="logo-container">
+            <a href="/bedelMenu.hbs">
+                <img src="/Resources/logoceil.png" alt="Logo IES 9-024 Lavalle" class="logo">
+            </a>
+        </div>
+        <div class="title-container">
+            <h1>Gestión de Alumnos - IES 9-024 Lavalle</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <button id="toggleForm" class="btn btn-add">Agregar Nuevo Alumno</button>
+        
+        <form id="addStudentForm">
+            <h2>Agregar/Editar Alumno</h2>
+            <div class="form-group">
+                <input type="text" id="nombreCompleto" placeholder="Nombre Completo" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="nombre" placeholder="Nombre" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="numDocAlumn" placeholder="Documento" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="corte" placeholder="Corte" required>
+            </div>
+            <div class="form-group">
+                <input type="email" id="email" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+                <label for="carrera">Carrera:</label>
+                <select id="carrera" required>
+                    <option value="">Seleccione una carrera</option>
+                    <option value="Profesorado De Lengua y Literatura">Profesorado De Lengua y Literatura</option>
+                    <option value="Profesorado de Matematica">Profesorado de Matemática</option>
+                    <option value="Turismo y Hoteleria">Turismo y Hotelería</option>
+                    <option value="Administracion de empresas">Administración de empresas</option>
+                    <option value="Desarrollo de software">Desarrollo de software</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="tituloSecundario">Título Secundario:</label>
+                <select id="tituloSecundario">
+                    <option value="si">Sí</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="psicofisico">Psicofísico:</label>
+                <select id="psicofisico">
+                    <option value="si">Sí</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="partidaNacim">Partida de Nacimiento:</label>
+                <select id="partidaNacim">
+                    <option value="si">Sí</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="dniActualizado">DNI Actualizado:</label>
+                <select id="dniActualizado">
+                    <option value="si">Sí</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="analiticoFiel">Analítico Fiel:</label>
+                <select id="analiticoFiel">
+                    <option value="si">Sí</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="antecedenPen">Antecedentes Penales:</label>
+                <select id="antecedenPen">
+                    <option value="si">Sí</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-add">Guardar Alumno</button>
+        </form>
+
+        <div id="carreraFilter">
+            <label for="carreraSelect">Filtrar Por Carrera:</label>
+            <select id="carreraSelect">
+                <option value="">Todas Las Carreras</option>
+                <option value="Profesorado De Lengua y Literatura">Profesorado De Lengua y Literatura</option>
+                <option value="Profesorado de Matematica">Profesorado De Matemática</option>
+                <option value="Turismo y Hoteleria">Turismo y Hotelería</option>
+                <option value="Administracion de empresas">Administración De Empresas</option>
+                <option value="Desarrollo de software">Desarrollo De Software</option>
+            </select>
+        </div>
+
+        {{#if error}}
+            <p class="error-message">{{error}}</p>
+        {{else}}
+            <table id="alumnosTable">
+                <thead>
                     <tr>
-                        <td>{{nombreCompleto}}</td>
-                        <td>{{nombre}}</td>
-                        <td>{{numDocAlumn}}</td>
-                        <td>{{corte}}</td>
-                        <td>{{email}}</td>
-                        <td>{{#if tituloSecundario}}Sí{{else}}No{{/if}}</td>
-                        <td>{{#if psicofisico}}Sí{{else}}No{{/if}}</td>
-                        <td>{{#if partidaNacim}}Sí{{else}}No{{/if}}</td>
-                        <td>{{#if dniActualizado}}Sí{{else}}No{{/if}}</td>
-                        <td>{{#if analiticoFiel}}Sí{{else}}No{{/if}}</td>
-                        <td>{{#if antecedenPen}}Sí{{else}}No{{/if}}</td>
+                        <th>Nombre Completo</th>
+                        <th>Nombre</th>
+                        <th>Documento</th>
+                        <th>Corte</th>
+                        <th>Email</th>
+                        <th>Carrera</th>
+                        <th>Título Secundario</th>
+                        <th>Psicofísico</th>
+                        <th>Partida de Nacimiento</th>
+                        <th>DNI Actualizado</th>
+                        <th>Analítico Fiel</th>
+                        <th>Antecedentes Penales</th>
+                        <th>Acciones</th>
                     </tr>
-                {{/each}}
-            </tbody>
-        </table>
-    {{/if}}
+                </thead>
+                <tbody>
+                    {{#each alumnos}}
+                        <tr>
+                            <td>{{nombreCompleto}}</td>
+                            <td>{{nombre}}</td>
+                            <td>{{numDocAlumn}}</td>
+                            <td>{{corte}}</td>
+                            <td>{{email}}</td>
+                            <td>{{carrera}}</td>
+                            <td>{{#if tituloSecundario}}Sí{{else}}No{{/if}}</td>
+                            <td>{{#if psicofisico}}Sí{{else}}No{{/if}}</td>
+                            <td>{{#if partidaNacim}}Sí{{else}}No{{/if}}</td>
+                            <td>{{#if dniActualizado}}Sí{{else}}No{{/if}}</td>
+                            <td>{{#if analiticoFiel}}Sí{{else}}No{{/if}}</td>
+                            <td>{{#if antecedenPen}}Sí{{else}}No{{/if}}</td>
+                            <td>
+                                <button class="btn btn-edit">Editar</button>
+                                <button class="btn btn-delete">Eliminar</button>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        {{/if}}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleFormButton = document.getElementById('toggleForm');
+            const form = document.getElementById('addStudentForm');
+            const carreraSelect = document.getElementById('carreraSelect');
+            const table = document.getElementById('alumnosTable');
+
+            toggleFormButton.addEventListener('click', function() {
+                if (form.style.display === 'none' || form.style.display === '') {
+                    form.style.display = 'block';
+                    toggleFormButton.textContent = 'Ocultar Formulario';
+                } else {
+                    form.style.display = 'none';
+                    toggleFormButton.textContent = 'Agregar Nuevo Alumno';
+                }
+            });
+
+            carreraSelect.addEventListener('change', function() {
+                const selectedCarrera = this.value;
+                const rows = table.getElementsByTagName('tr');
+
+                for (let i = 1; i < rows.length; i++) {
+                    const carreraCell = rows[i].getElementsByTagName('td')[5];
+                    if (carreraCell) {
+                        if (selectedCarrera === '' || carreraCell.textContent === selectedCarrera) {
+                            rows[i].style.display = '';
+                        } else {
+                            rows[i].style.display = 'none';
+                        }
+                    }
+                }
+            });
+        });
+
+// Función para agregar un nuevo alumno
+function agregarAlumno(e) {
+    e.preventDefault();
+    const form = document.getElementById('addStudentForm');
+    const nuevoAlumno = {
+        nombreCompleto: form.nombreCompleto.value,
+        nombre: form.nombre.value,
+        numDocAlumn: form.numDocAlumn.value,
+        corte: form.corte.value,
+        email: form.email.value,
+        carrera: form.carrera.value,
+        tituloSecundario: form.tituloSecundario.value === 'si',
+        psicofisico: form.psicofisico.value === 'si',
+        partidaNacim: form.partidaNacim.value === 'si',
+        dniActualizado: form.dniActualizado.value === 'si',
+        analiticoFiel: form.analiticoFiel.value === 'si',
+        antecedenPen: form.antecedenPen.value === 'si'
+    };
+    
+    agregarFilaTabla(nuevoAlumno);
+    form.reset();
+    form.style.display = 'none';
+    document.getElementById('toggleForm').textContent = 'Agregar Nuevo Alumno';
+}
+
+// Función para agregar una nueva fila a la tabla
+function agregarFilaTabla(alumno) {
+    const tabla = document.getElementById('alumnosTable').getElementsByTagName('tbody')[0];
+    const nuevaFila = tabla.insertRow();
+    nuevaFila.innerHTML = `
+        <td>${alumno.nombreCompleto}</td>
+        <td>${alumno.nombre}</td>
+        <td>${alumno.numDocAlumn}</td>
+        <td>${alumno.corte}</td>
+        <td>${alumno.email}</td>
+        <td>${alumno.carrera}</td>
+        <td>${alumno.tituloSecundario ? 'Sí' : 'No'}</td>
+        <td>${alumno.psicofisico ? 'Sí' : 'No'}</td>
+        <td>${alumno.partidaNacim ? 'Sí' : 'No'}</td>
+        <td>${alumno.dniActualizado ? 'Sí' : 'No'}</td>
+        <td>${alumno.analiticoFiel ? 'Sí' : 'No'}</td>
+        <td>${alumno.antecedenPen ? 'Sí' : 'No'}</td>
+        <td>
+            <button class="btn btn-edit">Editar</button>
+            <button class="btn btn-delete">Eliminar</button>
+        </td>
+    `;
+}
+
+// Función para editar un alumno
+function editarAlumno(e) {
+    if (e.target.classList.contains('btn-edit')) {
+        const fila = e.target.closest('tr');
+        const celdas = fila.getElementsByTagName('td');
+        const form = document.getElementById('addStudentForm');
+        
+        form.nombreCompleto.value = celdas[0].textContent;
+        form.nombre.value = celdas[1].textContent;
+        form.numDocAlumn.value = celdas[2].textContent;
+        form.corte.value = celdas[3].textContent;
+        form.email.value = celdas[4].textContent;
+        form.carrera.value = celdas[5].textContent;
+        form.tituloSecundario.value = celdas[6].textContent === 'Sí' ? 'si' : 'no';
+        form.psicofisico.value = celdas[7].textContent === 'Sí' ? 'si' : 'no';
+        form.partidaNacim.value = celdas[8].textContent === 'Sí' ? 'si' : 'no';
+        form.dniActualizado.value = celdas[9].textContent === 'Sí' ? 'si' : 'no';
+        form.analiticoFiel.value = celdas[10].textContent === 'Sí' ? 'si' : 'no';
+        form.antecedenPen.value = celdas[11].textContent === 'Sí' ? 'si' : 'no';
+
+        form.style.display = 'block';
+        document.getElementById('toggleForm').textContent = 'Ocultar Formulario';
+        
+        // Eliminar la fila antigua
+        fila.remove();
+    }
+}
+
+// Función para eliminar un alumno
+function eliminarAlumno(e) {
+    if (e.target.classList.contains('btn-delete')) {
+        if (confirm('¿Estás seguro de que quieres eliminar este alumno?')) {
+            e.target.closest('tr').remove();
+        }
+    }
+}
+
+// Event listeners
+document.getElementById('addStudentForm').addEventListener('submit', agregarAlumno);
+document.getElementById('alumnosTable').addEventListener('click', editarAlumno);
+document.getElementById('alumnosTable').addEventListener('click', eliminarAlumno);    </script>
 </body>
 </html>

@@ -28,19 +28,19 @@ mongoose.connect(process.env.MONGO_URI, {
 const { soloPublico } = require('./App/middlewares/authorization.js');
 
 // Rutas individuales
-//const userRouters = require("./App/routes/R_user");
+const userRouters = require("./App/routes/R_user");
 const loginRouters = require("./App/routes/R_login");
 const alumnoRouters = require("./App/routes/R_Alumno");
 
 // Zona de ruteo
 app.get("/", soloPublico, (req, res) => res.render('bedelMenu'));
-app.get("/nuevo", (req, res) => res.render('nuevoAlumno'));
-app.get("/menu", (req, res) => res.render('menu'));
-app.get('/listar',  alumnoRouters);
+ app.get("/nuevo", (req, res) => res.render('nuevoAlumno'));
+ app.get("/menu", (req, res) => res.render('menu'));
+ app.get('/listar',  alumnoRouters);
 
 // Rutas individuales
 app.use(alumnoRouters);
-//app.use(userRouters);
+app.use(userRouters);
 app.use(loginRouters);
 
 app.listen(port, () => {
