@@ -1,87 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Iniciar sesión</title>
-  <link rel="stylesheet" href="/Styles/styleLogin.css" />
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  <script src="/login.js" defer></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      $('.login-info-box').fadeOut();
-      $('.login-show').addClass('show-log-panel');
+  <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+  <script src="/login.js"></script>
 
-      $('.login-reg-panel input[type="radio"]').on('change', function () {
-        if ($('#log-login-show').is(':checked')) {
-          $('.register-info-box').fadeOut();
-          $('.login-info-box').fadeIn();
-          $('.white-panel').addClass('right-log');
-          $('.register-show').addClass('show-log-panel');
-          $('.login-show').removeClass('show-log-panel');
-        } else if ($('#log-reg-show').is(':checked')) {
-          $('.register-info-box').fadeIn();
-          $('.login-info-box').fadeOut();
-          $('.white-panel').removeClass('right-log');
-          $('.login-show').addClass('show-log-panel');
-          $('.register-show').removeClass('show-log-panel');
-        }
-      });
-    });
-  </script>
+  <link rel="stylesheet" href="Styles/styleLogin.css" />
+  <title>SISTEMA IES</title>
 </head>
 
 <body>
+  <div class="container">
 
-  <div class="login-reg-panel">
-    <div class="login-info-box">
-      <h2>Tienes una cuenta?</h2>
-      <p>Inicia sesion presionando aqui</p>
-      <label id="label-register" for="log-reg-show">Login</label>
-      <input type="radio" name="active-log-panel" id="log-reg-show" checked="checked" />
-    </div>
+    <div class="forms-container">
 
-    <div class="register-info-box">
-      <h2>No tienes una cuenta?</h2>
-      <p>Registrate con el boton de aqui abajo</p>
-      <label id="label-login" for="log-login-show">Register</label>
-      <input type="radio" name="active-log-panel" id="log-login-show" />
-    </div>
-
-    <div class="white-panel">
-
-      <div class="login-show">
-        <center>
-          <img src="/Resources/logoceil.png" alt="Login Logo" style="width: 100px; margin-bottom: 20px;">
-          <h2>Iniciar Sesion</h2>
-        </center>
-        <form id="login-form">
-          <input type="text" name="user" placeholder="Email" />
-          <input type="password" name="password" placeholder="Password" />
-          <input type="submit" value="Login" />
+      <div class="signin-signup">
+        
+        {{!-- FORM DE LOGIN --}}
+        <form class="sign-in-form">
+          <img src="Resources/logoceil.png">
+          <h2 class="title">Bienvenido</h2>
+          <div class="input-field">
+            <i class="fas fa-user"></i>
+            <input type="text" name="user" placeholder="Nombre de usuario" required />
+          </div>
+          <div class="input-field">
+            <i class="fas fa-lock"></i>
+            <input type="password" name="pass" placeholder="Contraseña" required />
+          </div>
+          <input type="submit" value="Iniciar Sesion" class="btn solid" />
         </form>
-        <a href="#">Olvisdaste tu contraseña?</a>
+
+        {{!-- FORM DE REGISTRO --}}
+        <form class="sign-up-form">
+          <img src="Resources/logoceil.png">
+          <h2 class="title">Registrarse</h2>
+          <div class="input-field">
+            <i class="fas fa-user"></i>
+            <input type="text" name="user"  placeholder="Nombre de usuario" required />
+          </div>
+          <div class="input-field">
+            <i class="fas fa-envelope"></i>
+            <input type="email" name="email" placeholder="Email" required />
+          </div>
+          <div class="input-field">
+            <i class="fas fa-lock"></i>
+            <input type="password" name="pass" placeholder="Contraseña" required />
+          </div>
+          <input type="submit" class="btn" value="Registrarme" />
+        </form>
+
+      </div>
+    </div>
+
+
+    <div class="panels-container">
+
+{{!-- panel de la izquierda --}}
+      <div class="panel left-panel">
+        <div class="content">
+          <h3>No tienes una cuenta?</h3>
+          <p></p>
+          <button class="btn transparent" id="sign-up-btn">Registrate</button>
+        </div>
       </div>
 
-
-      <div class="register-show">
-        <center>
-          <img src="/Resources/logoceil.png" alt="Login Logo" style="width: 100px; margin-bottom: 20px;">
-          <h2>Registrarme</h2>
-        </center>
-        <form id="signup-form">
-          <input type="text" name="user" placeholder="Usuario" />
-          <input type="text" name="email" placeholder="Email" />
-          <input type="password" name="password" placeholder="Contraseña" />
-          <input type="submit" value="Register" />
-        </form>
+{{!-- panel de la derecha --}}
+      <div class="panel right-panel">
+        <div class="content">
+          <h3>Ya tienes una cuenta?</h3>
+          <p></p>
+          <button class="btn transparent" id="sign-in-btn">Incia Sesion</button>
+        </div>
       </div>
 
     </div>
+
   </div>
+
 </body>
 
 </html>
