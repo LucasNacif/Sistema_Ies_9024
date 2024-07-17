@@ -21,18 +21,19 @@ exports.nuevo = async (req, res) => {
         });
 
         await alumno.save();
-        res.status(201); //.send(alumno)
+        res.status(201).redirect('/alumno/listar?message=Alumno agregado exitosamente');
     } catch (error) {
         console.log(error.message);
-        res.status(500).send(error);
+        res.status(500).redirect('/alumno/listar?error=Error al agregar alumno');
     }
 };
+
 
 // controller para obtener todos los alumnos
 exports.listarAlumnos = async (req, res) => {
   try {
       const alumnos = await Alumno.find();
-      res.render('listar', { alumnos });
+      res.render('listarAlumnos', { alumnos });
   } catch (error) {
       console.error("Error al obtener alumnos:", error.message);
       res.status(500).send("Error al obtener alumnos");
