@@ -32,7 +32,7 @@ const alumnoRouters = require("./App/routes/R_Alumno");
 const loginRouters = require("./App/routes/R_login");
 
 // Zona de ruteo
-app.get("/", soloPublico, (req, res) => res.render('bedelMenu'));
+app.get("/", soloPublico, (req, res) => res.render('index'));
 app.use(alumnoRouters);
 app.use(loginRouters);
 
