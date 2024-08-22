@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000;
 // Configuración de middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
 
 // Configuración del motor de vistas
@@ -33,7 +33,12 @@ const loginRouters = require("./App/routes/R_login");
 
 // Zona de ruteo
 app.get("/", soloPublico, (req, res) => res.render('bedelMenu'));
-app.use(alumnoRouters);
+app.get("/nuevo", (req, res) => res.render('nuevoAlumno'));
+app.get("/menu", (req, res) => res.render('menu'));
+app.get("/prueba", (req, res) => res.render('home'));
+
+//Rutas individuales
+app.use(userRouters);
 app.use(loginRouters);
 
 app.listen(port, () => {
