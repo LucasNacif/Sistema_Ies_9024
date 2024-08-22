@@ -32,13 +32,13 @@ const alumnoRouters = require("./App/routes/R_Alumno");
 const loginRouters = require("./App/routes/R_login");
 
 // Zona de ruteo
-app.get("/", soloPublico, (req, res) => res.render('bedelMenu'));
+app.get("/", soloPublico, (req, res) => res.render('home'));
 app.get("/nuevo", (req, res) => res.render('nuevoAlumno'));
 app.get("/menu", (req, res) => res.render('menu'));
 app.get("/prueba", (req, res) => res.render('home'));
 
 //Rutas individuales
-app.use(userRouters);
+app.use(alumnoRouters);
 app.use(loginRouters);
 
 app.listen(port, () => {
