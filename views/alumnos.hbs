@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<!-- Título de la página -->
+	<title>Alumnos</title>
+	<!-- Configuración de la codificación de caracteres -->
+	<meta charset="UTF-8">
+	<!-- Configuración del viewport para asegurar que la página sea responsive -->
+	<meta name="viewport"
+		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<!-- Enlace a la hoja de estilos principal -->
+	<link rel="stylesheet" href="/Styles/main.css">
+</head>
+
+<body>
+	<!-- Barra lateral (SideBar) -->
+	<section class="full-box cover dashboard-sideBar">
+		<!-- Fondo de la barra lateral -->
+		<div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
+		<!-- Contenedor de la barra lateral -->
+		<div class="full-box dashboard-sideBar-ct">
+			<!-- Título de la barra lateral -->
+			<div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
+				Bedel <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
+			</div>
+			<!-- Información del usuario en la barra lateral -->
+			<div class="full-box dashboard-sideBar-UserInfo">
+				<!-- Figura que contiene la imagen del usuario -->
+				<figure class="full-box">
+					<img src="./assets/img/logo_IES.jpg" alt="UserIcon">
+				</figure>
+				<!-- Lista de botones para configuración y cierre de sesión -->
+				<ul class="full-box list-unstyled text-center">
+					<li>
+						<a href="#!">
+							<i class="zmdi zmdi-settings"></i>
+						</a>
+					</li>
+					<li>
+						<a href="#!" class="btn-exit-system">
+							<i class="zmdi zmdi-power"></i>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<!-- Menú de la barra lateral -->
+			<ul class="list-unstyled full-box dashboard-sideBar-Menu">
+				<li>
+					<!-- Opción de menú para "Carreras" -->
+					<a href="/carreras">
+						<i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i> Carreras
+					</a>
+				</li>
+
+				<!-- Opción de menú para "Alumnos" -->
+				<li>
+					<a href="/alumnos">
+						<i class="zmdi zmdi-account-add zmdi-hc-fw"></i> Alumnos
+					</a>
+				</li>
+
+				<!-- Opción de menú para "Mesas" -->
+				<li>
+					<a href="/mesas">
+						<i class="zmdi zmdi-shield-security zmdi-hc-fw"></i> Mesas
+					</a>
+				</li>
+			</ul>
+		</div>
+	</section>
+
+	<!-- Página de contenido principal -->
+	<section class="full-box dashboard-contentPage">
+		<!-- Barra de navegación superior -->
+		<nav class="full-box dashboard-Navbar">
+			<ul class="full-box list-unstyled text-right">
+				<li class="pull-left">
+					<!-- Botón para mostrar/ocultar la barra lateral -->
+					<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+				</li>
+				<li>
+					<!-- Botón para mostrar el área de notificaciones -->
+					<a href="#!" class="btn-Notifications-area">
+						<i class="zmdi zmdi-notifications-none"></i>
+						<span class="badge"></span>
+					</a>
+				</li>
+				<li>
+					<!-- Botón para mostrar el área de búsqueda -->
+					<a href="#!" class="btn-search">
+						<i class="zmdi zmdi-search"></i>
+					</a>
+				</li>
+			</ul>
+		</nav>
+
+		<!-- Contenido de la página -->
+		<div class="container-fluid">
+			<!-- Encabezado de la página -->
+			<div class="page-header">
+				<h1 class="text-titles"><i class="zmdi zmdi-face zmdi-hc-fw"></i> Alumnos </h1>
+			</div>
+		</div>
+
+		<!-- Contenido en pestañas -->
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-12">
+					<ul class="nav nav-tabs" style="margin-bottom: 15px;">
+						<!-- Pestaña para la lista de alumnos -->
+						<li><a href="#list" data-toggle="tab">Lista</a></li>
+					</ul>
+					<div id="myTabContent" class="tab-content">
+						<!-- Contenido de la pestaña "Lista" -->
+						<div class="tab-pane fade" id="list">
+							<div class="table-responsive">
+								<!-- Tabla que muestra la lista de alumnos -->
+								<table class="table table-hover text-center">
+									<thead>
+										<tr>
+											<th class="text-center">#</th>
+											<th class="text-center">Nombre</th>
+											<th class="text-center">Apellido</th>
+											<th class="text-center">Email</th>
+											<th class="text-center">Celular</th>
+											<th class="text-center">Fecha de Nacimiento</th>
+											<th class="text-center">Género</th>
+											<th class="text-center">Estado</th>
+											<th class="text-center">Sección</th>
+											<th class="text-center">Actualizar</th>
+											<th class="text-center">Eliminar</th>
+										</tr>
+									</thead>
+									<tbody>
+										<!-- Ejemplo de fila de la tabla con datos de un alumno -->
+										<tr>
+											<td>1</td>
+											<td>Carlos</td>
+											<td>El Salvador</td>
+											<td>carlos@gmail.com</td>
+											<td>+50312345678</td>
+											<td>07/03/1997</td>
+											<td>Male</td>
+											<td>Old</td>
+											<td>Section</td>
+											<!-- Botón para actualizar la información del alumno -->
+											<td><a href="#!" class="btn btn-success btn-raised btn-xs"><i
+														class="zmdi zmdi-refresh"></i></a></td>
+											<!-- Botón para eliminar al alumno de la lista -->
+											<td><a href="#!" class="btn btn-danger btn-raised btn-xs"><i
+														class="zmdi zmdi-delete"></i></a></td>
+										</tr>
+										<tr>
+											<td>2</td>
+											<td>Alicia</td>
+											<td>El Salvador</td>
+											<td>alicia@gmail.com</td>
+											<td>+50312345678</td>
+											<td>07/07/1990</td>
+											<td>Female</td>
+											<td>New</td>
+											<td>Section</td>
+											<!-- Botón para actualizar la información del alumno -->
+											<td><a href="#!" class="btn btn-success btn-raised btn-xs"><i
+														class="zmdi zmdi-refresh"></i></a></td>
+											<!-- Botón para eliminar al alumno de la lista -->
+											<td><a href="#!" class="btn btn-danger btn-raised btn-xs"><i
+														class="zmdi zmdi-delete"></i></a></td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- Paginación para la tabla -->
+								<ul class="pagination pagination-sm">
+									<li class="disabled"><a href="#!">«</a></li>
+									<li class="active"><a href="#!">1</a></li>
+									<li><a href="#!">2</a></li>
+									<li><a href="#!">3</a></li>
+									<li><a href="#!">4</a></li>
+									<li><a href="#!">5</a></li>
+									<li><a href="#!">»</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Scripts para funcionalidades de la página -->
+	<script src="./js/jquery-3.1.1.min.js"></script>
+	<script src="./js/sweetalert2.min.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
+	<script src="./js/material.min.js"></script>
+	<script src="./js/ripples.min.js"></script>
+	<script src="./js/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="./js/main.js"></script>
+	<script>
+		// Inicializa el estilo de Material Design
+		$.material.init();
+	</script>
+</body>
+
+</html>

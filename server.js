@@ -36,6 +36,9 @@ app.get("/", soloPublico, (req, res) => res.render('home'));
 app.get("/nuevo", (req, res) => res.render('nuevoAlumno'));
 app.get("/menu", (req, res) => res.render('menu'));
 app.get("/prueba", (req, res) => res.render('home'));
+app.get("/carreras", (req, res) => res.render('carreras')); // Renderiza la vista carreras.hbs (asegúrate de que el archivo exista)
+app.get("/alumnos", (req, res) => res.render('alumnos'));
+app.get("/mesas", (req, res) => res.render('mesas'));
 
 //Rutas individuales
 app.use(alumnoRouters);
