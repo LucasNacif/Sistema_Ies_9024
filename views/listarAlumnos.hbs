@@ -4,146 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestión de Alumnos - IES 9-024 Lavalle</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo-container {
-            flex: 0 0 auto;
-        }
-
-        .logo {
-            max-width: 100px;
-            margin-right: 20px;
-        }
-
-        .title-container {
-            flex: 1;
-            text-align: center;
-        }
-
-        h1 {
-            color: #e67e22;
-            margin: 0;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        th,
-        td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        th {
-            background-color: #2ecc71;
-            color: white;
-        }
-
-        .message {
-            color: green;
-            font-weight: bold;
-            padding: 10px;
-            border: 1px solid green;
-            background-color: #eaffea;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-
-        .error-message {
-            color: #e74c3c;
-            font-weight: bold;
-            padding: 10px;
-            border: 1px solid #e74c3c;
-            background-color: #feecec;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-
-        .btn {
-            padding: 8px 12px;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-            margin-bottom: 10px;
-        }
-
-        .btn-add {
-            background-color: #3498db;
-            color: white;
-        }
-
-        .btn-edit {
-            background-color: #f39c12;
-            color: white;
-        }
-
-        .btn-delete {
-            background-color: #e74c3c;
-            color: white;
-        }
-
-        .btn-volver {
-            background-color: #16c0c2;
-            color: white;
-        }
-
-        form {
-            background-color: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: none;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="number"],
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: inline-block;
-            width: 200px;
-        }
-
-        #carreraFilter {
-            margin-bottom: 20px;
-        }
-    </style>
+  
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const toggleFormButton = document.getElementById("toggleForm");
@@ -156,6 +17,18 @@
                 } else {
                     form.style.display = "none";
                     toggleFormButton.textContent = "Agregar Nuevo Alumno";
+                }
+            });
+
+            const btnModificar = document.getElementById("btnModificar");
+             const formModifciar = document.querySelector("formModifciar");
+             btnModificar.addEventListener("click", function () {
+                if (formModifciar.style.display === "none" || form.style.display === "") {
+                    formModifciar.style.display = "block";
+                    btnModificar.textContent = "Ocultar Formulario";
+                } else {
+                    formModifciar.style.display = "none";
+                    btnModificar.textContent = "Agregar Nuevo Alumno";
                 }
             });
 
@@ -201,6 +74,7 @@
     <div class="container">
         <button id="toggleForm" class="btn btn-add">Agregar Nuevo Alumno</button>
         <button id="btnModificar" class="btn btn-edit">Modificar Alumno</button>
+        <button id="btnEliminar" class="btn btn-delete">Eliminar Alumno</button>
         <button id="btnDarDeBaja" class="btn btn-delete">Dar de Baja Alumno</button>
         <button id="btnDarDeVolver" class="btn btn-volver">Volver</button>
         <div id="messageContainer"></div>
@@ -238,6 +112,13 @@
             <input type="submit" value="Enviar" />
         </form>
 
+
+        <form id = "formModifciar" method="delete" action="/alumno/eliminar">
+            <h1>Ingrese el documento del alumno que quiere eliminar</h>
+            <label for="numDocAlumn">Número de Documento:</label>
+            <input type="number" id="numDocAlumn" name="numDocAlumn" required />
+            <input type="submit" value="Enviar" />
+        </form>
 
 
         <table id="alumnosTable">

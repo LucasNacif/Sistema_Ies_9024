@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Definición del esquema
@@ -14,13 +14,15 @@ const alumnoSchema = new Schema({
   dniActualizado: { type: Boolean, default: false },
   analiticoFiel: { type: Boolean, default: false },
   antecedenPen: { type: Boolean, default: false },
-  AlumnoEstado: [{
-    type: Schema.Types.ObjectId,
-    ref: "AlumnoEstado",
-  }],
+  Estado: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "AlumnoEstado",
+    },
+  ],
 });
 
-class Alumno {  
+class Alumno {
   constructor(
     idAlumno,
     numDocAlumn,
@@ -48,12 +50,11 @@ class Alumno {
     this.analiticoFiel = analiticoFiel;
     this.antecedenPen = antecedenPen;
   }
-
 }
 
-// alumnoSchema.loadClass(Alumno); esto sirve para manipular el schema 
+// alumnoSchema.loadClass(Alumno); esto sirve para manipular el schema
 // como clase de node
 
 // Crear y exportar el modelo
-const AlumnoModel = mongoose.model('Alumno', alumnoSchema);
+const AlumnoModel = mongoose.model("Alumno", alumnoSchema);
 module.exports = AlumnoModel;
