@@ -32,22 +32,21 @@ exports.nuevo = async (req, res) => {
         });
 
         await alumno.save();
-        return res.status(200).json({ message: "Alumno agregado correctamente" });
+        // Redirigir a la página de alumnos con un mensaje
+        res.redirect("/alumno?message=Alumno agregado correctamente");
     } catch (error) {
         console.log(error.message);
-        return res.status(500).json({ error: "Error al agregar alumno" });
+        res.redirect("/alumno?error=Error al agregar alumno");
     }
 };
 
 exports.traerPorDoc = async (req, res) => {
+
+    const { numDocAlumn } = req.params;
+    if (!numDocAlumn) {
+        return res.status(404).json({ error: "Número de documento requerido" });
+    }
     try {
-      
-        const { numDocAlumn } = req.params;
-
-        if (!numDocAlumn) {
-            return res.status(404).json({ error: "Número de documento requerido" });
-        }
-
         const alumno = await Alumno.findOne({ numDocAlumn });
         if (!alumno) {
             return res.status(404).json({ error: "Alumno no encontrado" });
@@ -60,68 +59,9 @@ exports.traerPorDoc = async (req, res) => {
     }
 };
 
-
-exports.modificarAlumno = async (req, res) => {
-    try {
-        const {
-            numDocAlumn,
-            emailAlumn,
-            nombreCompleto,
-            nombre,
-            corte,
-            tituloSecundario,
-            psicofisico,
-            partidaNacim,
-            dniActualizado,
-            analiticoFiel,
-            antecedenPen,
-        } = req.body;
-
-     
-        if (!numDocAlumn) {
-            return res.status(400).json({ error: "Número de documento requerido" });
-        }
-
-        const alumno = await Alumno.findOne({ numDocAlumn });
-
-        if (!alumno) {
-            return res.status(404).json({ error: "Alumno no encontrado" });
-        }
-
-        // Actualizar el alumno
-        const alumnoActualizado = await Alumno.findOneAndUpdate(
-            { numDocAlumn },
-            {
-                nombreCompleto,
-                nombre,
-                corte,
-                emailAlumn,
-                tituloSecundario,
-                psicofisico,
-                partidaNacim,
-                dniActualizado,
-                analiticoFiel,
-                antecedenPen,
-            },
-            { new: true }
-        );
-
-        // Verificar si la actualización fue exitosa
-        if (alumnoActualizado) {
-            res.status(200).redirect('/alumno', ok);
-        } else {
-            return res.status(500).json({ error: "Error al modificar alumno" });
-        }
-    } catch (error) {
-        console.error("Error al modificar el alumno:", error.message);
-        res.status(500).json({ error: "Error interno del servidor" });
-    }
-};
-
-
 exports.darDeBaja = async (req, res) => {
-    const { numDocAlumn } = req.params;
 
+    const { numDocAlumn } = req.params;
     if (!numDocAlumn) {
         return res.status(400).json({ error: "Número de documento requerido" });
     }
@@ -150,6 +90,65 @@ exports.darDeBaja = async (req, res) => {
         res.status(500).json({ error: "Error interno del servidor" });
     }
 };
+
+exports.modificarAlumno = async (req, res) => {
+    try {
+        const {
+            numDocAlumn,
+            emailAlumn,
+            nombreCompleto,
+            nombre,
+            corte,
+            tituloSecundario,
+            psicofisico,
+            partidaNacim,
+            dniActualizado,
+            analiticoFiel,
+            antecedenPen,
+        } = req.body;
+
+
+        if (!numDocAlumn) {
+            return res.status(400).redirect("/alumno?error=Número de documento requerido");
+        }
+
+        const alumno = await Alumno.findOne({ numDocAlumn });
+
+        if (!alumno) {
+            return res.status(404).redirect("/alumno?error=Alumno no encontrado");
+        }
+
+        // Actualizar el alumno
+        const alumnoActualizado = await Alumno.findOneAndUpdate(
+            { numDocAlumn },
+            {
+                nombreCompleto,
+                nombre,
+                corte,
+                emailAlumn,
+                tituloSecundario,
+                psicofisico,
+                partidaNacim,
+                dniActualizado,
+                analiticoFiel,
+                antecedenPen,
+            },
+            { new: true }
+        );
+
+        // Verificar si la actualización fue exitosa
+        if (alumnoActualizado) {
+            res.status(200).redirect("/alumno?message=Alumno modificado correctamente");
+        } else {
+            res.status(500).redirect("/alumno?error=Error al modificar alumno");
+        }
+    } catch (error) {
+        console.error("Error al modificar el alumno:", error.message);
+        res.status(500).redirect("/alumno?error=Error interno del servidor");
+    }
+};
+
+
 
 
 exports.obtenerAlumnosActivos = async (req, res) => {
