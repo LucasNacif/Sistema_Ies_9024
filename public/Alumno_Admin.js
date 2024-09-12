@@ -12,6 +12,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchBox = document.getElementById("searchBox");
     const errorTableAlumnos = document.getElementById('errorTableAlumnos');
 
+    //Manejo de errores
+    const urlParams = new URLSearchParams(window.location.search);
+    const message = urlParams.get('message');
+    const error = urlParams.get('error');
+    const mensajeOK = document.getElementById('mensajeOK');
+    const mensajeERROR = document.getElementById('mensajeERROR');
+
     // Inicializar tabla con alumnos activos
     cargarAlumnos(true);
 
@@ -38,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
             alumnosTableBody.innerHTML = '';
             data.forEach(alumno => {
                 const row = document.createElement('tr');
+                row.className = alumno.banderaBooleana ? 'alumno-activo' : 'alumno-dado-de-baja';
                 row.innerHTML = `
                     <td>${alumno.nombreCompleto}</td>
                     <td>${alumno.numDocAlumn}</td>
@@ -68,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // MOSTRAR/OCULTAR formulario de agregar alumno
     btnAgregar.addEventListener("click", function () {
         if (formAgregar.style.display === "none" || formAgregar.style.display === "") {
+            formModificar.style.display = "none";
             formAgregar.style.display = "block";
             btnAgregar.textContent = "Ocultar formAgregarulario";
         } else {
@@ -78,18 +87,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Evento para el botón MODIFICAR
     btnModificar.addEventListener("click", async function () {
+        formAgregar.style.display = "none";
+        btnAgregar.textContent = "Agregar Nuevo Alumno";
+        //Esto habria que meterlo en otra funcion
         const numDocAlumn = prompt("Ingrese el número de documento del alumno que desea modificar:");
+
+        if (numDocAlumn == null || numDocAlumn.trim() === "") {
+            mensajeERROR.textContent = "Ingrese el número de documento del alumno que desea modificar.";
+            mensajeERROR.style.display = "block";
+            return;
+        }
+
         if (numDocAlumn) {
             try {
-                const response = await fetch(`/alumno/traerPorDoc/${numDocAlumn}`);
-                if (!response.ok) {
-                    if (response.status === 404) {
-                        mensajeERROR.textContent = "El número de documento no corresponde a ningún alumno registrado.";
-                    } else {
-                        mensajeERROR.textContent = "Hubo un error al obtener los datos del alumno.";
+                const response = await fetch(`/alumno/traerPorDoc/${numDocAlumn}`, {
+                    method: 'get',
+                    headers: {
+                        'Content-Type': 'application/json'
                     }
+                });
+                if (!response.ok) {
+                    mensajeERROR.textContent = data.error;
                     mensajeERROR.style.display = "block";
-                    return;//esto es para salir de la funcion si hay un error
+                    return;
                 }
 
                 const alumno = await response.json();
@@ -107,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("modAntecedenPen").checked = alumno.antecedenPen;
             } catch (error) {
                 console.error("Error al obtener los datos del alumno:", error.message);
-                mensajeERROR.textContent = "Hubo un error al obtener los datos del alumno: " + error.message;
+                mensajeERROR.textContent = "Hubo un error al obtener los datos del alumno";
                 mensajeERROR.style.display = "block";
             }
         } else {
@@ -118,9 +138,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Evento para el botón BAJA
     btnDarDeBaja.addEventListener("click", async function () {
-        reinicarMensajes();
+           //Esto habria que meterlo en otra funcion
         const numDocAlumn = prompt("Ingrese el número de documento del alumno que desea dar de baja:");
-    
+
         if (numDocAlumn == null || numDocAlumn.trim() === "") {
             mensajeERROR.textContent = "Ingrese el número de documento del alumno que desea dar de baja.";
             mensajeERROR.style.display = "block";
@@ -128,20 +148,20 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         try {
             const response = await fetch(`/alumno/baja/${numDocAlumn}`, {
-                method: 'DELETE',
+                method: 'delete',
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
             const data = await response.json();
-    
+
             if (!response.ok) {
-                mensajeERROR.textContent = data.error || "Hubo un error al dar de baja al alumno.";
+                mensajeERROR.textContent = data.error;
                 mensajeERROR.style.display = "block";
                 return;
             }
             cargarAlumnos(true);
-            mensajeOK.textContent = data.message || "Alumno dado de baja con éxito.";
+            mensajeOK.textContent = data.message;
             mensajeOK.style.display = "block";
         } catch (error) {
             console.error("Error al dar de baja el alumno:", error.message);
@@ -149,7 +169,6 @@ document.addEventListener("DOMContentLoaded", function () {
             mensajeERROR.style.display = "block";
         }
     });
-    
 
     // Evento para el botón MOSTRAR TODOS LOS ALUMNOS
     btnMostrarTodos.addEventListener("click", function () {
@@ -186,37 +205,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     //MANEJO DE ERRORES
-
-    function reinicarMensajes() {
-        // Reinicializa los mensajes de error y éxito al comenzar la interacción
-        mensajeERROR.textContent = "";
-        mensajeERROR.style.display = "none";
-        mensajeOK.textContent = "";
-        mensajeOK.style.display = "none";
-    }
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const message = urlParams.get('message');
-    const error = urlParams.get('error');
-    const mensajeOK = document.getElementById('mensajeOK');
-    const mensajeERROR = document.getElementById('mensajeERROR');
-
-    // Mostrar el mensaje si existe
     if (message) {
         mensajeOK.textContent = message;
         mensajeOK.style.display = "block";
         urlParams.delete('message');
-    } else {
+        
+    }else {
         mensajeOK.style.display = "none";
     }
-
-    // Mostrar el mensaje de error si existe
-    if (error) {
+    if(error){
         mensajeERROR.textContent = error;
         mensajeERROR.style.display = "block";
         urlParams.delete('error');
-    } else {
+    }else {
         mensajeERROR.style.display = "none";
     }
+
+    // Actualizar la URL sin los parámetros
+    const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+    window.history.replaceState({}, '', newUrl);
 
 });
