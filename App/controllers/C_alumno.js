@@ -3,39 +3,151 @@ const Alumno = require("../../models/entities/Alumno");
 // controller para crear un alumno
 exports.nuevo = async (req, res) => {
     try {
-        const { numDocAlumn, emailAlumm, nombreCompleto, nombre, corte, 
-            tituloSecundario, psicofisico, partidaNacim, dniActualizado, analiticoFiel, antecedenPen } = req.body;
-        
-        const alumno = new Alumno({
+        const {
             numDocAlumn,
-            emailAlumm,
             nombreCompleto,
             nombre,
             corte,
-            tituloSecundario, 
+            emailAlumn,
+            tituloSecundario,
             psicofisico,
             partidaNacim,
             dniActualizado,
             analiticoFiel,
-            antecedenPen
+            antecedenPen,
+        } = req.body;
+
+        const alumno = new Alumno({
+            numDocAlumn,
+            nombreCompleto,
+            nombre,
+            corte,
+            emailAlumn,
+            tituloSecundario,
+            psicofisico,
+            partidaNacim,
+            dniActualizado,
+            analiticoFiel,
+            antecedenPen,
         });
 
         await alumno.save();
-        res.status(201).redirect('/alumno/listar?message=Alumno agregado exitosamente');
+        // Redirigir a la página de alumnos con un mensaje
+        res.redirect("/alumno?message=Alumno agregado correctamente");
     } catch (error) {
         console.log(error.message);
-        res.status(500).redirect('/alumno/listar?error=Error al agregar alumno');
+        res.redirect("/alumno?error=Error al agregar alumno");
+    }
+};
+
+exports.traerPorDoc = async (req, res) => {
+    try {
+        const { numDocAlumn } = req.params;
+        const alumno = await Alumno.findOne({ numDocAlumn });
+
+        if (alumno.length === 0) {
+            console.log(alumno);
+            res.status(404).redirect("/alumno?error=Alumno no encontrado");
+        }
+        res.status(200).json(alumno);
+    } catch (error) {
+        res.status(500).redirect("/alumno?error=Error al obtener alumno");
+    }
+};
+
+exports.modificarAlumno = async (req, res) => {
+    try {
+        const {
+            numDocAlumn,
+            emailAlumn,
+            nombreCompleto,
+            nombre,
+            corte,
+            tituloSecundario,
+            psicofisico,
+            partidaNacim,
+            dniActualizado,
+            analiticoFiel,
+            antecedenPen,
+        } = req.body;
+
+        const alumnoActualizado = await Alumno.findOneAndUpdate(
+            { numDocAlumn },
+            {
+                nombreCompleto,
+                nombre,
+                corte,
+                emailAlumn,
+                tituloSecundario,
+                psicofisico,
+                partidaNacim,
+                dniActualizado,
+                analiticoFiel,
+                antecedenPen,
+            },
+            { new: true }
+        );
+        if (alumnoActualizado.length > 0) {
+            res.status(200).redirect("/alumno?message=Alumno modificado correctamente");
+        } else {
+            res.status(404).redirect("/alumno?error=Alumno no encontrado");
+        }
+    } catch (error) {
+        res.status(500).redirect("/alumno?error=Error al modificar alumno");
+    }
+};
+
+exports.darDeBaja = async (req, res) => {
+    const { numDocAlumn } = req.params;
+
+    if (!numDocAlumn) {
+        return res.status(400).json({ error: "Número de documento requerido" });
+    }
+
+    try {
+        const alumno = await Alumno.findOne({ numDocAlumn });
+
+        if (!alumno) {
+            return res.status(404).json({ error: "Alumno no encontrado" });
+        }
+
+        if (!alumno.banderaBooleana) {
+            return res.status(405).json({ error: "Este alumno ya se encuentra dado de baja" });
+        }
+
+        // Actualizar el estado del alumno a dado de baja
+        await Alumno.findOneAndUpdate(
+            { numDocAlumn },
+            { $set: { banderaBooleana: false } },
+            { new: true }
+        );
+
+        res.status(200).json({ message: "Alumno dado de baja exitosamente" });
+    } catch (error) {
+        console.error("Error al dar de baja el alumno:", error.message);
+        res.status(500).json({ error: "Error interno del servidor" });
     }
 };
 
 
-// controller para obtener todos los alumnos
-exports.listarAlumnos = async (req, res) => {
-  try {
-      const alumnos = await Alumno.find();
-      res.render('listarAlumnos', { alumnos });
-  } catch (error) {
-      console.error("Error al obtener alumnos:", error.message);
-      res.status(500).send("Error al obtener alumnos");
-  }
+exports.obtenerAlumnosActivos = async (req, res) => {
+    try {
+        const { activos } = req.query;
+
+        const filtro = {};
+        if (activos === "true") {
+            filtro.banderaBooleana = true;
+        }
+
+        const alumnos = await Alumno.find(filtro);
+
+        if (alumnos.length === 0) {
+            return res.status(200).json({ mensaje: "No hay alumnos activos" });
+        }
+
+        res.status(200).json(alumnos);
+    } catch (error) {
+        console.error("Error al obtener alumnos:", error.message);
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
 };

@@ -2,10 +2,14 @@ const express = require("express");
 const router = express.Router();
 const controller = require("../controllers/C_alumno");
 
+router.post("/alumno/agregar", controller.nuevo);
 
-router.post('/alumno/agregar', controller.nuevo);
+router.get("/alumno/traerPorDoc/:numDocAlumn", controller.traerPorDoc);
 
-router.get('/alumno/listar', controller.listarAlumnos);
+router.delete("/alumno/baja/:numDocAlumn", controller.darDeBaja);
 
-router.get('/alumno/mesas', (req, res) => res.render("mesas"));
+router.post("/alumno/modificar", controller.modificarAlumno);
+
+router.get('/alumno/obtenerAlumnos', controller.obtenerAlumnosActivos);
+
 module.exports = router;

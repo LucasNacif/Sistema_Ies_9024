@@ -28,19 +28,17 @@ mongoose.connect(process.env.MONGO_URI, {
 const { soloPublico } = require('./App/middlewares/authorization.js');
 
 // Rutas individuales
-const alumnoRouters = require("./App/routes/R_Alumno");
+const alumnoRouters = require("./App/routes/R_alumno.js");
 const loginRouters = require("./App/routes/R_login");
 
 // Zona de ruteo
-app.get("/", soloPublico, (req, res) => res.render('home'));
-app.get("/nuevo", (req, res) => res.render('nuevoAlumno'));
-app.get("/menu", (req, res) => res.render('menu'));
-app.get("/prueba", (req, res) => res.render('home'));
-app.get("/carreras", (req, res) => res.render('carreras')); // Renderiza la vista carreras.hbs (asegúrate de que el archivo exista)
-app.get("/alumnos", (req, res) => res.render('alumnos'));
-app.get("/mesas", (req, res) => res.render('mesas'));
+app.get("/", soloPublico, (req, res) => res.render("home"));
+app.get("/alumno", soloPublico, (req, res) => res.render("Alumno_Admin.hbs"));
+app.get("/carrera", soloPublico, (req, res) => res.render("Carrera_Adimn"));
+app.get("/mesa", soloPublico, (req, res) => res.render("Mesa_Admin"));
+app.get("/index", soloPublico, (req, res) => res.render("index"));
+app.get("/test", soloPublico, (req, res) => res.render("listarAlumnos"));
 
-//Rutas individuales
 app.use(alumnoRouters);
 app.use(loginRouters);
 
