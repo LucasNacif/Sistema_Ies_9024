@@ -1,0 +1,239 @@
+
+<html lang="es">
+
+<head>
+    <title>Carreras</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <!-- Enlace al archivo CSS principal -->
+    <link rel="stylesheet" href="/Styles/main.css">
+</head>
+
+<body>
+    <!-- Barra lateral (SideBar) -->
+    <section class="full-box cover dashboard-sideBar">
+        <!-- Fondo del menú lateral, se muestra en dispositivos pequeños -->
+        <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
+        <!-- Contenedor del contenido del menú lateral -->
+        <div class="full-box dashboard-sideBar-ct">
+            <!-- Título del menú lateral -->
+            <div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
+                Bedel <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
+            </div>
+            <!-- Información del usuario en el menú lateral -->
+            <div class="full-box dashboard-sideBar-UserInfo">
+                <figure class="full-box">
+                    <!-- Imagen del usuario (logo) -->
+                    <img src="./assets/img/logo_IES.jpg" alt="UserIcon">
+                </figure>
+                <!-- Opciones de configuración y salir -->
+                <ul class="full-box list-unstyled text-center">
+                    <li>
+                        <a href="#!">
+                            <i class="zmdi zmdi-settings"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#!" class="btn-exit-system">
+                            <i class="zmdi zmdi-power"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Menú principal -->
+            <ul class="list-unstyled full-box dashboard-sideBar-Menu">
+				<li>
+					<!-- Opción de menú para "Carreras" -->
+					<a href="/carrera">
+						<i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i> Carreras
+					</a>
+				</li>
+
+				<!-- Opción de menú para "Alumnos" -->
+				<li>
+					<a href="/alumno">
+						<i class="zmdi zmdi-account-add zmdi-hc-fw"></i> Alumnos
+					</a>
+				</li>
+
+				<!-- Opción de menú para "Mesas" -->
+				<li>
+					<a href="/mesa">
+						<i class="zmdi zmdi-shield-security zmdi-hc-fw"></i> Mesas
+					</a>
+				</li>
+			</ul>
+        </div>
+    </section>
+
+    <!-- Contenido de la página principal -->
+    <section class="full-box dashboard-contentPage">
+        <!-- Barra de navegación superior -->
+        <nav class="full-box dashboard-Navbar">
+            <ul class="full-box list-unstyled text-right">
+                <li class="pull-left">
+                    <!-- Botón para mostrar/ocultar el menú lateral -->
+                    <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+                </li>
+                <!-- Icono de notificaciones -->
+                <li>
+                    <a href="#!" class="btn-Notifications-area">
+                        <i class="zmdi zmdi-notifications-none"></i>
+                        <span class="badge"></span>
+                    </a>
+                </li>
+                <!-- Icono de búsqueda -->
+                <li>
+                    <a href="#!" class="btn-search">
+                        <i class="zmdi zmdi-search"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Página de Carreras -->
+        <div class="container-fluid">
+            <div class="page-header">
+                <!-- Título de la sección -->
+                <h1 class="text-titles">Carreras <small></h1>
+            </div>
+        </div>
+        
+        <!-- Contenido de Carreras, se muestra en una grilla de artículos -->
+        <div class="full-box text-center" style="padding: 30px 10px;">
+
+            <!-- Carrera: Desarrollo de Software -->
+            <article class="full-box tile" >
+                <div class="full-box tile-title text-center text-titles text-uppercase">
+                    Desarrollo de Software
+                </div>
+                <div class="full-box tile-icon text-center">
+                    <i class="zmdi zmdi-account"></i>
+                </div>
+
+            </article>
+
+            <!-- Carrera: Administración de Empresas -->
+            <article class="full-box tile">
+                <div class="full-box tile-title text-center text-titles text-uppercase">
+                    Administración de Empresas
+                </div>
+                <div class="full-box tile-icon text-center">
+                    <i class="zmdi zmdi-male-alt"></i>
+                </div>
+            </article>
+
+            <!-- Carrera: Seguridad e Higiene -->
+            <article class="full-box tile">
+                <div class="full-box tile-title text-center text-titles text-uppercase">
+                    Seguridad e Higiene
+                </div>
+                <div class="full-box tile-icon text-center">
+                    <i class="zmdi zmdi-face"></i>
+                </div>
+            </article>
+
+            <!-- Carrera: Turismo y Hotelería -->
+            <article class="full-box tile">
+                <div class="full-box tile-title text-center text-titles text-uppercase">
+                    Turismo y Hotelería
+                </div>
+                <div class="full-box tile-icon text-center">
+                    <i class="zmdi zmdi-face"></i>
+                </div>
+            </article>
+
+            <!-- Carrera: Enología -->
+            <article class="full-box tile">
+                <div class="full-box tile-title text-center text-titles text-uppercase">
+                    Enología
+                </div>
+                <div class="full-box tile-icon text-center">
+                    <i class="zmdi zmdi-face"></i>
+                </div>
+            </article>
+
+            <!-- Carrera: Profesorado en Matemática -->
+            <article class="full-box tile">
+                <div class="full-box tile-title text-center text-titles text-uppercase">
+                    Prof. Matemática
+                </div>
+                <div class="full-box tile-icon text-center">
+                    <i class="zmdi zmdi-face"></i>
+                </div>
+            </article>
+
+            <!-- Carrera: Profesorado en Lengua y Literatura -->
+            <article class="full-box tile" >
+                <div class="full-box tile-title text-center text-titles text-uppercase">
+                    Prof. Lengua y Literatura
+                </div>
+                <div class="full-box tile-icon text-center">
+                    <i class="zmdi zmdi-face"></i>
+                </div>
+            </article>
+
+            <!-- Carrera: Profesorado en Educación Especial -->
+            <article class="full-box tile">
+                <div class="full-box tile-title text-center text-titles text-uppercase">
+                    Prof. Educación Especial
+                </div>
+                <div class="full-box tile-icon text-center">
+                    <i class="zmdi zmdi-face"></i>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Área de Notificaciones -->
+    <section class="full-box Notifications-area">
+        <!-- Fondo de notificaciones, se cierra al hacer clic -->
+        <div class="full-box Notifications-bg btn-Notifications-area"></div>
+        <!-- Cuerpo de las notificaciones -->
+        <div class="full-box Notifications-body">
+            <div class="Notifications-body-title text-titles text-center">
+                Notificaciones <i class="zmdi zmdi-close btn-Notifications-area"></i>
+            </div>
+            <!-- Lista de notificaciones -->
+            <div class="list-group">
+                <div class="list-group-item">
+                    <div class="row-action-primary">
+                        <i class="zmdi zmdi-alert-triangle"></i>
+                    </div>
+                    <div class="row-content">
+                        <h4 class="list-group-item-heading">Mensaje 1</h4>
+                        <p class="list-group-item-text">Registro Correctamente</p>
+                    </div>
+                </div>
+                <div class="list-group-separator"></div>
+                <div class="list-group-item">
+                    <div class="row-action-primary">
+                        <i class="zmdi zmdi-alert-octagon"></i>
+                    </div>
+                    <div class="row-content">
+                        <h4 class="list-group-item-heading">Mensaje 2</h4>
+                        <p class="list-group-item-text">Estoy registrado</p>
+                    </div>
+                </div>
+                <div class="list-group-separator"></div>
+                <div class="list-group-item">
+                    <div class="row-action-primary">
+                        <i class="zmdi zmdi-help"></i>
+                    </div>
+                    <div class="row-content">
+                        <h4 class="list-group-item-heading">Mensaje 3</h4>
+                        <p class="list-group-item-text">Fallo de registro.</p>
+                    </div>
+                </div>
+                <div class="list-group-separator"></div>
+            </div>
+        </div>
+    </section>
+   
+    <!-- Enlaces a los scripts necesarios -->
+    <script src="./js/jquery-3.1.1.min.js"></script>
+    <script src="./js/sweetalert2.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/material.min.js"></script>
+   
