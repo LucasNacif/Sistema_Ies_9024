@@ -1,6 +1,46 @@
 const Alumno = require("../../models/entities/Alumno");
 
 // controller para crear un alumno
+// exports.nuevo = async (req, res) => {
+//     try {
+//         const {
+//             numDocAlumn,
+//             nombreCompleto,
+//             nombre,
+//             corte,
+//             emailAlumn,
+//             tituloSecundario,
+//             psicofisico,
+//             partidaNacim,
+//             dniActualizado,
+//             analiticoFiel,
+//             antecedenPen,
+//         } = req.body;
+
+//         const alumno = new Alumno({
+//             numDocAlumn,
+//             nombreCompleto,
+//             nombre,
+//             corte,
+//             emailAlumn,
+//             tituloSecundario,
+//             psicofisico,
+//             partidaNacim,
+//             dniActualizado,
+//             analiticoFiel,
+//             antecedenPen,
+//         });
+
+//         await alumno.save();
+//         // Redirigir a la página de alumnos con un mensaje
+//         res.redirect("/alumno?message=Alumno agregado correctamente");
+//     } catch (error) {
+//         console.log(error);
+//         res.redirect("/alumno?error=Error al agregar alumno");
+//     }
+// };
+
+// controller para crear un alumno
 exports.nuevo = async (req, res) => {
     try {
         const {
@@ -17,6 +57,12 @@ exports.nuevo = async (req, res) => {
             antecedenPen,
         } = req.body;
 
+        // busco el alumno por este num de doc para saber si esta guardado
+        const alumnoExistente = await Alumno.findOne({ numDocAlumn });
+        if (alumnoExistente) {
+            return res.redirect("/alumno?error=El DNI ya está registrado");
+        }
+
         const alumno = new Alumno({
             numDocAlumn,
             nombreCompleto,
@@ -32,13 +78,14 @@ exports.nuevo = async (req, res) => {
         });
 
         await alumno.save();
-        // Redirigir a la página de alumnos con un mensaje
+        //exito
         res.redirect("/alumno?message=Alumno agregado correctamente");
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
         res.redirect("/alumno?error=Error al agregar alumno");
     }
 };
+
 
 exports.traerPorDoc = async (req, res) => {
 

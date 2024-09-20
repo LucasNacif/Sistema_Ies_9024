@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 // Definición del esquema
 const alumnoSchema = new Schema({
-  numDocAlumn: String,
+  numDocAlumn: { type: String, unique: true },
   nombreCompleto: String,
   nombre: String,
   corte: String,

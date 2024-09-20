@@ -252,21 +252,16 @@ h2 {
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+    
     const successAlert = document.querySelector('.alert-success');
     const dangerAlert = document.querySelector('.alert-danger');
-
-    if (successAlert) {
-        setTimeout(() => {
-            successAlert.style.display = 'none'; 
-        }, 5000);
-    }
-
-    if (dangerAlert) {
-        setTimeout(() => {
-            dangerAlert.style.display = 'none'; 
-        }, 5000);
-    }
     //esto es para ocultar los mensajes despues de 5 segundos
+    if (successAlert) {
+        setTimeout(() => {successAlert.style.display = 'none';}, 5000);
+    }
+    if (dangerAlert) {
+        setTimeout(() => {dangerAlert.style.display = 'none';}, 5000);
+    }
 });
 </script>
 </head>

@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Evento para el botón BAJA
     btnDarDeBaja.addEventListener("click", async function () {
-           //Esto habria que meterlo en otra funcion
+        //Esto habria que meterlo en otra funcion
         const numDocAlumn = prompt("Ingrese el número de documento del alumno que desea dar de baja:");
 
         if (numDocAlumn == null || numDocAlumn.trim() === "") {
@@ -190,8 +190,8 @@ document.addEventListener("DOMContentLoaded", function () {
     searchBox.addEventListener("keyup", function () {
         const searchTerm
             = this.value.toLowerCase(); const rows =
-                alumnosTable.getElementsByTagName("tr"); for (let i = 1; i < rows.length;
-            i++) {
+                alumnosTable.getElementsByTagName("tr"); 
+                for (let i = 1; i < rows.length; i++) {
             const row = rows[i]; const cells = row.getElementsByTagName("td");
             let found = false; for (let j = 0; j < cells.length; j++) {
                 if
@@ -209,15 +209,15 @@ document.addEventListener("DOMContentLoaded", function () {
         mensajeOK.textContent = message;
         mensajeOK.style.display = "block";
         urlParams.delete('message');
-        
-    }else {
+
+    } else {
         mensajeOK.style.display = "none";
     }
-    if(error){
+    if (error) {
         mensajeERROR.textContent = error;
         mensajeERROR.style.display = "block";
         urlParams.delete('error');
-    }else {
+    } else {
         mensajeERROR.style.display = "none";
     }
 
