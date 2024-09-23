@@ -8,6 +8,7 @@ const alumnoSchema = new Schema({
   nombre: String,
   corte: String,
   emailAlumn: String,
+  curso: String,
   tituloSecundario: { type: Boolean, default: false },
   psicofisico: { type: Boolean, default: false },
   partidaNacim: { type: Boolean, default: false },
@@ -15,10 +16,10 @@ const alumnoSchema = new Schema({
   analiticoFiel: { type: Boolean, default: false },
   antecedenPen: { type: Boolean, default: false },
   banderaBooleana: { type: Boolean, default: true},
-  AlumnoEstado: [{
-    type: Schema.Types.ObjectId,
-    ref: "AlumnoEstado",
-  }],
+  // AlumnoEstado: [{
+  //   type: Schema.Types.ObjectId,
+  //   ref: "AlumnoEstado",
+  // }],
 });
 
 class Alumno {  
@@ -29,6 +30,7 @@ class Alumno {
     nombre,
     corte,
     emailAlumn,
+    curso,
     tituloSecundario,
     psicofisico,
     partidaNacim,
@@ -42,6 +44,7 @@ class Alumno {
     this.nombre = nombre;
     this.corte = corte;
     this.emailAlumn = emailAlumn;
+    this.curso = curso;
     this.tituloSecundario = tituloSecundario;
     this.psicofisico = psicofisico;
     this.partidaNacim = partidaNacim;
@@ -51,10 +54,5 @@ class Alumno {
   }
 
 }
-
-// alumnoSchema.loadClass(Alumno); esto sirve para manipular el schema 
-// como clase de node
-
 // Crear y exportar el modelo
-const AlumnoModel = mongoose.model('Alumno', alumnoSchema);
-module.exports = AlumnoModel;
+module.exports = mongoose.model("Alumno", alumnoSchema)

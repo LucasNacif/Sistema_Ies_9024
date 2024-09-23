@@ -8,262 +8,269 @@
     <title>Gestión de Alumnos - IES 9-024 Lavalle</title>
 
     <style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f0f0f0;
-    overflow-y: auto;
-}
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            overflow-y: auto;
+        }
 
-.nav-bar {
-    background-color: #333;
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        .nav-bar {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-.logo-container {
-    display: flex;
-    align-items: center;
-}
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
 
-.logo {
-    max-height: 40px;
-    cursor: pointer;
-}
+        .logo {
+            max-height: 40px;
+            cursor: pointer;
+        }
 
-.institute-name {
-    margin-left: 20px;
-    font-size: 18px;
-    font-weight: bold;
-}
+        .institute-name {
+            margin-left: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
 
-.nav-menu {
-    display: flex;
-    align-items: center;
-}
+        .nav-menu {
+            display: flex;
+            align-items: center;
+        }
 
-.nav-menu a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 15px;
-    margin: 0 5px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            margin: 0 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
 
-.nav-menu a:hover {
-    background-color: #555;
-}
+        .nav-menu a:hover {
+            background-color: #555;
+        }
 
-.logout-btn {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-}
+        .logout-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-.container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-.search-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 25px;
-    padding: 5px 15px;
-    background-color: #f9f9f9;
-}
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            padding: 5px 15px;
+            background-color: #f9f9f9;
+        }
 
-.search-container input {
-    flex-grow: 1;
-    border: none;
-    padding: 10px;
-    font-size: 16px;
-    background-color: transparent;
-}
+        .search-container input {
+            flex-grow: 1;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            background-color: transparent;
+        }
 
-.search-container input:focus {
-    outline: none;
-}
+        .search-container input:focus {
+            outline: none;
+        }
 
-.search-icon {
-    color: #777;
-    font-size: 20px;
-}
+        .search-icon {
+            color: #777;
+            font-size: 20px;
+        }
 
-/* Estilo de la tabla de alumnos */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: #ffffff; /* Color de fondo de la tabla */
-}
+        /* Estilo de la tabla de alumnos */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #ffffff;
+            /* Color de fondo de la tabla */
+        }
 
-th,
-td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
+        th,
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
 
-th {
-    background-color: #2ecc71;
-    color: white;
-}
+        th {
+            background-color: #2ecc71;
+            color: white;
+        }
 
-tbody tr {
-    transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
-}
+        tbody tr {
+            transition: background-color 0.3s ease;
+            /* Transición suave para el cambio de color */
+        }
 
-.alumno-dado-de-baja {
-    background-color: #f8d7da; /* Fondo rojo pálido para los alumnos dados de baja */
-    color: #721c24; /* Texto rojo oscuro */
-}
+        .alumno-dado-de-baja {
+            background-color: #f8d7da;
+            /* Fondo rojo pálido para los alumnos dados de baja */
+            color: #721c24;
+            /* Texto rojo oscuro */
+        }
 
-.alumno-activo {
-    background-color: #d4edda; /* Fondo verde pálido para los alumnos activos */
-    color: #155724; /* Texto verde oscuro */
-}
+        .alumno-activo {
+            background-color: #d4edda;
+            /* Fondo verde pálido para los alumnos activos */
+            color: #155724;
+            /* Texto verde oscuro */
+        }
 
-/* Estilo para la tabla en vista móvil */
-.table-responsive {
-    overflow-x: auto;
-}
+        /* Estilo para la tabla en vista móvil */
+        .table-responsive {
+            overflow-x: auto;
+        }
 
-/* Estilo para los botones */
-.btn {
-    padding: 8px 12px;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-right: 10px;
-}
+        /* Estilo para los botones */
+        .btn {
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
 
-.btn-add {
-    background-color: #3498db;
-    color: white;
-}
+        .btn-add {
+            background-color: #3498db;
+            color: white;
+        }
 
-.btn-edit {
-    background-color: #f39c12;
-    color: white;
-}
+        .btn-edit {
+            background-color: #f39c12;
+            color: white;
+        }
 
-.btn-delete {
-    background-color: #e74c3c;
-    color: white;
-}
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+        }
 
-.btn-volver {
-    background-color: #16c0c2;
-    color: white;
-}
+        .btn-volver {
+            background-color: #16c0c2;
+            color: white;
+        }
 
-/* Estilo del formulario */
-form {
-    margin-top: 20px;
-}
+        /* Estilo del formulario */
+        form {
+            margin-top: 20px;
+        }
 
-form div {
-    margin-bottom: 15px;
-}
+        form div {
+            margin-bottom: 15px;
+        }
 
-form label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: black;
-}
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: black;
+        }
 
-form input[type="text"],
-form input[type="email"],
-form input[type="number"],
-form input[type="checkbox"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box; /* Incluye padding y border en el ancho total */
-}
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="number"],
+        form input[type="checkbox"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            /* Incluye padding y border en el ancho total */
+        }
 
-form input[type="checkbox"] {
-    width: auto;
-    margin-right: 10px;
-}
+        form input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
 
-form button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
+        form button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
 
-form .btn-add {
-    background-color: #3498db;
-    color: white;
-}
+        form .btn-add {
+            background-color: #3498db;
+            color: white;
+        }
 
-form .btn-edit {
-    background-color: #f39c12;
-    color: white;
-}
+        form .btn-edit {
+            background-color: #f39c12;
+            color: white;
+        }
 
-form .btn-delete {
-    background-color: #e74c3c;
-    color: white;
-}
+        form .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+        }
 
-form .btn-volver {
-    background-color: #16c0c2;
-    color: white;
-}
+        form .btn-volver {
+            background-color: #16c0c2;
+            color: white;
+        }
 
-h2 {
-    text-align: center;
-}
+        h2 {
+            text-align: center;
+        }
 
-.message {
-    color: green;
-    font-weight: bold;
-    margin-bottom: 20px;
-    display: none;
-}
+        .message {
+            color: green;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: none;
+        }
 
-.error-message {
-    display: none;
-    color: red;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-</style>
+        .error-message {
+            display: none;
+            color: red;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    
-    const successAlert = document.querySelector('.alert-success');
-    const dangerAlert = document.querySelector('.alert-danger');
-    //esto es para ocultar los mensajes despues de 5 segundos
-    if (successAlert) {
-        setTimeout(() => {successAlert.style.display = 'none';}, 5000);
-    }
-    if (dangerAlert) {
-        setTimeout(() => {dangerAlert.style.display = 'none';}, 5000);
-    }
-});
-</script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const successAlert = document.querySelector('.alert-success');
+            const dangerAlert = document.querySelector('.alert-danger');
+            //esto es para ocultar los mensajes despues de 5 segundos
+            if (successAlert) {
+                setTimeout(() => { successAlert.style.display = 'none'; }, 5000);
+            }
+            if (dangerAlert) {
+                setTimeout(() => { dangerAlert.style.display = 'none'; }, 5000);
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -274,8 +281,8 @@ h2 {
             <span class="institute-name">IES 9-024 Lavalle</span>
         </div>
         <div class="nav-menu">
-            <a href="/carreras">Carreras</a>
-            <a href="/mesas">Mesas</a>
+            <a href="/carrera">Carreras</a>
+            <a href="/mesa">Mesas</a>
         </div>
         <button class="logout-btn" onclick="cerrarSesion()">Cerrar Sesión</button>
     </nav>
@@ -293,7 +300,7 @@ h2 {
 
         <p id="mensajeERROR" class="alert alert-danger" role="alert"></p>
 
-
+        <!-- Formulario para agregar alumno -->
         <form id="formAgregar" method="post" action="/alumno/agregar" style="display: none;">
             <div>
                 <label for="nombreCompleto">Nombre Completo:</label>
@@ -301,7 +308,7 @@ h2 {
             </div>
             <div>
                 <label for="numDocAlumn">Número de Documento:</label>
-                <input type="number" id="numDocAlumn" name="numDocAlumn" required />
+                <input type="number" id="numDocAlumn" name="numDocAlumn" required placeholder="Sin puntos" />
             </div>
             <div>
                 <label for="nombre">Nombre:</label>
@@ -309,11 +316,15 @@ h2 {
             </div>
             <div>
                 <label for="corte">Corte:</label>
-                <input type="text" id="corte" name="corte" required />
+                <input type="text" id="corte" name="corte" required>
             </div>
             <div>
                 <label for="emailAlumn">Email:</label>
-                <input type="email" id="emailAlumn" name="emailAlumn" required />
+                <input type="email" id="emailAlumn" name="emailAlumn" />
+            </div>
+            <div>
+                <label for="curso">Curso:</label>
+                <input type="curso" id="curso" name="curso" required  placeholder="Primero, Segundo, etc"/>
             </div>
             <div>
                 <label for="tituloSecundario">Título Secundario:</label>
@@ -426,7 +437,7 @@ h2 {
             <p id="errorTableAlumnos" class="alert alert-danger" role="alert"></p>
         </div>
     </div>
-    <script src="Alumno_Admin.js"></script>
+    <script src="js/Alumno_Admin.js"></script>
 </body>
 
 </html>

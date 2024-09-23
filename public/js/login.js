@@ -1,11 +1,25 @@
-document.addEventListener("DOMContentLoaded", function() {
-  const mensajeError = document.querySelector(".error");
 
-  document.getElementById("login-form").addEventListener("submit", async (e) => {
+
+document.addEventListener("DOMContentLoaded", function() {
+
+  const sign_in_btn = document.querySelector("#sign-in-btn");
+  const sign_up_btn = document.querySelector("#sign-up-btn");
+  const container = document.querySelector(".container");
+  
+  sign_up_btn.addEventListener("click", () => {
+    container.classList.add("sign-up-mode");
+  });
+  
+  sign_in_btn.addEventListener("click", () => {
+    container.classList.remove("sign-up-mode");
+  });
+
+
+  document.getElementById("sign-in-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     
     const user = e.target.user.value;
-    const password = e.target.password.value;
+    const password = e.target.pass.value;
 
     console.log(JSON.stringify(user));
     console.log(JSON.stringify(password));
@@ -33,12 +47,12 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 
-  document.getElementById("signup-form").addEventListener("submit", async (e) => {
+  document.getElementById("sign-up-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     
     const user = e.target.user.value;
     const email = e.target.email.value;
-    const password = e.target.password.value;
+    const password = e.target.pass.value;
 
     console.log(user, email, password);
 

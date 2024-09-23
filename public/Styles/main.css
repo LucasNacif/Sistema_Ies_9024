@@ -195,6 +195,10 @@ body, html{
 	z-index: 1;
 	padding-left: 270px;
 }
+.dashboard-Navbar{
+	position: fixed;
+	z-index: 1;
+}
 .dashboard-Navbar,
 .dashboard-Navbar > ul,
 .dashboard-Navbar > ul >li,
