@@ -6,24 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="assets/img/favicon.png" />
   <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="Styles/styleLogin.css" />
+  <link rel="stylesheet" href="Styles/index.css" />
   <title>SISTEMA IES</title>
 </head>
+
 <body>
   <div class="container">
-    <!-- Modal para mostrar mensajes -->
-<div id="messageModal" style="display:none;">
-  <div class="modal-content">
-    <span class="close" onclick="document.getElementById('messageModal').style.display='none'">&times;</span>
-    <p id="modalMessage"></p>
-  </div>
-</div>
-
-
     <div class="forms-container">
       <div class="signin-signup">
+     <div id="mensajeError" class="escondido" style="color: red;"></div>
 
-        <form class="sign-in-form" id="FormLogin">
+         <form class="sign-in-form" id="FormLogin">
           <img src="assets/img/logo_IES.jpg" alt="Logo IES">
           <h2 class="title">Bienvenido</h2>
           <div class="input-field">
@@ -34,7 +27,7 @@
             <i class="fas fa-lock"></i>
             <input type="password" name="pass" placeholder="Contraseña" required />
           </div>
-          <div id="mensajeError" class="escondido" style="color: red;"></div> <!-- Movido aquí -->
+          {{!-- <div id="mensajeError" class="escondido" style="color: red;"></div> --}}
           <input type="submit" value="Iniciar Sesion" class="btn solid" />
         </form>
 
@@ -57,8 +50,10 @@
             <i class="fas fa-lock"></i>
             <input type="password" name="pass" placeholder="Contraseña" required />
           </div>
+          {{!-- <div id="mensajeError" class="escondido" style="color: red;"></div> --}}
           <input type="submit" class="btn" value="Registrarme" />
         </form>
+        
       </div>
     </div>
 

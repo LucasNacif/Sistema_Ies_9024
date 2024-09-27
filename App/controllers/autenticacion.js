@@ -8,7 +8,7 @@ dotenv.config();
 const redirigirSegunRol = (usuario, res) => {
   switch (usuario.rol) {
     case 'alumno':
-      return res.status(200).send({ status: "ok", redirect: "/mensaExamenAlumno" });
+      return res.status(200).send({ status: "ok", redirect: "/mesaExamenAlumno" });
     case 'bedel':
       return res.status(200).send({ status: "ok", redirect: "/Administracion" });
     case 'superAdmin':
@@ -107,16 +107,12 @@ exports.registrar = async (req, res) => {
 
     // Enviar la cookie al cliente
     res.cookie("jwt", token, cookieOptions);
-    res.status(201).send({ status: "ok", message: "Usuario creado correctamente", redirect: "/mesaExamenAlumno" });
-
-
-//cambiar por:  return res.status(400).send({ status: "Error", message: "Nombre de usuario o contraseña incorrectos" });
-
+    return res.status(201).send({ status: "ok", message: "Usuario creado correctamente", redirect: "/mesaExamenAlumno" });
 
 
   } catch (error) {
     console.log(error);
-    res.status(500).send({ status: "Error", message: "Error interno del servidor" });
+    return res.status(500).send({ status: "ok", message: "Error interno del servidor"});
   }
 }
 exports.exit = (req, res) => {

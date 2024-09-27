@@ -6,7 +6,6 @@ const path = require("path");
 const app = express();
 const port = process.env.PORT || 3000;
 
-
 //Esto es para usar una collecion y que mongoose la cree en la bd(forma rapida)
 // const Alumno = require('./models/Alumno');
 // const Materia = require('./models/Materia');
@@ -14,7 +13,6 @@ const port = process.env.PORT || 3000;
 // const Curso = require('./models/Curso');
 // const PlanEstudio = require('./models/PlanEstudio');
 // const Usuario = require('./models/Usuario');
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -55,7 +53,7 @@ const { verificarSesion, verificarRol } = require('./App/middlewares/autorizacio
 // Ruta del index
 app.get('/', verificarSesion, (req, res) => {
   if (req.usuario) {
-    return res.redirect(req.usuario.rol === 'alumno' ? '/mensaExamenAlumno' :
+    return res.redirect(req.usuario.rol === 'alumno' ? '/mesaExamenAlumno' :
                         req.usuario.rol === 'bedel' ? '/Administracion' :
                         req.usuario.rol === 'superAdmin' ? '/AdministracionSuperAdmin' : '/');
   }
@@ -82,7 +80,7 @@ app.get('/materia', verificarSesion, verificarRol(['bedel', 'superAdmin']), (req
 });
 
 //Rutas para alumno
-app.get('/mensaExamenAlumno', verificarSesion, verificarRol(['alumno']), (req, res) => {
+app.get('/mesaExamenAlumno', verificarSesion, verificarRol(['alumno']), (req, res) => {
   res.render('Alumno_MesaExamen');
 });
 
