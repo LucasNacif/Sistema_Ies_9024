@@ -4,8 +4,9 @@
 <head>
     <title>Carreras</title>
     <meta charset="UTF-8">
-    <meta name="viewport"content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
     <link rel="stylesheet" href="/Styles/main.css">
     <link rel="stylesheet" href="/Styles/bootstrap.min.css">
     <link rel="stylesheet" href="/Styles/Carrera_Adimn.css">
@@ -28,18 +29,19 @@
             </div>
             <div class="full-box dashboard-sideBar-UserInfo">
                 <figure class="full-box">
-                    <img src="./assets/img/logo_IES.jpg" alt="UserIcon">
+                    <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
                 </figure>
                 <ul class="full-box list-unstyled text-center">
-                    <li><a href="#!"><i class="zmdi zmdi-settings"></i></a></li>
-                    <li><a href="#!" class="btn-exit-system"><i class="zmdi zmdi-power"></i></a></li>
+                      <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
                 </ul>
             </div>
             <ul class="list-unstyled full-box dashboard-sideBar-Menu">
-                <li><a href="/carrera"><i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i> Carreras</a></li>
+                <li><a href="/Administracion"><i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i> Carreras</a></li>
                 <li><a href="/alumno"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i> Alumnos</a></li>
                 <li><a href="/mesa"><i class="zmdi zmdi-shield-security zmdi-hc-fw"></i> Mesas</a></li>
+                <li><a href="/materia"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Materias</a></li>
             </ul>
+
         </div>
     </section>
 
@@ -121,7 +123,7 @@
 
     </section>
     <!-- Scripts -->
-    <script src="js/Carreras_Admin.js"></script>
+    <script src="/js/Admin_PanelControl.js"></script>
     <script>
         // Inicialización del componente de Material Design
         $.material.init();

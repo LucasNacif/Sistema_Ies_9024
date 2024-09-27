@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Materias</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+
+    <link rel="stylesheet" href="/Styles/main.css">
+    <link rel="stylesheet" href="/Styles/bootstrap.min.css">
+
+    <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
+    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
+    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
+    <script src="/js/jsBoostrap/material.min.js"></script>
+    <script src="/js/jsBoostrap/ripples.min.js"></script>
+    <script src="/js/jsBoostrap/main.js"></script>
+
+    <style>
+        body {
+            font-size: 14px;
+            /* Disminuir tamaño de fuente general */
+        }
+
+        .list-group-item {
+            padding: 10px;
+            /* Reducir padding */
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-group-item strong {
+            font-size: 1em;
+            /* Ajustar tamaño del texto */
+        }
+
+        .badge-correlativas {
+            font-size: 0.8em;
+            /* Disminuir tamaño de la badge */
+            padding: 3px 8px;
+            /* Ajustar padding de badge */
+            background-color: #6c757d;
+            color: white;
+            border-radius: 15px;
+        }
+
+        .page-header {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .panel {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        /* Media queries para pantallas más pequeñas */
+        @media (max-width: 768px) {
+            .form-group {
+                flex-direction: column;
+                /* Colocar campos uno debajo del otro */
+                align-items: flex-start;
+                /* Alinear a la izquierda */
+            }
+
+            .form-group label {
+                margin-bottom: 5px;
+                /* Espacio entre etiqueta y campo */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Barra lateral (SideBar) -->
+    <section class="full-box cover dashboard-sideBar">
+        <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
+        <div class="full-box dashboard-sideBar-ct">
+            <div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
+                Bedel <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
+            </div>
+            <div class="full-box dashboard-sideBar-UserInfo">
+                <figure class="full-box">
+                    <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
+                </figure>
+                <ul class="full-box list-unstyled text-center">
+   <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
+                </ul>
+            </div>
+            <ul class="list-unstyled full-box dashboard-sideBar-Menu">
+                <li><a href="/Administracion"><i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i> Carreras</a></li>
+                <li><a href="/alumno"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i> Alumnos</a></li>
+                <li><a href="/mesa"><i class="zmdi zmdi-shield-security zmdi-hc-fw"></i> Mesas</a></li>
+                <li><a href="/materia"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Materias</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Contenido de la página principal -->
+    <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
+        <!-- Barra de navegación superior (NavBar) -->
+        <nav class="full-box dashboard-Navbar">
+            <ul class="full-box list-unstyled text-right">
+                <li class="pull-left">
+                    <!-- Botón para mostrar/ocultar el menú lateral -->
+                    <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="container">
+            <div class="page-header" style="margin-top: 62px;">
+                <h1 class="text-titles">Gestión de Materias</h1>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Agregar Materia</h3>
+                </div>
+                <div class="panel-body">
+                    <form id="formAgregarMateria">
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <label for="nombreMateria">Nombre de la Materia:</label>
+                                <input type="text" class="form-control" id="nombreMateria" name="nombreMateria"
+                                    placeholder="Ingrese el nombre de la materia" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="correlativas">Materias Correlativas:</label>
+                                <select multiple class="form-control" id="correlativas" name="correlativas">
+                                    {{#each materias}}
+                                    <option value="{{this._id}}">{{this.nombreMateria}}</option>
+                                    {{/each}}
+                                </select>
+                                <small class="form-text text-muted">Mantenga presionada la tecla Ctrl (o Cmd en Mac)
+                                    para seleccionar múltiples materias.</small>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar Materia</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Lista de Materias -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Lista de Materias</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group" id="listaMaterias">
+                        {{#each materias}}
+                        <li class="list-group-item">
+                            <strong>{{this.nombreMateria}}</strong>
+                            <span>
+                                {{#if this.correlativas.length}}
+                                Correlativas: {{#each this.correlativas}}<span
+                                    class="badge badge-correlativas">{{this.nombreMateria}}</span>{{/each}}
+                                {{else}} Ninguna {{/if}}
+                            </span>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script src="js/Admin_Materia.js"></script>
+
+</body>
+
+</html>

@@ -1,15 +1,11 @@
 const mongoose = require('mongoose');
 
 const PlanEstudioSchema = new mongoose.Schema({
-    carrera: { type: mongoose.Schema.Types.ObjectId, ref: 'Carrera', required: true }, // Referencia a la carrera
-    materias: [{ type: mongoose.Schema.Types.ObjectId, ref: 'materia' }] // Referencias a las materias
+    carrera: { type: mongoose.Schema.Types.ObjectId, ref: 'Carrera', }, 
+    materias: [{ type: mongoose.Schema.Types.ObjectId, ref: 'materia' }], 
+    nombre: { type: String, required: true }, 
+    fechaAlta: { type: Date, default: Date.now },
+    fechaBaja: { type: Date } 
 });
-class PlanEstudio {
-    constructor(carrera, materias = []) {
-        this.carrera = carrera; 
-        this.materias = materias;
-    }
-}
-
 
 module.exports = mongoose.model('PlanEstudio', PlanEstudioSchema);

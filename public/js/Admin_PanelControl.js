@@ -76,8 +76,6 @@ function cargarCarreras() {
         .catch(error => console.error('Error al cargar carreras:', error));
 }
 
-
-
 // Abrir el modal de confirmación para eliminar carrera
 let carreraIdToDelete = null;
 
@@ -119,3 +117,16 @@ function showMessage(message, type) {
         messageContainer.remove();
     }, 3000);
 }
+//para cerrar sesion
+document.getElementById('logout-button').addEventListener('click', function(e) {
+    e.preventDefault(); // Evitar que se recargue la página
+    fetch('/index/logout', { method: 'POST', credentials: 'include' })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                // Redirigir o realizar alguna acción
+                window.location.href = data.redirect;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+});

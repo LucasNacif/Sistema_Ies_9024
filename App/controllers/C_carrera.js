@@ -1,11 +1,10 @@
 const Carrera = require("../../models/Carrera");
-const PlanEstudio = require('../../models/PlanEstudio');
+const Materia = require('../../models/Materia');
 
 // Obtener todas las carreras
 exports.obtenerCarreras = async (req, res) => {
     try {
         const carreras = await Carrera.find({});
-        console.log(carreras); 
         res.json(carreras);
     } catch (err) {
         res.status(500).send('Error al obtener las carreras');
@@ -65,7 +64,7 @@ exports.verPlanEstudio = async (req, res) => {
         }
 
         // Renderiza la vista con la información de la carrera
-        res.render('planEstudio', {
+        res.render('PlanEstudio_Admin', {
             carrera: carrera,
             tienePlan: carrera.planEstudio.length > 0 // Verifica si tiene plan de estudio
         });
@@ -75,31 +74,61 @@ exports.verPlanEstudio = async (req, res) => {
     }
 };
 // Agregar un plan de estudio a una carrera existente
-// exports.agregarPlanEstudio = async (req, res) => {
-//     try {
-//         const { carreraId } = req.params;
-//         const { materias } = req.body;
+exports.agregarPlanEstudio = async (req, res) => {
+    try {
+        const { carreraId } = req.params;
+        const { materias } = req.body;
 
-//         // verifico si existe la carrera
-//         const carrera = await Carrera.findById(carreraId);
-//         if (!carrera) {
-//             return res.status(404).send('Carrera no encontrada');
-//         }
+        // Verifico si existe la carrera
+        const carrera = await Carrera.findById(carreraId);
+        if (!carrera) {
+            return res.status(404).send('Carrera no encontrada');
+        }
 
-//         const nuevoPlanEstudio = new PlanEstudio({
-//             carrera: carreraId,
-//             materias: materias || [] // si no hay materias queda vacio
-//         });
+        const nuevoPlanEstudio = {
+            materias: materias || [] // Si no hay materias queda vacío
+        };
 
-//         await nuevoPlanEstudio.save();
+        // Asociar el nuevo plan de estudio a la carrera
+        carrera.plan.push(nuevoPlanEstudio);
+        await carrera.save(); // Actualizar la carrera
 
-//         // Asociar el plan de estudio a la carrera
-//         carrera.planEstudio.push(nuevoPlanEstudio._id);
-//         await carrera.save(); // Actualizar la carrera
+        res.status(200).send('Plan de estudio agregado correctamente');
+    } catch (error) {
+        console.log(error);
+        res.status(400).send('Error al agregar el plan de estudio');
+    }
+};
 
-//         res.status(200).send('Plan de estudio agregado correctamente');
-//     } catch (error) {
-//         console.log(error);
-//         res.status(400).send('Error al agregar el plan de estudio');
-//     }
-// };
+
+exports.agregarMateria = async (req, res) => {
+    try {
+        const { nombreMateria, correlativas } = req.body;
+
+        if (!nombreMateria) {
+            return res.status(400).send('El nombre de la materia es obligatorio');
+        }
+
+        const materia = new Materia({
+            nombreMateria: nombreMateria,
+            correlativas: correlativas || []
+        });
+        console.log(materia);
+        await materia.save();
+        res.status(201).send('Materia agregada correctamente');
+    } catch (error) {
+        console.log(error);
+        res.status(400).send('Error al agregar la materia');
+    }
+};
+
+// Obtener todas las materias
+exports.obtenerMaterias = async (req, res) => {
+    try {
+        const materia = await Materia.find().populate('correlativas');
+        // console.log(materia); 
+        res.json(materia);
+    } catch (err) {
+        res.status(500).send('Error al obtener las materias');
+    }
+};

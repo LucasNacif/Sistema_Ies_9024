@@ -5,10 +5,10 @@
 	<title>Mesas</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum=scale=1.0">
+	  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
 	<!-- Enlace al archivo CSS principal -->
 	<link rel="stylesheet" href="/Styles/main.css">
 </head>
-
 <body>
 	<!-- Barra lateral (SideBar) -->
 	<section class="full-box cover dashboard-sideBar">
@@ -29,45 +29,25 @@
 				<!-- Opciones de configuración y salir -->
 				<ul class="full-box list-unstyled text-center">
 					<li>
-						<a href="#!">
-							<i class="zmdi zmdi-settings"></i>
-						</a>
-					</li>
-					<li>
-						<a href="#!" class="btn-exit-system">
+						<a href="#" id="logout-button">
 							<i class="zmdi zmdi-power"></i>
 						</a>
 					</li>
 				</ul>
 			</div>
 			<!-- Menú principal -->
-			<ul class="list-unstyled full-box dashboard-sideBar-Menu">
-				<li>
-					<!-- Opción de menú para "Carreras" -->
-					<a href="/carrera">
-						<i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i> Carreras
-					</a>
-				</li>
-
-				<!-- Opción de menú para "Alumnos" -->
-				<li>
-					<a href="/alumno">
-						<i class="zmdi zmdi-account-add zmdi-hc-fw"></i> Alumnos
-					</a>
-				</li>
-
-				<!-- Opción de menú para "Mesas" -->
-				<li>
-					<a href="/mesa">
-						<i class="zmdi zmdi-shield-security zmdi-hc-fw"></i> Mesas
-					</a>
-				</li>
-			</ul>
+			    <ul class="list-unstyled full-box dashboard-sideBar-Menu">
+                <li><a href="/Administracion"><i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i> Carreras</a></li>
+                <li><a href="/alumno"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i> Alumnos</a></li>
+                <li><a href="/mesa"><i class="zmdi zmdi-shield-security zmdi-hc-fw"></i> Mesas</a></li>
+                <li><a href="/materia"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Materias</a></li>
+            </ul>
 		</div>
 	</section>
 
 	<!-- Contenido de la página principal -->
 	<section class="full-box dashboard-contentPage">
+		
 		<!-- Barra de navegación superior (NavBar) -->
 		<nav class="full-box dashboard-Navbar">
 			<ul class="full-box list-unstyled text-right">
@@ -123,9 +103,9 @@
 	<script src="/js/jsBoostrap/jquery.mCustomScrollbar.concat.min.js"></script>
 	<script src="/js/jsBoostrap/main.js"></script>
 	<script>
-		// Inicialización del componente de Material Design
-		$.material.init();
+		
 	</script>
+	 <script src="js/Admin_Mesa.js"></script>
 </body>
 
 </html>
