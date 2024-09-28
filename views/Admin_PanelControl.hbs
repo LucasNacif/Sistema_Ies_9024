@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Carreras</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    <link rel="stylesheet" href="/Styles/main.css">
+    <link rel="stylesheet" href="/Styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/Styles/Admin_PanelControl.css">
+
+    <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
+    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
+    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
+    <script src="/js/jsBoostrap/material.min.js"></script>
+    <script src="/js/jsBoostrap/ripples.min.js"></script>
+    <script src="/js/jsBoostrap/main.js"></script>
+</head>
+
+<body>
+    <!-- Barra lateral (SideBar) -->
+    <section class="full-box cover dashboard-sideBar">
+        <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
+        <div class="full-box dashboard-sideBar-ct">
+            <div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
+                Bedel <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
+            </div>
+            <div class="full-box dashboard-sideBar-UserInfo">
+                <figure class="full-box">
+                    <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
+                </figure>
+                <ul class="full-box list-unstyled text-center">
+                    <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
+                </ul>
+            </div>
+            <ul class="list-unstyled full-box dashboard-sideBar-Menu">
+                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
+                <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Alumnos</a></li>
+                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
+                <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i> Materias</a></li>
+                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a></li>
+            </ul>
+
+        </div>
+    </section>
+
+    <!-- Contenido de la página principal -->
+    <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
+
+        <!-- Barra de navegación superior (NavBar) -->
+        <nav class="full-box dashboard-Navbar">
+            <ul class="full-box list-unstyled text-right">
+                <li class="pull-left">
+                    <!-- Botón para mostrar/ocultar el menú lateral -->
+                    <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Página de Carreras -->
+        <div class="container-fluid">
+            <div class="page-header" style="margin-top: 61px;">
+                <h1 class="text-titles">Carreras</h1>
+            </div>
+        </div>
+
+        <!-- Botón para mostrar/ocultar formulario -->
+        <div class="container text-center">
+            <button id="toggleFormBtn" class="btn btn-primary">Agregar nueva carrera</button>
+        </div>
+
+        <!-- Formulario para agregar una nueva carrera -->
+        <div class="container" id="formContainer" style="display:none; margin-top: 20px;">
+            <form id="formAgregarCarrera" style="color: #333;">
+                <div class="form-group">
+                    <label for="nombreCarrera">Nombre de la carrera:</label>
+                    <input type="text" id="nombreCarrera" class="form-control" placeholder="Nombre de la nueva carrera"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label for="titulo">Título:</label>
+                    <input type="text" id="titulo" class="form-control" placeholder="Título" required>
+                </div>
+                <div class="form-group">
+                    <label for="cargaHoraria">Carga Horaria:</label>
+                    <input type="number" id="cargaHoraria" class="form-control" placeholder="Carga Horaria" required>
+                </div>
+                <div class="form-group">
+                    <label for="duracion">Duración (en años):</label>
+                    <input type="number" id="duracion" class="form-control" placeholder="Duración" required>
+                </div>
+                <button type="submit" class="btn btn-success">Agregar Carrera</button>
+            </form>
+        </div>
+
+        <!-- Contenedor donde se mostrarán las carreras -->
+        <div class="full-box text-center carrera-container" id="listaCarreras" style="padding: 30px 10px;">
+            {{!-- carreras de la bd --}}
+        </div>
+
+        <!-- Modal para confirmar eliminación -->
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Confirmar Eliminación</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas eliminar esta carrera?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!-- Scripts -->
+    <script src="/js/Admin_PanelControl.js"></script>
+    <script>
+        // Inicialización del componente de Material Design
+        $.material.init();
+    </script>
+</body>
+
+</html>
