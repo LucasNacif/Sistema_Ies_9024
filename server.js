@@ -1,7 +1,7 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 const path = require("path");
 const app = express();
 const port = process.env.PORT || 3000;
@@ -85,7 +85,6 @@ app.get("/AdministracionSuperAdmin", (req, res) => res.render("SuperAdmin_PanelC
 // app.get('/mesaExamenAlumno', verificarSesion, verificarRol(['alumno']), (req, res) => {
 //   res.render('Alumno_MesaExamen');
 // });
-
 
 app.listen(port, () => {
   console.log(`Escuchando en el puerto ${port}`);
