@@ -86,7 +86,6 @@ app.get("/AdministracionSuperAdmin", (req, res) => res.render("SuperAdmin_PanelC
 //   res.render('Alumno_MesaExamen');
 // });
 
-
 app.listen(port, () => {
   console.log(`Escuchando en el puerto ${port}`);
 });
