@@ -5,7 +5,7 @@
     <title>Materias</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
 
     <link rel="stylesheet" href="/Styles/main.css">
     <link rel="stylesheet" href="/Styles/bootstrap.min.css">
@@ -92,14 +92,15 @@
                     <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
                 </figure>
                 <ul class="full-box list-unstyled text-center">
-   <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
+                    <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
                 </ul>
             </div>
             <ul class="list-unstyled full-box dashboard-sideBar-Menu">
-                <li><a href="/Administracion"><i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i> Carreras</a></li>
-                <li><a href="/alumno"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i> Alumnos</a></li>
-                <li><a href="/mesa"><i class="zmdi zmdi-shield-security zmdi-hc-fw"></i> Mesas</a></li>
-                <li><a href="/materia"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Materias</a></li>
+                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
+                <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Alumnos</a></li>
+                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
+                <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i> Materias</a></li>
+                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a></li>
             </ul>
         </div>
     </section>
@@ -140,8 +141,8 @@
                                     <option value="{{this._id}}">{{this.nombreMateria}}</option>
                                     {{/each}}
                                 </select>
-                                <small class="form-text text-muted">Mantenga presionada la tecla Ctrl (o Cmd en Mac)
-                                    para seleccionar múltiples materias.</small>
+                                <small class="form-text text-muted">Mantenga presionada la tecla Ctrl para seleccionar
+                                    varias al mismo tiempo</small>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Guardar Materia</button>

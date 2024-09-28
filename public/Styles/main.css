@@ -41,7 +41,7 @@ body, html{
 	margin: 0;
 	padding: 0;
 	position: relative;
-	font-size: 16px;
+	font-size: 18px !important;
 	font-family: 'RobotoCondensed';
 	overflow: hidden;
 }

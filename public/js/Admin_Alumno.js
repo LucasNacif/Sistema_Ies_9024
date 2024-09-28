@@ -186,12 +186,12 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "/";
     });
 
-    //evento para BUSCARDOR
+    //BUSCARDOR
     searchBox.addEventListener("keyup", function () {
         const searchTerm
             = this.value.toLowerCase(); const rows =
-                alumnosTable.getElementsByTagName("tr"); 
-                for (let i = 1; i < rows.length; i++) {
+                alumnosTable.getElementsByTagName("tr");
+        for (let i = 1; i < rows.length; i++) {
             const row = rows[i]; const cells = row.getElementsByTagName("td");
             let found = false; for (let j = 0; j < cells.length; j++) {
                 if
@@ -202,7 +202,6 @@ document.addEventListener("DOMContentLoaded", function () {
             } row.style.display = found ? "" : "none";
         }
     });
-
 
     //MANEJO DE ERRORES
     if (message) {
@@ -225,8 +224,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
     window.history.replaceState({}, '', newUrl);
 
-//para cerrar sesion
-    document.getElementById('logout-button').addEventListener('click', function(e) {
+    //para cerrar sesion
+    document.getElementById('logout-button').addEventListener('click', function (e) {
         e.preventDefault(); // Evitar que se recargue la página
         fetch('/index/logout', { method: 'POST', credentials: 'include' })
             .then(response => response.json())

@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
     <link rel="stylesheet" href="/Styles/main.css">
     <link rel="stylesheet" href="/Styles/bootstrap.min.css">
 
@@ -34,11 +34,12 @@
                     <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
                 </ul>
             </div>
-          <ul class="list-unstyled full-box dashboard-sideBar-Menu">
-                <li><a href="/Administracion"><i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i> Carreras</a></li>
-                <li><a href="/alumno"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i> Alumnos</a></li>
-                <li><a href="/mesa"><i class="zmdi zmdi-shield-security zmdi-hc-fw"></i> Mesas</a></li>
-                <li><a href="/materia"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Materias</a></li>
+            <ul class="list-unstyled full-box dashboard-sideBar-Menu">
+                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
+                <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Alumnos</a></li>
+                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
+                <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i> Materias</a></li>
+                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a></li>
             </ul>
         </div>
     </section>
@@ -76,7 +77,8 @@
                         {{#each this.materias}}
                         <li>
                             {{this.nombreMateria}}
-                            <span>(Correlativas: {{#if this.correlativas}}{{join this.correlativas ', '}}{{else}}Ninguna{{/if}})</span>
+                            <span>(Correlativas: {{#if this.correlativas}}{{join this.correlativas ',
+                                '}}{{else}}Ninguna{{/if}})</span>
                         </li>
                         {{/each}}
                     </ul>
@@ -110,11 +112,13 @@
                         <form id="formAgregarPlan">
                             <div class="form-group">
                                 <label for="curso">Curso</label>
-                                <input type="text" class="form-control" id="curso" placeholder="Nombre del curso (Ej. Primer Año)" required>
+                                <input type="text" class="form-control" id="curso"
+                                    placeholder="Nombre del curso (Ej. Primer Año)" required>
                             </div>
                             <div class="form-group">
                                 <label for="materia">Materia</label>
-                                <input type="text" class="form-control" id="materia" placeholder="Nombre de la materia" required>
+                                <input type="text" class="form-control" id="materia" placeholder="Nombre de la materia"
+                                    required>
                             </div>
                             <div class="form-group">
                                 <label for="correlativas">Correlativas</label>
@@ -135,7 +139,7 @@
         </div>
 
     </section>
- <script src="js/Admin_PlanEstudio.js"></script>
+    <script src="js/Admin_PlanEstudio.js"></script>
 </body>
 
 </html>

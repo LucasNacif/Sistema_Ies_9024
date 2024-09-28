@@ -1,6 +1,5 @@
 const Alumno = require("../../models/Alumno");
 
-// controller para crear un alumno
 exports.nuevo = async (req, res) => {
     try {
         const {
@@ -47,8 +46,6 @@ exports.nuevo = async (req, res) => {
         res.redirect("/alumno?error=Error al agregar alumno");
     }
 };
-
-
 exports.traerPorDoc = async (req, res) => {
 
     const { numDocAlumn } = req.params;
@@ -67,7 +64,6 @@ exports.traerPorDoc = async (req, res) => {
         return res.status(500).json({ error: "Error interno del servidor" });
     }
 };
-
 exports.darDeBaja = async (req, res) => {
 
     const { numDocAlumn } = req.params;
@@ -99,7 +95,6 @@ exports.darDeBaja = async (req, res) => {
         res.status(500).json({ error: "Error interno del servidor" });
     }
 };
-
 exports.modificarAlumno = async (req, res) => {
     try {
         const {
@@ -158,10 +153,6 @@ exports.modificarAlumno = async (req, res) => {
         res.status(500).redirect("/alumno?error=Error interno del servidor");
     }
 };
-
-
-
-
 exports.obtenerAlumnosActivos = async (req, res) => {
     try {
         const { activos } = req.query;

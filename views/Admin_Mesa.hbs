@@ -4,11 +4,13 @@
 <head>
 	<title>Mesas</title>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum=scale=1.0">
-	  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+	<meta name="viewport"
+		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum=scale=1.0">
+	<link rel="icon" type="image/png" href="assets/img/favicon.png" />
 	<!-- Enlace al archivo CSS principal -->
 	<link rel="stylesheet" href="/Styles/main.css">
 </head>
+
 <body>
 	<!-- Barra lateral (SideBar) -->
 	<section class="full-box cover dashboard-sideBar">
@@ -36,18 +38,19 @@
 				</ul>
 			</div>
 			<!-- Menú principal -->
-			    <ul class="list-unstyled full-box dashboard-sideBar-Menu">
-                <li><a href="/Administracion"><i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i> Carreras</a></li>
-                <li><a href="/alumno"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i> Alumnos</a></li>
-                <li><a href="/mesa"><i class="zmdi zmdi-shield-security zmdi-hc-fw"></i> Mesas</a></li>
-                <li><a href="/materia"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Materias</a></li>
+	      <ul class="list-unstyled full-box dashboard-sideBar-Menu">
+                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
+                <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Alumnos</a></li>
+                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
+                <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i> Materias</a></li>
+                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a></li>
             </ul>
 		</div>
 	</section>
 
 	<!-- Contenido de la página principal -->
 	<section class="full-box dashboard-contentPage">
-		
+
 		<!-- Barra de navegación superior (NavBar) -->
 		<nav class="full-box dashboard-Navbar">
 			<ul class="full-box list-unstyled text-right">
@@ -71,29 +74,29 @@
 			</ul>
 		</nav>
 
-        <!-- Página de Mesas -->
-        <div class="container-fluid">
-            <div class="page-header">
-                <!-- Título de la sección -->
-                <h1 class="text-titles">Mesas <small></h1>
-            </div>
-        </div>
-        
-        <!-- Contenido de Mesas, se muestra en una grilla de artículos -->
-        <div class="full-box text-center" style="padding: 30px 10px;">
-            <!-- Mesa: Desarrollo de Software -->
-            <article class="full-box tile">
-                <div class="full-box tile-title text-center text-titles text-uppercase">
-                    Desarrollo de Software
-                </div>
-                <div class="full-box tile-icon text-center">
-                    <i class="zmdi zmdi-account"></i>
-                </div>
-            </article>
-        </div>
+		<!-- Página de Mesas -->
+		<div class="container-fluid">
+			<div class="page-header">
+				<!-- Título de la sección -->
+				<h1 class="text-titles">Mesas <small></h1>
+			</div>
+		</div>
+
+		<!-- Contenido de Mesas, se muestra en una grilla de artículos -->
+		<div class="full-box text-center" style="padding: 30px 10px;">
+			<!-- Mesa: Desarrollo de Software -->
+			<article class="full-box tile">
+				<div class="full-box tile-title text-center text-titles text-uppercase">
+					Desarrollo de Software
+				</div>
+				<div class="full-box tile-icon text-center">
+					<i class="zmdi zmdi-account"></i>
+				</div>
+			</article>
+		</div>
 	</section>
 
-	
+
 	<!-- Enlaces a los scripts necesarios -->
 	<script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
 	<script src="/js/jsBoostrap/sweetalert2.min.js"></script>
@@ -103,9 +106,9 @@
 	<script src="/js/jsBoostrap/jquery.mCustomScrollbar.concat.min.js"></script>
 	<script src="/js/jsBoostrap/main.js"></script>
 	<script>
-		
+
 	</script>
-	 <script src="js/Admin_Mesa.js"></script>
+	<script src="js/Admin_Mesa.js"></script>
 </body>
 
 </html>

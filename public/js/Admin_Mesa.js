@@ -1,3 +1,4 @@
+//funcion para cerrar sesion
 document.getElementById('logout-button').addEventListener('click', function(e) {
     
     e.preventDefault(); // Evitar que se recargue la página

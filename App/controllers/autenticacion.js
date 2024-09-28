@@ -4,6 +4,25 @@ const bcryptjs = require('bcryptjs');
 const Usuario = require('../../models/Usuario');
 dotenv.config();
 
+
+// Función para crear un token
+const crearTokenJWT = (usuario) => {
+  return jwt.sign({ dni: usuario.dni, rol: usuario.rol }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION });
+  //PARAMETROS:(informacion que va a ir dentro del token) (clave  para firmar el toke) (expiracion del token)
+};
+
+// Función para configurar la cookie JWT
+const configurarCookie = (res, token) => {
+  const cookieOptions = {
+    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+    sameSite: 'strict', // esto es para prevenir ataques CSRF
+    secure: process.env.NODE_ENV === "production", // Solo en HTTPS en producción
+    httpOnly: true, // Esto es para mejorar la seguridad
+    path: "/"
+  };
+  res.cookie("jwt", token, cookieOptions);
+};
+
 // Función para redirigir según el rol del usuario
 const redirigirSegunRol = (usuario, res) => {
   switch (usuario.rol) {
@@ -17,10 +36,11 @@ const redirigirSegunRol = (usuario, res) => {
       return res.status(403).send({ status: "Error", message: "Rol no reconocido" });
   }
 };
+
+// Método de login
 exports.login = async (req, res) => {
   const { dni, password } = req.body;
 
-  // Verificar que se reciban los campos requeridos
   if (!dni || !password) {
     return res.status(400).send({ status: "Error", message: "Los campos están incompletos" });
   }
@@ -31,95 +51,68 @@ exports.login = async (req, res) => {
       return res.status(400).send({ status: "Error", message: "Nombre de usuario o contraseña incorrectos" });
     }
 
-    // Comparar la contraseña ingresada con la almacenada
+    // Comparar contraseñas
     const loginCorrecto = await bcryptjs.compare(password, usuario.password);
     if (!loginCorrecto) {
       return res.status(400).send({ status: "Error", message: "Nombre de usuario o contraseña incorrectos" });
     }
 
-    // Crear el token JWT
-    const token = jwt.sign(
-      { dni: usuario.dni, rol: usuario.rol },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRATION }
-    );
+    // Creo el token JWT y configuro la cookie
+    const token = crearTokenJWT(usuario);
+    configurarCookie(res, token);
 
-    // Configuración de la cookie
-    const cookieOptions = {
-      expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
-      sameSite: 'strict',
-      // secure: process.env.NODE_ENV === "production",  Solo enviar cookie en HTTPS en producción
-      path: "/"
-    };
-
-    // Enviar la cookie al cliente
-    res.cookie("jwt", token, cookieOptions);
-
+    // Redirigir
     return redirigirSegunRol(usuario, res);
 
   } catch (error) {
     console.error('Error en login:', error);
-    return res.status(500).send({ status: "Error", message: "Ha ocurrido un error" });
+    return res.status(500).send({ status: "Error", message: "Ha ocurrido un error interno" });
   }
 };
 
+// Método de registro
 exports.registrar = async (req, res) => {
-  const { dni, email, nombre, password} = req.body;
+  const { dni, email, nombre, password } = req.body;
 
   if (!dni || !password) {
     return res.status(400).send({ status: "Error", message: "Los campos están incompletos" });
   }
 
   try {
-    const usuario = await Usuario.findOne({ dni });
-
-    if (usuario) {
+    const usuarioExistente = await Usuario.findOne({ dni });
+    if (usuarioExistente) {
       return res.status(400).send({ status: "Error", message: "Este usuario ya existe" });
     }
 
-    const salt = await bcryptjs.genSalt(5);
+    // Hashear contraseña
+    const salt = await bcryptjs.genSalt(10);
     const hashPassword = await bcryptjs.hash(password, salt);
 
+    // Crear nuevo usuario
     const nuevoUsuario = new Usuario({
       dni,
       email,
       nombre,
       password: hashPassword,
-      rol:'alumno' //tecnicamente este metodo es solo para registrar alumnos, pero capaz lo hago para que un superAdmin registre un bedel
+      rol: 'alumno' //tecnicamente este metodo es solo para registrar alumnos, pero capaz lo hago para que un superAdmin registre un bedel
     });
 
     await nuevoUsuario.save();
 
-     // Crear el token JWT
-     const token = jwt.sign(
-      { dni: nuevoUsuario.dni, rol: nuevoUsuario.rol },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRATION }
-    );
+    // Creo el token JWT y configuro la cookie
+    const token = crearTokenJWT(nuevoUsuario);
+    configurarCookie(res, token);
 
-    // Configuración de la cookie
-    const cookieOptions = {
-      expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
-      sameSite: 'strict',
-      // secure: process.env.NODE_ENV === "production",  Solo enviar cookie en HTTPS en producción
-      path: "/"
-    };
-
-    // Enviar la cookie al cliente
-    res.cookie("jwt", token, cookieOptions);
     return res.status(201).send({ status: "ok", message: "Usuario creado correctamente", redirect: "/mesaExamenAlumno" });
 
-
   } catch (error) {
-    console.log(error);
-    return res.status(500).send({ status: "ok", message: "Error interno del servidor"});
+    console.error('Error en registro:', error);
+    return res.status(500).send({ status: "Error", message: "Error interno del servidor" });
   }
-}
-exports.exit = (req, res) => {
-  res.clearCookie("jwt"); // Elimina la cookie jwt
-  return res.redirect("/");;
 };
 
-
-
-
+// Método para cerrar sesión
+exports.exit = (req, res) => {
+  res.clearCookie("jwt", { path: "/" });
+  return res.redirect("/");
+};
