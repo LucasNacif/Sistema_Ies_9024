@@ -41,7 +41,7 @@ body, html{
 	margin: 0;
 	padding: 0;
 	position: relative;
-	font-size: 16px;
+	font-size: 18px !important;
 	font-family: 'RobotoCondensed';
 	overflow: hidden;
 }
@@ -194,6 +194,10 @@ body, html{
 	right: 0;
 	z-index: 1;
 	padding-left: 270px;
+}
+.dashboard-Navbar{
+	position: fixed;
+	z-index: 1;
 }
 .dashboard-Navbar,
 .dashboard-Navbar > ul,

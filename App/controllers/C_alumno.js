@@ -1,46 +1,5 @@
-const Alumno = require("../../models/entities/Alumno");
+const Alumno = require("../../models/Alumno");
 
-// controller para crear un alumno
-// exports.nuevo = async (req, res) => {
-//     try {
-//         const {
-//             numDocAlumn,
-//             nombreCompleto,
-//             nombre,
-//             corte,
-//             emailAlumn,
-//             tituloSecundario,
-//             psicofisico,
-//             partidaNacim,
-//             dniActualizado,
-//             analiticoFiel,
-//             antecedenPen,
-//         } = req.body;
-
-//         const alumno = new Alumno({
-//             numDocAlumn,
-//             nombreCompleto,
-//             nombre,
-//             corte,
-//             emailAlumn,
-//             tituloSecundario,
-//             psicofisico,
-//             partidaNacim,
-//             dniActualizado,
-//             analiticoFiel,
-//             antecedenPen,
-//         });
-
-//         await alumno.save();
-//         // Redirigir a la página de alumnos con un mensaje
-//         res.redirect("/alumno?message=Alumno agregado correctamente");
-//     } catch (error) {
-//         console.log(error);
-//         res.redirect("/alumno?error=Error al agregar alumno");
-//     }
-// };
-
-// controller para crear un alumno
 exports.nuevo = async (req, res) => {
     try {
         const {
@@ -49,6 +8,7 @@ exports.nuevo = async (req, res) => {
             nombre,
             corte,
             emailAlumn,
+            curso,
             tituloSecundario,
             psicofisico,
             partidaNacim,
@@ -69,6 +29,7 @@ exports.nuevo = async (req, res) => {
             nombre,
             corte,
             emailAlumn,
+            curso,
             tituloSecundario,
             psicofisico,
             partidaNacim,
@@ -85,8 +46,6 @@ exports.nuevo = async (req, res) => {
         res.redirect("/alumno?error=Error al agregar alumno");
     }
 };
-
-
 exports.traerPorDoc = async (req, res) => {
 
     const { numDocAlumn } = req.params;
@@ -105,7 +64,6 @@ exports.traerPorDoc = async (req, res) => {
         return res.status(500).json({ error: "Error interno del servidor" });
     }
 };
-
 exports.darDeBaja = async (req, res) => {
 
     const { numDocAlumn } = req.params;
@@ -137,7 +95,6 @@ exports.darDeBaja = async (req, res) => {
         res.status(500).json({ error: "Error interno del servidor" });
     }
 };
-
 exports.modificarAlumno = async (req, res) => {
     try {
         const {
@@ -146,6 +103,7 @@ exports.modificarAlumno = async (req, res) => {
             nombreCompleto,
             nombre,
             corte,
+            curso,
             tituloSecundario,
             psicofisico,
             partidaNacim,
@@ -173,6 +131,7 @@ exports.modificarAlumno = async (req, res) => {
                 nombre,
                 corte,
                 emailAlumn,
+                curso,
                 tituloSecundario,
                 psicofisico,
                 partidaNacim,
@@ -194,10 +153,6 @@ exports.modificarAlumno = async (req, res) => {
         res.status(500).redirect("/alumno?error=Error interno del servidor");
     }
 };
-
-
-
-
 exports.obtenerAlumnosActivos = async (req, res) => {
     try {
         const { activos } = req.query;
