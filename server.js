@@ -33,11 +33,13 @@ mongoose.connect(process.env.MONGO_URI, {})
 const alumnoRouters = require("./App/routes/R_Alumno.js");
 const carreraRouters = require("./App/routes/R_Carrera.js"); 
 const loginRouters = require("./App/routes/R_login");
+const inscripcionRouters = require("./App/routes/R_InscripcionMesas");
 
 // Zona de ruteo
 app.use(carreraRouters);
 app.use(alumnoRouters);
 app.use(loginRouters);
+app.use(inscripcionRouters);
 
 app.get("/", (req, res) => res.render("Admin_PanelControl"));
 app.get("/index", (req, res) => res.render("index"));
