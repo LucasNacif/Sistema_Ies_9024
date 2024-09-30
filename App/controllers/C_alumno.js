@@ -191,8 +191,6 @@ exports.obtenerMesas = async (req, res) => {
     res.status(500).json({ error: "Error interno del servidor" });
   }
 }
-
-
 exports.verificarPermisoParaRendir = async (req, res) => {
   try {
     const { alumnoId, mesaId } = req.params;

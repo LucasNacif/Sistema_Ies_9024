@@ -10,12 +10,11 @@ router.delete("/carrera/eliminar/:id", controller.eliminarCarreras);
 router.get('/carrera/:id/planEstudio', controller.verPlanEstudio);
 //router.post('/carrera/:carreraId/agregarPlan', controller.agregarPlanEstudio); 
 
-// CARRERA
+// MATERIA
 router.post('/materia/agregar', controller.agregarMateria); 
 router.get('/materia/obtener', controller.obtenerMaterias); 
 
 // MESA
-// router.post('/mesa/agregar', controller.agregarMesa); 
-// router.get('/mesa/obtener', controller.obtenerMesa); 
+
 
 module.exports = router;

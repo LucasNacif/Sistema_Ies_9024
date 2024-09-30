@@ -29,7 +29,6 @@ mongoose.connect(process.env.MONGO_URI, {})
 .then(() => console.log('Conectado a MongoDB Atlas'))
 .catch((err) => console.error('Error al conectar a MongoDB Atlas:', err));
 
-
 // Rutas individuales
 const alumnoRouters = require("./App/routes/R_Alumno.js");
 const carreraRouters = require("./App/routes/R_Carrera.js"); 
@@ -47,6 +46,7 @@ app.get("/mesa", (req, res) => res.render("Admin_Mesa"));
 app.get("/materia", (req, res) => res.render("Admin_Materia"));
 app.get("/Administracion", (req, res) => res.render("Admin_PanelControl"));
 app.get("/AdministracionSuperAdmin", (req, res) => res.render("SuperAdmin_PanelControl"));
+app.get("/alumnoMesaExamen", (req, res) => res.render("Alumno_MesaExamen"));
 
 //NO BORRAR QUE ME COSTO UN HUEVO HACERLO :)
 
