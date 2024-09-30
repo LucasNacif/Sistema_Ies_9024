@@ -1,0 +1,17 @@
+ Alumno:
+"66f75c5c384e32b49bb17ef1" 
+ "66f75c5c384e32b49bb17ef6" 
+
+
+mesa:
+"66f75c5c384e32b49bb17ef5" 
+ "66f75c5c384e32b49bb17efa" 
+ "66f75c5c384e32b49bb17efb" 
+
+http://localhost:3000/alumno/66f75c5c384e32b49bb17ef1/mesa/66f75c5c384e32b49bb17ef5/disponibles //alumno 1 en mesa 1
+http://localhost:3000/alumno/66f75c5c384e32b49bb17ef1/mesa/66f75c5c384e32b49bb17efa/disponibles //alumno 1 en mesa 2
+http://localhost:3000/alumno/66f75c5c384e32b49bb17ef1/mesa/66f75c5c384e32b49bb17efb/disponibles //alumno 1 en mesa 3
+
+http://localhost:3000/alumno/66f75c5c384e32b49bb17ef6/mesa/66f75c5c384e32b49bb17ef5/disponibles //alumno 2 en mesa 1
+http://localhost:3000/alumno/66f75c5c384e32b49bb17ef6/mesa/66f75c5c384e32b49bb17efa/disponibles //alumno 2 en mesa 2
+http://localhost:3000/alumno/66f75c5c384e32b49bb17ef6/mesa/66f75c5c384e32b49bb17efb/disponibles //alumno 2 en mesa 3

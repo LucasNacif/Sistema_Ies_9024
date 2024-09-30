@@ -136,3 +136,19 @@ exports.obtenerMaterias = async (req, res) => {
     }
 };
 //falta modificar y eliminar materia por si alguien lo quiere hacer :)
+
+
+//MESA
+
+// exports.obtenerMesa = async (req,res) =>{
+//     try {
+//         const mesa = await Mesa.find().populate("Materia");
+//         if(mesa){
+//             console.log("C_carrerra.obtenerMesa:\n",mesa);
+//             return res.status(200).json(mesa)
+//         }
+//         return res.status(200).json({ mensaje: "No hay mesas activas" });
+// } catch (err) {
+//     res.status(500).send('Error al obtener las mesas');
+// }
+// }

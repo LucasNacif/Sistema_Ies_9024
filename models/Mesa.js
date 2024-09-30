@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 let mesaSchema = new Schema({
   fechaMesa: Date,
   horaMesa: Number,
-  banderaBoo: Boolean,
+  banderaBooleana: Boolean,
   Materia: { type: mongoose.Schema.Types.ObjectId, ref: 'Materia' },
   estadoActual: { type: String, enum: ['activa', 'suspendida'], default: 'activa' },
 });
