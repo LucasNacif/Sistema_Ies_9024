@@ -40,6 +40,8 @@ exports.verificarPermisoParaRendir = async (req, res) => {
             return res.status(404).json({ mensaje: "Mesa suspendida" });
         }
 
+        //aca habria que agregar la validacion para ver cuantas veces ya rindio la mesa
+
         // Verificar si el alumno ya está inscrito en la mesa
         const inscripcionExistente = await verificarInscripcionExistente(alumnoId, mesa.Alumno);
         if (inscripcionExistente) {
@@ -131,3 +133,4 @@ async function verificarEstadoMateriaMesa(alumEstado, alumnoId, mesa, res) {
         return res.status(500).json({ mensaje: "Error al verificar el estado de la materia" });
     }
 }
+

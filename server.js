@@ -56,6 +56,8 @@ app.get("/materia", (req, res) => res.render("Admin_Materia"));
 app.get("/Administracion", (req, res) => res.render("Admin_PanelControl"));
 app.get("/AdministracionSuperAdmin", (req, res) => res.render("SuperAdmin_PanelControl"));
 app.get("/alumnoMesaExamen", (req, res) => res.render("Alumno_MesaExamen"));
+app.get("/alumnoEstado", (req, res) => res.render("Admin_AlumnoEstado"));
+
 
 //NO BORRAR QUE ME COSTO UN HUEVO HACERLO :)
 
