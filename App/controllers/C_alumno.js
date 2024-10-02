@@ -157,14 +157,7 @@ exports.modificarAlumno = async (req, res) => {
 };
 exports.obtenerAlumnosActivos = async (req, res) => {
   try {
-    const { activos } = req.query;
-
-    const filtro = {};
-    if (activos === "true") {
-      filtro.banderaBooleana = true;
-    }
-
-    const alumnos = await Alumno.find(filtro);
+    const alumnos = await Alumno.find({ banderaBooleana: true });
 
     if (alumnos.length === 0) {
       return res.status(200).json({ mensaje: "No hay alumnos activos" });

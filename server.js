@@ -20,6 +20,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
 
+const hbs = require('hbs');
+// Registrar el helper 'and'
+hbs.registerHelper('and', function (...args) {
+    return args.every(Boolean);
+});
+
+
 // Configuración del motor de vistas
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "./views"));

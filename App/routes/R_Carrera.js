@@ -7,7 +7,9 @@ const controller = require("../controllers/C_carrera.js");
 router.get("/carrera/obtener", controller.obtenerCarreras);
 router.post("/carrera/agregar", controller.agregarCarreras);
 router.delete("/carrera/eliminar/:id", controller.eliminarCarreras);
-router.get('/carrera/:id/planEstudio', controller.verPlanEstudio);
+
+//PLAN DE ESTUDIO
+router.get('/planEstudio/:id/', controller.verPlanEstudio);
 //router.post('/carrera/:carreraId/agregarPlan', controller.agregarPlanEstudio); 
 
 // MATERIA

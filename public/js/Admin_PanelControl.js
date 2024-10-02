@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <h5 class="card-title">${carrera.titulo}</h5>
                                 <p class="card-text"><strong>Carga Horaria:</strong> ${carrera.cargaHoraria} horas</p>
                                 <p class="card-text"><strong>Duración:</strong> ${carrera.duracion} años</p>
-                                <a href="/carrera/${carrera._id}/planEstudio" class="btn btn-info">Ver Plan de Estudios</a>
+                                <a href="/planEstudio/${carrera._id}" class="btn btn-info">Ver Plan de Estudios</a>
                                 <button type="button" class="btn btn-danger" onclick="openDeleteModal('${carrera._id}')">Eliminar</button>
                             </div>
                         </div>

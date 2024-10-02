@@ -16,13 +16,8 @@ exports.obtenerCarreras = async (req, res) => {
 // Agregar una nueva carrera
 exports.agregarCarreras = async (req, res) => {
     try {
-        const {
-            nombreCarrera,
-            titulo,
-            cargaHoraria,
-            duracion,
-        } = req.body;
-
+        const { nombreCarrera, titulo, cargaHoraria, duracion, planEstudio } = req.body;
+        
         if (!nombreCarrera) {
             return res.status(400).send('El nombre de la carrera es obligatorio');
         }
@@ -32,7 +27,7 @@ exports.agregarCarreras = async (req, res) => {
             titulo,
             cargaHoraria,
             duracion,
-            planEstudio: [],
+            planEstudio: planEstudio ? planEstudio : null,
             alumnos: []
         });
 
@@ -60,20 +55,32 @@ exports.eliminarCarreras = async (req, res) => {
 exports.verPlanEstudio = async (req, res) => {
     try {
         const carreraId = req.params.id;
-        const carrera = await Carrera.findById(carreraId).populate('planEstudio');
+        
+        const carrera = await Carrera.findById(carreraId)
+            .populate({
+                path: 'planEstudio',
+                populate: [
+                    { path: 'materias' },
+                    { path: 'alumnos' }
+                ]
+            });
 
         if (!carrera) {
             return res.status(404).send('Carrera no encontrada');
         }
+
         res.render('Admin_PlanEstudio', {
             carrera: carrera,
-            tienePlan: carrera.planEstudio.length > 0
+            planEstudio: carrera.planEstudio
         });
     } catch (error) {
         console.log(error);
         res.status(500).send('Error al obtener el plan de estudio');
     }
 };
+
+
+
 // // Agregar un plan de estudio a una carrera existente
 // exports.agregarPlanEstudio = async (req, res) => {
 //     try {
