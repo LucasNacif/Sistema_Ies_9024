@@ -1,0 +1,119 @@
+/* Fuente general del sitio */
+body {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+/* Títulos */
+h3, h4 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: #343a40;
+    margin-top: 50px;
+}
+
+/* Tablas */
+.table {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #212529;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+    white-space: nowrap;
+    padding: 5px;
+}
+
+.table th {
+    width: 150px;
+}
+
+.table td {
+    width: 100px;
+}
+
+/* Inputs, botones y tablas */
+input, button, table {
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+    padding: 10px;
+}
+
+/* Estilo para los botones de alumnos */
+.btn-add, .btn-edit, .btn-delete {
+    display: inline-block;
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 8px;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Botón agregar (verde) */
+.btn-add {
+    background-color: #28a745;
+    border: none;
+}
+
+.btn-add:hover {
+    background-color: #218838;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Botón modificar (azul) */
+.btn-edit {
+    background-color: #17a2b8;
+    border: none;
+}
+
+.btn-edit:hover {
+    background-color: #138496;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Botón eliminar (rojo) */
+.btn-delete {
+    background-color: #dc3545;
+    border: none;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Botones adicionales */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+/* Contenedor principal */
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Modal */
+.modal-header, .modal-footer {
+    border-bottom: none;
+    border-top: none;
+}
