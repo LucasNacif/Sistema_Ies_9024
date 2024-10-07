@@ -7,18 +7,25 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 //Esto es para usar una collecion y que mongoose la cree en la bd(forma rapida)
-// const Alumno = require('./models/Alumno');
-// const AlumnoEstado = require('./models/AlumnoEstado');
-// const Carrera = require('./models/Carrera');
-// const Materia = require('./models/Materia');
-// const Mesa = require('./models/Mesa');
-// const PlanEstudio = require('./models/PlanEstudio');
-// const Usuario = require('./models/Usuario');
+const Alumno = require('./models/Alumno');
+const AlumnoEstado = require('./models/AlumnoEstado');
+const Carrera = require('./models/Carrera');
+const Materia = require('./models/Materia');
+const Mesa = require('./models/Mesa');
+const PlanEstudio = require('./models/PlanEstudio');
+const Usuario = require('./models/Usuario');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
+
+const hbs = require('hbs');
+// Registrar el helper 'and'
+hbs.registerHelper('and', function (...args) {
+    return args.every(Boolean);
+});
+
 
 // Configuración del motor de vistas
 app.set("view engine", "hbs");
@@ -29,16 +36,17 @@ mongoose.connect(process.env.MONGO_URI, {})
 .then(() => console.log('Conectado a MongoDB Atlas'))
 .catch((err) => console.error('Error al conectar a MongoDB Atlas:', err));
 
-
 // Rutas individuales
 const alumnoRouters = require("./App/routes/R_Alumno.js");
 const carreraRouters = require("./App/routes/R_Carrera.js"); 
 const loginRouters = require("./App/routes/R_login");
+const inscripcionRouters = require("./App/routes/R_InscripcionMesas");
 
 // Zona de ruteo
 app.use(carreraRouters);
 app.use(alumnoRouters);
 app.use(loginRouters);
+app.use(inscripcionRouters);
 
 app.get("/", (req, res) => res.render("Admin_PanelControl"));
 app.get("/index", (req, res) => res.render("index"));
@@ -47,6 +55,9 @@ app.get("/mesa", (req, res) => res.render("Admin_Mesa"));
 app.get("/materia", (req, res) => res.render("Admin_Materia"));
 app.get("/Administracion", (req, res) => res.render("Admin_PanelControl"));
 app.get("/AdministracionSuperAdmin", (req, res) => res.render("SuperAdmin_PanelControl"));
+app.get("/alumnoMesaExamen", (req, res) => res.render("Alumno_MesaExamen"));
+app.get("/alumnoEstado", (req, res) => res.render("Admin_AlumnoEstado"));
+
 
 //NO BORRAR QUE ME COSTO UN HUEVO HACERLO :)
 
