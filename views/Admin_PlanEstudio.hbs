@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
     <link rel="stylesheet" href="/Styles/bootstrap.min.css" />
-    <link rel="stylesheet" href="/Styles/main.css" />
     <link rel="stylesheet" href="/Styles/Admin_PlanEstudio.css">
     <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
     <script src="/js/jsBoostrap/bootstrap.min.js"></script>
@@ -15,8 +14,49 @@
     <script src="/js/jsBoostrap/material.min.js"></script>
     <script src="/js/jsBoostrap/ripples.min.js"></script>
     <script src="/js/jsBoostrap/main.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+     .table th, .table td {
+        vertical-align: middle;
+        white-space: nowrap; /* Evita que el contenido se divida en varias líneas */
+        padding: 5px; /* Reduce el padding */
+    }
+    .table th {
+        width: 150px; /* Ajusta el ancho según sea necesario */
+    }
+    .table td {
+        width: 100px; /* Ajusta el ancho según sea necesario */
+    }
+    .table {
+        font-size: 14px; /* Ajusta el tamaño de la fuente según sea necesario */
+    }
+    h3, h4 {
+        font-weight: bold;
+        margin-top: 50px;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    .btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+    }
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+    .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    .modal-header, .modal-footer {
+        border-bottom: none;
+        border-top: none;
+    }
+</style>
 
 </head>
 
@@ -117,13 +157,6 @@
 
     <!-- Información de Alumnos -->
     <h4 class="mt-4">Alumnos</h4>
-    <input type="text" id="buscarAlumno" onkeyup="filtrarAlumnos()" placeholder="Buscar alumno...">
-    <br>
-    <button id="btnAgregar" class="btn btn-add">Agregar Nuevo Alumno</button>
-            <button id="btnModificar" class="btn btn-edit">Modificar Alumno</button>
-            <button id="btnDarDeBaja" class="btn btn-delete">Dar de Baja Alumno</button>
-            <button id="btnMostrarTodos" class="btn btn-edit">Mostrar Alumnos de baja</button>
-            </br>
     <table class="table table-striped">
     <thead>
         <tr>
@@ -147,6 +180,9 @@
                 {{else}}
                     Legajo Incompleto
                 {{/if}}
+            </td>
+            <td>
+                <button class="btn btn-danger btn-sm" onclick="eliminarAlumno('{{this._id}}')">Eliminar</button>
             </td>
         </tr>
         {{/each}}
