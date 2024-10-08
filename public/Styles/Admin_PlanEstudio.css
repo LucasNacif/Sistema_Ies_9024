@@ -1,119 +1,115 @@
-/* Fuente general del sitio */
-body {
-    font-family: 'Poppins', sans-serif;
-    font-size: 16px;
-    background-color: #f8f9fa;
-    color: #212529;
+/* Ajustes para el navbar superior */
+.dashboard-Navbar {
+    position: fixed; /* Fijo en la parte superior */
+    top: 0; /* En la parte superior */
+    right: 0; /* En el borde derecho */
+    width: calc(100% - 270px); /* Ancho restante considerando el sidebar */
+    z-index: 1000; /* Encima de otros elementos */
+    background-color: #000; /* Color de fondo para el navbar */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para el navbar */
 }
 
-/* Títulos */
-h3, h4 {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    color: #343a40;
-    margin-top: 50px;
+/* Ajuste para el contenido principal */
+.dashboard-contentPage {
+    padding-left: 270px; /* Espacio para el sidebar */
+    padding-top: 50px; /* Espacio para el navbar superior */
 }
 
-/* Tablas */
-.table {
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    color: #212529;
+/* Contenedor principal con padding adicional */
+.container.mt-4 {
+    padding-top: 20px; /* Espacio superior para el contenedor */
 }
 
-.table th, .table td {
-    vertical-align: middle;
-    white-space: nowrap;
-    padding: 5px;
+/* Encabezados de la carrera */
+.container h3,
+.container h4 {
+    margin-top: 15px; /* Margen superior */
+    margin-bottom: 20px; /* Margen inferior */
+    padding: 12px 15px; /* Espaciado interno */
+    background-color: #f5f5f5; /* Gris clarito */
+    border-left: 5px solid #34495e; /* Borde izquierdo */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Sombra */
+    color: #333; /* Color del texto */
 }
 
-.table th {
-    width: 150px;
+/* Estilos generales para la tabla */
+table {
+    width: 100%; /* Ancho completo de la tabla */
+    border-collapse: collapse; /* Fusiona bordes */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra más suave */
 }
 
-.table td {
-    width: 100px;
+/* Estilos para los encabezados de la tabla */
+th {
+    background-color: #f0f0f0; /* Color gris claro para el encabezado */
+    color: #333; /* Color del texto oscuro */
+    padding: 15px; /* Espaciado interno */
+    text-align: left; /* Alineación a la izquierda */
+    font-size: 1.1em; /* Tamaño de fuente mayor para encabezados */
 }
 
-/* Inputs, botones y tablas */
-input, button, table {
-    border-radius: 5px;
-    border: 1px solid #dee2e6;
-    padding: 10px;
+/* Estilos para las celdas de datos */
+td {
+    background-color: #ffffff; /* Color de fondo blanco para las celdas */
+    padding: 12px; /* Espaciado interno */
+    border-bottom: 1px solid #ccc; /* Línea inferior gris clara */
+    font-size: 1em; /* Tamaño de fuente normal para datos */
 }
 
-/* Estilo para los botones de alumnos */
-.btn-add, .btn-edit, .btn-delete {
-    display: inline-block;
-    font-size: 16px;
-    padding: 10px 20px;
-    margin: 10px;
-    border-radius: 8px;
-    color: #fff;
-    text-align: center;
-    text-decoration: none;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+/* Efecto al pasar el mouse sobre las filas */
+tr:hover {
+    background-color: #f8f8f8; /* Color de fondo al pasar el mouse */
 }
 
-/* Botón agregar (verde) */
+/* Estilo para filas alternas */
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Color de fondo gris muy claro para filas pares */
+}
+
+/* Estilo para botones de agregar nuevo alumno */
 .btn-add {
-    background-color: #28a745;
-    border: none;
+    background-color: #28a745; /* Color de fondo verde */
+    color: white; /* Color del texto */
+    padding: 10px 15px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    font-size: 1em; /* Tamaño de fuente */
+    transition: background-color 0.3s; /* Efecto de transición */
 }
 
+/* Efecto hover para el botón de agregar */
 .btn-add:hover {
-    background-color: #218838;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #218838; /* Color al pasar el mouse */
 }
 
-/* Botón modificar (azul) */
+/* Estilo para botones de modificar */
 .btn-edit {
-    background-color: #17a2b8;
-    border: none;
+    background-color: #007bff; /* Color de fondo azul */
+    color: white; /* Color del texto */
+    padding: 10px 15px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    font-size: 1em; /* Tamaño de fuente */
+    transition: background-color 0.3s; /* Efecto de transición */
 }
 
+/* Efecto hover para el botón de modificar */
 .btn-edit:hover {
-    background-color: #138496;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #0069d9; /* Color al pasar el mouse */
 }
 
-/* Botón eliminar (rojo) */
+/* Estilo para botones de eliminar */
 .btn-delete {
-    background-color: #dc3545;
-    border: none;
+    background-color: #dc3545; /* Color de fondo rojo */
+    color: white; /* Color del texto */
+    padding: 10px 15px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    font-size: 1em; /* Tamaño de fuente */
+    transition: background-color 0.3s; /* Efecto de transición */
 }
 
+/* Efecto hover para el botón de eliminar */
 .btn-delete:hover {
-    background-color: #c82333;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Botones adicionales */
-.btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-}
-
-.btn-info {
-    background-color: #17a2b8;
-    border-color: #17a2b8;
-}
-
-.btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-}
-
-/* Contenedor principal */
-.container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* Modal */
-.modal-header, .modal-footer {
-    border-bottom: none;
-    border-top: none;
+    background-color: #c82333; /* Color al pasar el mouse */
 }

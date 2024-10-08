@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
     <link rel="stylesheet" href="/Styles/bootstrap.min.css" />
+    <link rel="stylesheet" href="/Styles/main.css" />
     <link rel="stylesheet" href="/Styles/Admin_PlanEstudio.css">
     <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
     <script src="/js/jsBoostrap/bootstrap.min.js"></script>
@@ -14,49 +15,7 @@
     <script src="/js/jsBoostrap/material.min.js"></script>
     <script src="/js/jsBoostrap/ripples.min.js"></script>
     <script src="/js/jsBoostrap/main.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<style>
-     .table th, .table td {
-        vertical-align: middle;
-        white-space: nowrap; /* Evita que el contenido se divida en varias líneas */
-        padding: 5px; /* Reduce el padding */
-    }
-    .table th {
-        width: 150px; /* Ajusta el ancho según sea necesario */
-    }
-    .table td {
-        width: 100px; /* Ajusta el ancho según sea necesario */
-    }
-    .table {
-        font-size: 14px; /* Ajusta el tamaño de la fuente según sea necesario */
-    }
-    h3, h4 {
-        font-weight: bold;
-        margin-top: 50px;
-    }
-    .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-    }
-    .btn-info {
-        background-color: #17a2b8;
-        border-color: #17a2b8;
-    }
-    .btn-danger {
-        background-color: #dc3545;
-        border-color: #dc3545;
-    }
-    .container {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-    .modal-header, .modal-footer {
-        border-bottom: none;
-        border-top: none;
-    }
-</style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 </head>
 
@@ -66,38 +25,39 @@
         <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
         <div class="full-box dashboard-sideBar-ct">
             <div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
-                Bedel
-                <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
+                Bedel <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
             </div>
             <div class="full-box dashboard-sideBar-UserInfo">
                 <figure class="full-box">
-                    <img src="/assets/img/logo_IES.jpg" alt="UserIcon" />
+                    <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
                 </figure>
                 <ul class="full-box list-unstyled text-center">
                     <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
                 </ul>
             </div>
             <ul class="list-unstyled full-box dashboard-sideBar-Menu">
-                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i>Carreras</a></li>
-                <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i>Alumnos</a></li>
-                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i>Mesas</a></li>
-                <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i>Materias</a></li>
-                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i>Super Admin</a>
-                </li>
+                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
+                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
+               <li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Gestion academica</a></li>
+                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a></li>
             </ul>
+
         </div>
     </section>
 
     <!-- Contenido de la página principal -->
-    <section class="full-box dashboard-contentPage" style="overflow-y: auto;">
-       
+    <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
+
+        <!-- Barra de navegación superior (NavBar) -->
         <nav class="full-box dashboard-Navbar">
             <ul class="full-box list-unstyled text-right">
                 <li class="pull-left">
+                    <!-- Botón para mostrar/ocultar el menú lateral -->
                     <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
                 </li>
             </ul>
         </nav>
+
 
       <!-- Información de la Carrera -->
         <div class="container mt-4">
@@ -157,6 +117,10 @@
 
     <!-- Información de Alumnos -->
     <h4 class="mt-4">Alumnos</h4>
+    <button id="btnAgregar" class="btn btn-add">Agregar Alumno</button>
+            <button id="btnModificar" class="btn btn-edit">Modificar</button>
+            <button id="btnDarDeBaja" class="btn btn-delete">Dar de Baja</button>
+            <button id="btnMostrarTodos" class="btn btn-edit">Alumnos dados de baja</button>
     <table class="table table-striped">
     <thead>
         <tr>
@@ -180,9 +144,6 @@
                 {{else}}
                     Legajo Incompleto
                 {{/if}}
-            </td>
-            <td>
-                <button class="btn btn-danger btn-sm" onclick="eliminarAlumno('{{this._id}}')">Eliminar</button>
             </td>
         </tr>
         {{/each}}
@@ -271,11 +232,11 @@
             const listaMaterias = document.getElementById('listaMaterias');
             listaMaterias.innerHTML = '';
             materias.forEach(materia => {
-                listaMaterias.innerHTML += `
+                listaMaterias.innerHTML += 
                     <tr>
                         <td><input type="checkbox" value="${materia.id}"></td>
                         <td>${materia.nombre}</td>
-                    </tr>`;
+                    </tr>;
             });
         }
 
@@ -291,12 +252,12 @@
             const listaAlumnos = document.getElementById('listaAlumnos');
             listaAlumnos.innerHTML = '';
             alumnos.forEach(alumno => {
-                listaAlumnos.innerHTML += `
+                listaAlumnos.innerHTML += 
                     <tr>
                         <td><input type="checkbox" value="${alumno.id}"></td>
                         <td>${alumno.nombreCompleto}</td>
                         <td>${alumno.numDocAlumn}</td>
-                    </tr>`;
+                    </tr>;
             });
         }
 
@@ -308,6 +269,7 @@
         function guardarAlumnos() {
             // Aquí obtendrías los alumnos seleccionados y los guardarías
         }
+
         // Cargar datos al abrir los modales
         $('#agregarMateriaModal').on('show.bs.modal', cargarMaterias);
         $('#agregarAlumnoModal').on('show.bs.modal', cargarAlumnos);
