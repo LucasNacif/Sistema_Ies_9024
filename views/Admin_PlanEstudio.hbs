@@ -9,13 +9,14 @@
     <link rel="stylesheet" href="/Styles/bootstrap.min.css" />
     <link rel="stylesheet" href="/Styles/main.css" />
     <link rel="stylesheet" href="/Styles/Admin_PlanEstudio.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
     <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
     <script src="/js/jsBoostrap/bootstrap.min.js"></script>
     <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
     <script src="/js/jsBoostrap/material.min.js"></script>
     <script src="/js/jsBoostrap/ripples.min.js"></script>
     <script src="/js/jsBoostrap/main.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 </head>
 
@@ -116,12 +117,8 @@
     </table>
 
     <!-- Información de Alumnos -->
-    <h4 class="mt-4">Alumnos</h4>
-    <button id="btnAgregar" class="btn btn-add">Agregar Alumno</button>
-            <button id="btnModificar" class="btn btn-edit">Modificar</button>
-            <button id="btnDarDeBaja" class="btn btn-delete">Dar de Baja</button>
-            <button id="btnMostrarTodos" class="btn btn-edit">Alumnos dados de baja</button>
-    <table class="table table-striped">
+<h4 class="mt-4">Alumnos</h4>
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Nombre Completo</th>
@@ -129,6 +126,7 @@
             <th>Email</th>
             <th>Curso</th>
             <th>Estado</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -145,10 +143,26 @@
                     Legajo Incompleto
                 {{/if}}
             </td>
+            <td>
+                <!-- Botones compactos con íconos -->
+                <button class="btn btn-sm btn-add" onclick="abrirModalAgregarAlumno()" title="Agregar">
+                    <i class="zmdi zmdi-plus"></i>
+                </button>
+                <button class="btn btn-sm btn-edit" onclick="modificarAlumno('{{this._id}}')" title="Modificar">
+                    <i class="zmdi zmdi-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-delete" onclick="darDeBajaAlumno('{{this._id}}')" title="Dar de Baja">
+                    <i class="zmdi zmdi-delete"></i>
+                </button>
+                <button class="btn btn-sm btn-view" onclick="mostrarAlumnosDadoDeBaja()" title="Ver Dados de Baja">
+                    <i class="zmdi zmdi-eye"></i>
+                </button>
+            </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+
 
 </div>
 

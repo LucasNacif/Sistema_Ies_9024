@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <p class="card-text"><strong>Carga Horaria:</strong> ${carrera.cargaHoraria} horas</p>
                                 <p class="card-text"><strong>Duración:</strong> ${carrera.duracion} años</p>
                                 <a href="/planEstudio/${carrera._id}" class="btn btn-info">Ver Plan de Estudios</a>
-                                <button type="button" class="btn btn-danger" onclick="openDeleteModal('${carrera._id}')">Eliminar</button>
+                                <button type="button" class="btn btn-warning" onclick="modificarCarrera('${carrera._id}')">Modificar</button>
+                                <button type="button" class="btn btn-danger" onclick="openDeleteModal('${carrera._id}')">Dar de baja</button>
                             </div>
                         </div>
                     </div>`;
@@ -66,33 +67,36 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error al agregar carrera:', error));
     });
 
-    // Eliminar una carrera
+    // Dar de baja una carrera (eliminar)
     function eliminarCarrera(idCarrera) {
         fetch(`/carrera/eliminar/${idCarrera}`, { method: 'DELETE' })
             .then(response => {
                 if (response.ok) {
-                    showMessage('Carrera eliminada correctamente', 'success');
+                    showMessage('Carrera dada de baja correctamente', 'success');
                     cargarCarreras(); // Recargar la lista de carreras
                 } else {
-                    showMessage('Error al eliminar la carrera', 'danger');
+                    showMessage('Error al dar de baja la carrera', 'danger');
                 }
             })
-            .catch(error => console.error('Error al eliminar carrera:', error));
+            .catch(error => console.error('Error al dar de baja carrera:', error));
     }
 
-    // Asignar evento al botón "Eliminar" del modal solo una vez
+    // Abrir el modal de confirmación para dar de baja carrera
+    let carreraIdToDelete = null;
+    window.openDeleteModal = function (id) {
+        carreraIdToDelete = id;
+        $('#confirmDeleteModal').modal('show');
+    };
+
+    // Asignar evento al botón "Dar de baja" del modal solo una vez
     document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
         eliminarCarrera(carreraIdToDelete);
         $('#confirmDeleteModal').modal('hide');
     });
 
-    // Abrir el modal de confirmación para eliminar carrera
-    let carreraIdToDelete = null;
-
-    //cuando se presiona el boton eliminar, se ejecuta este metodo para mostrar el modal
-    window.openDeleteModal = function (id) {
-        carreraIdToDelete = id;
-        $('#confirmDeleteModal').modal('show');
+    // Modificar una carrera (redireccionar a la página de modificación)
+    window.modificarCarrera = function (idCarrera) {
+        window.location.href = `/carrera/modificar/${idCarrera}`;
     };
 
     // Función para mostrar mensajes en pantalla
@@ -108,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 3000);
     }
 
-    //para cerrar sesión
+    // Cerrar sesión
     document.getElementById('logout-button').addEventListener('click', function (e) {
         e.preventDefault(); // Evitar que se recargue la página
         fetch('/index/logout', { method: 'POST', credentials: 'include' })
@@ -122,13 +126,3 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error:', error));
     });
 });
-
-
-
-
-
-
-
-
-
-
