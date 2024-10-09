@@ -119,6 +119,7 @@
     <!-- Información de Alumnos -->
 <h4 class="mt-4">Alumnos</h4>
 <table class="table table-striped">
+    <button class="btn btn-sm btn-view" onclick="mostrarAlumnosDadoDeBaja()" title="Ver Dados de Baja">Ver Dados De Baja</button>
     <thead>
         <tr>
             <th>Nombre Completo</th>
@@ -153,9 +154,6 @@
                 </button>
                 <button class="btn btn-sm btn-delete" onclick="darDeBajaAlumno('{{this._id}}')" title="Dar de Baja">
                     <i class="zmdi zmdi-delete"></i>
-                </button>
-                <button class="btn btn-sm btn-view" onclick="mostrarAlumnosDadoDeBaja()" title="Ver Dados de Baja">
-                    <i class="zmdi zmdi-eye"></i>
                 </button>
             </td>
         </tr>

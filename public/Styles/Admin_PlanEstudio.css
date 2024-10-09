@@ -142,8 +142,7 @@ input, button, table {
     background-color: #dc3545;
     color: white;
 }
-
-.btn-view {
-    background-color: #6c757d;
-    color: white;
+.btn-view{
+    background-color: #b9c217;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
