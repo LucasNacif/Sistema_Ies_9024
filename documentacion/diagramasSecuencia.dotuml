@@ -1,0 +1,292 @@
+
+DIAGRAMA DE SECUENCIA
+
+-------ALUMNO-------
+
+@startuml
+actor browser as Browser
+participant server as Server
+participant routes as Routes
+participant controller as Controller
+participant models as Models
+
+== Modificar Alumno ==
+Browser -> Server: POST /alumno/modificar
+Server -> Routes: router.post("/alumno/modificar", controller.modificarAlumno)
+Routes -> Controller: controller.modificarAlumno(req, res)
+Controller -> Models: Alumno.findOne({ numDocAlumn })
+Models --> Controller: Alumno encontrado o no
+alt Alumno no encontrado
+    Controller -> Routes: res.redirect("/alumno?error=Alumno no encontrado")
+else Alumno encontrado
+    Controller -> Models: Alumno.findOneAndUpdate({ numDocAlumn }, { datos actualizados })
+    Models --> Controller: Alumno actualizado
+    Controller -> Routes: res.redirect("/alumno?message=Alumno modificado correctamente")
+end
+Routes --> Server: Respuesta
+Server --> Browser: Redirige a la vista correspondiente
+
+== Dar de Baja Alumno ==
+Browser -> Server: DELETE /alumno/baja/:numDocAlumn
+Server -> Routes: router.delete("/alumno/baja/:numDocAlumn", controller.darDeBaja)
+Routes -> Controller: controller.darDeBaja(req, res)
+Controller -> Models: Alumno.findOne({ numDocAlumn })
+Models --> Controller: Alumno encontrado o no
+alt Alumno no encontrado
+    Controller -> Routes: res.status(404).json({ error: "Alumno no encontrado" })
+else Alumno encontrado
+    alt Alumno ya dado de baja
+        Controller -> Routes: res.status(405).json({ error: "Este alumno ya se encuentra dado de baja" })
+    else Alumno activo
+        Controller -> Models: Alumno.findOneAndUpdate({ numDocAlumn }, { banderaBooleana: false })
+        Models --> Controller: Alumno dado de baja
+        Controller -> Routes: res.status(200).json({ message: "Alumno dado de baja exitosamente" })
+    end
+end
+Routes --> Server: Respuesta
+Server --> Browser: Respuesta en formato JSON
+
+== Obtener Alumnos Activos ==
+Browser -> Server: GET /alumno/obtenerAlumnos
+Server -> Routes: router.get("/alumno/obtenerAlumnos", controller.obtenerAlumnosActivos)
+Routes -> Controller: controller.obtenerAlumnosActivos(req, res)
+Controller -> Models: Alumno.find({ banderaBooleana: true })
+Models --> Controller: Lista de alumnos activos
+alt No hay alumnos activos
+    Controller -> Routes: res.status(200).json({ mensaje: "No hay alumnos activos" })
+else Hay alumnos activos
+    Controller -> Routes: res.status(200).json(alumnos)
+end
+Routes --> Server: Respuesta
+Server --> Browser: Respuesta en formato JSON
+
+== Traer Alumno por Documento ==
+Browser -> Server: GET /alumno/traerPorDoc/:numDocAlumn
+Server -> Routes: router.get("/alumno/traerPorDoc/:numDocAlumn", controller.traerPorDoc)
+Routes -> Controller: controller.traerPorDoc(req, res)
+Controller -> Models: Alumno.findOne({ numDocAlumn })
+Models --> Controller: Alumno encontrado o no
+alt Alumno no encontrado
+    Controller -> Routes: res.status(404).json({ error: "Alumno no encontrado" })
+else Alumno encontrado
+    Controller -> Routes: res.status(200).json(alumno)
+end
+Routes --> Server: Respuesta
+Server --> Browser: Respuesta en formato JSON
+
+@enduml
+
+
+-------CARRERA-------
+@startuml
+actor browser as Browser
+participant server as Server
+participant routes as Routes
+participant controller as Controller
+participant models as Models
+
+== Obtener Carreras ==
+Browser -> Server: GET /carrera/obtener
+Server -> Routes: router.get("/carrera/obtener", controller.obtenerCarreras)
+Routes -> Controller: controller.obtenerCarreras(req, res)
+Controller -> Models: Carrera.find({})
+Models --> Controller: Lista de carreras
+Controller -> Routes: res.json(carreras)
+Routes --> Server: Respuesta
+Server --> Browser: Respuesta con carreras
+
+== Agregar Carrera ==
+Browser -> Server: POST /carrera/agregar { datos }
+Server -> Routes: router.post("/carrera/agregar", controller.agregarCarreras)
+Routes -> Controller: controller.agregarCarreras(req, res)
+Controller -> Models: new Carrera({ datos })
+Controller -> Models: nuevaCarrera.save()
+Models --> Controller: Carrera guardada
+Controller -> Routes: res.status(201).send('Carrera agregada correctamente')
+Routes --> Server: Respuesta
+Server --> Browser: Mensaje de éxito
+
+== Modificar Carrera ==
+Browser -> Server: PUT /carrera/modificar/:id { datos }
+Server -> Routes: router.put("/carrera/modificar/:id", controller.modificarCarrera)
+Routes -> Controller: controller.modificarCarrera(req, res)
+Controller -> Models: Carrera.findById(req.params.id)
+Models --> Controller: Carrera encontrada o no
+alt Carrera no encontrada
+    Controller -> Routes: res.status(404).send('Carrera no encontrada')
+else Carrera encontrada
+    Controller -> Models: Carrera.findByIdAndUpdate(req.params.id, { datos })
+    Models --> Controller: Carrera actualizada
+    Controller -> Routes: res.status(200).send('Carrera modificada correctamente')
+end
+Routes --> Server: Respuesta
+Server --> Browser: Mensaje de éxito
+
+== Eliminar Carrera ==
+Browser -> Server: DELETE /carrera/eliminar/:id
+Server -> Routes: router.delete("/carrera/eliminar/:id", controller.eliminarCarreras)
+Routes -> Controller: controller.eliminarCarreras(req, res)
+Controller -> Models: Carrera.findByIdAndDelete(req.params.id)
+Models --> Controller: Carrera eliminada
+Controller -> Routes: res.send('Carrera eliminada correctamente')
+Routes --> Server: Respuesta
+Server --> Browser: Mensaje de éxito
+
+@enduml
+
+-------MATERIA-------
+@startuml
+actor browser as Browser
+participant server as Server
+participant routes as Routes
+participant controller as Controller
+participant models as Models
+
+== Obtener Materias ==
+Browser -> Server: GET /materia/obtener
+Server -> Routes: router.get("/materia/obtener", controller.obtenerMaterias)
+Routes -> Controller: controller.obtenerMaterias(req, res)
+Controller -> Models: Materia.find().populate('correlativas')
+Models --> Controller: Lista de materias
+Controller -> Routes: res.json(materia)
+Routes --> Server: Respuesta
+Server --> Browser: Respuesta con materias
+
+== Agregar Materia ==
+Browser -> Server: POST /materia/agregar { datos }
+Server -> Routes: router.post("/materia/agregar", controller.agregarMateria)
+Routes -> Controller: controller.agregarMateria(req, res)
+Controller -> Models: new Materia({ datos })
+Controller -> Models: materia.save()
+Models --> Controller: Materia guardada
+Controller -> Routes: res.status(201).send('Materia agregada correctamente')
+Routes --> Server: Respuesta
+Server --> Browser: Mensaje de éxito
+
+== Modificar Materia ==
+Browser -> Server: PUT /materia/modificar/:id { datos }
+Server -> Routes: router.put("/materia/modificar/:id", controller.modificarMateria)
+Routes -> Controller: controller.modificarMateria(req, res)
+Controller -> Models: Materia.findById(req.params.id)
+Models --> Controller: Materia encontrada o no
+alt Materia no encontrada
+    Controller -> Routes: res.status(404).send('Materia no encontrada')
+else Materia encontrada
+    Controller -> Models: Materia.findByIdAndUpdate(req.params.id, { datos })
+    Models --> Controller: Materia actualizada
+    Controller -> Routes: res.status(200).send('Materia modificada correctamente')
+end
+Routes --> Server: Respuesta
+Server --> Browser: Mensaje de éxito
+
+== Eliminar Materia ==
+Browser -> Server: DELETE /materia/eliminar/:id
+Server -> Routes: router.delete("/materia/eliminar/:id", controller.eliminarMateria)
+Routes -> Controller: controller.eliminarMateria(req, res)
+Controller -> Models: Materia.findByIdAndDelete(req.params.id)
+Models --> Controller: Materia eliminada
+Controller -> Routes: res.send('Materia eliminada correctamente')
+Routes --> Server: Respuesta
+Server --> Browser: Mensaje de éxito
+
+@enduml
+
+-------MESA-------
+@startuml
+actor browser as Browser
+participant server as Server
+participant routes as Routes
+participant controller as Controller
+participant models as Models
+
+== Obtener Mesas ==
+Browser -> Server: GET /mesa/obtener
+Server -> Routes: router.get("/mesa/obtener", controller.obtenerMesas)
+Routes -> Controller: controller.obtenerMesas(req, res)
+Controller -> Models: Mesa.find({})
+Models --> Controller: Lista de mesas
+Controller -> Routes: res.json(mesas)
+Routes --> Server: Respuesta
+Server --> Browser: Respuesta con mesas
+
+== Agregar Mesa ==
+Browser -> Server: POST /mesa/agregar { datos }
+Server -> Routes: router.post("/mesa/agregar", controller.agregarMesa)
+Routes -> Controller: controller.agregarMesa(req, res)
+Controller -> Models: new Mesa({ datos })
+Controller -> Models: nuevaMesa.save()
+Models --> Controller: Mesa guardada
+Controller -> Routes: res.status(201).send('Mesa agregada correctamente')
+Routes --> Server: Respuesta
+Server --> Browser: Mensaje de éxito
+
+== Modificar Mesa ==
+Browser -> Server: PUT /mesa/modificar/:id { datos }
+Server -> Routes: router.put("/mesa/modificar/:id", controller.modificarMesa)
+Routes -> Controller: controller.modificarMesa(req, res)
+Controller -> Models: Mesa.findById(req.params.id)
+Models --> Controller: Mesa encontrada o no
+alt Mesa no encontrada
+    Controller -> Routes: res.status(404).send('Mesa no encontrada')
+else Mesa encontrada
+    Controller -> Models: Mesa.findByIdAndUpdate(req.params.id, { datos })
+    Models --> Controller: Mesa actualizada
+    Controller -> Routes: res.status(200).send('Mesa modificada correctamente')
+end
+Routes --> Server: Respuesta
+Server --> Browser: Mensaje de éxito
+
+== Eliminar Mesa ==
+Browser -> Server: DELETE /mesa/eliminar/:id
+Server -> Routes: router.delete("/mesa/eliminar/:id", controller.eliminarMesa)
+Routes -> Controller: controller.eliminarMesa(req, res)
+Controller -> Models: Mesa.findByIdAndDelete(req.params.id)
+Models --> Controller: Mesa eliminada
+Controller -> Routes: res.send('Mesa eliminada correctamente')
+Routes --> Server: Respuesta
+Server --> Browser: Mensaje de éxito
+
+@enduml
+
+-------PLAN ESTUDIO-------
+@startuml
+actor browser as Browser
+participant server as Server
+participant routes as Routes
+participant controller as Controller
+participant models as Models
+
+== Ver Plan de Estudio ==
+Browser -> Server: GET /planEstudio/:id
+Server -> Routes: router.get("/planEstudio/:id", controller.verPlanEstudio)
+Routes -> Controller: controller.verPlanEstudio(req, res)
+Controller -> Models: Carrera.findById(req.params.id).populate(...)
+Models --> Controller: Plan de estudio encontrado o no
+alt Plan de estudio no encontrado
+    Controller -> Routes: res.status(404).send('Carrera no encontrada')
+else Plan de estudio encontrado
+    Controller -> Routes: res.render('Admin_PlanEstudio', { carrera, planEstudio })
+end
+Routes --> Server: Respuesta
+Server --> Browser: Renderiza vista de Plan de Estudio
+
+== Agregar Plan de Estudio ==
+Browser -> Server: POST /carrera/:carreraId/agregarPlan { datos }
+Server -> Routes: router.post("/carrera/:carreraId/agregarPlan", controller.agregarPlanEstudio)
+Routes -> Controller: controller.agregarPlanEstudio(req, res)
+Controller -> Models: Carrera.findById(req.params.carreraId)
+Models --> Controller: Carrera encontrada o no
+alt Carrera no encontrada
+    Controller -> Routes: res.status(404).send('Carrera no encontrada')
+else Carrera encontrada
+    Controller -> Models: nuevoPlanEstudio = { materias }
+    Controller -> Models: carrera.plan.push(nuevoPlanEstudio)
+    Controller -> Models: carrera.save()
+    Models --> Controller: Plan de estudio agregado
+    Controller -> Routes: res.status(200).send('Plan de estudio agregado correctamente')
+end
+Routes --> Server: Respuesta
+Server --> Browser: Mensaje de éxito
+
+@enduml
+
