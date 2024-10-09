@@ -40,13 +40,14 @@ app.use(carreraRouters);
 app.use(alumnoRouters);
 app.use(loginRouters);
 
-app.get("/", (req, res) => res.render("Admin_PanelControl"));
+// app.get("/", (req, res) => res.render("Admin_PanelControl"));
 app.get("/index", (req, res) => res.render("index"));
 app.get("/alumno", (req, res) => res.render("Admin_Alumno"));
 app.get("/mesa", (req, res) => res.render("Admin_Mesa"));
 app.get("/materia", (req, res) => res.render("Admin_Materia"));
 app.get("/Administracion", (req, res) => res.render("Admin_PanelControl"));
 app.get("/AdministracionSuperAdmin", (req, res) => res.render("SuperAdmin_PanelControl"));
+app.get("/", (req, res) => res.render("Alumno_Mesa"));
 
 //NO BORRAR QUE ME COSTO UN HUEVO HACERLO :)
 

@@ -9,6 +9,7 @@
 	<link rel="icon" type="image/png" href="assets/img/favicon.png" />
 	<!-- Enlace al archivo CSS principal -->
 	<link rel="stylesheet" href="/Styles/main.css">
+	<link rel="stylesheet" href="/Styles/Admin_Mesa.css">
 </head>
 
 <body>
@@ -74,6 +75,7 @@
 			</ul>
 		</nav>
 
+		<br>
 		<!-- Página de Mesas -->
 		<div class="container-fluid">
 			<div class="page-header">
@@ -82,6 +84,36 @@
 			</div>
 		</div>
 
+
+		<div class="botones">
+                <button id="btnAgregar" class="btn btn-add">Agregar</button>
+                <button id="btnModificar" class="btn btn-edit">Modificar</button>
+                <button id="btnDarDeBaja" class="btn btn-delete">Dar de Baja</button>
+                <button id="btnMostrarTodos" class="btn btn-edit">Mostrar Alumnos de baja</button>
+        </div>
+		<!-- Formulario para agregar una nueva carrera -->
+        <div class="container" id="formContainer" style="display:none; margin-top: 20px;">
+            <form id="formAgregarCarrera" style="color: #333;">
+                <div class="form-group">
+                    <label for="nombreCarrera">Nombre de la carrera:</label>
+                    <input type="text" id="nombreCarrera" class="form-control" placeholder="Nombre de la nueva carrera"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label for="titulo">Título:</label>
+                    <input type="text" id="titulo" class="form-control" placeholder="Título" required>
+                </div>
+                <div class="form-group">
+                    <label for="cargaHoraria">Carga Horaria:</label>
+                    <input type="number" id="cargaHoraria" class="form-control" placeholder="Carga Horaria" required>
+                </div>
+                <div class="form-group">
+                    <label for="duracion">Duración (en años):</label>
+                    <input type="number" id="duracion" class="form-control" placeholder="Duración" required>
+                </div>
+                <button type="submit" class="btn btn-success">Agregar Carrera</button>
+            </form>
+        </div>
 		<!-- Contenido de Mesas, se muestra en una grilla de artículos -->
 		<div class="full-box text-center" style="padding: 30px 10px;">
 			<!-- Mesa: Desarrollo de Software -->
