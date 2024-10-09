@@ -51,27 +51,36 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
     const planEstudios = await PlanEstudios.findOne({
       alumnos: alumno._id,
     }).select("nombre materias").populate("materias", "nombreMateria");
-
+    console.log(materiasDelPlan);
     if (!planEstudios) {
       return res.status(404).json({
         message: "No se encontró el plan de estudios para este alumno",
       });
     }
-    //console.log(alumno._id)
-    
-    // Obtener materias y sus estados
+    console.log(planEstudios)
+
+    // Obtener materias
     const materiasDelPlan = planEstudios.materias.map(materia => materia._id);
-    //console.log(materiasDelPlan);
+    console.log(materiasDelPlan);
 
     // Buscar los estados de las materias de ese alumno
     const estadosMaterias = await AlumnoEstado.find({
       idAlumno: alumno._id, // Filtrar por el ID del alumno
       idMateria: { $in: materiasDelPlan }// Filtrar por las materias del plan de estudios
-    }).populate("idMateria"); // Popular la información de las materias
+    }).populate('idMateria'); // Popular la información de las materias
+
+    // Convertir la estructura anidada en una más plana
+    // const estadosMateriasA = estadosMaterias.map(estado => {
+    //   return {
+    //     estadoActual: estado.estadoActual,
+    //     fecha: estado.fecha,
+    //     nombreMateria: estado.idMateria.nombreMateria // Extrae directamente el nombre de la materia
+    //   };
+    // });
     //console.log(estadosMaterias);
 
     // Responder con la lista de materias y sus estados
-     res.status(200).json({ estadosMaterias });
+    res.render('Admin_AlumnoEstado', { estadosMaterias });
   } catch (error) {
     console.error("Error al buscar el alumno y sus materias:", error.message);
     res
