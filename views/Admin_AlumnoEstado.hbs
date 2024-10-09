@@ -67,10 +67,12 @@
             <!-- Filtros para buscar alumnos -->
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="Buscar por nombre o documento">
+                    <input id="numDocAlumn" type="text" class="form-control"
+                        placeholder="Buscar por nombre o documento">
                 </div>
                 <div class="col-md-2">
-                    <button class="btn btn-primary">Buscar</button>
+                    <button class="btn btn-primary"
+                        onclick="buscarAlumnoYMaterias('{{this.numDocAlumn}}')">Buscar</button>
                 </div>
             </div>
 
@@ -110,7 +112,47 @@
     <script>
         // Inicialización del componente de Material Design
         $.material.init();
+
+        async function buscarAlumnoYMaterias() {
+            const numDocAlumn = document.getElementById('numDocAlumn').value.trim();
+
+            if (!numDocAlumn) {
+                alert("Por favor, ingresa un número de documento.");
+                return;
+            }
+
+            try {
+                const result = await fetch(`/alumno/buscar/${numDocAlumn}`);
+                if (!result.ok) {
+                    throw new Error('Alumno no encontrado');
+                }
+
+                const data = await result.json();
+                const estadosMaterias = data
+
+                // Limpiar la tabla antes de agregar las nuevas filas
+                const tbody = document.querySelector('tbody');
+                tbody.innerHTML = '';
+
+                // Agregar las materias a la tabla
+                estadosMaterias.forEach(materia => {
+                    const tr = document.createElement('tr');
+
+                    tr.innerHTML = `
+                    <td>${materia.nombreMateria}</td>
+                    <td>${materia.estadoActual}</td>
+                    <td>${materia.fecha}</td>
+                    <td><button class="btn btn-success">Guardar</button></td>`;
+
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Error al buscar el alumno:', error.message);
+                alert(error.message); // Muestra un mensaje de error al usuario
+            }
+        }
     </script>
+
 </body>
 
 </html>
