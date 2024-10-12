@@ -6,13 +6,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
-    <link rel="stylesheet" href="/Styles/bootstrap.min.css" />
+<meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/Styles/main.css" />
     <link rel="stylesheet" href="/Styles/Admin_PlanEstudio.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-    <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
-    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
     <script src="/js/jsBoostrap/material.min.js"></script>
     <script src="/js/jsBoostrap/ripples.min.js"></script>
@@ -88,6 +94,7 @@
     <!-- Información de Materias -->
     <h4 class="mt-4">Materias</h4>
     <table class="table table-striped">
+            <button class="btn btn-sm btn-add" onclick="abrirModalAgregarMateria()" title="Agregar">Agregar</button>
         <thead>
             <tr>
                 <th>Nombre de la Materia</th>
@@ -110,6 +117,10 @@
                 </td>
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="eliminarMateria('{{this._id}}')">Eliminar</button>
+                    <button class="btn btn-sm btn-edit" onclick="modificarMateria('{{this._id}}')" title="Modificar">Modificar 
+                    <i class="zmdi zmdi-edit"></i>
+                    </button>
+
                 </td>
             </tr>
             {{/each}}
@@ -119,6 +130,7 @@
     <!-- Información de Alumnos -->
 <h4 class="mt-4">Alumnos</h4>
 <table class="table table-striped">
+<button class="btn btn-sm btn-add" onclick="abrirModalAlumno('agregar')" title="Agregar">Agregar</button>
     <button class="btn btn-sm btn-view" onclick="mostrarAlumnosDadoDeBaja()" title="Ver Dados de Baja">Ver Dados De Baja</button>
     <thead>
         <tr>
@@ -145,15 +157,12 @@
                 {{/if}}
             </td>
             <td>
-                <!-- Botones compactos con íconos -->
-                <button class="btn btn-sm btn-add" onclick="abrirModalAgregarAlumno()" title="Agregar">
-                    <i class="zmdi zmdi-plus"></i>
-                </button>
-                <button class="btn btn-sm btn-edit" onclick="modificarAlumno('{{this._id}}')" title="Modificar">
+
+<button class="btn btn-sm btn-edit" onclick="abrirModalAlumno('modificar', '{{this._id}}')" title="Modificar">Modificar</button>
                     <i class="zmdi zmdi-edit"></i>
                 </button>
                 <button class="btn btn-sm btn-delete" onclick="darDeBajaAlumno('{{this._id}}')" title="Dar de Baja">
-                    <i class="zmdi zmdi-delete"></i>
+                    Dar De Baja<i class="zmdi zmdi-delete"></i>
                 </button>
             </td>
         </tr>
@@ -161,130 +170,87 @@
     </tbody>
 </table>
 
-
-</div>
-
-
-    </section>
-  <!-- Modal para agregar materia -->
-    <div class="modal fade" id="agregarMateriaModal" tabindex="-1" role="dialog" aria-labelledby="agregarMateriaModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="agregarMateriaModalLabel">Agregar Materia</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" class="form-control mb-2" id="buscarMateria" placeholder="Buscar materia...">
-                    <table class="table table-bordered table-striped mt-2">
-                        <thead>
-                            <tr>
-                                <th>Seleccionar</th>
-                                <th>Nombre de la Materia</th>
-                            </tr>
-                        </thead>
-                        <tbody id="listaMaterias">
-                            <!-- Aquí se cargarán dinámicamente las materias con checkboxes -->
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" onclick="guardarMaterias()">Guardar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para agregar alumno -->
-    <div class="modal fade" id="agregarAlumnoModal" tabindex="-1" role="dialog" aria-labelledby="agregarAlumnoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="agregarAlumnoModalLabel">Agregar Alumno</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" class="form-control mb-2" id="buscarAlumno" placeholder="Buscar alumno...">
-                    <table class="table table-bordered table-striped mt-2">
-                        <thead>
-                            <tr>
-                                <th>Seleccionar</th>
-                                <th>Nombre Completo</th>
-                                <th>Número de Documento</th>
-                            </tr>
-                        </thead>
-                        <tbody id="listaAlumnos">
-                            <!-- Aquí se cargarán dinámicamente los alumnos con checkboxes -->
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" onclick="guardarAlumnos()">Guardar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Función para cargar dinámicamente las materias en la tabla del modal
-        function cargarMaterias() {
-            // Aquí iría una llamada a la base de datos para obtener las materias y mostrarlas
-            const materias = [
-                {id: 1, nombre: 'Matemáticas'},
-                {id: 2, nombre: 'Física'},
-                // más materias...
-            ];
-            
-            const listaMaterias = document.getElementById('listaMaterias');
-            listaMaterias.innerHTML = '';
-            materias.forEach(materia => {
-                listaMaterias.innerHTML += 
-                    <tr>
-                        <td><input type="checkbox" value="${materia.id}"></td>
-                        <td>${materia.nombre}</td>
-                    </tr>;
-            });
-        }
-
-        // Función para cargar dinámicamente los alumnos en la tabla del modal
-        function cargarAlumnos() {
-            // Aquí iría una llamada a la base de datos para obtener los alumnos y mostrarlos
-            const alumnos = [
-                {id: 1, nombreCompleto: 'Juan Pérez', numDocAlumn: '12345678'},
-                {id: 2, nombreCompleto: 'María Gómez', numDocAlumn: '87654321'},
-                // más alumnos...
-            ];
-
-            const listaAlumnos = document.getElementById('listaAlumnos');
-            listaAlumnos.innerHTML = '';
-            alumnos.forEach(alumno => {
-                listaAlumnos.innerHTML += 
-                    <tr>
-                        <td><input type="checkbox" value="${alumno.id}"></td>
-                        <td>${alumno.nombreCompleto}</td>
-                        <td>${alumno.numDocAlumn}</td>
-                    </tr>;
-            });
-        }
-
-        // Funciones para guardar las selecciones (implementación depende de tu backend)
-        function guardarMaterias() {
-            // Aquí obtendrías las materias seleccionadas y las guardarías
-        }
-
-        function guardarAlumnos() {
-            // Aquí obtendrías los alumnos seleccionados y los guardarías
-        }
-
-        // Cargar datos al abrir los modales
-        $('#agregarMateriaModal').on('show.bs.modal', cargarMaterias);
-        $('#agregarAlumnoModal').on('show.bs.modal', cargarAlumnos);
-    </script>
 </body>
+<script>
+    function cargarMaterias() {
+        // Aquí iría una llamada a la base de datos para obtener las materias y mostrarlas
+        const materias = [
+            {id: 1, nombre: 'Matemáticas'},
+            {id: 2, nombre: 'Física'},
+            // más materias...
+        ];
+        
+        const listaMaterias = document.getElementById('listaMaterias');
+        listaMaterias.innerHTML = '';
+        materias.forEach(materia => {
+            listaMaterias.innerHTML += 
+                `<tr>
+                    <td><input type="checkbox" value="${materia.id}"></td>
+                    <td>${materia.nombre}</td>
+                </tr>`;
+        });
+    }
+
+    // Función para cargar dinámicamente los alumnos en la tabla del modal
+    function cargarAlumnos() {
+        // Aquí iría una llamada a la base de datos para obtener los alumnos y mostrarlos
+        const alumnos = [
+            {id: 1, nombreCompleto: 'Juan Pérez', numDocAlumn: '12345678'},
+            {id: 2, nombreCompleto: 'María Gómez', numDocAlumn: '87654321'},
+            // más alumnos...
+        ];
+
+        const listaAlumnos = document.getElementById('listaAlumnos');
+        listaAlumnos.innerHTML = '';
+        alumnos.forEach(alumno => {
+            listaAlumnos.innerHTML += 
+                `<tr>
+                    <td><input type="checkbox" value="${alumno.id}"></td>
+                    <td>${alumno.nombreCompleto}</td>
+                    <td>${alumno.numDocAlumn}</td>
+                </tr>`;
+        });
+    }
+
+    function abrirModalAlumno(accion, idAlumno = null) {
+    if (accion === 'agregar') {
+        $('#modalAgregarAlumnoLabel').text('Agregar Alumno');
+        $('#formAgregarAlumno')[0].reset();  // Resetear el formulario
+        $('#alumnoId').val("");  // Vaciar el campo oculto
+    } else if (accion === 'modificar') {
+        $('#modalAgregarAlumnoLabel').text('Modificar Alumno');
+        cargarDatosAlumno(idAlumno);  // Cargar los datos del alumno a modificar
+    }
+    $('#modalAgregarAlumno').modal('show'); 
+}
+
+
+
+    function cargarDatosAlumno(idAlumno) {
+    console.log(`Cargando datos del alumno con id: ${idAlumno}`);  // Log para verificar que se ejecuta
+    $.ajax({
+        url: `/alumno/${idAlumno}`,
+        method: 'GET',
+        success: function(alumno) {
+            console.log('Datos del alumno recibidos:', alumno);  // Log para ver los datos
+            // Rellenar los campos del formulario con los datos del alumno
+            $('#alumnoId').val(alumno._id);
+            $('#nombreCompleto').val(alumno.nombreCompleto);
+            $('#numDocAlumn').val(alumno.numDocAlumn);
+            $('#emailAlumn').val(alumno.emailAlumn);
+            $('#curso').val(alumno.curso);
+            $('#tituloSecundario').prop('checked', alumno.tituloSecundario);
+            $('#psicofisico').prop('checked', alumno.psicofisico);
+            $('#partidaNacim').prop('checked', alumno.partidaNacim);
+            $('#dniActualizado').prop('checked', alumno.dniActualizado);
+            $('#analiticoFiel').prop('checked', alumno.analiticoFiel);
+            $('#antecedenPen').prop('checked', alumno.antecedenPen);
+        },
+        error: function(error) {
+            console.error('Error al cargar los datos del alumno:', error);
+            alert('Error al cargar los datos del alumno');
+        }
+    });
+}
+</script>
 </html>

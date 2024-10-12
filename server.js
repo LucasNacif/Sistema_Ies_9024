@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 //Esto es para usar una collecion y que mongoose la cree en la bd(forma rapida)
 const Alumno = require('./models/Alumno');
 const AlumnoEstado = require('./models/AlumnoEstado');
-const Carrera = require('./models/Carrera');
+const Carrera = require('./models/Carrera');  
 const Materia = require('./models/Materia');
 const Mesa = require('./models/Mesa');
 const PlanEstudio = require('./models/PlanEstudio');

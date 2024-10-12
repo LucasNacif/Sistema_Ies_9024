@@ -67,37 +67,79 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error al agregar carrera:', error));
     });
 
+    // Variables globales para modificar/eliminar
+    window.modificarCarrera = function (idCarrera) {
+        fetch(`/carrera/obtener/${idCarrera}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(carrera => {
+                console.log('Carrera a modificar:', carrera); // Verificar la estructura del objeto
+                carreraIdToModify = idCarrera;
+    
+                // Asegúrate de que las propiedades existan
+                document.getElementById('modificarNombreCarrera').value = carrera.nombreCarrera || ''; // Agregar un valor por defecto
+                document.getElementById('modificarTitulo').value = carrera.titulo || ''; // Agregar un valor por defecto
+                document.getElementById('modificarCargaHoraria').value = carrera.cargaHoraria || ''; // Agregar un valor por defecto
+                document.getElementById('modificarDuracion').value = carrera.duracion || ''; // Agregar un valor por defecto
+    
+                // Abrir el modal de modificación
+                $('#modifyCareerModal').modal('show');
+            })
+            .catch(error => console.error('Error al cargar los datos de la carrera:', error));
+    };
+    
+    
+    
+
+    // Enviar los datos modificados al servidor
+    document.getElementById('formModificarCarrera').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const nombreCarrera = document.getElementById('modificarNombreCarrera').value;
+        const titulo = document.getElementById('modificarTitulo').value;
+        const cargaHoraria = parseInt(document.getElementById('modificarCargaHoraria').value, 10);
+        const duracion = parseInt(document.getElementById('modificarDuracion').value, 10);
+
+        fetch(`/carrera/modificar/${carreraIdToModify}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombreCarrera, titulo, cargaHoraria, duracion })
+        })
+            .then(response => {
+                if (response.ok) {
+                    showMessage('Carrera modificada correctamente', 'success');
+                    cargarCarreras(); // Recargar la lista de carreras
+                    $('#modifyCareerModal').modal('hide'); // Cerrar el modal
+                } else {
+                    showMessage('Error al modificar la carrera', 'danger');
+                }
+            })
+            .catch(error => console.error('Error al modificar la carrera:', error));
+    });
+
+    // Abrir el modal de confirmación para dar de baja carrera
+    window.openDeleteModal = function (idCarrera) {
+        carreraIdToDelete = idCarrera;
+        $('#confirmDeleteModal').modal('show');
+    };
+
     // Dar de baja una carrera (eliminar)
-    function eliminarCarrera(idCarrera) {
-        fetch(`/carrera/eliminar/${idCarrera}`, { method: 'DELETE' })
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+        fetch(`/carrera/eliminar/${carreraIdToDelete}`, { method: 'DELETE' })
             .then(response => {
                 if (response.ok) {
                     showMessage('Carrera dada de baja correctamente', 'success');
                     cargarCarreras(); // Recargar la lista de carreras
+                    $('#confirmDeleteModal').modal('hide');
                 } else {
                     showMessage('Error al dar de baja la carrera', 'danger');
                 }
             })
             .catch(error => console.error('Error al dar de baja carrera:', error));
-    }
-
-    // Abrir el modal de confirmación para dar de baja carrera
-    let carreraIdToDelete = null;
-    window.openDeleteModal = function (id) {
-        carreraIdToDelete = id;
-        $('#confirmDeleteModal').modal('show');
-    };
-
-    // Asignar evento al botón "Dar de baja" del modal solo una vez
-    document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
-        eliminarCarrera(carreraIdToDelete);
-        $('#confirmDeleteModal').modal('hide');
     });
-
-    // Modificar una carrera (redireccionar a la página de modificación)
-    window.modificarCarrera = function (idCarrera) {
-        window.location.href = `/carrera/modificar/${idCarrera}`;
-    };
 
     // Función para mostrar mensajes en pantalla
     function showMessage(message, type) {
@@ -119,7 +161,6 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'ok') {
-                    // Redirigir o realizar alguna acción
                     window.location.href = data.redirect;
                 }
             })
