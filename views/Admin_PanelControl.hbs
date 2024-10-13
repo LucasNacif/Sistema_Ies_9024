@@ -66,11 +66,11 @@
         </div>
 
         <!-- Botón para mostrar/ocultar formulario -->
-        <div class="container text-center">
-            <button id="toggleFormBtn" class="btn btn-primary">Agregar nueva carrera</button>
-        </div>
+<div class="container text-center">
+    <button id="toggleFormBtn" class="btn btn-primary" onclick="agregarCarreras()">Agregar nueva carrera</button>
+</div>
 
-<!-- Modal para modificar carrera -->
+<!-- Modal para agregar carrera -->
 <div class="modal" id="addAlumnoModal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -93,7 +93,7 @@
                         <input type="number" class="form-control" id="cargaHoraria" required>
                     </div>
                     <div class="form-group">
-                        <label for="Duracion">Duración</label>
+                        <label for="duracion">Duración</label>
                         <input type="number" class="form-control" id="duracion" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Agregar</button>
@@ -102,11 +102,12 @@
         </div>
     </div>
 </div>
-        
+
         <!-- Contenedor donde se mostrarán las carreras -->
         <div class="full-box text-center carrera-container" id="listaCarreras" style="padding: 30px 10px;">
-            {{!-- carreras de la bd --}}
+        {{!-- carreras de la bd --}}
         </div>
+
 
 <!-- Modal para modificar carrera -->
 <div class="modal" id="modifyCareerModal">

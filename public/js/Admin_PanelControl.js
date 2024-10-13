@@ -1,13 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Cargar carreras desde la base de datos
     cargarCarreras();
+
     function cargarCarreras() {
         fetch('/carrera/obtener')
             .then(response => response.json())
             .then(carreras => {
                 const listaCarreras = document.getElementById('listaCarreras');
-                listaCarreras.innerHTML = '';
                 carreras.forEach(carrera => {
+                    // Manteniendo la estructura de card que tenías
                     listaCarreras.innerHTML += `
                     <div class="col-md-4">
                         <div class="card" style="margin: 10px;">
@@ -42,57 +43,60 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    window.agregarCarreras = function (idCarrera) {
-        fetch(`/carrera/agregar/${idCarrera}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(carrera => {
-                console.log('Carrera a modificar:', carrera); // Verificar la estructura del objeto
-                carreraIdToModify = idCarrera;
-    
-                // Asegúrate de que las propiedades existan
-                document.getElementById('agregarNombreCarrera').value = carrera.nombreCarrera || ''; // Agregar un valor por defecto
-                document.getElementById('agregarTitulo').value = carrera.titulo || ''; // Agregar un valor por defecto
-                document.getElementById('agregarCargaHoraria').value = carrera.cargaHoraria || ''; // Agregar un valor por defecto
-                document.getElementById('agregarDuracion').value = carrera.duracion || ''; // Agregar un valor por defecto
-    
-                // Abrir el modal de modificación
-                $('#addAlumnoModal').modal('show');
-            })
-            .catch(error => console.error('Error al agregar los datos de la carrera:', error));
+    // Mostrar el modal para agregar una nueva carrera
+    window.agregarCarreras = function () {
+        // Limpiar campos del formulario
+        document.getElementById('nombreCarrera').value = '';
+        document.getElementById('titulo').value = '';
+        document.getElementById('cargaHoraria').value = '';
+        document.getElementById('duracion').value = '';
+
+        // Mostrar el modal
+        $('#addAlumnoModal').modal('show');
     };
 
-    // Agregar una nueva carrera
+    // Evento de envío del formulario para agregar una nueva carrera
     document.getElementById('formAgregarCarrera').addEventListener('submit', function (event) {
         event.preventDefault();
+
+        // Recoger valores del formulario
         const nombreCarrera = document.getElementById('nombreCarrera').value;
         const titulo = document.getElementById('titulo').value;
         const cargaHoraria = parseInt(document.getElementById('cargaHoraria').value, 10);
-        const duracion = parseInt(document.getElementById('duracion').value, 10);
+        const duracion = parseInt(document.getElementById('duracion').value, 10) || 0;
 
+        // Validar campo obligatorio (nombreCarrera)
+        if (!nombreCarrera) {
+            showMessage('El nombre de la carrera es obligatorio', 'danger');
+            return;
+        }
+
+        // Hacer la solicitud POST para agregar una nueva carrera
         fetch('/carrera/agregar', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ nombreCarrera, titulo, cargaHoraria, duracion })
         })
-            .then(response => {
-                if (response.ok) {
-                    showMessage('Carrera agregada correctamente', 'success');
-                    cargarCarreras(); // Recargar la lista de carreras
-                    document.getElementById('formAgregarCarrera').reset(); // Limpiar formulario
-                } else {
-                    showMessage('Error al agregar la carrera', 'danger');
-                }
-            })
-            .catch(error => console.error('Error al agregar carrera:', error));
+        .then(response => {
+            if (response.ok) {
+                showMessage('Carrera agregada correctamente', 'success');
+                cargarCarreras(); // Recargar la lista de carreras
+                document.getElementById('formAgregarCarrera').reset(); // Limpiar formulario
+                $('#addAlumnoModal').modal('hide'); // Cerrar el modal
+            } else {
+                response.json().then(data => {
+                    showMessage(data.message || 'Error al agregar la carrera', 'danger');
+                });
+            }
+        })
+        .catch(error => console.error('Error al agregar carrera:', error));
     });
 
-    
     // Variables globales para modificar/eliminar
+    let carreraIdToModify;
+    let carreraIdToDelete;
+
+    // Función para modificar una carrera
     window.modificarCarrera = function (idCarrera) {
         fetch(`/carrera/obtener/${idCarrera}`)
             .then(response => {
@@ -102,23 +106,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(carrera => {
-                console.log('Carrera a modificar:', carrera); // Verificar la estructura del objeto
                 carreraIdToModify = idCarrera;
-    
-                // Asegúrate de que las propiedades existan
-                document.getElementById('modificarNombreCarrera').value = carrera.nombreCarrera || ''; // Agregar un valor por defecto
-                document.getElementById('modificarTitulo').value = carrera.titulo || ''; // Agregar un valor por defecto
-                document.getElementById('modificarCargaHoraria').value = carrera.cargaHoraria || ''; // Agregar un valor por defecto
-                document.getElementById('modificarDuracion').value = carrera.duracion || ''; // Agregar un valor por defecto
-    
+
+                // Llenar el formulario de modificación
+                document.getElementById('modificarNombreCarrera').value = carrera.nombreCarrera || '';
+                document.getElementById('modificarTitulo').value = carrera.titulo || '';
+                document.getElementById('modificarCargaHoraria').value = carrera.cargaHoraria || '';
+                document.getElementById('modificarDuracion').value = carrera.duracion || '';
+
                 // Abrir el modal de modificación
                 $('#modifyCareerModal').modal('show');
             })
             .catch(error => console.error('Error al cargar los datos de la carrera:', error));
     };
-    
-    
-    
 
     // Enviar los datos modificados al servidor
     document.getElementById('formModificarCarrera').addEventListener('submit', function (event) {
