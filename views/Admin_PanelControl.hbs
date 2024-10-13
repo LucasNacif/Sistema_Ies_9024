@@ -70,30 +70,39 @@
             <button id="toggleFormBtn" class="btn btn-primary">Agregar nueva carrera</button>
         </div>
 
-        <!-- Formulario para agregar una nueva carrera -->
-        <div class="container" id="formContainer" style="display:none; margin-top: 20px;">
-            <form id="formAgregarCarrera" style="color: #333;">
-                <div class="form-group">
-                    <label for="nombreCarrera">Nombre de la carrera:</label>
-                    <input type="text" id="nombreCarrera" class="form-control" placeholder="Nombre de la nueva carrera"
-                        required>
-                </div>
-                <div class="form-group">
-                    <label for="titulo">Título:</label>
-                    <input type="text" id="titulo" class="form-control" placeholder="Título" required>
-                </div>
-                <div class="form-group">
-                    <label for="cargaHoraria">Carga Horaria:</label>
-                    <input type="number" id="cargaHoraria" class="form-control" placeholder="Carga Horaria" required>
-                </div>
-                <div class="form-group">
-                    <label for="duracion">Duración (en años):</label>
-                    <input type="number" id="duracion" class="form-control" placeholder="Duración" required>
-                </div>
-                <button type="submit" class="btn btn-success">Agregar Carrera</button>
-            </form>
+<!-- Modal para modificar carrera -->
+<div class="modal" id="addAlumnoModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar Carrera</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="formAgregarCarrera" style="color: #333;">
+                    <div class="form-group">
+                        <label for="nombreCarrera">Nombre de la Carrera</label>
+                        <input type="text" class="form-control" id="nombreCarrera" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="titulo">Título</label>
+                        <input type="text" class="form-control" id="titulo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cargaHoraria">Carga Horaria</label>
+                        <input type="number" class="form-control" id="cargaHoraria" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Duracion">Duración</label>
+                        <input type="number" class="form-control" id="duracion" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Agregar</button>
+                </form>
+            </div>
         </div>
-
+    </div>
+</div>
+        
         <!-- Contenedor donde se mostrarán las carreras -->
         <div class="full-box text-center carrera-container" id="listaCarreras" style="padding: 30px 10px;">
             {{!-- carreras de la bd --}}

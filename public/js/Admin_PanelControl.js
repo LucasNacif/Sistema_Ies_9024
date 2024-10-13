@@ -42,6 +42,30 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    window.agregarCarreras = function (idCarrera) {
+        fetch(`/carrera/agregar/${idCarrera}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(carrera => {
+                console.log('Carrera a modificar:', carrera); // Verificar la estructura del objeto
+                carreraIdToModify = idCarrera;
+    
+                // Asegúrate de que las propiedades existan
+                document.getElementById('agregarNombreCarrera').value = carrera.nombreCarrera || ''; // Agregar un valor por defecto
+                document.getElementById('agregarTitulo').value = carrera.titulo || ''; // Agregar un valor por defecto
+                document.getElementById('agregarCargaHoraria').value = carrera.cargaHoraria || ''; // Agregar un valor por defecto
+                document.getElementById('agregarDuracion').value = carrera.duracion || ''; // Agregar un valor por defecto
+    
+                // Abrir el modal de modificación
+                $('#addAlumnoModal').modal('show');
+            })
+            .catch(error => console.error('Error al agregar los datos de la carrera:', error));
+    };
+
     // Agregar una nueva carrera
     document.getElementById('formAgregarCarrera').addEventListener('submit', function (event) {
         event.preventDefault();
@@ -67,6 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error al agregar carrera:', error));
     });
 
+    
     // Variables globales para modificar/eliminar
     window.modificarCarrera = function (idCarrera) {
         fetch(`/carrera/obtener/${idCarrera}`)
