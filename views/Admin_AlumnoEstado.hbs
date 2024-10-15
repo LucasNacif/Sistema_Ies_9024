@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Carreras</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    <link rel="stylesheet" href="/Styles/main.css">
+    <link rel="stylesheet" href="/Styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/Styles/Admin_PanelControl.css">
+
+    <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
+    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
+    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
+    <script src="/js/jsBoostrap/material.min.js"></script>
+    <script src="/js/jsBoostrap/ripples.min.js"></script>
+    <script src="/js/jsBoostrap/main.js"></script>
+</head>
+
+<body>
+    <!-- Barra lateral (SideBar) -->
+    <section class="full-box cover dashboard-sideBar">
+        <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
+        <div class="full-box dashboard-sideBar-ct">
+            <div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
+                Bedel <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
+            </div>
+            <div class="full-box dashboard-sideBar-UserInfo">
+                <figure class="full-box">
+                    <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
+                </figure>
+                <ul class="full-box list-unstyled text-center">
+                    <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
+                </ul>
+            </div>
+            <ul class="list-unstyled full-box dashboard-sideBar-Menu">
+                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
+                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
+                <li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Gestion academica</a></li>
+                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a>
+                </li>
+                {{!-- <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i> Materias</a></li>
+                <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Alumnos</a></li> --}}
+            </ul>
+
+        </div>
+    </section>
+
+    <!-- Contenido de la página principal -->
+    <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
+
+        <!-- Barra de navegación superior (NavBar) -->
+        <nav class="full-box dashboard-Navbar">
+            <ul class="full-box list-unstyled text-right">
+                <li class="pull-left">
+                    <!-- Botón para mostrar/ocultar el menú lateral -->
+                    <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+                </li>
+            </ul>
+        </nav>
+        <div class="container">
+            <h1 style="margin-top: 68px;">Gestión Académica</h1>
+            <p>Seleccione un alumno para gestionar el estado en sus materias.</p>
+
+            <!-- Filtros para buscar alumnos -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Buscar por nombre o documento">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary">Buscar</button>
+                </div>
+            </div>
+
+            <!-- Tabla de materias -->
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Materia</th>
+                        <th>Estado Actual</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Matemáticas I</td>
+                        <td>
+                            <select class="form-select">
+                                <option value="regular" selected>Regular</option>
+                                <option value="libre">Libre</option>
+                                <option value="acreditado">Acreditado</option>
+                                <option value="desaprobado">Desaprobado</option>
+                            </select>
+                        </td>
+                        <td>01/10/2024</td>
+                        <td><button class="btn btn-success">Guardar</button></td>
+                    </tr>
+                    <!-- Más filas de materias -->
+                </tbody>
+            </table>
+        </div>
+
+
+    </section>
+    <!-- Scripts -->
+    <script src="/js/Admin_PanelControl.js"></script>
+    <script>
+        // Inicialización del componente de Material Design
+        $.material.init();
+    </script>
+</body>
+
+</html>

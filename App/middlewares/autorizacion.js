@@ -34,7 +34,7 @@ const verificarRol = (rolesPermitidos) => {
 
       if (!usuarioLogueado) {
         console.error("Error: no hay usuario en la solicitud");
-        return res.redirect('/'); // Redirige si no hay usuario
+        return res.redirect('/'); 
       }
 
       console.log("Roles del parámetro: ", rolesPermitidos);
