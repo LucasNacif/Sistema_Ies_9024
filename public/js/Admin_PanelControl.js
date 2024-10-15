@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(carreras => {
                 const listaCarreras = document.getElementById('listaCarreras');
+                listaCarreras.innerHTML = ''; // Limpiar la lista antes de agregar
                 carreras.forEach(carrera => {
                     // Manteniendo la estructura de card que tenías
                     listaCarreras.innerHTML += `
