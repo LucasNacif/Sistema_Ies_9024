@@ -2,14 +2,14 @@
 <html lang="es">
 
 <head>
-    <title>Inicio</title>
+    <title>Inscripción a Mesa de Examen</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
 
     <link rel="stylesheet" href="/Styles/main.css">
     <link rel="stylesheet" href="/Styles/bootstrap.min.css">
-    <link rel="stylesheet" href="/Styles/Alumno_Mesas.css">
+    <link rel="stylesheet" href="/Styles/Alumno_Mesa.css">
 
     <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
     <script src="/js/jsBoostrap/bootstrap.min.js"></script>
@@ -30,6 +30,7 @@
             <div class="full-box dashboard-sideBar-UserInfo">
                 <figure class="full-box">
                     <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
+                    <h5>IES 9-024 "Lavalle"</h5>
                 </figure>
                 <ul class="full-box list-unstyled text-center">
                     <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
@@ -44,7 +45,6 @@
 
     <!-- Contenido de la página principal -->
     <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x:hidden">
-
         <!-- Barra de navegación superior (NavBar) -->
         <nav class="full-box dashboard-Navbar">
             <ul class="full-box list-unstyled text-right">
@@ -55,10 +55,61 @@
             </ul>
         </nav>
 
-    
-        <h1>VISTA PARA EL ALUMNO</h1>
+        <!-- Título de la página -->
+        <h1 class="text-center">Inscripción a Mesas de Examen</h1>
 
-    
+        <!-- Formulario para inscripción a una mesa de examen -->
+        <div class="container">
+            <form action="/inscribir" method="POST" class="form-horizontal">
+
+                <div class="form-group">
+                    <label for="anio" class="col-sm-2 control-label">Año</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="anio" name="anio" required>
+                            <option value="" disabled selected>Seleccione el año</option>
+                            <option value="programacion">Primero</option>
+                            <option value="baseDeDatos">Segundo</option>
+                            <option value="ingles">Tercero</option>
+                            <option value="practica">Cuarto</option>
+                            
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="materia" class="col-sm-2 control-label">Materia</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="materia" name="materia" required>
+                            <option value="" disabled selected>Seleccione la materia</option>
+                            <option value="programacion">Programación</option>
+                            <option value="baseDeDatos">Base de datos</option>
+                            <option value="ingles">Ingles</option>
+                            <option value="practica">Practica Profesional</option>
+                            <option value="sistemasOperativos">Sistemas Operativos</option>
+                            <!-- Agregar más materias según corresponda -->
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="mesa" class="col-sm-2 control-label">Mesa de examen</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="mesa" name="mesa" required>
+                            <option value="" disabled selected>Seleccione la mesa</option>
+                            <option value="1">Mesa 1 - Fecha: 12/11/2024</option>
+                            <option value="2">Mesa 2 - Fecha: 15/11/2024</option>
+                            <option value="3">Mesa 3 - Fecha: 20/11/2024</option>
+                            <!-- Agregar más mesas según corresponda -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary">Inscribirse</button>
+                </div>
+            </form>
+        </div>
+
+    </section>
 </body>
 
 </html>
