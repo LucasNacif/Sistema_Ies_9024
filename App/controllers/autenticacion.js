@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const bcryptjs = require('bcryptjs');
 const Usuario = require('../../models/Usuario');
+const async = require('hbs/lib/async');
 dotenv.config();
 
 
@@ -72,7 +73,7 @@ exports.login = async (req, res) => {
 
 // Método de registro
 exports.registrar = async (req, res) => {
-  const { dni, email, nombre, password } = req.body;
+  const { dni, email, nombre, password, rol } = req.body;
 
   if (!dni || !password) {
     return res.status(400).send({ status: "Error", message: "Los campos están incompletos" });
@@ -94,7 +95,7 @@ exports.registrar = async (req, res) => {
       email,
       nombre,
       password: hashPassword,
-      rol: 'alumno' //tecnicamente este metodo es solo para registrar alumnos, pero capaz lo hago para que un superAdmin registre un bedel
+      rol: rol === "bedel" ? "bedel" : "alumno"
     });
 
     await nuevoUsuario.save();
@@ -110,6 +111,21 @@ exports.registrar = async (req, res) => {
     return res.status(500).send({ status: "Error", message: "Error interno del servidor" });
   }
 };
+
+// Metodo para eliminar usuarios
+exports.delete = async (req, res) => {
+  const { dni } = req.body;
+  try {
+    const user = await Usuario.delete(req.dni);
+      if (!Usuario ) {
+      return res.status(404).send({ status:"Error", message:"Usuario no encontrado "});
+      }
+      res.json({ message: 'Carrera eliminada correctamente' });
+    } catch ( err) {
+      console.error(err)
+      res.status(500).json( "Error al eliminar un usuario")
+  }
+}
 
 // Método para cerrar sesión
 exports.exit = (req, res) => {
