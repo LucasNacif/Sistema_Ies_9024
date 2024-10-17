@@ -4,24 +4,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Mesas de Examen Disponibles</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/Styles/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Estilos personalizados -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #3498db;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+
+        .header-bar img {
+            height: 80px;
+        }
+
+        .header-bar h2 {
+            color: #fff;
+            margin: 0;
+            font-weight: 700;
+            font-size: 19px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .mesa-card {
+            background-color: #ffffff;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .mesa-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .mesa-card h3 {
+            color: #3498db;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .mesa-card p {
+            margin: 15px 0;
+            color: #555;
+            font-size: 2.1rem;
+        }
+
+        .btn-primary {
+            background-color: #2ecc71;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 30px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .btn-primary:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .no-mesas {
+            text-align: center;
+            font-size: 1.3rem;
+            font-style: italic;
+            margin-top: 50px;
+            color: #d35400;
+            font-weight: 700;
+        }
+
+        /* Nueva sección de estado de materias */
+        .estado-card {
+            background-color: #f9e79f;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .estado-card h4 {
+            color: #d35400;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .estado-card p {
+            color: #555;
+            font-size: 2.1rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+
+            .mesa-card,
+            .estado-card {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <header>
-        <h1>VISTA PARA EL ALUMNO</h1>
-        <p>links a los que no deberia de entrar:</p>
-        <ul class="list-unstyled full-box dashboard-sideBar-Menu">
-                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
-                <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Alumnos</a></li>
-                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
-                <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i> Materias</a></li>
-                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a></li>
-        </ul>
-        <form id="logoutForm" action="/index/logout" method="post">
-            <button type="submit">Cerrar sesión</button>
-        </form>
-    </header>
+    <div class="header-bar">
+        <img src="/assets/img/logoCeilSinFondo.png" alt="Logo de la Institución">
+        <h2>Instituto de Educación Superior N9-024 de Lavalle</h2>
+    </div>
+
+    <div class="container">
+        <h1>Mesas de Examen Disponibles</h1>
+        {{#if mesasDisponiles.length}}
+        {{#each mesasDisponiles}}
+        <div class="mesa-card">
+            <h3>{{Materia.nombre}}</h3>
+            <p><strong>Fecha:</strong> {{formatDate fechaMesa}}</p>
+            <p><strong>Hora:</strong> {{horaMesa}}</p>
+            <p><strong>Estado:</strong> {{estadoActual}}</p>
+            <form action="/inscripcion/alumno" method="POST">
+                <input type="hidden" name="mesaId" value="{{this._id}}">
+                <button type="submit">Inscribir</button>
+            </form>
+        </div>
+        {{/each}}
+        {{else}}
+        <p class="no-mesas">No hay mesas disponibles en este momento.</p>
+        {{/if}}
+
+        <div class="estado-card">
+            <h4>Consulta de Estado en Materias</h4>
+            {{#each materias}}
+            <p><strong>{{nombreMateria}}:</strong> {{estadoMateria}}</p>
+            {{/each}}
+        </div>
+    </div>
+
+    <script src="/Scripts/mesas.js"></script>
 </body>
 
 </html>
