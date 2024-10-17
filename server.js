@@ -73,7 +73,7 @@ const { verificarSesion, verificarRol } = require('./App/middlewares/autorizacio
 // Ruta del index
 app.get('/', verificarSesion, (req, res) => {
   if (req.usuario) {
-    return res.redirect(req.usuario.rol === 'alumno' ? '/inscripcion/obtenerMesasActivas/' :
+    return res.redirect(req.usuario.rol === 'alumno' ? '/mesaExamenAlumno' :
                         req.usuario.rol === 'bedel' ? '/Administracion' :
                         req.usuario.rol === 'superAdmin' ? '/AdministracionSuperAdmin' : '/');
   }
@@ -98,7 +98,14 @@ app.get('/alumno', verificarSesion, verificarRol(['bedel', 'superAdmin']), (req,
 app.get('/materia', verificarSesion, verificarRol(['bedel', 'superAdmin']), (req, res) => {
   res.render("Admin_Materia.hbs");
 });
+app.get('/alumnoEstado', verificarSesion, verificarRol(['bedel', 'superAdmin']), (req, res) => {
+  res.render("Admin_AlumnoEstado");
+})
 
+//Rutas para alumno
+app.get('/mesaExamenAlumno', verificarSesion, verificarRol(['alumno']), (req, res) => {
+  res.render('Alumno_MesaExamen');
+});
 
 app.listen(port, () => {
   console.log(`Escuchando en el puerto ${port}`);

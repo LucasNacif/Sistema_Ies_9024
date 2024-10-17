@@ -66,4 +66,5 @@ const docAlumLogueado = async (req, res) => {
     return null;
   }
 };
+
 module.exports = { verificarSesion, verificarRol, docAlumLogueado };

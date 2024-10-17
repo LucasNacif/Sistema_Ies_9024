@@ -1,9 +1,37 @@
 const Mesa = require("../../models/Mesa");
-const AlumnoEstado = require("../../models/AlumnoEstado");
+const PlanEstudio = require("../../models/PlanEstudio");
+const Alumno = require("../../models/Alumno")
 const { IdAlumLogueado } = require('../middlewares/autorizacion');
 
 exports.obtenerMesasActivas = async (req, res) => {
     try {
+        const mesasDisponiles = await Mesa.find({ estadoActual: 'activa' }).populate('Materia');
+        res.render('Alumno_MesaExamen', { mesasDisponiles });
+    } catch (error) {
+        console.error('Error al obtener las mesas activas:', error);
+        res.status(500).send('Error del servidor');
+    }
+};
+
+exports.obtenerMesasSegunAlum = async (req, res) => {
+    try {
+        const documentoAlum = req.params.numDoc;
+        
+        //busco el alumno por su numero de documento
+        const alumno = await Alumno.findOne({ numDocAlumn: documentoAlum });
+
+        // Obtengo el plan de estudio del alumno que se quiere inscribir
+        const planEstudioDelAlumno = await PlanEstudio.findOne({ alumnos: alumno._id }).populate('materias');
+
+        // Si hay un plan de estudio le saco las materias
+        const materiasDelAlumno = planEstudioDelAlumno ? planEstudioDelAlumno.materias : [];
+
+        if (!materiasDelAlumno.length) {
+            return res.render('Alumno_MesaExamen', { mesasDisponiles: [] });
+        }
+        // Busco las mesas para esas materias
+        const mesasDisponiles = await Mesa.find({
+            Materia: { $in: materiasDelAlumno },
         const mesasDisponiles = await Mesa.find({ estadoActual: 'activa' }).populate('Materia');
         res.render('Alumno_MesaExamen', { mesasDisponiles });
     } catch (error) {
@@ -29,6 +57,72 @@ exports.obtenerMesasSegunAlum = async (req, res) => {
         const mesasDisponiles = await Mesa.find({
             Materia: { $in: materiasDelAlumno },
             estadoActual: 'activa'
+        }).populate('Materia').populate('Alumno');
+
+        console.log(mesasDisponiles);
+        
+        if(mesasDisponiles){
+            return res.render('Alumno_MesaExamen', { mesasDisponiles });
+        }
+        return res.render('Alumno_MesaExamen', { mesasDisponiles: [] });
+
+    } catch (error) {
+        console.error('Error al obtener las mesas activas:', error);
+        res.status(500).send('Error del servidor');
+    }
+}
+
+exports.verificarPeermisoParaRendir = async (req, res) => {
+    try {
+        //traigo el id del alumno logueado
+        const alumnoId = await IdAlumLogueado(req, res); 
+        if(!alumnoId){
+            return res.status(401).send('No hay un alumno logueado');
+        }
+        //traigo el id de la mesa
+        const { mesaId } = req.body;
+
+        console.log("idAlumno: ", alumnoId, "\n idMesa: ", mesaId);
+
+        // Traigo la mesa con sus materias y alumnos
+        const mesa = await Mesa.findById(mesaId)
+            .populate({
+                path: 'Materia',
+                populate: { path: 'correlativas' }
+            })
+            .populate('Alumno');
+
+        if (!mesa) {
+            return res.status(404).json({ mensaje: "Mesa no encontrada" });
+        }
+
+        if (mesa.estadoActual == 'suspendida') {
+            return res.status(404).json({ mensaje: "Mesa suspendida" });
+        }
+
+        //aca habria que agregar la validacion para ver cuantas veces ya rindio la mesa
+
+        // Verificar si el alumno ya está inscrito en la mesa
+        const inscripcionExistente = await verificarInscripcionExistente(alumnoId, mesa.Alumno);
+        if (inscripcionExistente) {
+            return res.status(400).json({ mensaje: "Este alumno ya está inscripto en la mesa" });
+        }
+        console.log("Materia a rendir de la mesa: \n", mesa.Materia);
+
+        // Verificar si el alumno aprobó las correlativas
+        const correlativasAprobadas = await verificarCorrelativas(alumnoId, mesa.Materia);
+        if (!correlativasAprobadas) {
+            return res.status(403).json({ mensaje: "No puedes inscribirte, no has aprobado todas las correlativas" });
+        }
+
+        // Verificar el estado del alumno en la materia de la mesa
+        const alumEstado = await AlumnoEstado.findOne({
+            idAlumno: alumnoId,
+            idMateria: mesa.Materia._id,
+        });
+        const resultadoVerificacion = await verificarEstadoMateriaMesa(alumEstado, alumnoId, mesa, res);
+        if (resultadoVerificacion) return resultadoVerificacion;
+
         })
 
         if(mesasDisponiles){
@@ -36,8 +130,11 @@ exports.obtenerMesasSegunAlum = async (req, res) => {
         }
         return res.render('Alumno_MesaExamen', { mesasDisponiles: [] });
     } catch (error) {
+        console.error("Error al verificar el permiso para rendir:", error.message);
+        return res.status(500).json({ mensaje: "Error en el servidor" });
         return res.status(500).json({ error: "Error interno del servidor" });
     }
+};
 }
 
 exports.verificarPeermisoParaRendir = async (req, res) => {
@@ -140,6 +237,7 @@ exports.verificarPermisoParaRendir = async (req, res) => {
 };
 
 // Función para verificar si el alumno ya está inscrito en la mesa
+
 async function verificarInscripcionExistente(alumnoId, AlumnosParaVerificar) {
     try {
         const alumnoYaInscripto = AlumnosParaVerificar.some(alumno => alumno._id.toString() === alumnoId);
