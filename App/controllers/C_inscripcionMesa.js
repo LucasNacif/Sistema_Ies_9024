@@ -57,21 +57,20 @@ exports.obtenerMesasSegunAlum = async (req, res) => {
 exports.verificarPermisoParaRendir = async (req, res) => {
     try {
         // Traigo el id del alumno logueado
-        const docAlumno = await docAlumLogueado(req, res); 
-
+        const docAlumno = await docAlumLogueado(req, res);
         if (!docAlumno) {
-            return res.status(401).send('No hay un alumno logueado');
+            return res.json({ success: false, mensaje: 'No hay un alumno logueado' });
         }
         
         const alumno = await Alumno.findOne({ numDocAlumn: docAlumno });
         if(!alumno){
-            return res.status(404).send('Alumno no encontrado');
+            return res.json({ success: false, mensaje: 'Alumno no encontrado' });
         }
         const alumnoId = alumno._id.toString();;
         // Traigo el id de la mesa
         const { mesaId } = req.params;
 
-        console.log("idAlumno: ", alumnoId, "\n idMesa: ", mesaId);
+        console.log("idAlumno: ", alumnoId, "\nidMesa: ", mesaId);
 
         // Traigo la mesa con sus materias y alumnos
         const mesa = await Mesa.findById(mesaId)
@@ -82,17 +81,17 @@ exports.verificarPermisoParaRendir = async (req, res) => {
             .populate('Alumno');
 
         if (!mesa) {
-            return res.status(404).json({ mensaje: "Mesa no encontrada" });
+            return res.json({ success: false, mensaje: 'Mesa no encontrada' });
         }
 
         if (mesa.estadoActual === 'suspendida') {
-            return res.status(404).json({ mensaje: "Mesa suspendida" });
+            return res.json({ success: false, mensaje: "Mesa suspendida"});
         }
 
         // Verifico si el alumno ya está inscrito en la mesa
         const inscripcionExistente = await verificarInscripcionExistente(alumnoId, mesa.Alumno);
         if (inscripcionExistente) {
-            return res.status(400).json({ mensaje: "Este alumno ya está inscripto en la mesa" });
+            return res.json({ success: false, mensaje: 'Ya estas inscripto en esta mesa' });
         }
 
         console.log("Materia a rendir de la mesa: \n", mesa.Materia);
@@ -100,7 +99,7 @@ exports.verificarPermisoParaRendir = async (req, res) => {
         // Verificar si el alumno aprobó las correlativas
         const correlativasAprobadas = await verificarCorrelativas(alumnoId, mesa.Materia);
         if (!correlativasAprobadas) {
-            return res.status(403).json({ mensaje: "No puedes inscribirte, no has aprobado todas las correlativas" });
+            return res.json({ success: false, mensaje: 'No puedes inscribirte, no has aprobado todas las correlativas' });
         }
 
         // Verificar el estado del alumno en la materia de la mesa
@@ -113,7 +112,7 @@ exports.verificarPermisoParaRendir = async (req, res) => {
 
     } catch (error) {
         console.error("Error al verificar el permiso para rendir:", error.message);
-        return res.status(500).json({ mensaje: "Error en el servidor" });
+        return res.json({ success: false, mensaje: 'Error en el servidor' });
     }
 };
 
@@ -165,19 +164,19 @@ async function verificarEstadoMateriaMesa(alumEstado, alumnoId, mesa, res) {
                 case "regular":
                     mesa.Alumno.push(alumnoId);
                     await mesa.save();
-                    return res.status(200).json({ mensaje: "Inscripción realizada con éxito" });
+                    return res.json({ success: true, mensaje: 'Inscripción realizada con éxito' });
                 case "desaprobado":
-                    return res.status(403).json({ mensaje: "No puede inscribirse, materia desaprobada" });
+                    return res.json({ success: false, mensaje: 'No puede inscribirse, materia desaprobada' });
                 case "acreditado":
-                    return res.status(403).json({ mensaje: "No puede inscribirse, esta materia ya está acreditada" });
+                    return res.json({ success: false, mensaje: 'No puede inscribirse, esta materia ya está acreditada' });
                 default:
-                    return res.status(400).json({ mensaje: "Estado de la materia no válido" });
+                    return res.json({ success: false, mensaje: 'Estado de la materia no válido' });
             }
         } else {
-            return res.status(404).json({ mensaje: "No se encontró el estado de la materia para el alumno" });
+            return res.json({ success: false, mensaje: 'No se encontró el estado de la materia para el alumno' });
         }
     } catch (error) {
         console.error("Error al verificar el estado de la materia:", error.message);
-        return res.status(500).json({ mensaje: "Error al verificar el estado de la materia" });
+        return res.json({ success: false, mensaje: 'Error al verificar el estado de la materia' });
     }
 }
