@@ -51,5 +51,19 @@ const verificarRol = (rolesPermitidos) => {
     }
   };
 };
-
-module.exports = { verificarSesion, verificarRol };
+const docAlumLogueado = async (req, res) => {
+  try {
+    const token = req.cookies.jwt; 
+    if (!token) {
+      return null; 
+    }
+    const usuarioDecodificado = jwt.verify(token, process.env.JWT_SECRET); 
+    console.log(usuarioDecodificado);
+    return usuarioDecodificado.dni;
+    
+  } catch (error) {
+    console.error('Error al obtener el DNI del alumno logueado:', error);
+    return null;
+  }
+};
+module.exports = { verificarSesion, verificarRol, docAlumLogueado };
