@@ -58,7 +58,6 @@ const docAlumLogueado = async (req, res) => {
       return null; 
     }
     const usuarioDecodificado = jwt.verify(token, process.env.JWT_SECRET); 
-    console.log(usuarioDecodificado);
     return usuarioDecodificado.dni;
     
   } catch (error) {

@@ -6,10 +6,8 @@ const controller = require("../controllers/C_inscripcionMesa");
 
 router.get('/inscripcion/obtenerMesasActivas/', controller.obtenerMesasActivas);
 
-router.post('/inscripcion/obtenerMesasSegunAlum/:numDoc', controller.obtenerMesasSegunAlum);
+router.get('/inscripcion/obtenerMesasSegunAlum/', controller.obtenerMesasSegunAlum);
 
-router.get('/inscripcion/alumno', controller.verificarPeermisoParaRendir);
-
-router.post('/inscripcion/alumno/:alumnoId/mesa/:mesaId/', controller.verificarPermisoParaRendir);
+router.get('/inscripcion/mesa/:mesaId/', controller.verificarPermisoParaRendir);
 
 module.exports = router;

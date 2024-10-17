@@ -27,7 +27,7 @@ const configurarCookie = (res, token) => {
 const redirigirSegunRol = (usuario, res) => {
   switch (usuario.rol) {
     case 'alumno':
-      return res.status(200).send({ status: "ok", redirect: "/inscripcion/obtenerMesasActivas/" });
+      return res.status(200).send({ status: "ok", redirect: "/inscripcion/obtenerMesasSegunAlum/" });
     case 'bedel':
       return res.status(200).send({ status: "ok", redirect: "/Administracion" });
     case 'superAdmin':
