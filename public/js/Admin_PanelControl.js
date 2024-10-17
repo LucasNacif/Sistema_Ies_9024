@@ -1,34 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Cargar carreras desde la base de datos
-    cargarCarreras();
-
-    function cargarCarreras() {
-        fetch('/carrera/obtener')
-            .then(response => response.json())
-            .then(carreras => {
-                const listaCarreras = document.getElementById('listaCarreras');
-                carreras.forEach(carrera => {
-                    // Manteniendo la estructura de card que tenías
-                    listaCarreras.innerHTML += `
-                    <div class="col-md-4">
-                        <div class="card" style="margin: 10px;">
-                            <div class="card-header text-center">
-                                ${carrera.nombreCarrera}
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">${carrera.titulo}</h5>
-                                <p class="card-text"><strong>Carga Horaria:</strong> ${carrera.cargaHoraria} horas</p>
-                                <p class="card-text"><strong>Duración:</strong> ${carrera.duracion} años</p>
-                                <a href="/planEstudio/${carrera._id}" class="btn btn-info">Ver Plan de Estudios</a>
-                                <button type="button" class="btn btn-warning" onclick="modificarCarrera('${carrera._id}')">Modificar</button>
-                                <button type="button" class="btn btn-danger" onclick="openDeleteModal('${carrera._id}')">Dar de baja</button>
-                            </div>
-                        </div>
-                    </div>`;
-                });
-            })
-            .catch(error => console.error('Error al cargar carreras:', error));
-    }
 
     // Mostrar/Ocultar formulario de agregar carrera
     const toggleFormBtn = document.getElementById('toggleFormBtn');
