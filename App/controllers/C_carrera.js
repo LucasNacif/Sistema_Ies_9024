@@ -1,8 +1,6 @@
+// controllers/C_carrera.js
 const Carrera = require("../../models/Carrera");
 const Materia = require('../../models/Materia');
-
-
-//CARRERAS
 
 // Obtener todas las carreras
 exports.obtenerCarreras = async (req, res) => {
@@ -10,52 +8,90 @@ exports.obtenerCarreras = async (req, res) => {
         const carreras = await Carrera.find({});
         res.json(carreras);
     } catch (err) {
-        res.status(500).send('Error al obtener las carreras');
+        console.error(err);
+        res.status(500).json({ message: 'Error al obtener las carreras' });
     }
 };
+
+// Obtener una carrera por ID
+exports.obtenerCarreraPorId = async (req, res) => {
+    try {
+        const carrera = await Carrera.findById(req.params.id);
+        if (!carrera) {
+            return res.status(404).json({ message: 'Carrera no encontrada' });
+        }
+        res.json(carrera);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error al obtener la carrera' });
+    }
+};
+
 // Agregar una nueva carrera
 exports.agregarCarreras = async (req, res) => {
+    const { nombreCarrera, titulo, cargaHoraria, duracion, planEstudio } = req.body;
+
+    if (!nombreCarrera) {
+        return res.status(400).json({ message: 'El nombre de la carrera es obligatorio' });
+    }
+
+    const nuevaCarrera = new Carrera({
+        nombreCarrera,
+        titulo,
+        cargaHoraria,
+        duracion,
+        planEstudio: planEstudio || null
+    });
+
     try {
-        const { nombreCarrera, titulo, cargaHoraria, duracion, planEstudio } = req.body;
-        
-        if (!nombreCarrera) {
-            return res.status(400).send('El nombre de la carrera es obligatorio');
-        }
-
-        const nuevaCarrera = new Carrera({
-            nombreCarrera,
-            titulo,
-            cargaHoraria,
-            duracion,
-            planEstudio: planEstudio ? planEstudio : null,
-            alumnos: []
-        });
-
         await nuevaCarrera.save();
-        res.status(201).send('Carrera agregada correctamente');
+        res.status(201).json({ message: 'Carrera agregada correctamente' });
     } catch (error) {
-        console.log(error);
-        res.status(400).send('Error al agregar la carrera');
+        console.error(error);
+        res.status(400).json({ message: 'Error al agregar la carrera' });
     }
 };
+
+// Modificar una carrera
+exports.modificarCarrera = async (req, res) => {
+    const { nombreCarrera, titulo, cargaHoraria, duracion } = req.body;
+
+    try {
+        const carrera = await Carrera.findByIdAndUpdate(
+            req.params.id,
+            { nombreCarrera, titulo, cargaHoraria, duracion },
+            { new: true }
+        );
+
+        if (!carrera) {
+            return res.status(404).json({ message: 'Carrera no encontrada' });
+        }
+
+        res.json({ message: 'Carrera modificada correctamente' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al modificar la carrera' });
+    }
+};
+
 // Eliminar una carrera
 exports.eliminarCarreras = async (req, res) => {
     try {
-        await Carrera.findByIdAndDelete(req.params.id);
-        res.send('Carrera eliminada correctamente');
+        const carrera = await Carrera.findByIdAndDelete(req.params.id);
+        if (!carrera) {
+            return res.status(404).json({ message: 'Carrera no encontrada' });
+        }
+        res.json({ message: 'Carrera eliminada correctamente' });
     } catch (err) {
-        res.status(500).send('Error al eliminar la carrera');
+        console.error(err);
+        res.status(500).json({ message: 'Error al eliminar la carrera' });
     }
 };
 
-
-//PLAN DE ESTUDIO
-
-// Ver plan de estudio de una carrera
+// PLAN DE ESTUDIO
 exports.verPlanEstudio = async (req, res) => {
     try {
         const carreraId = req.params.id;
-        
         const carrera = await Carrera.findById(carreraId)
             .populate({
                 path: 'planEstudio',
@@ -66,7 +102,7 @@ exports.verPlanEstudio = async (req, res) => {
             });
 
         if (!carrera) {
-            return res.status(404).send('Carrera no encontrada');
+            return res.status(404).json({ message: 'Carrera no encontrada' });
         }
 
         res.render('Admin_PlanEstudio', {
@@ -74,11 +110,42 @@ exports.verPlanEstudio = async (req, res) => {
             planEstudio: carrera.planEstudio
         });
     } catch (error) {
-        console.log(error);
-        res.status(500).send('Error al obtener el plan de estudio');
+        console.error(error);
+        res.status(500).json({ message: 'Error al obtener el plan de estudio' });
     }
 };
 
+// MATERIAS
+exports.agregarMateria = async (req, res) => {
+    const { nombreMateria, correlativas } = req.body;
+
+    if (!nombreMateria) {
+        return res.status(400).json({ message: 'El nombre de la materia es obligatorio' });
+    }
+
+    const materia = new Materia({
+        nombreMateria,
+        correlativas: correlativas || []
+    });
+
+    try {
+        await materia.save();
+        res.status(201).json({ message: 'Materia agregada correctamente' });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: 'Error al agregar la materia' });
+    }
+};
+
+exports.obtenerMaterias = async (req, res) => {
+    try {
+        const materias = await Materia.find().populate('correlativas');
+        res.json(materias);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error al obtener las materias' });
+    }
+};
 
 
 // // Agregar un plan de estudio a una carrera existente
@@ -108,40 +175,6 @@ exports.verPlanEstudio = async (req, res) => {
 //     }
 // };
 
-
-//MATERIAS
-
-// Agregar una nueva materia
-exports.agregarMateria = async (req, res) => {
-    try {
-        const { nombreMateria, correlativas } = req.body;
-
-        if (!nombreMateria) {
-            return res.status(400).send('El nombre de la materia es obligatorio');
-        }
-
-        const materia = new Materia({
-            nombreMateria: nombreMateria,
-            correlativas: correlativas || []
-        });
-        console.log(materia);
-        await materia.save();
-        res.status(201).send('Materia agregada correctamente');
-    } catch (error) {
-        console.log(error);
-        res.status(400).send('Error al agregar la materia');
-    }
-};
-// Obtener todas las materias
-exports.obtenerMaterias = async (req, res) => {
-    try {
-        const materia = await Materia.find().populate('correlativas');
-        // console.log(materia); 
-        res.json(materia);
-    } catch (err) {
-        res.status(500).send('Error al obtener las materias');
-    }
-};
 //falta modificar y eliminar materia por si alguien lo quiere hacer :)
 
 
