@@ -6,9 +6,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
-<meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
     
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/Styles/main.css" />
@@ -18,11 +15,6 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
-    <script src="/js/jsBoostrap/material.min.js"></script>
-    <script src="/js/jsBoostrap/ripples.min.js"></script>
-    <script src="/js/jsBoostrap/main.js"></script>
 
 </head>
 
@@ -49,212 +41,158 @@
                 <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
                 <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Alumnos</a></li>
                 <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
+                <li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Gestión académica</a></li>
                 <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i> Materias</a></li>
-
                 <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a></li>
             </ul>
-
         </div>
     </section>
 
     <!-- Contenido de la página principal -->
     <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
-
-        <!-- Barra de navegación superior (NavBar) -->
         <nav class="full-box dashboard-Navbar">
             <ul class="full-box list-unstyled text-right">
                 <li class="pull-left">
-                    <!-- Botón para mostrar/ocultar el menú lateral -->
                     <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
                 </li>
             </ul>
         </nav>
 
-
-      <!-- Información de la Carrera -->
         <div class="container mt-4">
             <h3>Información de la Carrera</h3>
             <table class="table table-bordered">
-                <tbody>
-                    <tr>
-                        <th>Nombre de la Carrera</th>
-                        <td>{{carrera.nombreCarrera}}</td>
-                    </tr>
-                    <tr>
-                        <th>Título</th>
-                        <td>{{carrera.titulo}}</td>
-                    </tr>
-                    <tr>
-                        <th>Carga Horaria</th>
-                        <td>{{carrera.cargaHoraria}} horas</td>
-                    </tr>
-                    <tr>
-                        <th>Duración</th>
-                        <td>{{carrera.duracion}} años</td>
-                    </tr>
-                </tbody>
+                <tbody id="infoCarrera"></tbody>
             </table>
         </div>
-<div class="container mt-4">
-    <!-- Información de Materias -->
-    <h4 class="mt-4">Materias</h4>
-    <table class="table table-striped">
-            <button class="btn btn-sm btn-add" onclick="abrirModalAgregarMateria()" title="Agregar">Agregar</button>
-        <thead>
-            <tr>
-                <th>Nombre de la Materia</th>
-                <th>Correlativas</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each planEstudio.materias}}
-            <tr>
-                <td>{{this.nombreMateria}}</td>
-                <td>
-                    {{#if this.correlativas.length}}
-                        {{#each this.correlativas}}
-                            <span>{{this.nombreMateria}}</span>{{#unless @last}}, {{/unless}}
-                        {{/each}}
-                    {{else}}
-                        <span>Sin correlativas</span>
-                    {{/if}}
-                </td>
-                <td>
-                    <button class="btn btn-danger btn-sm" onclick="eliminarMateria('{{this._id}}')">Eliminar</button>
-                    <button class="btn btn-sm btn-edit" onclick="modificarMateria('{{this._id}}')" title="Modificar">Modificar 
-                    <i class="zmdi zmdi-edit"></i>
-                    </button>
 
-                </td>
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
+        <div class="container mt-4">
+            <h4 class="mt-4">Materias</h4>
+            <button class="btn btn-sm btn-add">Agregar</button>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre de la Materia</th>
+                        <th>Correlativas</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="listaMaterias"></tbody>
+            </table>
+        </div>
 
-    <!-- Información de Alumnos -->
-<h4 class="mt-4">Alumnos</h4>
-<table class="table table-striped">
-<button class="btn btn-sm btn-add" onclick="abrirModalAlumno('agregar')" title="Agregar">Agregar</button>
-    <button class="btn btn-sm btn-view" onclick="mostrarAlumnosDadoDeBaja()" title="Ver Dados de Baja">Ver Dados De Baja</button>
-    <thead>
-        <tr>
-            <th>Nombre Completo</th>
-            <th>Número de Documento</th>
-            <th>Email</th>
-            <th>Curso</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each planEstudio.alumnos}}
-        <tr>
-            <td>{{this.nombreCompleto}}</td>
-            <td>{{this.numDocAlumn}}</td>
-            <td>{{this.emailAlumn}}</td>
-            <td>{{this.curso}}</td>
-            <td>
-                {{#if (and this.tituloSecundario this.psicofisico this.partidaNacim this.dniActualizado this.analiticoFiel this.antecedenPen)}}
-                    Legajo Completo
-                {{else}}
-                    Legajo Incompleto
-                {{/if}}
-            </td>
-            <td>
+        <div class="container mt-4">
+            <h4 class="mt-4">Alumnos</h4>
+            <button class="btn btn-sm btn-add">Agregar</button>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre Completo</th>
+                        <th>Número de Documento</th>
+                        <th>Email</th>
+                        <th>Curso</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="listaAlumnos"></tbody>
+            </table>
+        </div>
 
-<button class="btn btn-sm btn-edit" onclick="abrirModalAlumno('modificar', '{{this._id}}')" title="Modificar">Modificar<i class="zmdi zmdi-edit"></i>
-</button>
-                <button class="btn btn-sm btn-delete" onclick="darDeBajaAlumno('{{this._id}}')" title="Dar de Baja">
-                    Dar De Baja<i class="zmdi zmdi-delete"></i>
-                </button>
-            </td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                cargarCarreras();
+                cargarMaterias();
+                cargarAlumnos();
+            });
 
+            function cargarCarreras() {
+                fetch('/carrera/obtener')
+                    .then(response => response.json())
+                    .then(carreras => {
+                        const infoCarrera = document.getElementById('infoCarrera');
+                        const carrera = carreras[0];
+                        if (carrera) {
+                            infoCarrera.innerHTML = `
+                                <tr>
+                                    <th>Nombre de la Carrera</th>
+                                    <td>${carrera.nombreCarrera}</td>
+                                </tr>
+                                <tr>
+                                    <th>Título</th>
+                                    <td>${carrera.titulo}</td>
+                                </tr>
+                                <tr>
+                                    <th>Carga Horaria</th>
+                                    <td>${carrera.cargaHoraria} horas</td>
+                                </tr>
+                                <tr>
+                                    <th>Duración</th>
+                                    <td>${carrera.duracion} años</td>
+                                </tr>`;
+                        }
+                    })
+                    .catch(error => console.error('Error al cargar carreras:', error));
+            }
+
+            function cargarMaterias() {
+                fetch('/materia/obtener')
+                    .then(response => response.json())
+                    .then(materias => {
+                        const listaMaterias = document.getElementById('listaMaterias');
+                        listaMaterias.innerHTML = '';
+                        materias.forEach(materia => {
+                            listaMaterias.innerHTML += `
+                            <tr>
+                                <td>${materia.nombreMateria}</td>
+                                <td>${materia.correlativas.length > 0 ? materia.correlativas.join(', ') : 'Sin correlativas'}</td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm" onclick="eliminarMateria('${materia._id}')">Dar De Baja</button>
+                                    <button class="btn btn-sm btn-edit" onclick="modificarMateria('${materia._id}')" title="Modificar">Modificar</button>
+                                </td>
+                            </tr>`;
+                        });
+                    })
+                    .catch(error => console.error('Error al cargar materias:', error));
+            }
+
+            function cargarAlumnos() {
+                fetch('/alumno/obtener')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error en la red');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const listaAlumnos = document.getElementById('listaAlumnos');
+                        listaAlumnos.innerHTML = '';
+
+                        if (data.length > 0) {
+                            data.forEach(alumno => {
+                                listaAlumnos.innerHTML += `
+                                    <tr>
+                                        <td>${alumno.nombreCompleto}</td>
+                                        <td>${alumno.numDocAlumn}</td>
+                                        <td>${alumno.emailAlumn}</td>
+                                        <td>${alumno.curso}</td>
+                                        <td>${alumno.estado ? 'Legajo Completo' : 'Legajo Incompleto'}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-edit" title="Modificar">Modificar</button>
+                                            <button class="btn btn-sm btn-danger" title="Dar de Baja">Dar De Baja</button>
+                                        </td>
+                                    </tr>`;
+                            });
+                        } else {
+                            listaAlumnos.innerHTML = "<tr><td colspan='6' class='text-center'>No hay alumnos registrados.</td></tr>";
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar alumnos:', error);
+                        const listaAlumnos = document.getElementById('listaAlumnos');
+                        listaAlumnos.innerHTML = "<tr><td colspan='6' class='text-center'>Error al cargar los alumnos.</td></tr>";
+                    });
+            }
+        </script>
+    </section>
 </body>
-<script>
-    function cargarMaterias() {
-        // Aquí iría una llamada a la base de datos para obtener las materias y mostrarlas
-        const materias = [
-            {id: 1, nombre: 'Matemáticas'},
-            {id: 2, nombre: 'Física'},
-            // más materias...
-        ];
-        
-        const listaMaterias = document.getElementById('listaMaterias');
-        listaMaterias.innerHTML = '';
-        materias.forEach(materia => {
-            listaMaterias.innerHTML += 
-                `<tr>
-                    <td><input type="checkbox" value="${materia.id}"></td>
-                    <td>${materia.nombre}</td>
-                </tr>`;
-        });
-    }
-
-    // Función para cargar dinámicamente los alumnos en la tabla del modal
-    function cargarAlumnos() {
-        // Aquí iría una llamada a la base de datos para obtener los alumnos y mostrarlos
-        const alumnos = [
-            {id: 1, nombreCompleto: 'Juan Pérez', numDocAlumn: '12345678'},
-            {id: 2, nombreCompleto: 'María Gómez', numDocAlumn: '87654321'},
-            // más alumnos...
-        ];
-
-        const listaAlumnos = document.getElementById('listaAlumnos');
-        listaAlumnos.innerHTML = '';
-        alumnos.forEach(alumno => {
-            listaAlumnos.innerHTML += 
-                `<tr>
-                    <td><input type="checkbox" value="${alumno.id}"></td>
-                    <td>${alumno.nombreCompleto}</td>
-                    <td>${alumno.numDocAlumn}</td>
-                </tr>`;
-        });
-    }
-
-    function abrirModalAlumno(accion, idAlumno = null) {
-    if (accion === 'agregar') {
-        $('#modalAgregarAlumnoLabel').text('Agregar Alumno');
-        $('#formAgregarAlumno')[0].reset();  // Resetear el formulario
-        $('#alumnoId').val("");  // Vaciar el campo oculto
-    } else if (accion === 'modificar') {
-        $('#modalAgregarAlumnoLabel').text('Modificar Alumno');
-        cargarDatosAlumno(idAlumno);  // Cargar los datos del alumno a modificar
-    }
-    $('#modalAgregarAlumno').modal('show'); 
-}
-
-
-
-    function cargarDatosAlumno(idAlumno) {
-    console.log(`Cargando datos del alumno con id: ${idAlumno}`);  // Log para verificar que se ejecuta
-    $.ajax({
-        url: `/alumno/${idAlumno}`,
-        method: 'GET',
-        success: function(alumno) {
-            console.log('Datos del alumno recibidos:', alumno);  // Log para ver los datos
-            // Rellenar los campos del formulario con los datos del alumno
-            $('#alumnoId').val(alumno._id);
-            $('#nombreCompleto').val(alumno.nombreCompleto);
-            $('#numDocAlumn').val(alumno.numDocAlumn);
-            $('#emailAlumn').val(alumno.emailAlumn);
-            $('#curso').val(alumno.curso);
-            $('#tituloSecundario').prop('checked', alumno.tituloSecundario);
-            $('#psicofisico').prop('checked', alumno.psicofisico);
-            $('#partidaNacim').prop('checked', alumno.partidaNacim);
-            $('#dniActualizado').prop('checked', alumno.dniActualizado);
-            $('#analiticoFiel').prop('checked', alumno.analiticoFiel);
-            $('#antecedenPen').prop('checked', alumno.antecedenPen);
-        },
-        error: function(error) {
-            console.error('Error al cargar los datos del alumno:', error);
-            alert('Error al cargar los datos del alumno');
-        }
-    });
-}
-</script>
 </html>

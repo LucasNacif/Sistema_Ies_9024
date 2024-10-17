@@ -1,6 +1,6 @@
-// controllers/C_carrera.js
 const Carrera = require("../../models/Carrera");
 const Materia = require('../../models/Materia');
+const mongoose = require('mongoose');
 
 // Obtener todas las carreras
 exports.obtenerCarreras = async (req, res) => {
@@ -15,8 +15,14 @@ exports.obtenerCarreras = async (req, res) => {
 
 // Obtener una carrera por ID
 exports.obtenerCarreraPorId = async (req, res) => {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'ID de carrera no válido' });
+    }
+
     try {
-        const carrera = await Carrera.findById(req.params.id);
+        const carrera = await Carrera.findById(id);
         if (!carrera) {
             return res.status(404).json({ message: 'Carrera no encontrada' });
         }
@@ -54,11 +60,16 @@ exports.agregarCarreras = async (req, res) => {
 
 // Modificar una carrera
 exports.modificarCarrera = async (req, res) => {
+    const { id } = req.params;
     const { nombreCarrera, titulo, cargaHoraria, duracion } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'ID de carrera no válido' });
+    }
 
     try {
         const carrera = await Carrera.findByIdAndUpdate(
-            req.params.id,
+            id,
             { nombreCarrera, titulo, cargaHoraria, duracion },
             { new: true }
         );
@@ -76,8 +87,14 @@ exports.modificarCarrera = async (req, res) => {
 
 // Eliminar una carrera
 exports.eliminarCarreras = async (req, res) => {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'ID de carrera no válido' });
+    }
+
     try {
-        const carrera = await Carrera.findByIdAndDelete(req.params.id);
+        const carrera = await Carrera.findByIdAndDelete(id);
         if (!carrera) {
             return res.status(404).json({ message: 'Carrera no encontrada' });
         }
@@ -90,23 +107,27 @@ exports.eliminarCarreras = async (req, res) => {
 
 // PLAN DE ESTUDIO
 exports.verPlanEstudio = async (req, res) => {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'ID de carrera no válido' });
+    }
+
     try {
-        const carreraId = req.params.id;
-        const carrera = await Carrera.findById(carreraId)
-            .populate({
-                path: 'planEstudio',
-                populate: [
-                    { path: 'materias' },
-                    { path: 'alumnos' }
-                ]
-            });
+        const carrera = await Carrera.findById(id).populate({
+            path: 'planEstudio',
+            populate: [
+                { path: 'materias' },
+                { path: 'alumnos' }
+            ]
+        });
 
         if (!carrera) {
             return res.status(404).json({ message: 'Carrera no encontrada' });
         }
 
         res.render('Admin_PlanEstudio', {
-            carrera: carrera,
+            carrera,
             planEstudio: carrera.planEstudio
         });
     } catch (error) {
@@ -148,35 +169,4 @@ exports.obtenerMaterias = async (req, res) => {
 };
 
 
-// // Agregar un plan de estudio a una carrera existente
-// exports.agregarPlanEstudio = async (req, res) => {
-//     try {
-//         const { carreraId } = req.params;
-//         const { materias } = req.body;
-
-//         // Verifico si existe la carrera
-//         const carrera = await Carrera.findById(carreraId);
-//         if (!carrera) {
-//             return res.status(404).send('Carrera no encontrada');
-//         }
-
-//         const nuevoPlanEstudio = {
-//             materias: materias || [] // Si no hay materias queda vacío
-//         };
-
-//         // Asociar el nuevo plan de estudio a la carrera
-//         carrera.plan.push(nuevoPlanEstudio);
-//         await carrera.save(); // Actualizar la carrera
-
-//         res.status(200).send('Plan de estudio agregado correctamente');
-//     } catch (error) {
-//         console.log(error);
-//         res.status(400).send('Error al agregar el plan de estudio');
-//     }
-// };
-
 //falta modificar y eliminar materia por si alguien lo quiere hacer :)
-
-
-//MESA
-
