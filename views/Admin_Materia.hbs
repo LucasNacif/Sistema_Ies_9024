@@ -120,106 +120,106 @@
     </div>
 
     <script>
-       document.addEventListener('DOMContentLoaded', function () {
-    let materias = []; // Definir la variable materias de forma global
+        document.addEventListener('DOMContentLoaded', function () {
+            let materias = []; // Definir la variable materias de forma global
 
-    function obtenerMaterias() {
-        fetch('/materia/obtener')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error en la red');
-                }
-                return response.json(); // Convierte la respuesta en JSON
-            })
-            .then(data => {
-                materias = data; // Asignar los datos obtenidos a la variable global
-                renderMaterias(); // Renderizar las materias
-            })
-            .catch(error => {
-                console.error("Error al obtener las materias:", error);
-                var listaMaterias = $("#listaMaterias");
-                listaMaterias.html("<li class='list-group-item'>Error al cargar las materias.</li>");
-            });
-    }
+            function obtenerMaterias() {
+                fetch('/materia/obtener')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error en la red');
+                        }
+                        return response.json(); // Convierte la respuesta en JSON
+                    })
+                    .then(data => {
+                        materias = data; // Asignar los datos obtenidos a la variable global
+                        renderMaterias(); // Renderizar las materias
+                    })
+                    .catch(error => {
+                        console.error("Error al obtener las materias:", error);
+                        var listaMaterias = $("#listaMaterias");
+                        listaMaterias.html("<li class='list-group-item'>Error al cargar las materias.</li>");
+                    });
+            }
 
-    const formMateria = document.getElementById('formMateria');
-    const listaMaterias = document.getElementById('listaMaterias');
-    const searchCorrelativas = document.getElementById('searchCorrelativas');
-    const correlativasList = document.getElementById('correlativasList');
-    const btnCancelar = document.getElementById('btnCancelar');
+            const formMateria = document.getElementById('formMateria');
+            const listaMaterias = document.getElementById('listaMaterias');
+            const searchCorrelativas = document.getElementById('searchCorrelativas');
+            const correlativasList = document.getElementById('correlativasList');
+            const btnCancelar = document.getElementById('btnCancelar');
 
-    function renderMaterias() {
-        listaMaterias.innerHTML = '';
-        materias.forEach(materia => {
-            const div = document.createElement('div');
-            div.className = 'materia-item';
-            div.innerHTML = `
+            function renderMaterias() {
+                listaMaterias.innerHTML = '';
+                materias.forEach(materia => {
+                    const div = document.createElement('div');
+                    div.className = 'materia-item';
+                    div.innerHTML = `
                 <span>${materia.nombreMateria}</span>
                 <div class="correlativas-container">
                     ${materia.correlativas.map(c => `<span class="correlativa-tag">${c.nombreMateria}</span>`).join('')}
                 </div>
                 <button class="btn btn-sm btn-info" onclick="editarMateria('${materia._id}')">Editar</button>
             `;
-            listaMaterias.appendChild(div);
-        });
-    }
+                    listaMaterias.appendChild(div);
+                });
+            }
 
-    function renderCorrelativas(search = '') {
-        const filteredMaterias = materias.filter(m =>
-            m.nombreMateria.toLowerCase().includes(search.toLowerCase()));
-        correlativasList.innerHTML = filteredMaterias.map(m => `
+            function renderCorrelativas(search = '') {
+                const filteredMaterias = materias.filter(m =>
+                    m.nombreMateria.toLowerCase().includes(search.toLowerCase()));
+                correlativasList.innerHTML = filteredMaterias.map(m => `
             <div>
                 <input type="checkbox" id="corr_${m._id}" value="${m._id}">
                 <label for="corr_${m._id}">${m.nombreMateria}</label>
             </div>
         `).join('');
-    }
+            }
 
-    searchCorrelativas.addEventListener('input', (e) => renderCorrelativas(e.target.value));
+            searchCorrelativas.addEventListener('input', (e) => renderCorrelativas(e.target.value));
 
-    formMateria.addEventListener('submit', function (e) {
-        e.preventDefault();
-        const id = document.getElementById('materiaId').value;
-        const nombreMateria = document.getElementById('nombreMateria').value;
-        const correlativas = Array.from(correlativasList.querySelectorAll('input:checked'))
-            .map(input => input.value);
+            formMateria.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const id = document.getElementById('materiaId').value;
+                const nombreMateria = document.getElementById('nombreMateria').value;
+                const correlativas = Array.from(correlativasList.querySelectorAll('input:checked'))
+                    .map(input => input.value);
 
-        if (id) {
-            // Editar materia existente
-            const index = materias.findIndex(m => m._id === id);
-            materias[index] = { ...materias[index], nombreMateria, correlativas };
-        } else {
-            // Agregar nueva materia
-            materias.push({ _id: Date.now().toString(), nombreMateria, correlativas });
-        }
+                if (id) {
+                    // Editar materia existente
+                    const index = materias.findIndex(m => m._id === id);
+                    materias[index] = { ...materias[index], nombreMateria, correlativas };
+                } else {
+                    // Agregar nueva materia
+                    materias.push({ _id: Date.now().toString(), nombreMateria, correlativas });
+                }
 
-        renderMaterias();
-        formMateria.reset();
-        document.getElementById('materiaId').value = '';
-    });
-
-    btnCancelar.addEventListener('click', function () {
-        formMateria.reset();
-        document.getElementById('materiaId').value = '';
-    });
-
-    window.editarMateria = function (id) {
-        const materia = materias.find(m => m._id === id);
-        if (materia) {
-            document.getElementById('materiaId').value = materia._id;
-            document.getElementById('nombreMateria').value = materia.nombreMateria;
-            renderCorrelativas();
-            materia.correlativas.forEach(c => {
-                const checkbox = document.getElementById(`corr_${c._id}`);
-                if (checkbox) checkbox.checked = true;
+                renderMaterias();
+                formMateria.reset();
+                document.getElementById('materiaId').value = '';
             });
-        }
-    };
 
-    // Inicialización
-    obtenerMaterias(); // Llamar a obtenerMaterias para cargar las materias al iniciar
-    renderCorrelativas();
-});
+            btnCancelar.addEventListener('click', function () {
+                formMateria.reset();
+                document.getElementById('materiaId').value = '';
+            });
+
+            window.editarMateria = function (id) {
+                const materia = materias.find(m => m._id === id);
+                if (materia) {
+                    document.getElementById('materiaId').value = materia._id;
+                    document.getElementById('nombreMateria').value = materia.nombreMateria;
+                    renderCorrelativas();
+                    materia.correlativas.forEach(c => {
+                        const checkbox = document.getElementById(`corr_${c._id}`);
+                        if (checkbox) checkbox.checked = true;
+                    });
+                }
+            };
+
+            // Inicialización
+            obtenerMaterias(); // Llamar a obtenerMaterias para cargar las materias al iniciar
+            renderCorrelativas();
+        });
 
 
     </script>
