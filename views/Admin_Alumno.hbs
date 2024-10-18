@@ -79,7 +79,7 @@
             <p id="mensajeERROR" class="alert alert-danger" role="alert"></p>
 
             <!-- Formulario para agregar alumno -->
-            <form id="formAgregar" method="post" action="/alumno/agregar" style="display: none;">
+            <form id="formAgregar" method="post" action="/alumno/agregarAlumnoPlanEstudio" style="display: none;">
                 <div>
                     <label for="nombreCompleto">Nombre Completo:</label>
                     <input type="text" id="nombreCompleto" name="nombreCompleto" required />
@@ -132,8 +132,12 @@
                 <div>
                     <label for="antecedenPen">Antecedentes Penales:</label>
                     <input type="checkbox" id="antecedenPen" name="antecedenPen" value="true" />
-
                 </div>
+                <div>
+                    <label for="idPlanEstudioSeleccionado">idPlanDeEstudio</label>
+                    <input type="text" id="idPlanEstudioSeleccionado" name="idPlanEstudioSeleccionado" value="true" />
+                </div>
+
                 <button type="submit" class="btn btn-add">Enviar</button>
             </form>
 
