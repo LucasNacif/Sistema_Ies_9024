@@ -17,7 +17,7 @@ exports.obtenerMesasActivas = async (req, res) => {
 // Función para obtener mesas disponibles según el alumno y su plan de estudios
 exports.obtenerMesasSegunAlum = async (req, res) => {
     try {
-          // Traigo el id del alumno logueado
+          // Traigo el doc del alumno logueado
           const documentoAlum = await docAlumLogueado(req, res); 
 
           if (!documentoAlum) {
@@ -46,7 +46,13 @@ exports.obtenerMesasSegunAlum = async (req, res) => {
             estadoActual: 'activa'
         }).populate('Materia');
 
-        res.render('Alumno_MesaExamen', { mesasDisponibles });
+         // Verificar el estado del alumno en la materia de la mesa
+         const estadosAlumno = await AlumnoEstado.find({ idAlumno: alumno._id }).populate('idMateria');
+
+         console.log(  "\n" + mesasDisponibles , "\n" + estadosAlumno)
+
+        //renderizo la vista con las mesas diponibles y los estados en cada materia para que el alumno los pueda observar
+        res.render('Alumno_MesaExamen', { mesasDisponibles , estadosAlumno});
     } catch (error) {
         console.error('Error al obtener las mesas según el alumno:', error);
         res.status(500).send('Error del servidor');
@@ -64,7 +70,7 @@ exports.verificarPermisoParaRendir = async (req, res) => {
         
         const alumno = await Alumno.findOne({ numDocAlumn: docAlumno });
         if(!alumno){
-            return res.json({ success: false, mensaje: 'Alumno no encontrado' });
+            return res.json({ success: false, mensaje: 'Aun no estas cargado en la base de datos' });
         }
         const alumnoId = alumno._id.toString();;
         // Traigo el id de la mesa
@@ -173,7 +179,7 @@ async function verificarEstadoMateriaMesa(alumEstado, alumnoId, mesa, res) {
                     return res.json({ success: false, mensaje: 'Estado de la materia no válido' });
             }
         } else {
-            return res.json({ success: false, mensaje: 'No se encontró el estado de la materia para el alumno' });
+            return res.json({ success: false, mensaje: 'Aun no tienes cargado tu estado en esta materia' });
         }
     } catch (error) {
         console.error("Error al verificar el estado de la materia:", error.message);
