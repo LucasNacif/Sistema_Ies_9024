@@ -41,13 +41,13 @@ const verificarRol = (rolesPermitidos) => {
 
       // Verifica si el rol pasado por parámetro es válido
       if (rolesPermitidos.length > 0 && !rolesPermitidos.includes(usuarioLogueado.rol)) {
-        return res.status(403).send({ status: "Error", message: "Acceso denegado", redirect: "/" });
+        return res.status(403).render('AccesoDenegado.hbs');
       }
 
       next(); // Si todo está bien, sigue al siguiente middleware
     } catch (error) {
       console.error('Error en verificarRol:', error);
-      return res.status(500).send({ status: "Error", message: "Ha ocurrido un error", redirect: "/" });
+      return res.status(403).render('AccesoDenegado.hbs');
     }
   };
 };

@@ -26,9 +26,9 @@
 			<!-- Información del usuario en el menú lateral -->
 			<div class="full-box dashboard-sideBar-UserInfo">
 				<figure class="full-box">
-                    <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
-                    <h5>IES 9-024 "Lavalle"</h5>
-                </figure>
+					<img src="/assets/img/logo_IES.jpg" alt="UserIcon">
+					<h5>IES 9-024 "Lavalle"</h5>
+				</figure>
 				<!-- Opciones de configuración y salir -->
 				<ul class="full-box list-unstyled text-center">
 					<li>
@@ -39,71 +39,72 @@
 				</ul>
 			</div>
 			<!-- Menú principal -->
-	      <ul class="list-unstyled full-box dashboard-sideBar-Menu">
+			<ul class="list-unstyled full-box dashboard-sideBar-Menu">
 
-                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
-                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
-               <li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Gestion academica</a></li>
-                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a></li>
-            </ul>
+				<li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
+				<li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
+				<li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Gestion academica</a></li>
+				<li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a>
+				</li>
+			</ul>
 
-        </div>
-    </section>
+		</div>
+	</section>
 
-    <!-- Contenido de la página principal -->
-    <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
+	<!-- Contenido de la página principal -->
+	<section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
 
 
-        <!-- Barra de navegación superior (NavBar) -->
-        <nav class="full-box dashboard-Navbar">
-            <ul class="full-box list-unstyled text-right">
-                <li class="pull-left">
-                    <!-- Botón para mostrar/ocultar el menú lateral -->
-                    <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
-                </li>
-            </ul>
-        </nav>
+		<!-- Barra de navegación superior (NavBar) -->
+		<nav class="full-box dashboard-Navbar">
+			<ul class="full-box list-unstyled text-right">
+				<li class="pull-left">
+					<!-- Botón para mostrar/ocultar el menú lateral -->
+					<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+				</li>
+			</ul>
+		</nav>
 
 		<!-- Página de Mesas -->
 		<center>
-		<div class="container-fluid">
-			<div class="page-header">
-				<!-- Título de la sección -->
-				<h1 class="text-titles">Mesas <small></h1>
+			<div class="container-fluid">
+				<div class="page-header">
+					<!-- Título de la sección -->
+					<h1 class="text-titles">Mesas <small></h1>
+				</div>
 			</div>
-		</div>
 		</center>
 
 
 		<div class="botones">
-                <button id="btnAgregar" class="btn btn-add">Agregar</button>
-                <button id="btnModificar" class="btn btn-edit">Modificar</button>
-                <button id="btnDarDeBaja" class="btn btn-delete">Dar de Baja</button>
-                <button id="btnMostrarTodos" class="btn btn-edit">Mostrar Alumnos de baja</button>
-        </div>
+			<button id="btnAgregar" class="btn btn-add">Agregar</button>
+			<button id="btnModificar" class="btn btn-edit">Modificar</button>
+			<button id="btnDarDeBaja" class="btn btn-delete">Dar de Baja</button>
+			<button id="btnMostrarTodos" class="btn btn-edit">Mostrar Alumnos de baja</button>
+		</div>
 		<!-- Formulario para agregar una nueva carrera -->
-        <div class="container" id="formContainer" style="display:none; margin-top: 20px;">
-            <form id="formAgregarCarrera" style="color: #333;">
-                <div class="form-group">
-                    <label for="nombreCarrera">Nombre de la carrera:</label>
-                    <input type="text" id="nombreCarrera" class="form-control" placeholder="Nombre de la nueva carrera"
-                        required>
-                </div>
-                <div class="form-group">
-                    <label for="titulo">Título:</label>
-                    <input type="text" id="titulo" class="form-control" placeholder="Título" required>
-                </div>
-                <div class="form-group">
-                    <label for="cargaHoraria">Carga Horaria:</label>
-                    <input type="number" id="cargaHoraria" class="form-control" placeholder="Carga Horaria" required>
-                </div>
-                <div class="form-group">
-                    <label for="duracion">Duración (en años):</label>
-                    <input type="number" id="duracion" class="form-control" placeholder="Duración" required>
-                </div>
-                <button type="submit" class="btn btn-success">Agregar Carrera</button>
-            </form>
-        </div>
+		<div class="container" id="formContainer" style="display:none; margin-top: 20px;">
+			<form id="formAgregarCarrera" style="color: #333;">
+				<div class="form-group">
+					<label for="nombreCarrera">Nombre de la carrera:</label>
+					<input type="text" id="nombreCarrera" class="form-control" placeholder="Nombre de la nueva carrera"
+						required>
+				</div>
+				<div class="form-group">
+					<label for="titulo">Título:</label>
+					<input type="text" id="titulo" class="form-control" placeholder="Título" required>
+				</div>
+				<div class="form-group">
+					<label for="cargaHoraria">Carga Horaria:</label>
+					<input type="number" id="cargaHoraria" class="form-control" placeholder="Carga Horaria" required>
+				</div>
+				<div class="form-group">
+					<label for="duracion">Duración (en años):</label>
+					<input type="number" id="duracion" class="form-control" placeholder="Duración" required>
+				</div>
+				<button type="submit" class="btn btn-success">Agregar Carrera</button>
+			</form>
+		</div>
 		<!-- Contenido de Mesas, se muestra en una grilla de artículos -->
 		<div class="full-box text-center" style="padding: 30px 10px;">
 			<!-- Mesa: Desarrollo de Software -->
