@@ -15,12 +15,12 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    <script src="/js/Admin_PlanEstudio.js"></script>
 </head>
 
 <body>
     <!-- Barra lateral (SideBar) -->
-    <section class="full-box cover dashboard-sideBar">
+   <section class="full-box cover dashboard-sideBar">
         <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
         <div class="full-box dashboard-sideBar-ct">
             <div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
@@ -29,9 +29,6 @@
             <div class="full-box dashboard-sideBar-UserInfo">
                 <figure class="full-box">
                     <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
-
-                    <h5>IES 9-024 "Lavalle"</h5>
-
                 </figure>
                 <ul class="full-box list-unstyled text-center">
                     <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
@@ -39,10 +36,8 @@
             </div>
             <ul class="list-unstyled full-box dashboard-sideBar-Menu">
                 <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
-                <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Alumnos</a></li>
                 <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
                 <li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Gestión académica</a></li>
-                <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i> Materias</a></li>
                 <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a>
                 </li>
             </ul>
@@ -59,142 +54,117 @@
             </ul>
         </nav>
 
-        <div class="container mt-4">
-            <h3>Información de la Carrera</h3>
-            <table class="table table-bordered">
-                <tbody id="infoCarrera"></tbody>
-            </table>
-        </div>
+       <div class="container mt-4">
+    <h3>Información de la Carrera</h3>
+    <table class="table table-bordered">
+        <tbody id="infoCarrera"></tbody>
+    </table>
+</div>
 
-        <div class="container mt-4">
-            <h4 class="mt-4">Materias</h4>
-            <button class="btn btn-sm btn-add">Agregar</button>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Nombre de la Materia</th>
-                        <th>Correlativas</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="listaMaterias"></tbody>
-            </table>
-        </div>
+<div class="container mt-4">
+    <h4 class="mt-4">Materia</h4>
+    <button id="nuevaMateriaPlanDeEstudio" class="btn btn-add" onclick="mostrarFormularioMateria()">Agregar Materia</button>
+    
+    <div id="formContainer" style="display: none;">
+        <form id="formMateria" method="post" action="/materia/nuevaMateriaPlanDeEstudio">
+    <div class="form-group">
+        <label for="nombreMateria">Nombre de la Materia:</label>
+        <input type="text" class="form-control" id="nombreMateria" name="nombreMateria" required />
+    </div>
+    <div class="form-group">
+        <label for="correlativas">Correlativas:</label>
+        <input type="text" class="form-control" id="correlativas" name="correlativas" placeholder="Buscar correlativas..." />
+    </div>
+    <button type="submit" class="btn btn-guardar">Guardar Materia</button>
+    <button type="button" class="btn btn-cancelar" onclick="cancelar('formContainer')">Cancelar</button>
+</form>
 
-        <div class="container mt-4">
-            <h4 class="mt-4">Alumnos</h4>
-            <button class="btn btn-sm btn-add">Agregar</button>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Nombre Completo</th>
-                        <th>Número de Documento</th>
-                        <th>Email</th>
-                        <th>Curso</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="listaAlumnos"></tbody>
-            </table>
-        </div>
+    </div>
+</div>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                cargarCarreras();
-                cargarMaterias();
-                cargarAlumnos();
-            });
+<div class="container mt-4">
+    <h4 class="mt-4">Materias</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre de la Materia</th>
+                <th>Correlativas</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="listaMaterias"></tbody>
+    </table>
+</div>
 
-            function cargarCarreras() {
-                fetch('/carrera/obtener')
-                    .then(response => response.json())
-                    .then(carreras => {
-                        const infoCarrera = document.getElementById('infoCarrera');
-                        const carrera = carreras[0];
-                        if (carrera) {
-                            infoCarrera.innerHTML = `
-                                <tr>
-                                    <th>Nombre de la Carrera</th>
-                                    <td>${carrera.nombreCarrera}</td>
-                                </tr>
-                                <tr>
-                                    <th>Título</th>
-                                    <td>${carrera.titulo}</td>
-                                </tr>
-                                <tr>
-                                    <th>Carga Horaria</th>
-                                    <td>${carrera.cargaHoraria} horas</td>
-                                </tr>
-                                <tr>
-                                    <th>Duración</th>
-                                    <td>${carrera.duracion} años</td>
-                                </tr>`;
-                        }
-                    })
-                    .catch(error => console.error('Error al cargar carreras:', error));
-            }
+<div class="container mt-4">
+    <h4 class="mt-4">Alumnos</h4>
+    <button id="nuevoAlumnoPlanDeEstudio" class="btn btn-add" onclick="mostrarFormularioAlumno()">Agregar</button>
+    <form id="formAgregar" method="post" action="/alumno/agregarAlumnoPlanEstudio" style="display: none;">
+    <div>
+        <label for="nombreCompleto">Nombre Completo:</label>
+        <input type="text" id="nombreCompleto" name="nombreCompleto" required />
+    </div>
+    <div>
+        <label for="numDocAlumn">Número de Documento:</label>
+        <input type="number" id="numDocAlumn" name="numDocAlumn" required placeholder="Sin puntos" />
+    </div>
+    <div>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required />
+    </div>
+    <div>
+        <label for="corte">Corte:</label>
+        <input type="text" id="corte" name="corte" required>
+    </div>
+    <div>
+        <label for="emailAlumn">Email:</label>
+        <input type="email" id="emailAlumn" name="emailAlumn" />
+    </div>
+    <div>
+        <label for="curso">Curso:</label>
+        <input type="text" id="curso" name="curso" required placeholder="Primero, Segundo, etc" />
+    </div>
+    <div>
+        <label for="tituloSecundario">Título Secundario:</label>
+        <input type="checkbox" id="tituloSecundario" name="tituloSecundario" value="true" />
+    </div>
+    <div>
+        <label for="psicofisico">Psicofísico:</label>
+        <input type="checkbox" id="psicofisico" name="psicofisico" value="true" />
+    </div>
+    <div>
+        <label for="partidaNacim">Partida de Nacimiento:</label>
+        <input type="checkbox" id="partidaNacim" name="partidaNacim" value="true" />
+    </div>
+    <div>
+        <label for="dniActualizado">DNI Actualizado:</label>
+        <input type="checkbox" id="dniActualizado" name="dniActualizado" value="true" />
+    </div>
+    <div>
+        <label for="analiticoFiel">Analítico Fiel:</label>
+        <input type="checkbox" id="analiticoFiel" name="analiticoFiel" value="true" />
+    </div>
+    <div>
+        <label for="antecedenPen">Antecedentes Penales:</label>
+        <input type="checkbox" id="antecedenPen" name="antecedenPen" value="true" />
+    </div>
+    <button type="submit" class="btn btn-guardar">Guardar Alumno</button>
+    <button type="button" class="btn btn-cancelar" onclick="cancelar('formAgregar')">Cancelar</button>
+    </form>
 
-            function cargarMaterias() {
-                fetch('/materia/obtener')
-                    .then(response => response.json())
-                    .then(materias => {
-                        const listaMaterias = document.getElementById('listaMaterias');
-                        listaMaterias.innerHTML = '';
-                        materias.forEach(materia => {
-                            listaMaterias.innerHTML += `
-                            <tr>
-                                <td>${materia.nombreMateria}</td>
-                                <td>${materia.correlativas.length > 0 ? materia.correlativas.join(', ') : 'Sin correlativas'}</td>
-                                <td>
-                                    <button class="btn btn-danger btn-sm" onclick="eliminarMateria('${materia._id}')">Dar De Baja</button>
-                                    <button class="btn btn-sm btn-edit" onclick="modificarMateria('${materia._id}')" title="Modificar">Modificar</button>
-                                </td>
-                            </tr>`;
-                        });
-                    })
-                    .catch(error => console.error('Error al cargar materias:', error));
-            }
-
-            function cargarAlumnos() {
-                fetch('/alumno/obtener')
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Error en la red');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        const listaAlumnos = document.getElementById('listaAlumnos');
-                        listaAlumnos.innerHTML = '';
-
-                        if (data.length > 0) {
-                            data.forEach(alumno => {
-                                listaAlumnos.innerHTML += `
-                                    <tr>
-                                        <td>${alumno.nombreCompleto}</td>
-                                        <td>${alumno.numDocAlumn}</td>
-                                        <td>${alumno.emailAlumn}</td>
-                                        <td>${alumno.curso}</td>
-                                        <td>${alumno.estado ? 'Legajo Completo' : 'Legajo Incompleto'}</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-edit" title="Modificar">Modificar</button>
-                                            <button class="btn btn-sm btn-danger" title="Dar de Baja">Dar De Baja</button>
-                                        </td>
-                                    </tr>`;
-                            });
-                        } else {
-                            listaAlumnos.innerHTML = "<tr><td colspan='6' class='text-center'>No hay alumnos registrados.</td></tr>";
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error al cargar alumnos:', error);
-                        const listaAlumnos = document.getElementById('listaAlumnos');
-                        listaAlumnos.innerHTML = "<tr><td colspan='6' class='text-center'>Error al cargar los alumnos.</td></tr>";
-                    });
-            }
-        </script>
-    </section>
-</body>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre Completo</th>
+                <th>Número de Documento</th>
+                <th>Email</th>
+                <th>Curso</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="listaAlumnos"></tbody>
+    </table>
+</div>
 
 </html>

@@ -74,16 +74,14 @@ body, html{
 .dashboard-sideBar{
 	left: 0;
 	z-index: 2;
-	/* background-image: url('../assets/img/sideBar-font.jpg'); */
-	background-color: #054575;
-	border-right: 1px solid rgba(0, 0, 0, 0.4);
+	background-image: url('../assets/img/sideBar-font.jpg');
+	border-right: 1px solid rgba(255, 255, 255, .4);
 	overflow: hidden;
-	
 }
 .dashboard-sideBar-ct{
 	position: relative;
 	height: 100%;
-	background-color: rgba(89, 0, 255, 0);
+	background-color: rgba(0, 0, 0, .77);
 	padding: 0 10px;
 	padding-bottom: 30px;
 }
@@ -110,7 +108,6 @@ body, html{
 	color: #fff;
 	font-size: 14px;
 	padding: 20px 0;
-	text-align: center;
 }
 .dashboard-sideBar-UserInfo figure img{
 	width: 100px;
@@ -193,17 +190,14 @@ body, html{
 	color: #FF5722;
 }
 /*contentPage*/
-.dashboard-contentPage {
-    z-index: 1;
-    position: relative;
-    padding-left: 250px;
-	padding-top: 60px; /* Asegúrate de que este padding sea mayor o igual que la altura de la barra superior */
+.dashboard-contentPage{
+	right: 0;
+	z-index: 1;
+	padding-left: 270px;
 }
-.dashboard-Navbar {
-    z-index: 10; /* Ajusta según sea necesario, debe ser mayor al contenido pero no sobreponer */
-    position: fixed;
-    top: 0;
-    width: 100%;
+.dashboard-Navbar{
+	position: fixed;
+	z-index: 1;
 }
 .dashboard-Navbar,
 .dashboard-Navbar > ul,
@@ -216,7 +210,7 @@ body, html{
 	outline: none;
 }
 .dashboard-Navbar{
-	background-color: #054575;
+	background-color: #000;
 	overflow: hidden;
 }
 .dashboard-Navbar > ul >li,
@@ -324,7 +318,7 @@ body, html{
 		left: 0;
 	}
 	.dashboard-sideBar-ct{
-		background-color: #054575;
+		background-color: #000;
 		border-right: 1px solid rgba(255, 255, 255, .3);
 		z-index: 3;
 		max-width: 270px;
@@ -337,10 +331,8 @@ body, html{
 		background-color: rgba(0, 0, 0, .6);
 		z-index: 2;
 	}
-	.dashboard-contentPage {
-		padding-top: 100px; /* Espacio desde arriba para evitar que lo tape la barra */
-		padding-left: 250px; /* Espacio para que el contenido no se superponga con la barra lateral */
-		overflow-y: auto;
+	.dashboard-contentPage{
+		padding-left: 0;
 	}
 	.show-sidebar{
 		pointer-events: auto !important;

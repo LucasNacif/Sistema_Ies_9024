@@ -2,7 +2,6 @@ const Carrera = require("../../models/Carrera");
 const Materia = require('../../models/Materia');
 const mongoose = require('mongoose');
 
-// Obtener todas las carreras
 exports.obtenerCarreras = async (req, res) => {
     try {
         const carreras = await Carrera.find({});
@@ -13,7 +12,6 @@ exports.obtenerCarreras = async (req, res) => {
     }
 };
 
-// Obtener una carrera por ID
 exports.obtenerCarreraPorId = async (req, res) => {
     const { id } = req.params;
 
@@ -33,7 +31,6 @@ exports.obtenerCarreraPorId = async (req, res) => {
     }
 };
 
-// Agregar una nueva carrera
 exports.agregarCarreras = async (req, res) => {
     const { nombreCarrera, titulo, cargaHoraria, duracion, planEstudio } = req.body;
 
@@ -58,7 +55,6 @@ exports.agregarCarreras = async (req, res) => {
     }
 };
 
-// Modificar una carrera
 exports.modificarCarrera = async (req, res) => {
     const { id } = req.params;
     const { nombreCarrera, titulo, cargaHoraria, duracion } = req.body;
@@ -120,7 +116,7 @@ exports.verPlanEstudio = async (req, res) => {
                 { path: 'materias' },
                 { path: 'alumnos' }
             ]
-        });
+        });        
 
         if (!carrera) {
             return res.status(404).json({ message: 'Carrera no encontrada' });
@@ -137,26 +133,32 @@ exports.verPlanEstudio = async (req, res) => {
 };
 
 // MATERIAS
-exports.agregarMateria = async (req, res) => {
-    const { nombreMateria, correlativas } = req.body;
-
-    if (!nombreMateria) {
-        return res.status(400).json({ message: 'El nombre de la materia es obligatorio' });
-    }
-
-    const materia = new Materia({
-        nombreMateria,
-        correlativas: correlativas || []
-    });
-
+exports.nuevaMateriaPlanDeEstudio = async (req, res) => {
     try {
-        await materia.save();
-        res.status(201).json({ message: 'Materia agregada correctamente' });
+        const { nombreMateria, correlativas } = req.body;
+
+        if (!nombreMateria) {
+            return res.status(400).json({ error: "El nombre de la materia es obligatorio" });
+        }
+
+        const correlativasObjectIds = correlativas.map(correlativa => {
+            return mongoose.Types.ObjectId.isValid(correlativa) ? mongoose.Types.ObjectId(correlativa) : null;
+        }).filter(id => id !== null);
+
+        const nuevaMateria = new Materia({
+            nombreMateria,
+            correlativas: correlativasObjectIds
+        });
+
+        await nuevaMateria.save();
+        res.status(201).json({ message: "Materia creada exitosamente", materia: nuevaMateria });
     } catch (error) {
         console.error(error);
-        res.status(400).json({ message: 'Error al agregar la materia' });
+        res.status(500).json({ error: "Error al crear la materia" });
     }
 };
+
+
 
 exports.obtenerMaterias = async (req, res) => {
     try {
@@ -168,5 +170,38 @@ exports.obtenerMaterias = async (req, res) => {
     }
 };
 
+exports.eliminarMateria = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const materia = await Materia.findByIdAndDelete(id);
+        if (!materia) {
+            return res.status(404).json({ message: 'Materia no encontrada' });
+        }
+        res.json({ message: 'Materia eliminada correctamente' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al eliminar la materia' });
+    }
+};
 
-//falta modificar y eliminar materia por si alguien lo quiere hacer :)
+exports.modificarMateria = async (req, res) => {
+    const { nombre, correlativas } = req.body;
+
+    try {
+        const materia = await Materia.findByIdAndUpdate(
+            req.params.id,
+            { nombre, correlativas },
+            { new: true, runValidators: true }
+        );
+
+        if (!materia) {
+            return res.status(404).json({ message: 'Materia no encontrada' });
+        }
+
+        res.json(materia);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al modificar la materia' });
+    }
+};
+
