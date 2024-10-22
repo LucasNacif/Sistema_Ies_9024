@@ -20,11 +20,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
 
-const hbs = require('hbs');
+const hbs = require("hbs");
 // Registrar el helper 'and'
-hbs.registerHelper('and', function (...args) {
-    return args.every(Boolean);
+hbs.registerHelper("and", function (...args) {
+  return args.every(Boolean);
 });
+
 // Helper para formatear fechas
 hbs.registerHelper('formatDate', function (date) {
   return new Date(date).toLocaleDateString('es-ES', {
@@ -39,21 +40,24 @@ app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "./views"));
 
 // Conectar a MongoDB
-mongoose.connect(process.env.MONGO_URI, {})
-.then(() => console.log('Conectado a MongoDB Atlas'))
-.catch((err) => console.error('Error al conectar a MongoDB Atlas:', err));
+mongoose
+  .connect(process.env.MONGO_URI, {})
+  .then(() => console.log("Conectado a MongoDB Atlas"))
+  .catch((err) => console.error("Error al conectar a MongoDB Atlas:", err));
 
 // Rutas individuales
 const alumnoRouters = require("./App/routes/R_Alumno.js");
-const carreraRouters = require("./App/routes/R_Carrera.js"); 
+const carreraRouters = require("./App/routes/R_Carrera.js");
 const loginRouters = require("./App/routes/R_login");
 const inscripcionRouters = require("./App/routes/R_InscripcionMesas");
+const alumnoEstadoRoutes = require("./App/routes/R_alumnoEstado");
 
 // Zona de ruteo
 app.use(carreraRouters);
 app.use(alumnoRouters);
 app.use(loginRouters);
 app.use(inscripcionRouters);
+app.use(alumnoEstadoRoutes);
 
 app.get("/", (req, res) => res.render("Admin_PanelControl"));
 app.get("/index", (req, res) => res.render("index"));
@@ -61,10 +65,11 @@ app.get("/alumno", (req, res) => res.render("Admin_Alumno"));
 app.get("/mesa", (req, res) => res.render("Admin_Mesa"));
 app.get("/materia", (req, res) => res.render("Admin_Materia"));
 app.get("/Administracion", (req, res) => res.render("Admin_PanelControl"));
-app.get("/AdministracionSuperAdmin", (req, res) => res.render("SuperAdmin_PanelControl"));
+app.get("/AdministracionSuperAdmin", (req, res) =>
+  res.render("SuperAdmin_PanelControl")
+);
 app.get("/alumnoMesaExamen", (req, res) => res.render("Alumno_MesaExamen"));
 app.get("/alumnoEstado", (req, res) => res.render("Admin_AlumnoEstado"));
-
 
 // // NO BORRAR QUE ME COSTO UN HUEVO HACERLO :)
 
