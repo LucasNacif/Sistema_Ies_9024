@@ -4,24 +4,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Mesas de Examen Disponibles</title>
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
+    <link rel="stylesheet" href="/Styles/main.css">
+    <link rel="stylesheet" href="/Styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/Styles/Alumno_Mesa.css">
+
+    <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
+    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
+    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
+    <script src="/js/jsBoostrap/material.min.js"></script>
+    <script src="/js/jsBoostrap/ripples.min.js"></script>
+    <script src="/js/jsBoostrap/main.js"></script>
+
 </head>
 
 <body>
-    <header>
-        <h1>VISTA PARA EL ALUMNO</h1>
-        <p>links a los que no deberia de entrar:</p>
-        <ul class="list-unstyled full-box dashboard-sideBar-Menu">
-                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
-                <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Alumnos</a></li>
-                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
-                <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i> Materias</a></li>
-                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a></li>
-        </ul>
-        <form id="logoutForm" action="/index/logout" method="post">
-            <button type="submit">Cerrar sesión</button>
-        </form>
-    </header>
+
+    <div class="header-bar">
+        <img src="/assets/img/logoCeilSinFondo.png" alt="Logo de la Institución">
+        <h2>Instituto de Educación Superior N9-024 de Lavalle</h2>
+    </div>
+
+    <div class="modal fade" id="mensajeModal" tabindex="-1" role="dialog" aria-labelledby="mensajeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mensajeModalLabel" style="font-size: 21px; margin-block: 8px; margin-top: -6px; ">Estado de Inscripción</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="mensajeModalBody">
+                    <p id="mensajeModalText"></p>
+                </div>
+                <div class="modal-footer">
+                    <button style="font-size: 17px;" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Mesas de Examen Disponibles</h1>
+
+        {{#if mesasDisponibles.length}}
+        {{#each mesasDisponibles}}
+        <div class="mesa-card">
+            <h3>{{this.Materia.nombreMateria}}</h3>
+            <p><strong>Fecha:</strong> {{formatDate this.fechaMesa}}</p>
+            <p><strong>Hora:</strong> {{this.horaMesa}}</p>
+            <p><strong>Estado:</strong> {{this.estadoActual}}</p>
+            <form class="inscripcion-form" action="/inscripcion/mesa/{{this._id}}" method="POST">
+                <button class="btn btn-primary" type="submit">Inscribir</button>
+            </form>
+        </div>
+        {{/each}}
+        {{else}}
+        <p class="no-mesas">No hay mesas disponibles en este momento.</p>
+        {{/if}}
+
+         <h1>Estado de las materias</h1>
+         {{#if estadosAlumno.length }}
+         {{#each estadosAlumno}}
+         <div class="estado-card">
+            <h3>{{this.idMateria.nombreMateria}}</h3>
+            <p><strong>Estado Actual:</strong> {{this.estadoActual}}</p>
+         </div>
+         {{/each}}
+         {{else}}
+         <p class="no-mesas">No hay materias para mostrar</p>
+         {{/if}}
+    </div>
+
+    <script src="/js/Alumno_Mesa.js"></script>
 </body>
 
 </html>

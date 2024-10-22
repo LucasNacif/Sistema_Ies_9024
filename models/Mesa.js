@@ -6,7 +6,7 @@ let mesaSchema = new Schema({
   horaMesa: Number,
   banderaBooleana: Boolean,
   Materia: { type: mongoose.Schema.Types.ObjectId, ref: 'Materia' },
-  Alumno: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Alumno', unique: true}],
+  Alumno: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Alumno'}],
   estadoActual: { type: String, enum: ['activa', 'suspendida'], default: 'activa' },
 });
 
