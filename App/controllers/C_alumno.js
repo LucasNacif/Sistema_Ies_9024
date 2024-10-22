@@ -1,9 +1,13 @@
 const Alumno = require("../../models/Alumno");
+const PlanEstudio = require("../../models/PlanEstudio");
 
 
 //METODOS PARA EL MANEJO DE ALUMNOS POR PARTE DEL ADMIN:
-exports.nuevo = async (req, res) => {
+
+exports.nuevoAlumnoPlanDeEstudio = async (req, res) => {
   try {
+    
+    //traemos los datos del alumno y el id del plan de estudi
     const {
       numDocAlumn,
       nombreCompleto,
@@ -17,14 +21,14 @@ exports.nuevo = async (req, res) => {
       dniActualizado,
       analiticoFiel,
       antecedenPen,
+      idPlanEstudioSeleccionado,
     } = req.body;
-
+    
     // busco el alumno por este num de doc para saber si esta guardado
     const alumnoExistente = await Alumno.findOne({ numDocAlumn });
     if (alumnoExistente) {
       return res.redirect("/alumno?error=El DNI ya está registrado");
     }
-
     const alumno = new Alumno({
       numDocAlumn,
       nombreCompleto,
@@ -40,11 +44,24 @@ exports.nuevo = async (req, res) => {
       antecedenPen,
     });
 
-    await alumno.save();
-    //exito
+    //primero traer los datos del plan de estudio donde se va a guardar el alumno
+    const planEstudio =  PlanEstudio.findOneAndUpdate(
+      {_id: idPlanEstudioSeleccionado},
+      { $push: { alumnos: alumno._id, } },
+      { new: true }
+    );
+    
+    if(planEstudio){
+      //guardamos ese alumno
+      await alumno.save();
+    }
+
+    console.error("planEstudio actualizado ", (await planEstudio).toString());
+    console.error("alumno Guardado ", alumno.toString());
+    
     res.redirect("/alumno?message=Alumno agregado correctamente");
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.redirect("/alumno?error=Error al agregar alumno");
   }
 };
