@@ -87,9 +87,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{#each estadosMaterias}}
+                    {{#each materiasConEstado}}
                     <tr>
-                        <td>{{this.idMateria.nombreMateria}}</td>
+                        <td>{{this.materia}}</td>
                         <td>{{this.estadoActual}}</td>
                         <td>{{this.fecha}}</td>
                         <td><button class="btn btn-success">Guardar</button></td>
@@ -122,7 +122,7 @@
              }
  
              try {
-                 const result = await fetch(`/alumno/buscar/${numDocAlumn}`);
+                 const result = await fetch(/alumno/buscar/${numDocAlumn});
                  if (!result.ok) {
                      throw new Error('Alumno no encontrado');
                  }

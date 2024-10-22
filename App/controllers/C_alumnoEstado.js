@@ -37,7 +37,6 @@ exports.crearAlumnoEstado = async (req, res) => {
     res.status(501).json({ message: "Error al crear el AlumnoEstado" });
   }
 };
-
 exports.buscarAlumnoYMaterias = async (req, res) => {
   try {
     const { numDocAlumn } = req.params;
@@ -47,44 +46,60 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
     if (!alumno) {
       return res.status(404).json({ message: "Alumno no encontrado" });
     }
+    //console.log(alumno)
+
     // Buscar el plan de estudios del alumno
     const planEstudios = await PlanEstudios.findOne({
       alumnos: alumno._id,
     }).select("nombre materias").populate("materias", "nombreMateria");
-    console.log(materiasDelPlan);
+
+    //console.log(planEstudios)
+
     if (!planEstudios) {
       return res.status(404).json({
         message: "No se encontró el plan de estudios para este alumno",
       });
     }
-    console.log(planEstudios)
 
-    // Obtener materias
-    const materiasDelPlan = planEstudios.materias.map(materia => materia._id);
-    console.log(materiasDelPlan);
+    // Obtener las materias del plan de estudios
+    const materiasDelPlan = planEstudios.materias;
+    //console.log(materiasDelPlan)
+    // Buscar los estados de las materias que ya tiene cargadas el alumno
+    const estadosExistentes = await AlumnoEstado.find({
+      idAlumno: alumno._id,
+      idMateria: { $in: materiasDelPlan }
+    }).lean();
 
-    // Buscar los estados de las materias de ese alumno
-    const estadosMaterias = await AlumnoEstado.find({
-      idAlumno: alumno._id, // Filtrar por el ID del alumno
-      idMateria: { $in: materiasDelPlan }// Filtrar por las materias del plan de estudios
-    }).populate('idMateria'); // Popular la información de las materias
+    //console.log(estadosExistentes)
 
-    // Convertir la estructura anidada en una más plana
-    // const estadosMateriasA = estadosMaterias.map(estado => {
-    //   return {
-    //     estadoActual: estado.estadoActual,
-    //     fecha: estado.fecha,
-    //     nombreMateria: estado.idMateria.nombreMateria // Extrae directamente el nombre de la materia
-    //   };
-    // });
-    //console.log(estadosMaterias);
+    // Crear un objeto para mapear los estados existentes por materia
+    const estadosMap = {};
 
-    // Responder con la lista de materias y sus estados
-    res.render('Admin_AlumnoEstado', { estadosMaterias });
+    estadosExistentes.forEach(estado => {
+      estadosMap[estado.idMateria.toString()] = estado;
+    });
+
+    //console.log(estadosMap);
+
+    // Crear un array con todas las materias y sus estados, incluyendo la fecha
+    const materiasConEstado = materiasDelPlan.map(materia => {
+      const estado = estadosMap[materia._id.toString()];
+      return {
+        materia: materia.nombreMateria,
+        estadoActual: estado?.estadoActual || 'Sin Estado', // Encadenamiento
+        fecha: estado?.fecha || null //encadenamiento tambien por las dudas
+      };
+    });
+
+    console.log(materiasConEstado);
+
+    // Renderizar la vista con todas las materias y sus estados
+    res.render('Admin_AlumnoEstado', { materiasConEstado });
   } catch (error) {
     console.error("Error al buscar el alumno y sus materias:", error.message);
     res
       .status(500)
       .json({ message: "Error al buscar el alumno y sus materias" });
   }
+
 };
