@@ -103,3 +103,33 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
   }
 
 };
+
+exports.modificarEstadoAlumno = async (req, res) => {
+  try {
+    const { idAlumno, idMateria } = req.params;
+    const { estadoNuevo } = req.body;
+
+    // Busca el estado de la materia del alumno utilizando ambos IDs
+    const estadoMateria = await AlumnoEstado.findOne({
+      idAlumno: idAlumno,
+      idMateria: idMateria,
+    });
+
+    if (!estadoMateria) {
+      return res.status(404).send("No se encontró el estado de la materia para este alumno");
+    }
+    console.log(estadoMateria)
+
+    // Actualiza solo el estadoActual
+    estadoMateria.estadoActual = estadoNuevo;
+
+    await estadoMateria.save(); // Guarda los cambios en la base de datos
+
+    res.status(200).send(estadoMateria); // Devuelve el objeto actualizado
+  } catch (err) {
+    console.error("Error al modificar el estado del alumno:", err);
+    res.status(500).send("Error al modificar el estado del alumno");
+  }
+};
+
+
