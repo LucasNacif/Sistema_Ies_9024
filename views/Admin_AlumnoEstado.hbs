@@ -64,6 +64,25 @@
             <h1 style="margin-top: 68px;">Gestión Académica</h1>
             <p>Seleccione un alumno para gestionar el estado en sus materias.</p>
 
+            <h2>Formulario de Alumno</h2>
+            <form id="alumnoForm">
+                <label for="nombreAlumno">Nombre del Alumno:</label><br>
+                <input type="text" id="nombreAlumno" name="nombreAlumno" required><br><br>
+
+                <label for="nombreMateria">Nombre de la Materia:</label><br>
+                <input type="text" id="nombreMateria" name="nombreMateria" required><br><br>
+
+                <label for="estadoActual">Estado Actual:</label><br>
+                <select id="estadoActual" name="estadoActual" required>
+                    <option value="Acreditado">Acreditado</option>
+                    <option value="Regular">Regular</option>
+                    <option value="Aprobado">Aprobado</option>
+                    <option value="Libre">Libre</option>
+                </select><br><br>
+
+                <button type="submit">Guardar</button>
+            </form>
+
             <!-- Filtros para buscar alumnos -->
             <div class="row mb-4">
                 <div class="col-md-6">
@@ -78,7 +97,6 @@
             <!-- Tabla de materias -->
             <table class="table table-striped">
                 <thead>
-
                     <tr>
                         <th>Materia</th>
                         <th>Estado Actual</th>
@@ -93,24 +111,94 @@
                         <td>{{this.estadoActual}}</td>
                         <td>{{this.fecha}}</td>
                         <td>
-                            <button class="btn btn-success">Guardar</button>
-                            <button class="btn btn-success">Modificar</button>
-                            <button class="btn btn-success">Eliminar</button>
+                            <!-- Botón Modificar -->
+                            <button class="btn btn-success" data-toggle="modal"
+                                data-target="#modifyAlumnoEstadoModal-{{this.id}}"
+                                data-id="{{this._id}}">Modificar</button>
+
+                            <!-- Modal para modificar el estado del alumno -->
+                            <div class="modal fade" id="modifyAlumnoEstadoModal" tabindex="-1" role="dialog"
+                                aria-labelledby="modifyAlumnoEstadoModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modifyAlumnoEstadoModalLabel">Modificar Estado
+                                                del Alumno</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="formModificarAlumnoEstado">
+                                                <!-- Campo oculto para el ID del estado del alumno -->
+                                                <input type="hidden" id="idAlumnoEstado" name="idAlumnoEstado">
+
+                                                <div class="form-group">
+                                                    <label for="modificarNombreMateria">Nombre de la Materia</label>
+                                                    <input type="text" class="form-control" id="modificarNombreMateria"
+                                                        name="modificarNombreMateria" required>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="modificarEstadoActual">Estado Actual</label>
+                                                    <input type="text" class="form-control" id="modificarEstadoActual"
+                                                        name="modificarEstadoActual" required>
+                                                </div>
+
+                                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <!-- Botón Eliminar -->
+                            <button class="btn btn-danger" data-toggle="modal"
+                                data-target="#confirmDeleteModal-{{this.id}}">Eliminar</button>
+
+                            <!-- Modal Confirmar Baja -->
+                            <div class="modal fade" id="confirmDeleteModal-{{this.id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Baja</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ¿Estás seguro de que deseas dar de baja esta carrera?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Cancelar</button>
+                                            <button type="button" class="btn btn-danger"
+                                                id="confirmDeleteBtn-{{this.id}}">Dar De
+                                                Baja</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
+
                     </tr>
                     {{/each}}
-                    <!-- Más filas de materias -->
                 </tbody>
             </table>
+
         </div>
 
 
     </section>
     <!-- Scripts -->
-    <script src="/js/Admin_PanelControl.js"></script>
+    <script src="/js/Admin_AlumnoEstado.js"></script>
     <script>
         // Inicialización del componente de Material Design
         $.material.init();
+
 
         document.getElementById('BuscarAlumnoBtn').addEventListener('click', function () {
             const numDocAlumn = document.getElementById('numDocAlumn').value;

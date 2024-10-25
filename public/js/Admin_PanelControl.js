@@ -47,19 +47,19 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ nombreCarrera, titulo, cargaHoraria, duracion })
         })
-        .then(response => {
-            if (response.ok) {
-                showMessage('Carrera agregada correctamente', 'success');
-                cargarCarreras(); // Recargar la lista de carreras
-                document.getElementById('formAgregarCarrera').reset(); // Limpiar formulario
-                $('#addAlumnoModal').modal('hide'); // Cerrar el modal
-            } else {
-                response.json().then(data => {
-                    showMessage(data.message || 'Error al agregar la carrera', 'danger');
-                });
-            }
-        })
-        .catch(error => console.error('Error al agregar carrera:', error));
+            .then(response => {
+                if (response.ok) {
+                    showMessage('Carrera agregada correctamente', 'success');
+                    cargarCarreras(); // Recargar la lista de carreras
+                    document.getElementById('formAgregarCarrera').reset(); // Limpiar formulario
+                    $('#addAlumnoModal').modal('hide'); // Cerrar el modal
+                } else {
+                    response.json().then(data => {
+                        showMessage(data.message || 'Error al agregar la carrera', 'danger');
+                    });
+                }
+            })
+            .catch(error => console.error('Error al agregar carrera:', error));
     });
 
     // Variables globales para modificar/eliminar

@@ -2,6 +2,7 @@ const AlumnoEstado = require("../../models/AlumnoEstado");
 const Alumno = require("../../models/Alumno");
 const Materia = require("../../models/Materia");
 const PlanEstudios = require("../../models/PlanEstudio");
+const mongoose = require('mongoose');
 
 exports.crearAlumnoEstado = async (req, res) => {
   try {
@@ -87,11 +88,11 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
       return {
         materia: materia.nombreMateria,
         estadoActual: estado?.estadoActual || 'Sin Estado', // Encadenamiento
-        fecha: estado?.fecha || null //encadenamiento tambien por las dudas
+        fecha: estado?.fecha ? estado.fecha.toISOString().split('T')[0] : null //encadenamiento tambien por las dudas
       };
     });
 
-    console.log(materiasConEstado);
+    //console.log(materiasConEstado);
 
     // Renderizar la vista con todas las materias y sus estados
     res.render('Admin_AlumnoEstado', { materiasConEstado });
@@ -106,22 +107,19 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
 
 exports.modificarEstadoAlumno = async (req, res) => {
   try {
-    const { idAlumno, idMateria } = req.params;
-    const { estadoNuevo } = req.body;
-
+    const idAlumnoEstado = req.params.idAlumnoEstado;
+    const { estadoActual } = req.body;
     // Busca el estado de la materia del alumno utilizando ambos IDs
-    const estadoMateria = await AlumnoEstado.findOne({
-      idAlumno: idAlumno,
-      idMateria: idMateria,
-    });
+    const estadoMateria = await AlumnoEstado.findById(idAlumnoEstado);
 
     if (!estadoMateria) {
       return res.status(404).send("No se encontró el estado de la materia para este alumno");
     }
-    console.log(estadoMateria)
+    console.log("Este es el id del estado materia" + estadoMateria)
 
     // Actualiza solo el estadoActual
-    estadoMateria.estadoActual = estadoNuevo;
+    estadoMateria.estadoActual = estadoActual;
+    estadoMateria.fecha = new Date()
 
     await estadoMateria.save(); // Guarda los cambios en la base de datos
 
@@ -129,6 +127,26 @@ exports.modificarEstadoAlumno = async (req, res) => {
   } catch (err) {
     console.error("Error al modificar el estado del alumno:", err);
     res.status(500).send("Error al modificar el estado del alumno");
+  }
+};
+
+// Eliminar una carrera
+exports.eliminarEstadoAlumno = async (req, res) => {
+  const idAlumnoEstado = req.params.idAlumnoEstado;
+  console.log('ID recibido:', idAlumnoEstado);
+  if (!mongoose.Types.ObjectId.isValid(idAlumnoEstado)) {
+    return res.status(400).json({ message: 'ID de estado no válido' });
+  }
+
+  try {
+    const alumnoEstado = await AlumnoEstado.findByIdAndDelete(idAlumnoEstado);
+    if (!alumnoEstado) {
+      return res.status(404).json({ message: 'Estado no encontrada' });
+    }
+    res.json({ message: 'Estado eliminada correctamente' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error al eliminar estado' });
   }
 };
 
