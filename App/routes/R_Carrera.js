@@ -8,18 +8,22 @@ const Carrera = require('../../models/Carrera.js');
 // CARRERA
 router.get("/carrera/obtener", controller.obtenerCarreras);
 router.post("/carrera/agregar", controller.agregarCarreras);
-router.delete("/carrera/eliminar/:id", controller.eliminarCarreras);
-router.get("/carrera/modificar/:id", controller.obtenerCarreraPorId); // Esta ruta obtiene la pagina de obtener carrera
-router.put("/carrera/modificar/:id", controller.modificarCarrera); // Esta modifica una carrera
+router.delete("/carrera/baja/:id", controller.bajaCarreras);
+router.get("/carrera/modificar/:id", controller.obtenerCarreraPorId); 
+router.put("/carrera/modificar/:id", controller.modificarCarrera);
 
 
 //PLAN DE ESTUDIO
 router.get('/planEstudio/:id/', controller.verPlanEstudio);
+
 //router.post('/carrera/:carreraId/agregarPlan', controller.agregarPlanEstudio); 
 
 // MATERIA
-router.post('/materia/agregar', controller.agregarMateria); 
-router.get('/materia/obtener', controller.obtenerMaterias); 
+router.post('/materia/nuevaMateriaPlanDeEstudio', controller.nuevaMateriaPlanDeEstudio); 
+router.get('/materia/obtener', controller.obtenerMaterias);     
+router.delete('/materia/eliminar/:id', controller.eliminarMateria);
+router.delete('/materia/modificar/:id', controller.modificarMateria);
+
 
 // Obtener carrera por ID
 router.get('/carrera/obtener/:id', async (req, res) => {

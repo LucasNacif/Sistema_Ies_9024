@@ -15,11 +15,10 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    <script src="/js/Admin_PlanEstudio.js"></script>
 </head>
 
 <body>
-    <!-- Barra lateral (SideBar) -->
     <section class="full-box cover dashboard-sideBar">
         <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
         <div class="full-box dashboard-sideBar-ct">
@@ -29,9 +28,6 @@
             <div class="full-box dashboard-sideBar-UserInfo">
                 <figure class="full-box">
                     <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
-
-                    <h5>IES 9-024 "Lavalle"</h5>
-
                 </figure>
                 <ul class="full-box list-unstyled text-center">
                     <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
@@ -39,10 +35,8 @@
             </div>
             <ul class="list-unstyled full-box dashboard-sideBar-Menu">
                 <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
-                <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Alumnos</a></li>
                 <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
                 <li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Gestión académica</a></li>
-                <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i> Materias</a></li>
                 <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a>
                 </li>
             </ul>
@@ -60,15 +54,33 @@
         </nav>
 
         <div class="container mt-4">
+            <!-- Información de la Carrera -->
             <h3>Información de la Carrera</h3>
             <table class="table table-bordered">
-                <tbody id="infoCarrera"></tbody>
+                <tbody>
+                    <tr>
+                        <th>Nombre</th>
+                        <td>{{carrera.nombreCarrera}}</td>
+                    </tr>
+                    <tr>
+                        <th>Titulo</th>
+                        <td>{{carrera.titulo}}</td>
+                    </tr>
+                    <tr>
+                        <th>Carga horaria</th>
+                        <td>{{carrera.cargaHoraria}}</td>
+                    </tr>
+                    <tr>
+                        <th>Duracion</th>
+                        <td>{{carrera.duracion}}</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
 
+        <!-- Materias -->
         <div class="container mt-4">
             <h4 class="mt-4">Materias</h4>
-            <button class="btn btn-sm btn-add">Agregar</button>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -77,13 +89,27 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody id="listaMaterias"></tbody>
+                <tbody>
+                    {{#each planEstudio.materias}}
+                    <tr>
+                        <td>{{this.nombreMateria}}</td>
+                        <td>
+                            {{#each this.correlativas}}
+                            {{this.nombreMateria}}<br>
+                            {{/each}}
+                        </td>
+                        <td>
+                            <!-- Botones de acción como editar o eliminar -->
+                            <button class="btn btn-warning">Editar</button>
+                            <button class="btn btn-danger">Eliminar</button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
             </table>
         </div>
-
         <div class="container mt-4">
             <h4 class="mt-4">Alumnos</h4>
-            <button class="btn btn-sm btn-add">Agregar</button>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -91,110 +117,39 @@
                         <th>Número de Documento</th>
                         <th>Email</th>
                         <th>Curso</th>
-                        <th>Estado</th>
+                        <th>Título Secundario</th>
+                        <th>Psicofísico</th>
+                        <th>Partida de Nacimiento</th>
+                        <th>DNI Actualizado</th>
+                        <th>Analítico Fiel</th>
+                        <th>Antecedentes Penales</th>
+                        <th>Bandera Booleana</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody id="listaAlumnos"></tbody>
+                <tbody>
+                    {{#each planEstudio.alumnos}}
+                    <tr>
+                        <td>{{this.nombreCompleto}}</td>
+                        <td>{{this.numDocAlumn}}</td>
+                        <td>{{this.emailAlumn}}</td>
+                        <td>{{this.curso}}</td>
+                        <td>{{#if this.tituloSecundario}}Sí{{else}}No{{/if}}</td>
+                        <td>{{#if this.psicofisico}}Sí{{else}}No{{/if}}</td>
+                        <td>{{#if this.partidaNacim}}Sí{{else}}No{{/if}}</td>
+                        <td>{{#if this.dniActualizado}}Sí{{else}}No{{/if}}</td>
+                        <td>{{#if this.analiticoFiel}}Sí{{else}}No{{/if}}</td>
+                        <td>{{#if this.antecedenPen}}Sí{{else}}No{{/if}}</td>
+                        <td>{{#if this.banderaBooleana}}Sí{{else}}No{{/if}}</td>
+                        <td>
+                            <button class="btn btn-warning">Editar</button>
+                            <button class="btn btn-danger">Eliminar</button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
             </table>
         </div>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                cargarCarreras();
-                cargarMaterias();
-                cargarAlumnos();
-            });
-
-            function cargarCarreras() {
-                fetch('/carrera/obtener')
-                    .then(response => response.json())
-                    .then(carreras => {
-                        const infoCarrera = document.getElementById('infoCarrera');
-                        const carrera = carreras[0];
-                        if (carrera) {
-                            infoCarrera.innerHTML = `
-                                <tr>
-                                    <th>Nombre de la Carrera</th>
-                                    <td>${carrera.nombreCarrera}</td>
-                                </tr>
-                                <tr>
-                                    <th>Título</th>
-                                    <td>${carrera.titulo}</td>
-                                </tr>
-                                <tr>
-                                    <th>Carga Horaria</th>
-                                    <td>${carrera.cargaHoraria} horas</td>
-                                </tr>
-                                <tr>
-                                    <th>Duración</th>
-                                    <td>${carrera.duracion} años</td>
-                                </tr>`;
-                        }
-                    })
-                    .catch(error => console.error('Error al cargar carreras:', error));
-            }
-
-            function cargarMaterias() {
-                fetch('/materia/obtener')
-                    .then(response => response.json())
-                    .then(materias => {
-                        const listaMaterias = document.getElementById('listaMaterias');
-                        listaMaterias.innerHTML = '';
-                        materias.forEach(materia => {
-                            listaMaterias.innerHTML += `
-                            <tr>
-                                <td>${materia.nombreMateria}</td>
-                                <td>${materia.correlativas.length > 0 ? materia.correlativas.join(', ') : 'Sin correlativas'}</td>
-                                <td>
-                                    <button class="btn btn-danger btn-sm" onclick="eliminarMateria('${materia._id}')">Dar De Baja</button>
-                                    <button class="btn btn-sm btn-edit" onclick="modificarMateria('${materia._id}')" title="Modificar">Modificar</button>
-                                </td>
-                            </tr>`;
-                        });
-                    })
-                    .catch(error => console.error('Error al cargar materias:', error));
-            }
-
-            function cargarAlumnos() {
-                fetch('/alumno/obtener')
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Error en la red');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        const listaAlumnos = document.getElementById('listaAlumnos');
-                        listaAlumnos.innerHTML = '';
-
-                        if (data.length > 0) {
-                            data.forEach(alumno => {
-                                listaAlumnos.innerHTML += `
-                                    <tr>
-                                        <td>${alumno.nombreCompleto}</td>
-                                        <td>${alumno.numDocAlumn}</td>
-                                        <td>${alumno.emailAlumn}</td>
-                                        <td>${alumno.curso}</td>
-                                        <td>${alumno.estado ? 'Legajo Completo' : 'Legajo Incompleto'}</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-edit" title="Modificar">Modificar</button>
-                                            <button class="btn btn-sm btn-danger" title="Dar de Baja">Dar De Baja</button>
-                                        </td>
-                                    </tr>`;
-                            });
-                        } else {
-                            listaAlumnos.innerHTML = "<tr><td colspan='6' class='text-center'>No hay alumnos registrados.</td></tr>";
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error al cargar alumnos:', error);
-                        const listaAlumnos = document.getElementById('listaAlumnos');
-                        listaAlumnos.innerHTML = "<tr><td colspan='6' class='text-center'>Error al cargar los alumnos.</td></tr>";
-                    });
-            }
-        </script>
-    </section>
-</body>
 
 </html>

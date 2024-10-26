@@ -79,7 +79,7 @@
             <p id="mensajeERROR" class="alert alert-danger" role="alert"></p>
 
             <!-- Formulario para agregar alumno -->
-            <form id="formAgregar" method="post" action="/alumno/agregarAlumnoPlanEstudio" style="display: none;">
+            {{!-- <form id="formAgregar" method="post" action="/alumno/agregarAlumnoPlanEstudio" style="display: none;"> --}}
                 <div>
                     <label for="nombreCompleto">Nombre Completo:</label>
                     <input type="text" id="nombreCompleto" name="nombreCompleto" required />
@@ -142,7 +142,7 @@
             </form>
 
             <!-- Formulario para modificar alumno -->
-            <form id="formModificar" method="post" action="/alumno/modificar" style="display: none;">
+            {{!-- <form id="formModificar" method="post" action="/alumno/modificar" style="display: none;"> --}}
                 <div>
                     <label for="modNombreCompleto">Nombre Completo:</label>
                     <input type="text" id="modNombreCompleto" name="nombreCompleto" required />
@@ -223,7 +223,7 @@
         </div>
     </section>
 
-    <script src="js/Admin_Alumno.js"></script>
+    {{!-- <script src="js/Admin_Alumno.js"></script> --}}
 </body>
 
 </html>
