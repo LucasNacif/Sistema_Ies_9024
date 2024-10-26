@@ -3,9 +3,10 @@ const Materia = require('../../models/Materia');
 const PlanEstudio = require("../../models/PlanEstudio");
 const mongoose = require('mongoose');
 
+// CARRERAS
 exports.obtenerCarreras = async (req, res) => {
     try {
-        const carreras = await Carrera.find({});
+        const carreras = await Carrera.find({estado:true});
         res.json(carreras);
     } catch (err) {
         console.error(err);
@@ -13,21 +14,15 @@ exports.obtenerCarreras = async (req, res) => {
     }
 };
 exports.obtenerCarreraPorId = async (req, res) => {
-    const { id } = req.params;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ message: 'ID de carrera no válido' });
-    }
-
     try {
-        const carrera = await Carrera.findById(id);
+        const carrera = await Carrera.findById(req.params.id);
         if (!carrera) {
             return res.status(404).json({ message: 'Carrera no encontrada' });
         }
-        res.json(carrera);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Error al obtener la carrera' });
+        return res.json(carrera);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Error al obtener la carrera' });
     }
 };
 exports.agregarCarreras = async (req, res) => {
@@ -78,27 +73,33 @@ exports.modificarCarrera = async (req, res) => {
         res.status(500).json({ message: 'Error al modificar la carrera' });
     }
 };
-
-// Baja una carrera
 exports.bajaCarreras = async (req, res) => {
     const { id } = req.params;
+    let carrera = null;
 
     try {
-        const carrera = await Carrera.findOneAndUpdate(
-            id,
-            { estado:  false },
-            // { new: true }
-        );
+        if (id) {
+            carrera = await Carrera.findOneAndUpdate(
+                { _id: id },
+                { estado: false },
+                { new: true }
+            );
+        } else {
+            return res.status(400).json({ message: 'ID no proporcionado' });
+        }
 
         if (!carrera) {
             return res.status(404).json({ message: 'Carrera no encontrada' });
         }
-        res.json({ message: 'Carrera dada de baja correctamente' });
+
+        console.log(carrera);
+        return res.json({ message: 'Carrera dada de baja correctamente' });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Error al eliminar la carrera' });
+        console.error(err.message);
+        return res.status(500).json({ message: 'Error al eliminar la carrera' });
     }
 };
+
 
 // PLAN DE ESTUDIO
 exports.verPlanEstudio = async (req, res) => {
