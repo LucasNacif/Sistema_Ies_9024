@@ -1,5 +1,6 @@
 const Carrera = require("../../models/Carrera");
 const Materia = require('../../models/Materia');
+const PlanEstudio = require("../../models/PlanEstudio");
 const mongoose = require('mongoose');
 
 exports.obtenerCarreras = async (req, res) => {
@@ -11,7 +12,6 @@ exports.obtenerCarreras = async (req, res) => {
         res.status(500).json({ message: 'Error al obtener las carreras' });
     }
 };
-
 exports.obtenerCarreraPorId = async (req, res) => {
     const { id } = req.params;
 
@@ -30,7 +30,6 @@ exports.obtenerCarreraPorId = async (req, res) => {
         res.status(500).json({ message: 'Error al obtener la carrera' });
     }
 };
-
 exports.agregarCarreras = async (req, res) => {
     const { nombreCarrera, titulo, cargaHoraria, duracion, planEstudio } = req.body;
 
@@ -54,7 +53,6 @@ exports.agregarCarreras = async (req, res) => {
         res.status(400).json({ message: 'Error al agregar la carrera' });
     }
 };
-
 exports.modificarCarrera = async (req, res) => {
     const { id } = req.params;
     const { nombreCarrera, titulo, cargaHoraria, duracion } = req.body;
@@ -81,20 +79,21 @@ exports.modificarCarrera = async (req, res) => {
     }
 };
 
-// Eliminar una carrera
-exports.eliminarCarreras = async (req, res) => {
+// Baja una carrera
+exports.bajaCarreras = async (req, res) => {
     const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ message: 'ID de carrera no válido' });
-    }
-
     try {
-        const carrera = await Carrera.findByIdAndDelete(id);
+        const carrera = await Carrera.findOneAndUpdate(
+            id,
+            { estado:  false },
+            // { new: true }
+        );
+
         if (!carrera) {
             return res.status(404).json({ message: 'Carrera no encontrada' });
         }
-        res.json({ message: 'Carrera eliminada correctamente' });
+        res.json({ message: 'Carrera dada de baja correctamente' });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Error al eliminar la carrera' });
@@ -105,32 +104,51 @@ exports.eliminarCarreras = async (req, res) => {
 exports.verPlanEstudio = async (req, res) => {
     const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ message: 'ID de carrera no válido' });
-    }
-
     try {
-        const carrera = await Carrera.findById(id).populate({
-            path: 'planEstudio',
-            populate: [
-                { path: 'materias' },
-                { path: 'alumnos' }
-            ]
-        });        
+        let carrera = await obtenerPlanEstudio(id);
 
         if (!carrera) {
             return res.status(404).json({ message: 'Carrera no encontrada' });
         }
 
+        // Si la carrera no tiene un plan de estudio, se crea uno vacío
+        if (!carrera.planEstudio) {
+            await crearPlanEstudioVacio(carrera);
+            carrera = await obtenerPlanEstudio(id); // Vuelvo a buscar la carrera con el nuevo plan de estudio
+        }
+
         res.render('Admin_PlanEstudio', {
             carrera,
-            planEstudio: carrera.planEstudio
+            planEstudio: carrera.planEstudio,
+            materias: carrera.planEstudio.materias,
+            alumnos: carrera.planEstudio.alumnos
         });
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error al obtener el plan de estudio' });
     }
 };
+const obtenerPlanEstudio = async (carreraId) => {
+    return Carrera.findById(carreraId).populate({
+        path: 'planEstudio',
+        populate: [
+            { path: 'materias' },
+            { path: 'alumnos' }
+        ]
+    });
+};
+const crearPlanEstudioVacio = async (carrera) => {
+    const nuevoPlanEstudio = new PlanEstudio({
+        carrera: carrera._id,
+        materias: [],
+        alumnos: []
+    });
+    await nuevoPlanEstudio.save();
+    carrera.planEstudio = nuevoPlanEstudio._id;
+    await carrera.save();
+};
+
 
 // MATERIAS
 exports.nuevaMateriaPlanDeEstudio = async (req, res) => {
@@ -157,9 +175,6 @@ exports.nuevaMateriaPlanDeEstudio = async (req, res) => {
         res.status(500).json({ error: "Error al crear la materia" });
     }
 };
-
-
-
 exports.obtenerMaterias = async (req, res) => {
     try {
         const materias = await Materia.find().populate('correlativas');
@@ -169,7 +184,6 @@ exports.obtenerMaterias = async (req, res) => {
         res.status(500).json({ message: 'Error al obtener las materias' });
     }
 };
-
 exports.eliminarMateria = async (req, res) => {
     const { id } = req.params;
     try {
@@ -183,7 +197,6 @@ exports.eliminarMateria = async (req, res) => {
         res.status(500).json({ message: 'Error al eliminar la materia' });
     }
 };
-
 exports.modificarMateria = async (req, res) => {
     const { nombre, correlativas } = req.body;
 

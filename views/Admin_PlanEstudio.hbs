@@ -19,8 +19,7 @@
 </head>
 
 <body>
-    <!-- Barra lateral (SideBar) -->
-   <section class="full-box cover dashboard-sideBar">
+    <section class="full-box cover dashboard-sideBar">
         <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
         <div class="full-box dashboard-sideBar-ct">
             <div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
@@ -54,117 +53,103 @@
             </ul>
         </nav>
 
-       <div class="container mt-4">
-    <h3>Información de la Carrera</h3>
-    <table class="table table-bordered">
-        <tbody id="infoCarrera"></tbody>
-    </table>
-</div>
+        <div class="container mt-4">
+            <!-- Información de la Carrera -->
+            <h3>Información de la Carrera</h3>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th>Nombre</th>
+                        <td>{{carrera.nombreCarrera}}</td>
+                    </tr>
+                    <tr>
+                        <th>Titulo</th>
+                        <td>{{carrera.titulo}}</td>
+                    </tr>
+                    <tr>
+                        <th>Carga horaria</th>
+                        <td>{{carrera.cargaHoraria}}</td>
+                    </tr>
+                    <tr>
+                        <th>Duracion</th>
+                        <td>{{carrera.duracion}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-<div class="container mt-4">
-    <h4 class="mt-4">Materia</h4>
-    <button id="nuevaMateriaPlanDeEstudio" class="btn btn-add" onclick="mostrarFormularioMateria()">Agregar Materia</button>
-    
-    <div id="formContainer" style="display: none;">
-        <form id="formMateria" method="post" action="/materia/nuevaMateriaPlanDeEstudio">
-    <div class="form-group">
-        <label for="nombreMateria">Nombre de la Materia:</label>
-        <input type="text" class="form-control" id="nombreMateria" name="nombreMateria" required />
-    </div>
-    <div class="form-group">
-        <label for="correlativas">Correlativas:</label>
-        <input type="text" class="form-control" id="correlativas" name="correlativas" placeholder="Buscar correlativas..." />
-    </div>
-    <button type="submit" class="btn btn-guardar">Guardar Materia</button>
-    <button type="button" class="btn btn-cancelar" onclick="cancelar('formContainer')">Cancelar</button>
-</form>
+        <!-- Materias -->
+        <div class="container mt-4">
+            <h4 class="mt-4">Materias</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre de la Materia</th>
+                        <th>Correlativas</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each planEstudio.materias}}
+                    <tr>
+                        <td>{{this.nombreMateria}}</td>
+                        <td>
+                            {{#each this.correlativas}}
+                            {{this.nombreMateria}}<br>
+                            {{/each}}
+                        </td>
+                        <td>
+                            <!-- Botones de acción como editar o eliminar -->
+                            <button class="btn btn-warning">Editar</button>
+                            <button class="btn btn-danger">Eliminar</button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <div class="container mt-4">
+            <h4 class="mt-4">Alumnos</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre Completo</th>
+                        <th>Número de Documento</th>
+                        <th>Email</th>
+                        <th>Curso</th>
+                        <th>Título Secundario</th>
+                        <th>Psicofísico</th>
+                        <th>Partida de Nacimiento</th>
+                        <th>DNI Actualizado</th>
+                        <th>Analítico Fiel</th>
+                        <th>Antecedentes Penales</th>
+                        <th>Bandera Booleana</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each planEstudio.alumnos}}
+                    <tr>
+                        <td>{{this.nombreCompleto}}</td>
+                        <td>{{this.numDocAlumn}}</td>
+                        <td>{{this.emailAlumn}}</td>
+                        <td>{{this.curso}}</td>
+                        <td>{{#if this.tituloSecundario}}Sí{{else}}No{{/if}}</td>
+                        <td>{{#if this.psicofisico}}Sí{{else}}No{{/if}}</td>
+                        <td>{{#if this.partidaNacim}}Sí{{else}}No{{/if}}</td>
+                        <td>{{#if this.dniActualizado}}Sí{{else}}No{{/if}}</td>
+                        <td>{{#if this.analiticoFiel}}Sí{{else}}No{{/if}}</td>
+                        <td>{{#if this.antecedenPen}}Sí{{else}}No{{/if}}</td>
+                        <td>{{#if this.banderaBooleana}}Sí{{else}}No{{/if}}</td>
+                        <td>
+                            <button class="btn btn-warning">Editar</button>
+                            <button class="btn btn-danger">Eliminar</button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
 
-    </div>
-</div>
-
-<div class="container mt-4">
-    <h4 class="mt-4">Materias</h4>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Nombre de la Materia</th>
-                <th>Correlativas</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="listaMaterias"></tbody>
-    </table>
-</div>
-
-<div class="container mt-4">
-    <h4 class="mt-4">Alumnos</h4>
-    <button id="nuevoAlumnoPlanDeEstudio" class="btn btn-add" onclick="mostrarFormularioAlumno()">Agregar</button>
-    <form id="formAgregar" method="post" action="/alumno/agregarAlumnoPlanEstudio" style="display: none;">
-    <div>
-        <label for="nombreCompleto">Nombre Completo:</label>
-        <input type="text" id="nombreCompleto" name="nombreCompleto" required />
-    </div>
-    <div>
-        <label for="numDocAlumn">Número de Documento:</label>
-        <input type="number" id="numDocAlumn" name="numDocAlumn" required placeholder="Sin puntos" />
-    </div>
-    <div>
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required />
-    </div>
-    <div>
-        <label for="corte">Corte:</label>
-        <input type="text" id="corte" name="corte" required>
-    </div>
-    <div>
-        <label for="emailAlumn">Email:</label>
-        <input type="email" id="emailAlumn" name="emailAlumn" />
-    </div>
-    <div>
-        <label for="curso">Curso:</label>
-        <input type="text" id="curso" name="curso" required placeholder="Primero, Segundo, etc" />
-    </div>
-    <div>
-        <label for="tituloSecundario">Título Secundario:</label>
-        <input type="checkbox" id="tituloSecundario" name="tituloSecundario" value="true" />
-    </div>
-    <div>
-        <label for="psicofisico">Psicofísico:</label>
-        <input type="checkbox" id="psicofisico" name="psicofisico" value="true" />
-    </div>
-    <div>
-        <label for="partidaNacim">Partida de Nacimiento:</label>
-        <input type="checkbox" id="partidaNacim" name="partidaNacim" value="true" />
-    </div>
-    <div>
-        <label for="dniActualizado">DNI Actualizado:</label>
-        <input type="checkbox" id="dniActualizado" name="dniActualizado" value="true" />
-    </div>
-    <div>
-        <label for="analiticoFiel">Analítico Fiel:</label>
-        <input type="checkbox" id="analiticoFiel" name="analiticoFiel" value="true" />
-    </div>
-    <div>
-        <label for="antecedenPen">Antecedentes Penales:</label>
-        <input type="checkbox" id="antecedenPen" name="antecedenPen" value="true" />
-    </div>
-    <button type="submit" class="btn btn-guardar">Guardar Alumno</button>
-    <button type="button" class="btn btn-cancelar" onclick="cancelar('formAgregar')">Cancelar</button>
-    </form>
-
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Nombre Completo</th>
-                <th>Número de Documento</th>
-                <th>Email</th>
-                <th>Curso</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="listaAlumnos"></tbody>
-    </table>
-</div>
 
 </html>

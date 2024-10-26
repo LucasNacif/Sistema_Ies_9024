@@ -226,3 +226,115 @@
 </body>
 
 </html>
+
+
+  <div class="container mt-4">
+            <h4 class="mt-4">Materia</h4>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Agregar/Editar Materia</h3>
+                </div>
+                <div class="panel-body">
+                    <form id="formMateria">
+                        <input type="hidden" id="materiaId">
+                        <div class="form-group">
+                            <label for="nombreMateria">Nombre de la Materia:</label>
+                            <input type="text" class="form-control" id="nombreMateria" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Correlativas:</label>
+                            <input type="text" id="searchCorrelativas" placeholder="Buscar correlativas...">
+                            <div id="correlativasList"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar Materia</button>
+                        <button type="button" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-4">
+            <h4 class="mt-4">Materias</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre de la Materia</th>
+                        <th>Correlativas</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="listaMaterias"></tbody>
+            </table>
+        </div>
+
+        <div class="container mt-4">
+            <h4 class="mt-4">Alumnos</h4>
+            <button id="nuevoAlumnoPlanDeEstudio" class="btn btn-add"
+                onclick="mostrarFormularioAlumno()">Agregar</button>
+            <form id="formAgregar" method="post" action="/alumno/agregarAlumnoPlanEstudio" style="display: none;">
+                <div>
+                    <label for="nombreCompleto">Nombre Completo:</label>
+                    <input type="text" id="nombreCompleto" name="nombreCompleto" required />
+                </div>
+                <div>
+                    <label for="numDocAlumn">Número de Documento:</label>
+                    <input type="number" id="numDocAlumn" name="numDocAlumn" required placeholder="Sin puntos" />
+                </div>
+                <div>
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" required />
+                </div>
+                <div>
+                    <label for="corte">Corte:</label>
+                    <input type="text" id="corte" name="corte" required>
+                </div>
+                <div>
+                    <label for="emailAlumn">Email:</label>
+                    <input type="email" id="emailAlumn" name="emailAlumn" />
+                </div>
+                <div>
+                    <label for="curso">Curso:</label>
+                    <input type="text" id="curso" name="curso" required placeholder="Primero, Segundo, etc" />
+                </div>
+                <div>
+                    <label for="tituloSecundario">Título Secundario:</label>
+                    <input type="checkbox" id="tituloSecundario" name="tituloSecundario" value="true" />
+                </div>
+                <div>
+                    <label for="psicofisico">Psicofísico:</label>
+                    <input type="checkbox" id="psicofisico" name="psicofisico" value="true" />
+                </div>
+                <div>
+                    <label for="partidaNacim">Partida de Nacimiento:</label>
+                    <input type="checkbox" id="partidaNacim" name="partidaNacim" value="true" />
+                </div>
+                <div>
+                    <label for="dniActualizado">DNI Actualizado:</label>
+                    <input type="checkbox" id="dniActualizado" name="dniActualizado" value="true" />
+                </div>
+                <div>
+                    <label for="analiticoFiel">Analítico Fiel:</label>
+                    <input type="checkbox" id="analiticoFiel" name="analiticoFiel" value="true" />
+                </div>
+                <div>
+                    <label for="antecedenPen">Antecedentes Penales:</label>
+                    <input type="checkbox" id="antecedenPen" name="antecedenPen" value="true" />
+                </div>
+                <button type="submit" class="btn btn-guardar">Guardar Alumno</button>
+                <button type="button" class="btn btn-cancelar" onclick="cancelar('formAgregar')">Cancelar</button>
+            </form>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre Completo</th>
+                        <th>Número de Documento</th>
+                        <th>Email</th>
+                        <th>Curso</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="listaAlumnos"></tbody>
+            </table>
+        </div>

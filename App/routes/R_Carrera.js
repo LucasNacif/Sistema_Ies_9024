@@ -8,13 +8,14 @@ const Carrera = require('../../models/Carrera.js');
 // CARRERA
 router.get("/carrera/obtener", controller.obtenerCarreras);
 router.post("/carrera/agregar", controller.agregarCarreras);
-router.delete("/carrera/eliminar/:id", controller.eliminarCarreras);
+router.delete("/carrera/baja/:id", controller.bajaCarreras);
 router.get("/carrera/modificar/:id", controller.obtenerCarreraPorId); 
 router.put("/carrera/modificar/:id", controller.modificarCarrera);
 
 
 //PLAN DE ESTUDIO
 router.get('/planEstudio/:id/', controller.verPlanEstudio);
+
 //router.post('/carrera/:carreraId/agregarPlan', controller.agregarPlanEstudio); 
 
 // MATERIA

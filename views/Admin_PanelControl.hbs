@@ -1,15 +1,16 @@
-<!DOCTYPE html>
 <html lang="es">
 
 <head>
     <title>Carreras</title>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
-    <link rel="stylesheet" href="/Styles/main.css">
-    <link rel="stylesheet" href="/Styles/bootstrap.min.css">
-    <link rel="stylesheet" href="/Styles/Admin_PanelControl.css">
+    <link rel="stylesheet" href="/Styles/main.css" />
+    <link rel="stylesheet" href="/Styles/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="/Styles/Admin_PanelControl.css" />
+    <script src="/js/Admin_PanelControl.js"></script>
 
     <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
     <script src="/js/jsBoostrap/bootstrap.min.js"></script>
@@ -25,47 +26,46 @@
         <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
         <div class="full-box dashboard-sideBar-ct">
             <div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
-                Bedel <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
+                Bedel
+                <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
             </div>
             <div class="full-box dashboard-sideBar-UserInfo">
                 <figure class="full-box">
-                    <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
+                    <img src="/assets/img/logo_IES.jpg" alt="UserIcon" />
                 </figure>
                 <ul class="full-box list-unstyled text-center">
                     <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
                 </ul>
             </div>
             <ul class="list-unstyled full-box dashboard-sideBar-Menu">
-                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
-                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
-                <li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Gestión académica</a></li>
-                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a>
+                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i>
+                        Carreras</a></li>
+                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i>
+                        Mesas</a></li>
+                <li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i>
+                        Gestión académica</a></li>
+                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i>
+                        Super Admin</a>
                 </li>
             </ul>
         </div>
     </section>
 
-    <!-- Contenido de la página principal -->
     <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
-
-        <!-- Barra de navegación superior (NavBar) -->
         <nav class="full-box dashboard-Navbar">
             <ul class="full-box list-unstyled text-right">
                 <li class="pull-left">
-                    <!-- Botón para mostrar/ocultar el menú lateral -->
                     <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
                 </li>
             </ul>
         </nav>
 
-        <!-- Página de Carreras -->
         <div class="container-fluid">
             <div class="page-header" style="margin-top: 61px;">
                 <h1 class="text-titles">Carreras</h1>
             </div>
         </div>
 
-        <!-- Botón para mostrar/ocultar formulario -->
         <div class="container text-center">
             <button id="toggleFormBtn" class="btn btn-primary" onclick="agregarCarreras()">Agregar nueva
                 carrera</button>
@@ -83,19 +83,19 @@
                         <form id="formAgregarCarrera" style="color: #333;">
                             <div class="form-group">
                                 <label for="nombreCarrera">Nombre de la Carrera</label>
-                                <input type="text" class="form-control" id="nombreCarrera" required>
+                                <input type="text" class="form-control" id="nombreCarrera" required />
                             </div>
                             <div class="form-group">
                                 <label for="titulo">Título</label>
-                                <input type="text" class="form-control" id="titulo" required>
+                                <input type="text" class="form-control" id="titulo" required />
                             </div>
                             <div class="form-group">
                                 <label for="cargaHoraria">Carga Horaria</label>
-                                <input type="number" class="form-control" id="cargaHoraria" required>
+                                <input type="number" class="form-control" id="cargaHoraria" required />
                             </div>
                             <div class="form-group">
                                 <label for="duracion">Duración</label>
-                                <input type="number" class="form-control" id="duracion" required>
+                                <input type="number" class="form-control" id="duracion" required />
                             </div>
                             <button type="submit" class="btn btn-primary">Agregar</button>
                         </form>
@@ -120,19 +120,19 @@
                         <form id="formModificarCarrera">
                             <div class="form-group">
                                 <label for="modificarNombreCarrera">Nombre de la Carrera</label>
-                                <input type="text" class="form-control" id="modificarNombreCarrera" required>
+                                <input type="text" class="form-control" id="modificarNombreCarrera" required />
                             </div>
                             <div class="form-group">
                                 <label for="modificarTitulo">Título</label>
-                                <input type="text" class="form-control" id="modificarTitulo" required>
+                                <input type="text" class="form-control" id="modificarTitulo" required />
                             </div>
                             <div class="form-group">
                                 <label for="modificarCargaHoraria">Carga Horaria</label>
-                                <input type="number" class="form-control" id="modificarCargaHoraria" required>
+                                <input type="number" class="form-control" id="modificarCargaHoraria" required />
                             </div>
                             <div class="form-group">
                                 <label for="modificarDuracion">Duración</label>
-                                <input type="number" class="form-control" id="modificarDuracion" required>
+                                <input type="number" class="form-control" id="modificarDuracion" required />
                             </div>
                             <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                         </form>
@@ -164,44 +164,7 @@
         </div>
 
     </section>
-    <!-- Scripts -->
-    <script src="/js/Admin_PanelControl.js"></script>
-    <script>
-        // Inicialización del componente de Material Design
-        $.material.init();
 
-        function cargarCarreras() {
-            fetch('/carrera/obtener')
-                .then(response => response.json())
-                .then(carreras => {
-                    const listaCarreras = document.getElementById('listaCarreras');
-                    listaCarreras.innerHTML = ''; // Limpia la lista antes de agregar una carrera
-                    carreras.forEach(carrera => {
-                        listaCarreras.innerHTML += `
-                        <div class="col-md-4">
-                            <div class="card" style="margin: 10px;">
-                                <div class="card-header text-center">
-                                    ${carrera.nombreCarrera}
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">${carrera.titulo}</h5>
-                                    <p class="card-text"><strong>Carga Horaria:</strong> ${carrera.cargaHoraria} horas</p>
-                                    <p class="card-text"><strong>Duración:</strong> ${carrera.duracion} años</p>
-                                    <a href="/planEstudio/${carrera._id}" class="btn btn-info">Ver Plan de Estudios</a>
-                                    <button type="button" class="btn btn-warning" onclick="modificarCarrera('${carrera._id}')">Modificar</button>
-                                    <button type="button" class="btn btn-danger" onclick="openDeleteModal('${carrera._id}')">Dar de baja</button>
-                                </div>
-                            </div>
-                        </div>`;
-                    });
-                })
-                .catch(error => console.error('Error al cargar carreras:', error));
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            cargarCarreras(); // Llama la función para cargar carreras al inicio
-        });
-    </script>
 </body>
 
 </html>
