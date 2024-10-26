@@ -89,7 +89,6 @@ document.addEventListener("DOMContentLoaded", function () {
     btnModificar.addEventListener("click", async function () {
         formAgregar.style.display = "none";
         btnAgregar.textContent = "Agregar Nuevo Alumno";
-        //Esto habria que meterlo en otra funcion
         const numDocAlumn = prompt("Ingrese el número de documento del alumno que desea modificar:");
 
         if (numDocAlumn == null || numDocAlumn.trim() === "") {
@@ -179,11 +178,6 @@ document.addEventListener("DOMContentLoaded", function () {
             cargarAlumnos(true);
             btnMostrarTodos.textContent = "Mostrar Alumnos de baja";
         }
-    });
-
-    // Evento para el botón VOLVER
-    btnVolver.addEventListener("click", function () {
-        window.location.href = "/";
     });
 
     //BUSCARDOR

@@ -10,7 +10,7 @@ router.post("/alumno/agregarAlumnoPlanEstudio", controller.nuevoAlumnoPlanDeEstu
 
 router.get("/alumno/traerPorDoc/:numDocAlumn", controller.traerPorDoc);
 router.delete("/alumno/baja/:numDocAlumn", controller.darDeBaja);
-router.post("/alumno/modificar", controller.modificarAlumno);
+router.post("/alumno/modificar/:id", controller.modificarAlumno);
 router.get('/alumno/obtener', controller.obtenerAlumnosActivos);
 
 module.exports = router;

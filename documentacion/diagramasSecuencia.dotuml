@@ -290,3 +290,72 @@ Server --> Browser: Mensaje de éxito
 
 @enduml
 
+
+-------INSCRIBIRSE A MESA DE EXAMEN-------
+
+sequenceDiagram
+    actor Browser
+    participant Server
+    participant Routes
+    participant Controller
+    participant Models
+
+    == Ver Mesas Disponibles ==
+    Browser->>Server: GET /inscripcion/obtenerMesasSegunAlum
+    Server->>Routes: router.get("/inscripcion/obtenerMesasSegunAlum", controller.obtenerMesasSegunAlum)
+    Routes->>Controller: obtenerMesasSegunAlum(req, res)
+    Controller->>Models: docAlumLogueado(req, res)
+    Models-->>Controller: documentoAlum
+    
+    alt No student logged in
+        Controller-->>Routes: res.status(401).send('No hay un alumno logueado')
+        Routes-->>Browser: 401 Unauthorized
+    else Student logged in
+        Controller->>Models: Alumno.findOne({numDocAlumn})
+        Models-->>Controller: alumno
+        Controller->>Models: PlanEstudio.findOne({alumnos}).populate('materias')
+        Models-->>Controller: planEstudio
+        Controller->>Models: Mesa.find({Materia, estadoActual: 'activa'})
+        Models-->>Controller: mesasDisponibles
+        Controller->>Models: AlumnoEstado.find({idAlumno}).populate('idMateria')
+        Models-->>Controller: estadosAlumno
+        Controller-->>Routes: res.render('Alumno_MesaExamen', {mesasDisponibles, estadosAlumno})
+        Routes-->>Browser: Rendered exam registration page
+    end
+
+    == Inscribirse a mesa ==
+    Browser->>Server: POST /inscripcion/mesa/:mesaId
+    Server->>Routes: router.post("/inscripcion/mesa/:mesaId", controller.verificarPermisoParaRendir)
+    Routes->>Controller: verificarPermisoParaRendir(req, res)
+    Controller->>Models: docAlumLogueado(req, res)
+    Models-->>Controller: docAlumno
+    
+    alt No student logged in
+        Controller-->>Routes: res.json({success: false, mensaje: 'No hay un alumno logueado'})
+    else Student logged in
+        Controller->>Models: Mesa.findById(mesaId).populate('Materia', 'Alumno')
+        Models-->>Controller: mesa
+        Controller->>Controller: verificarInscripcionExistente(alumnoId, mesa.Alumno)
+        
+        alt Already registered
+            Controller-->>Routes: res.json({success: false, mensaje: 'Ya estas inscripto'})
+        else Not registered
+            Controller->>Controller: verificarCorrelativas(alumnoId, mesa.Materia)
+            
+            alt Prerequisites not met
+                Controller-->>Routes: res.json({success: false, mensaje: 'No has aprobado correlativas'})
+            else Prerequisites met
+                Controller->>Models: AlumnoEstado.findOne({idAlumno, idMateria})
+                Models-->>Controller: alumEstado
+                
+                alt Valid status (libre/regular)
+                    Controller->>Models: mesa.save()
+                    Models-->>Controller: Updated mesa
+                    Controller-->>Routes: res.json({success: true, mensaje: 'Inscripción exitosa'})
+                else Invalid status
+                    Controller-->>Routes: res.json({success: false, mensaje: 'Estado no válido'})
+                end
+            end
+        end
+    end
+    Routes-->>Browser: JSON response with registration status

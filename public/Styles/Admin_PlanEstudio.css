@@ -42,7 +42,6 @@ input, button, table {
     padding: 10px;
 }
 
-/* Estilo para los botones de alumnos */
 .btn-add, .btn-edit, .btn-delete {
     display: inline-block;
     font-size: 16px;
@@ -63,28 +62,6 @@ input, button, table {
 
 .btn-add:hover {
     background-color: #218838;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Botón modificar (azul) */
-.btn-edit {
-    background-color: #17a2b8;
-    border: none;
-}
-
-.btn-edit:hover {
-    background-color: #138496;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Botón eliminar (rojo) */
-.btn-delete {
-    background-color: #dc3545;
-    border: none;
-}
-
-.btn-delete:hover {
-    background-color: #c82333;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -112,20 +89,9 @@ input, button, table {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Modal */
-.modal-header, .modal-footer {
-    border-bottom: none;
-    border-top: none;
-}
-/* Botones más pequeños con un tamaño adecuado */
 .btn-sm {
     padding: 5px 8px;
-    font-size: 0.875rem; /* Ajuste de tamaño del texto */
-}
-
-/* Iconos */
-.btn i {
-    font-size: 0.9rem; /* Ajustar el tamaño de los iconos */
+    font-size: 0.875rem; 
 }
 
 .btn-add {
@@ -142,7 +108,23 @@ input, button, table {
     background-color: #dc3545;
     color: white;
 }
-.btn-view{
-    background-color: #b9c217;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+
+.btn-cancelar {
+    background-color: #d65b5b;
+    color: white;
+    border: none;
+}
+
+.btn-cancelar:hover {
+    background-color: #d65b5b;
+}
+
+.btn-guardar {
+    background-color: #66c2f0;
+    color: black;
+    border: none;
+}
+
+.btn-guardar:hover {
+    background-color: #66c2f0; 
 }
