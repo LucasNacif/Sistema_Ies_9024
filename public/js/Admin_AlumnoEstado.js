@@ -1,6 +1,4 @@
-$('#modifyAlumnoEstadoModal').on('shown.bs.modal', function () {
-    $('#modificarNombreMateria').trigger('focus'); // Mueve el foco al input de nombre de materia
-});
+let alumnoEstadoIdToDelete;
 // Función para mostrar mensajes en pantalla
 function showMessage(message, type) {
     const messageContainer = document.createElement('div');
@@ -13,9 +11,6 @@ function showMessage(message, type) {
         messageContainer.remove();
     }, 3000);
 }
-
-
-
 
 // Variables globales para modificar
 let idAlumnoEstadoToModify;
@@ -66,39 +61,31 @@ document.getElementById('formModificarAlumnoEstado').addEventListener('submit', 
         .catch(error => console.error('Error al modificar el estado del alumno:', error));
 });
 
+//ELIMINAR MODAL Y TODA LA COSA
 
+// Abrir el modal de confirmación para dar de baja carrera
 
-// Esta función se activa al hacer clic en el botón "Dar De Baja" dentro del modal
-function eliminarEstado(id) {
-    fetch(`/alumnoEstado/eliminar/${id}`, {
-        method: 'DELETE',
-    })
+// Función para abrir el modal de confirmación
+
+// Función para abrir el modal de confirmación
+window.openDeleteModal = function (id) {
+    console.log("ID recibido:", id); // Muestra el ID recibido en la consola
+    alumnoEstadoIdToDelete = id; // Asigna el ID al hacer clic
+    $('#confirmDeleteModal').modal('show'); // Muestra el modal
+};
+
+// Evento para confirmar la eliminación
+document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+    console.log("Eliminando ID:", alumnoEstadoIdToDelete);
+    fetch(`/alumnoEstado/eliminar/${alumnoEstadoIdToDelete}`, { method: 'DELETE' }) // Realiza la solicitud DELETE
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Error al eliminar el estado');
+            if (response.ok) {
+                showMessage('Alumno dada de baja de su estado correctamente', 'success');
+                $('#confirmDeleteModal').modal('hide'); // Oculta el modal
+                cargarEstados(); // Opcional: recargar la lista de estados
+            } else {
+                showMessage('Error al dar de baja el estado', 'danger');
             }
-            return response.json();
         })
-        .then(data => {
-            alert(data.message);
-            // Elimina la fila correspondiente de la tabla
-            document.getElementById(`fila-${id}`).remove(); // Asegúrate de que cada fila tenga un ID único
-        })
-        .catch(err => {
-            console.error(err);
-            alert('Ocurrió un error al intentar eliminar el estado');
-        });
-}
-
-// Escuchar el evento de clic para el botón de confirmación en el modal
-document.addEventListener('DOMContentLoaded', () => {
-    const confirmDeleteButtons = document.querySelectorAll('[id^="confirmDeleteBtn-"]');
-
-    confirmDeleteButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const id = this.id.split('-')[1]; // Extrae el ID del botón
-            eliminarEstado(id); // Llama a la función para eliminar el estado
-        });
-    });
+        .catch(error => console.error('Error al dar de baja el estado:', error));
 });
-

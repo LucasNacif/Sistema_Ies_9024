@@ -132,14 +132,14 @@ exports.modificarEstadoAlumno = async (req, res) => {
 
 // Eliminar una carrera
 exports.eliminarEstadoAlumno = async (req, res) => {
-  const idAlumnoEstado = req.params.idAlumnoEstado;
-  console.log('ID recibido:', idAlumnoEstado);
-  if (!mongoose.Types.ObjectId.isValid(idAlumnoEstado)) {
+  const id = req.params.id;
+  console.log('ID recibido:', id);
+  if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: 'ID de estado no válido' });
   }
 
   try {
-    const alumnoEstado = await AlumnoEstado.findByIdAndDelete(idAlumnoEstado);
+    const alumnoEstado = await AlumnoEstado.findByIdAndDelete(id);
     if (!alumnoEstado) {
       return res.status(404).json({ message: 'Estado no encontrada' });
     }
