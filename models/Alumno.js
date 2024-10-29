@@ -4,10 +4,9 @@ const Schema = mongoose.Schema;
 const alumnoSchema = new Schema({
   numDocAlumn: { type: String, unique: true },
   nombreCompleto: String,
-  nombre: String,
   corte: String,
   emailAlumn: String,
-  curso: { type: String, enum: ['Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto'] },
+  curso: { type: String, enum: ['Primero', 'Segundo', 'Tercero', 'Cuarto'] },
   tituloSecundario: { type: Boolean, default: false },
   psicofisico: { type: Boolean, default: false },
   partidaNacim: { type: Boolean, default: false },

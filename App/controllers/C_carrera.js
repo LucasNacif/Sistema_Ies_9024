@@ -117,12 +117,12 @@ exports.verPlanEstudio = async (req, res) => {
             await crearPlanEstudioVacio(carrera);
             carrera = await obtenerPlanEstudio(id); // Vuelvo a buscar la carrera con el nuevo plan de estudio
         }
-
+        
         res.render('Admin_PlanEstudio', {
             carrera,
             planEstudio: carrera.planEstudio,
-            materias: carrera.planEstudio.materias,
-            alumnos: carrera.planEstudio.alumnos
+            materias: carrera.planEstudio.materias || [],
+            alumnos: carrera.planEstudio.alumnos || [] 
         });
 
     } catch (error) {
@@ -131,10 +131,15 @@ exports.verPlanEstudio = async (req, res) => {
     }
 };
 const obtenerPlanEstudio = async (carreraId) => {
+
     return Carrera.findById(carreraId).populate({
         path: 'planEstudio',
         populate: [
-            { path: 'materias' },
+            { path: 'materias',
+                populate: {
+                    path: 'correlativas'
+                }
+            },
             { path: 'alumnos' }
         ]
     });

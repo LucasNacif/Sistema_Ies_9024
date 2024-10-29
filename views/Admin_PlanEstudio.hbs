@@ -5,17 +5,21 @@
     <title>Plan de Estudio</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/Styles/main.css" />
-    <link rel="stylesheet" href="/Styles/Admin_PlanEstudio.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/Styles/bootstrap.min.css">
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/Styles/Admin_PlanEstudio.css">
     <script src="/js/Admin_PlanEstudio.js"></script>
+
+    <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
+    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
+    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
+    <script src="/js/jsBoostrap/material.min.js"></script>
+    <script src="/js/jsBoostrap/ripples.min.js"></script>
+    <script src="/js/jsBoostrap/main.js"></script>
 </head>
 
 <body>
@@ -81,6 +85,11 @@
         <!-- Materias -->
         <div class="container mt-4">
             <h4 class="mt-4">Materias</h4>
+            <div class="mb-3">
+                <button class="btn btn-success" data-toggle="modal" data-target="#agregarMateriaModal">
+                    <i class="zmdi zmdi-plus"></i> Agregar Materia
+                </button>
+            </div>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -90,60 +99,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{#each planEstudio.materias}}
+                    {{#each materias}}
                     <tr>
                         <td>{{this.nombreMateria}}</td>
                         <td>
+                            {{#if this.correlativas}}
                             {{#each this.correlativas}}
                             {{this.nombreMateria}}<br>
                             {{/each}}
+                            {{else}}
+                            Sin correlativas
+                            {{/if}}
                         </td>
                         <td>
-                            <!-- Botones de acción como editar o eliminar -->
-                            <button class="btn btn-warning">Editar</button>
-                            <button class="btn btn-danger">Eliminar</button>
-                        </td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-        </div>
-        <div class="container mt-4">
-            <h4 class="mt-4">Alumnos</h4>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Nombre Completo</th>
-                        <th>Número de Documento</th>
-                        <th>Email</th>
-                        <th>Curso</th>
-                        <th>Título Secundario</th>
-                        <th>Psicofísico</th>
-                        <th>Partida de Nacimiento</th>
-                        <th>DNI Actualizado</th>
-                        <th>Analítico Fiel</th>
-                        <th>Antecedentes Penales</th>
-                        <th>Bandera Booleana</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each planEstudio.alumnos}}
-                    <tr>
-                        <td>{{this.nombreCompleto}}</td>
-                        <td>{{this.numDocAlumn}}</td>
-                        <td>{{this.emailAlumn}}</td>
-                        <td>{{this.curso}}</td>
-                        <td>{{#if this.tituloSecundario}}Sí{{else}}No{{/if}}</td>
-                        <td>{{#if this.psicofisico}}Sí{{else}}No{{/if}}</td>
-                        <td>{{#if this.partidaNacim}}Sí{{else}}No{{/if}}</td>
-                        <td>{{#if this.dniActualizado}}Sí{{else}}No{{/if}}</td>
-                        <td>{{#if this.analiticoFiel}}Sí{{else}}No{{/if}}</td>
-                        <td>{{#if this.antecedenPen}}Sí{{else}}No{{/if}}</td>
-                        <td>{{#if this.banderaBooleana}}Sí{{else}}No{{/if}}</td>
-                        <td>
-                            <button class="btn btn-warning">Editar</button>
-                            <button class="btn btn-danger">Eliminar</button>
+                            <button class="btn btn-outline-primary btn-sm" data-toggle="modal"
+                                data-target="#editarModal-{{this._id}}">
+                                <i class="zmdi zmdi-edit"></i> Editar
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm" data-toggle="modal"
+                                data-target="#eliminarModal-{{this._id}}">
+                                <i class="zmdi zmdi-delete"></i> Eliminar
+                            </button>
                         </td>
                     </tr>
                     {{/each}}
@@ -151,5 +127,283 @@
             </table>
         </div>
 
+
+        <div class="container mt-4">
+            <h4 class="mt-4">Alumnos</h4>
+            <div class="mb-3">
+                <button class="btn btn-success" data-toggle="modal" data-target="#agregarAlumnoModal">
+                    <i class="zmdi zmdi-plus"></i> Agregar Alumno
+                </button>
+                <button class="btn btn-warning" data-toggle="modal" data-target="#alumnosDadoBajaModal">
+                    <i class="zmdi zmdi-eye-off"></i> Mostrar Alumnos Dados de Baja
+                </button>
+            </div>
+            <table class="table table-st">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Documento</th>
+                                <th>Email</th>
+                                <th>Curso</th>
+                                <th>Corte</th>
+                                <th>Título</th>
+                                <th>Psicofísico</th>
+                                <th>Partida</th>
+                                <th>DNI</th>
+                                <th>Analítico</th>
+                                <th>Penales</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each planEstudio.alumnos}}
+                            <tr>
+                                <td>{{this.nombreCompleto}}</td>
+                                <td>{{this.numDocAlumn}}</td>
+                                <td>{{this.emailAlumn}}</td>
+                                <td>{{this.curso}}</td>
+                                <td>{{this.corte}}</td>
+                                <td>
+                                    {{#if this.tituloSecundario}}
+                                    <i class="zmdi zmdi-check-circle text-success"></i>
+                                    {{else}}
+                                    <i class="zmdi zmdi-close-circle text-danger"></i>
+                                    {{/if}}
+                                </td>
+                                <td>
+                                    {{#if this.psicofisico}}
+                                    <i class="zmdi zmdi-check-circle text-success"></i>
+                                    {{else}}
+                                    <i class="zmdi zmdi-close-circle text-danger"></i>
+                                    {{/if}}
+                                </td>
+                                <td>
+                                    {{#if this.partidaNacim}}
+                                    <i class="zmdi zmdi-check-circle text-success"></i>
+                                    {{else}}
+                                    <i class="zmdi zmdi-close-circle text-danger"></i>
+                                    {{/if}}
+                                </td>
+                                <td>
+                                    {{#if this.dniActualizado}}
+                                    <i class="zmdi zmdi-check-circle text-success"></i>
+                                    {{else}}
+                                    <i class="zmdi zmdi-close-circle text-danger"></i>
+                                    {{/if}}
+                                </td>
+                                <td>
+                                    {{#if this.analiticoFiel}}
+                                    <i class="zmdi zmdi-check-circle text-success"></i>
+                                    {{else}}
+                                    <i class="zmdi zmdi-close-circle text-danger"></i>
+                                    {{/if}}
+                                </td>
+                                <td>
+                                    {{#if this.antecedenPen}}
+                                    <i class="zmdi zmdi-check-circle text-success"></i>
+                                    {{else}}
+                                    <i class="zmdi zmdi-close-circle text-danger"></i>
+                                    {{/if}}
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-primary btn-sm" data-toggle="modal"
+                                        data-target="#editarModal-{{this._id}}">
+                                        <i class="zmdi zmdi-edit"></i>
+                                    </button>
+                                    <button class="btn btn-outline-danger btn-sm" data-toggle="modal"
+                                        data-target="#eliminarModal-{{this._id}}">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+
+        </div>
+
+        <!-- Modal para agregar materia -->
+        <div class="modal fade" id="agregarMateriaModal" tabindex="-1" aria-labelledby="agregarMateriaModalLabel"
+            style="z-index: 1231 !important;" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="agregarMateriaModalLabel">Agregar Materia</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formMateria">
+                            <input type="hidden" id="materiaId">
+                            <div class="form-group">
+                                <label for="nombreMateria">Nombre de la Materia:</label>
+                                <input type="text" class="form-control" id="nombreMateria" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Correlativas:</label>
+                                <input type="text" id="searchCorrelativas" placeholder="Buscar correlativas...">
+                                <div id="correlativasList"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary">Guardar Materia</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para agregar alumno -->
+        <div class="modal fade" id="agregarAlumnoModal" tabindex="-1" aria-labelledby="agregarAlumnoModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="agregarAlumnoModalLabel">Agregar Alumno</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formAgregar" method="post" action="/alumno/agregarAlumnoPlanEstudio">
+                            <div>
+                                <label for="nombreCompleto">Nombre Completo:</label>
+                                <input type="text" id="nombreCompleto" name="nombreCompleto" required />
+                            </div>
+                            <div>
+                                <label for="numDocAlumn">Número de Documento:</label>
+                                <input type="number" id="numDocAlumn" name="numDocAlumn" required
+                                    placeholder="Sin puntos" />
+                            </div>
+                            <div>
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" id="nombre" name="nombre" required />
+                            </div>
+                            <div>
+                                <label for="corte">Corte:</label>
+                                <input type="text" id="corte" name="corte" required>
+                            </div>
+                            <div>
+                                <label for="emailAlumn">Email:</label>
+                                <input type="email" id="emailAlumn" name="emailAlumn" />
+                            </div>
+                            <div>
+                                <label for="curso">Curso:</label>
+                                <input type="curso" id="curso" name="curso" required
+                                    placeholder="Primero, Segundo, etc" />
+                            </div>
+                            <div>
+                                <label for="tituloSecundario">Título Secundario:</label>
+                                <input type="checkbox" name="tituloSecundario" value="true" />
+
+                            </div>
+                            <div>
+                                <label for="psicofisico">Psicofísico:</label>
+                                <input type="checkbox" id="psicofisico" name="psicofisico" value="true" />
+
+                            </div>
+                            <div>
+                                <label for="partidaNacim">Partida de Nacimiento:</label>
+                                <input type="checkbox" id="partidaNacim" name="partidaNacim" value="true" />
+
+                            </div>
+                            <div>
+                                <label for="dniActualizado">DNI Actualizado:</label>
+                                <input type="checkbox" id="dniActualizado" name="dniActualizado" value="true" />
+
+                            </div>
+                            <div>
+                                <label for="analiticoFiel">Analítico Fiel:</label>
+                                <input type="checkbox" id="analiticoFiel" name="analiticoFiel" value="true" />
+
+                            </div>
+                            <div>
+                                <label for="antecedenPen">Antecedentes Penales:</label>
+                                <input type="checkbox" id="antecedenPen" name="antecedenPen" value="true" />
+
+                            </div>
+                            <div>
+                                <input type="hidden" id="idPlanEstudioSeleccionado" name="idPlanEstudioSeleccionado"
+                                    value={{planEstudio._id}} />
+                            </div>
+                            <div>
+                                <input type="hidden" id="idCarrera" name="idCarrera" value={{carrera._id}} />
+                            </div>
+                            <button type="submit" class="btn btn-add">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para mostrar alumnos dados de baja -->
+        <div class="modal fade" id="alumnosDadoBajaModal" tabindex="-1" aria-labelledby="alumnosDadoBajaModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="alumnosDadoBajaModalLabel">Alumnos Dados de Baja</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Aquí se mostrarán los alumnos dados de baja -->
+                        <p>Listado de alumnos dados de baja aquí...</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Editar -->
+        <div class="modal fade" id="editarModal-{{this._id}}" tabindex="-1" aria-labelledby="editarModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editarModalLabel">Editar Materia</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Contenido del formulario de edición -->
+                        <p>Formulario de edición aquí...</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Eliminar -->
+        <div class="modal fade" id="eliminarModal-{{this._id}}" tabindex="-1" aria-labelledby="eliminarModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eliminarModalLabel">Eliminar Materia</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Está seguro de que desea eliminar esta materia?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger">Eliminar</button>
+                    </div>
+                </div>
+            </div>
 
 </html>

@@ -22,12 +22,13 @@ exports.nuevoAlumnoPlanDeEstudio = async (req, res) => {
       analiticoFiel,
       antecedenPen,
       idPlanEstudioSeleccionado,
+      idCarrera,
     } = req.body;
     
     // busco el alumno por este num de doc para saber si esta guardado
     const alumnoExistente = await Alumno.findOne({ numDocAlumn });
     if (alumnoExistente) {
-      return res.redirect("/alumno?error=El DNI ya está registrado");
+      return res.redirect(`/planEstudio/${idCarrera}?error=El alumno ya existe.`);
     }
     const alumno = new Alumno({
       numDocAlumn,
@@ -54,15 +55,16 @@ exports.nuevoAlumnoPlanDeEstudio = async (req, res) => {
     if(planEstudio){
       //guardamos ese alumno
       await alumno.save();
-    }
 
-    console.error("planEstudio actualizado ", (await planEstudio).toString());
-    console.error("alumno Guardado ", alumno.toString());
-    
-    res.redirect("/alumno?message=Alumno agregado correctamente");
+      console.error("planEstudio actualizado ", (await planEstudio).toString());
+      console.error("alumno Guardado ", alumno.toString());
+
+      return res.redirect(`/planEstudio/${idCarrera}?success=Alumno agregado exitosamente.`);
+    }
+  
   } catch (error) {
     console.error(error);
-    res.redirect("/alumno?error=Error al agregar alumno");
+    res.redirect(`/planEstudio/${idCarrera}?error=No se pudo agregar el alumno.`);
   }
 };
 exports.traerPorDoc = async (req, res) => {

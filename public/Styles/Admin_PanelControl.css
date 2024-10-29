@@ -1,41 +1,37 @@
-
-/* Estilo general para los mensajes */
 .alert {
-    position: fixed; /* Permite que los mensajes se mantengan en la parte superior */
-    top: 20px; /* Distancia desde la parte superior */
-    left: 90%; /* Centrar horizontalmente */
-    transform: translateX(-50%); /* Ajustar el centrado */
-    width: 300px; /* Ancho del mensaje */
-    z-index: 2000; /* Asegura que esté por encima de otros elementos */
-    border-radius: 5px; /* Bordes redondeados */
-    padding: 15px; /* Espaciado interno */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para el mensaje */
-    transition: opacity 0.5s ease; /* Suaviza la aparición del mensaje */
+    position: fixed;
+    top: 20px;
+    left: 90%;
+    transform: translateX(-50%);
+    width: 300px;
+    z-index: 2000;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.5s ease;
 }
 
-/* Estilo para mensajes de éxito */
 .alert-success {
-    background-color: #d4edda; /* Color de fondo para éxito */
-    color: #155724; /* Color de texto para éxito */
+    background-color: #d4edda;
+    color: #155724;
 }
 
-/* Estilo para mensajes de error */
 .alert-danger {
-    background-color: #f8d7da; /* Color de fondo para error */
-    color: #721c24; /* Color de texto para error */
+    background-color: #f8d7da;
+    color: #721c24;
 }
 
-/* Card Styles */
 .carrera-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
     gap: 15px;
 }
+
 .container {
     margin-top: 70px; 
 }
-/* Card Styles */
+
 .card {
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -43,8 +39,8 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: white;
     transition: transform 0.3s, box-shadow 0.3s;
-    width: 100%; /* Anchura del 100% para responsividad */
-    max-width: 300px; /* Anchura máxima de la tarjeta */
+    width: 100%;
+    max-width: 300px;
 }
 
 .card:hover {
@@ -64,38 +60,37 @@
     height: 75% !important;
     padding: 18px;
 }
-/* Media Queries for Responsiveness */
+
 @media (max-width: 768px) {
     .card {
-        max-width: 100%; /* Tarjetas ocupan el 100% en pantallas pequeñas */
+        max-width: 100%;
     }
 }
-/* Estilo para el fondo del modal */
+
 .modal {
-    backdrop-filter: blur(5px); /* Aplica un efecto de desenfoque al fondo */
-    z-index: 1050 !important; /* Asegura que el modal esté encima de otros elementos */
+    backdrop-filter: blur(5px);
+    z-index: 1050 !important;
 }
-.modal-backdrop{
+
+.modal-backdrop {
     z-index: 0 !important;
 }
-/* Asegura que el modal esté centrado */
+
 .modal-dialog {
-    margin: 1.75rem auto; /* Ajusta el margen para centrar el modal */
-    z-index: 1060; /* Asegura que el diálogo del modal esté por encima del fondo */
+    margin: 1.75rem auto;
+    z-index: 1060;
 }
 
-/* Estilo para el contenido del modal */
 .modal-content {
-    border-radius: 10px; /* Bordes redondeados */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para el modal */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilo para el botón de cerrar */
 .close {
-    color: #000; /* Cambia el color del icono de cerrar */
-    opacity: 0.8; /* Hace que el icono de cerrar sea un poco transparente */
+    color: #000;
+    opacity: 0.8;
 }
 
 .close:hover {
-    opacity: 1; /* Aumenta la opacidad al pasar el mouse */
+    opacity: 1;
 }
