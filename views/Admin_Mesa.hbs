@@ -26,9 +26,9 @@
 			<!-- Información del usuario en el menú lateral -->
 			<div class="full-box dashboard-sideBar-UserInfo">
 				<figure class="full-box">
-					<img src="/assets/img/logo_IES.jpg" alt="UserIcon">
-					<h5>IES 9-024 "Lavalle"</h5>
-				</figure>
+                    <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
+                    <h5>IES 9-024 "Lavalle"</h5>
+                </figure>
 				<!-- Opciones de configuración y salir -->
 				<ul class="full-box list-unstyled text-center">
 					<li>
@@ -39,21 +39,18 @@
 				</ul>
 			</div>
 			<!-- Menú principal -->
-			<ul class="list-unstyled full-box dashboard-sideBar-Menu">
-
-				<li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
-				<li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
-				<li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Gestion academica</a></li>
-				<li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a>
-				</li>
-			</ul>
-
+	      <ul class="list-unstyled full-box dashboard-sideBar-Menu">
+                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
+                <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Alumnos</a></li>
+                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
+                <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i> Materias</a></li>
+                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a></li>
+            </ul>
 		</div>
 	</section>
 
 	<!-- Contenido de la página principal -->
-	<section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
-
+	<section class="full-box dashboard-contentPage">
 
 		<!-- Barra de navegación superior (NavBar) -->
 		<nav class="full-box dashboard-Navbar">
@@ -62,85 +59,110 @@
 					<!-- Botón para mostrar/ocultar el menú lateral -->
 					<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
 				</li>
+				<!-- Icono de notificaciones -->
+				<li>
+					<a href="#!" class="btn-Notifications-area">
+						<i class="zmdi zmdi-notifications-none"></i>
+						<span class="badge"></span>
+					</a>
+				</li>
+				<!-- Icono de búsqueda -->
+				<li>
+					<a href="#!" class="btn-search">
+						<i class="zmdi zmdi-search"></i>
+					</a>
+				</li>
 			</ul>
 		</nav>
 
 		<!-- Página de Mesas -->
 		<center>
-			<div class="container-fluid">
-				<div class="page-header">
-					<!-- Título de la sección -->
-					<h1 class="text-titles">Mesas <small></h1>
-				</div>
+		<div class="container-fluid">
+			<div class="page-header">
+				<!-- Título de la sección -->
+				<h1 class="text-titles">Mesas <small></h1>
 			</div>
+		</div>
 		</center>
 
 
 		<div class="botones">
-			<button id="btnAgregar" class="btn btn-add">Agregar</button>
-			<button id="btnModificar" class="btn btn-edit">Modificar</button>
-			<button id="btnDarDeBaja" class="btn btn-delete">Dar de Baja</button>
-			<button id="btnMostrarTodos" class="btn btn-edit">Mostrar Alumnos de baja</button>
-		</div>
+                <button id="btnAgregar" class="btn btn-add">Agregar</button>
+                <button id="btnModificar" class="btn btn-edit">Modificar</button>
+                <button id="btnDarDeBaja" class="btn btn-delete">Dar de Baja</button>
+                <button id="btnMostrarTodos" class="btn btn-edit">Mostrar Alumnos de baja</button>
+        </div>
 		<!-- Formulario para agregar una nueva carrera -->
-		<div class="container" id="formContainer" style="display:none; margin-top: 20px;">
-			<form id="formAgregarCarrera" style="color: #333;">
-				<div class="form-group">
-					<label for="nombreCarrera">Nombre de la carrera:</label>
-					<input type="text" id="nombreCarrera" class="form-control" placeholder="Nombre de la nueva carrera"
-						required>
-				</div>
-				<div class="form-group">
-					<label for="titulo">Título:</label>
-					<input type="text" id="titulo" class="form-control" placeholder="Título" required>
-				</div>
-				<div class="form-group">
-					<label for="cargaHoraria">Carga Horaria:</label>
-					<input type="number" id="cargaHoraria" class="form-control" placeholder="Carga Horaria" required>
-				</div>
-				<div class="form-group">
-					<label for="duracion">Duración (en años):</label>
-					<input type="number" id="duracion" class="form-control" placeholder="Duración" required>
-				</div>
-				<button type="submit" class="btn btn-success">Agregar Carrera</button>
-			</form>
-		</div>
-		<!-- Contenido de Mesas, se muestra en una grilla de artículos -->
-		<div class="full-box text-center" style="padding: 30px 10px;">
-			<!-- Mesa: Desarrollo de Software -->
-			<article class="full-box tile">
-				<div class="full-box tile-title text-center text-titles text-uppercase">
-					Desarrollo de Software
-				</div>
-				<div class="full-box tile-icon text-center">
-					<i class="zmdi zmdi-account"></i>
-				</div>
-			</article>
-		</div>
+        <div class="container" id="formContainer" style="display:none; margin-top: 20px;">
+            <form id="formAgregarCarrera" style="color: #333;">
+                <div class="form-group">
+                    <label for="nombreCarrera">Nombre de la carrera:</label>
+                    <input type="text" id="nombreCarrera" class="form-control" placeholder="Nombre de la nueva carrera"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label for="titulo">Título:</label>
+                    <input type="text" id="titulo" class="form-control" placeholder="Título" required>
+                </div>
+                <div class="form-group">
+                    <label for="cargaHoraria">Carga Horaria:</label>
+                    <input type="number" id="cargaHoraria" class="form-control" placeholder="Carga Horaria" required>
+                </div>
+                <div class="form-group">
+                    <label for="duracion">Duración (en años):</label>
+                    <input type="number" id="duracion" class="form-control" placeholder="Duración" required>
+                </div>
+                <button type="submit" class="btn btn-success">Agregar Carrera</button>
+            </form>
+        </div>
 
-		<div class="full-box text-center" style="padding: 30px 10px;">
-			<!-- Mesa: Desarrollo de Software -->
-			<article class="full-box tile">
-				<div class="full-box tile-title text-center text-titles text-uppercase">
-					Administracion de Empresas
-				</div>
-				<div class="full-box tile-icon text-center">
-					<i class="zmdi zmdi-account"></i>
-				</div>
-			</article>
-		</div>
+		 <!-- Formulario para inscripción a una mesa de examen -->
+        <div class="container">
+            <form action="/inscribir" method="POST" class="form-horizontal">
+                <div class="form-group">
+                    <label for="materia" class="col-sm-2 control-label">Carrera</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="materia" name="materia" required>
+                            <option value="" disabled selected>Seleccione la carrera</option>
+                            <option value="desarrollo">Desarrollo de Software</option>
+                            <option value="administracion">Administracion de Empresas</option>
+                            <option value="enologia">Enologia</option>
+                           
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="materia" class="col-sm-2 control-label">Materia</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="materia" name="materia" required>
+                            <option value="" disabled selected>Seleccione la materia</option>
+                            <option value="programacion">Programación</option>
+                            <option value="baseDeDatos">Base de Datos</option>
+                            <option value="practica">Práctica Profesional</option>
+                           
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="mesa" class="col-sm-2 control-label">Mesa de examen</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="mesa" name="mesa" required>
+                            <option value="" disabled selected>Seleccione la mesa</option>
+                            <option value="1">Mesa 1 - Fecha: 12/11/2024</option>
+                            <option value="2">Mesa 2 - Fecha: 15/11/2024</option>
+                            <option value="3">Mesa 3 - Fecha: 20/11/2024</option>
+                            <!-- Agregar más mesas según corresponda -->
+                        </select>
+                    </div>
+                </div>
 
-		<div class="full-box text-center" style="padding: 30px 10px;">
-			<!-- Mesa: Desarrollo de Software -->
-			<article class="full-box tile">
-				<div class="full-box tile-title text-center text-titles text-uppercase">
-					Seguridad e Higiene
-				</div>
-				<div class="full-box tile-icon text-center">
-					<i class="zmdi zmdi-account"></i>
-				</div>
-			</article>
-		</div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary">Inscribirse</button>
+                </div>
+            </form>
+        </div>
+
 	</section>
 
 
