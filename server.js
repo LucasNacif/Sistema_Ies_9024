@@ -51,6 +51,7 @@ const carreraRouters = require("./App/routes/R_Carrera.js");
 const loginRouters = require("./App/routes/R_login");
 const inscripcionRouters = require("./App/routes/R_InscripcionMesas");
 const alumnoEstadoRoutes = require("./App/routes/R_alumnoEstado");
+const mesaRouters = require("./App/routes/R_Mesa");
 
 // Zona de ruteo
 app.use(carreraRouters);
@@ -58,6 +59,9 @@ app.use(alumnoRouters);
 app.use(loginRouters);
 app.use(inscripcionRouters);
 app.use(alumnoEstadoRoutes);
+app.use(mesaRouters);
+//app.use(mesaRouters);
+
 
 app.get("/", (req, res) => res.render("Admin_PanelControl"));
 app.get("/index", (req, res) => res.render("index"));
