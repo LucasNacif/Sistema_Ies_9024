@@ -125,7 +125,7 @@ function closeModal() {
 
 // Confirmar y realizar la solicitud fetch al hacer clic en "Dar De Baja"
 document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
-    console.log("Botón de confirmación clickeado");
+    //console.log("Botón de confirmación clickeado");
     if (estadoId) {
         try {
             const response = await fetch(`/alumnoEstado/eliminar/${estadoId}`, {
@@ -168,7 +168,7 @@ function mostrarHistorial(historial) {
 
 async function obtenerHistorialEstados(id) {
     try {
-        const response = await fetch(`/alumnoEstado/historial/${id}`); // Ruta de tu API
+        const response = await fetch(`/alumnoEstado/historial/${id}`);
 
         if (!response.ok) {
             throw new Error(`Error: ${response.status}`);

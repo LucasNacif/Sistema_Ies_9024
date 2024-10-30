@@ -164,9 +164,11 @@ exports.obtenerHistorialEstados = async (req, res) => {
   try {
     // Obtén el ID del alumno del parámetro de la solicitud
     const { id } = req.params;
-
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'ID de alumno no válido' });
+    }
     // Busca el estado del alumno por su ID y pobla el historial
-    const alumnoEstado = await AlumnoEstado.findOne({ id })
+    const alumnoEstado = await AlumnoEstado.findById(id)
       .select('historialEstados') // Selecciona solo el historial de estados
 
     if (!alumnoEstado) {
