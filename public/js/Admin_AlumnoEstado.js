@@ -149,6 +149,17 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', async () =
 
 //MOSTRAR HISTORIAL 
 
+function abrirModal() {
+    const modal = document.getElementById('modalHistorialEstado');
+    modal.style.display = 'block'; // Muestra el modal
+}
+
+// Función para cerrar el modal
+function cerrarModal() {
+    const modal = document.getElementById('modalHistorialEstado');
+    modal.style.display = 'none'; // Oculta el modal
+}
+
 function mostrarHistorial(historial) {
     const contenedor = document.getElementById('historial-container'); // Asegúrate de que el contenedor exista en tu HTML
     contenedor.innerHTML = ''; // Limpiar contenido previo

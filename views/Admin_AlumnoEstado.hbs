@@ -182,10 +182,17 @@
                                 </div>
                             </div>
 
+                            <button id="abrirModalBtn" onclick="abrirModal()">Ver Historial</button>
 
-                            <button id="btn-obtener-historial" onclick="obtenerHistorialEstados('{{this.id}}')">Obtener
-                                Historial</button>
-
+                            <!-- Modal HISTORIAL-->
+                            <div id="modalHistorialEstado" class="modal">
+                                <div class="modal-content">
+                                    <span id="cerrarModalBtn" class="close" onclick="cerrarModal()">&times;</span>
+                                    <h2>Historial de Estados</h2>
+                                    <div id="historial-container"></div>
+                                    <button onclick="cerrarModal()">Cerrar</button> <!-- Botón para cerrar el modal -->
+                                </div>
+                            </div>
                         </td>
 
                     </tr>
@@ -193,8 +200,6 @@
                 </tbody>
             </table>
 
-        </div>
-        <div class="historial-container"></div>
 
     </section>
     <!-- Scripts -->
