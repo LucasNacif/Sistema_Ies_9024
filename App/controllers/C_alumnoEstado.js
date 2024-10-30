@@ -40,9 +40,9 @@ exports.crearAlumnoEstado = async (req, res) => {
 exports.buscarAlumnoYMaterias = async (req, res) => {
   try {
     const { numDocAlumn } = req.params;
-
+    //console.log("NUMERO DE DOCUMENTO" + numDocAlumn)
     // Buscar al alumno por número de documento
-    const alumno = await Alumno.findOne({ numDocAlumn: numDocAlumn }); // Ajusté aquí el campo a 'numDocumento'
+    const alumno = await Alumno.findOne({ numDocAlumn: numDocAlumn });
     if (!alumno) {
       return res.status(404).json({ message: "Alumno no encontrado" });
     }
@@ -85,9 +85,9 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
         fecha: ultimoEstado ? new Date(ultimoEstado.fecha).toISOString().split('T')[0] : null,
       };
     });
-    console.log(materiasConEstado)
+    //console.log(materiasConEstado)
     // Renderizar la vista con todas las materias y sus estados
-    res.render('Admin_AlumnoEstado', { materiasConEstado });
+    res.render("Admin_AlumnoEstado", { materiasConEstado });
   } catch (error) {
     console.error("Error al buscar el alumno y sus materias:", error.message);
     res.status(500).json({ message: "Error al buscar el alumno y sus materias" });

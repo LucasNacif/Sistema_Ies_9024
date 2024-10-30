@@ -1,4 +1,5 @@
 
+
 //Guardar un nuevo EstadoAlumno
 document.getElementById("alumnoForm").addEventListener("submit", async function (event) {
     event.preventDefault(); // Evita la recarga de la página
@@ -109,6 +110,7 @@ document.getElementById('formModificarAlumnoEstado').addEventListener('submit', 
 
 //ELIMINAR MODAL Y TODA LA COSA
 let estadoId;
+//Abrir modal
 function openDeleteModal(id) {
     estadoId = id; // Guardar el ID del estado en la variable global
     console.log("ID del estado a eliminar:", estadoId); // Verifica que el ID se establezca correctamente
@@ -116,13 +118,12 @@ function openDeleteModal(id) {
     modal.style.display = 'block'; // Mostrar el modal
     modal.classList.add('show'); // Agregar clase para mostrar el modal
 }
-
+//Cerrar modal
 function closeModal() {
     const modal = document.getElementById('confirmDeleteModal');
     modal.style.display = 'none'; // Ocultar el modal
     modal.classList.remove('show'); // Remover clase para ocultar el modal
 }
-
 // Confirmar y realizar la solicitud fetch al hacer clic en "Dar De Baja"
 document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
     //console.log("Botón de confirmación clickeado");
@@ -149,9 +150,11 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', async () =
 
 //MOSTRAR HISTORIAL 
 
-function abrirModal() {
+function abrirModal(id) {
+    idHist = id
     const modal = document.getElementById('modalHistorialEstado');
     modal.style.display = 'block'; // Muestra el modal
+    obtenerHistorialEstados(idHist);
 }
 
 // Función para cerrar el modal

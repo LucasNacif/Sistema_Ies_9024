@@ -149,15 +149,11 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
-                            <!-- Botón Eliminar -->
-                            <!-- Botón para abrir el modal -->
-                            <button class="btn btn-danger" onclick="openDeleteModal('{{this.id}}')" data-toggle="modal"
+                            <button class="btn btn-danger" onclick="
+                                openDeleteModal('{{this.id}}')" data-toggle="modal"
                                 data-target="#confirmDeleteModal">Eliminar</button>
-
                             <!-- Modal Confirmar Baja -->
+
                             <div class="modal" id="confirmDeleteModal" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
@@ -182,14 +178,15 @@
                                 </div>
                             </div>
 
-                            <button id="abrirModalBtn" onclick="abrirModal()">Ver Historial</button>
-
                             <!-- Modal HISTORIAL-->
+                            <button id="abrirModalBtn" onclick="abrirModal('{{this.id}}')">Ver Historial</button>
+
                             <div id="modalHistorialEstado" class="modal">
                                 <div class="modal-content">
                                     <span id="cerrarModalBtn" class="close" onclick="cerrarModal()">&times;</span>
                                     <h2>Historial de Estados</h2>
-                                    <div id="historial-container"></div>
+                                    <div id="historial-container">
+                                    </div>
                                     <button onclick="cerrarModal()">Cerrar</button> <!-- Botón para cerrar el modal -->
                                 </div>
                             </div>
@@ -207,6 +204,13 @@
     <script>
         // Inicialización del componente de Material Design
         $.material.init();
+
+        document.getElementById('BuscarAlumnoBtn').addEventListener('click', function () {
+            const numDocAlumn = document.getElementById('numDocAlumn').value;
+            window.location.href = `/alumnoEstado/buscar/${numDocAlumn}`;
+        });
+
+
     </script>
 
 </body>
