@@ -7,47 +7,45 @@
 	<meta name="viewport"
 		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum=scale=1.0">
 	<link rel="icon" type="image/png" href="assets/img/favicon.png" />
-	<!-- Enlace al archivo CSS principal -->
 	<link rel="stylesheet" href="/Styles/main.css">
 	<link rel="stylesheet" href="/Styles/Admin_Mesa.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </head>
 
 <body>
+	
 	<!-- Barra lateral (SideBar) -->
-	<section class="full-box cover dashboard-sideBar">
-		<!-- Fondo del menú lateral, se muestra en dispositivos pequeños -->
-		<div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
-		<!-- Contenedor del contenido del menú lateral -->
-		<div class="full-box dashboard-sideBar-ct">
-			<!-- Título del menú lateral -->
-			<div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
-				Bedel <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
-			</div>
-			<!-- Información del usuario en el menú lateral -->
-			<div class="full-box dashboard-sideBar-UserInfo">
-				<figure class="full-box">
+    <section class="full-box cover dashboard-sideBar">
+        <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
+        <div class="full-box dashboard-sideBar-ct">
+            <div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
+                Bedel
+                <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
+            </div>
+            <div class="full-box dashboard-sideBar-UserInfo">
+                <figure class="full-box">
                     <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
-                    <h5>IES 9-024 "Lavalle"</h5>
                 </figure>
-				<!-- Opciones de configuración y salir -->
-				<ul class="full-box list-unstyled text-center">
-					<li>
-						<a href="#" id="logout-button">
-							<i class="zmdi zmdi-power"></i>
-						</a>
-					</li>
-				</ul>
-			</div>
-			<!-- Menú principal -->
-	      <ul class="list-unstyled full-box dashboard-sideBar-Menu">
-                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
-                <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Alumnos</a></li>
-                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
-                <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i> Materias</a></li>
-                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a></li>
+                <ul class="full-box list-unstyled text-center">
+                    <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
+                </ul>
+            </div>
+            <ul class="list-unstyled full-box dashboard-sideBar-Menu">
+                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i>
+                        Carreras</a></li>
+                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i>
+                        Mesas</a></li>
+                <li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i>
+                        Gestión académica</a></li>
+                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i>
+                        Super Admin</a>
+                </li>
             </ul>
-		</div>
-	</section>
+        </div>
+    </section>
 
 	<!-- Contenido de la página principal -->
 	<section class="full-box dashboard-contentPage">
@@ -76,14 +74,12 @@
 		</nav>
 
 		<!-- Página de Mesas -->
-		<center>
 		<div class="container-fluid">
 			<div class="page-header">
-				<!-- Título de la sección -->
 				<h1 class="text-titles">Mesas <small></h1>
 			</div>
 		</div>
-		</center>
+		
 
 
 		<div class="botones">
@@ -96,13 +92,9 @@
         <div class="container" id="formContainer" style="display:none; margin-top: 20px;">
             <form id="formAgregarCarrera" style="color: #333;">
                 <div class="form-group">
-                    <label for="nombreCarrera">Nombre de la carrera:</label>
+                    <label for="nombreCarrera">Nombre de la materia:</label>
                     <input type="text" id="nombreCarrera" class="form-control" placeholder="Nombre de la nueva carrera"
                         required>
-                </div>
-                <div class="form-group">
-                    <label for="titulo">Título:</label>
-                    <input type="text" id="titulo" class="form-control" placeholder="Título" required>
                 </div>
                 <div class="form-group">
                     <label for="cargaHoraria">Carga Horaria:</label>
@@ -112,56 +104,46 @@
                     <label for="duracion">Duración (en años):</label>
                     <input type="number" id="duracion" class="form-control" placeholder="Duración" required>
                 </div>
-                <button type="submit" class="btn btn-success">Agregar Carrera</button>
+                <button type="submit" class="btn btn-success">Agregar Materia</button>
             </form>
         </div>
 
 		 <!-- Formulario para inscripción a una mesa de examen -->
-        <div class="container">
-            <form action="/inscribir" method="POST" class="form-horizontal">
-                <div class="form-group">
-                    <label for="materia" class="col-sm-2 control-label">Carrera</label>
-                    <div class="col-sm-10">
-                        <select class="form-control" id="materia" name="materia" required>
-                            <option value="" disabled selected>Seleccione la carrera</option>
-                            <option value="desarrollo">Desarrollo de Software</option>
-                            <option value="administracion">Administracion de Empresas</option>
-                            <option value="enologia">Enologia</option>
-                           
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="materia" class="col-sm-2 control-label">Materia</label>
-                    <div class="col-sm-10">
-                        <select class="form-control" id="materia" name="materia" required>
-                            <option value="" disabled selected>Seleccione la materia</option>
-                            <option value="programacion">Programación</option>
-                            <option value="baseDeDatos">Base de Datos</option>
-                            <option value="practica">Práctica Profesional</option>
-                           
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="mesa" class="col-sm-2 control-label">Mesa de examen</label>
-                    <div class="col-sm-10">
-                        <select class="form-control" id="mesa" name="mesa" required>
-                            <option value="" disabled selected>Seleccione la mesa</option>
-                            <option value="1">Mesa 1 - Fecha: 12/11/2024</option>
-                            <option value="2">Mesa 2 - Fecha: 15/11/2024</option>
-                            <option value="3">Mesa 3 - Fecha: 20/11/2024</option>
-                            <!-- Agregar más mesas según corresponda -->
-                        </select>
-                    </div>
-                </div>
+		<div class="container" id="formContainer" style="margin-top: 20px;">
+			<form id="formInscripcionMesa" action="/inscribir" method="POST">
+				<div class="form-group">
+					<label for="materia" class="col-sm-2 control-label">Materia</label>
+					<div class="col-sm-10">
+						<select class="form-control" id="materia" name="Materia" required>
+							
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="mesa" class="col-sm-2 control-label">Mesa de examen</label>
+					<div class="col-sm-10">
+						<select class="form-control" id="mesa" name="mesa" required>
+							
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="alumno" class="col-sm-2 control-label">Alumno</label>
+					<div class="col-sm-10">
+						<select class="form-control" id="alumno" name="Alumno" required>
+							<!-- Opciones de alumnos dinámicas -->
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group text-center">
+					<button type="submit" class="btn btn-primary">Inscribirse</button>
+				</div>
+			</form>
+		</div>
 
-                <div class="form-group text-center">
-                    <button type="submit" class="btn btn-primary">Inscribirse</button>
-                </div>
-            </form>
-        </div>
 
 	</section>
 
