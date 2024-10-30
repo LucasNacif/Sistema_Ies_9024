@@ -6,7 +6,7 @@ const AlumnoEstadoSchema = new Schema({
     idMateria: { type: mongoose.Schema.Types.ObjectId, ref: 'Materia' },
     historialEstados: [
         {
-            estado: { type: String, enum: ['regular', 'libre', 'acreditado'], required: true },
+            estado: { type: String, enum: ['regular', 'libre', 'acreditado', 'sin estado'], required: true },
             fecha: { type: Date, default: Date.now }
         }
     ]

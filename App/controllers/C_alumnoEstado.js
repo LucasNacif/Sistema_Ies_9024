@@ -57,34 +57,35 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
         message: "No se encontró el plan de estudios para este alumno",
       });
     }
+    //console.log("PLAN DE ESTUDIO" + planEstudios)
 
     // Obtener las materias del plan de estudios
     const materiasDelPlan = planEstudios.materias;
+    //console.log("ACA VAN LAS MATERIAS DEL PLAN" + materiasDelPlan)
 
     // Buscar los estados de las materias que ya tiene cargadas el alumno
     const estadosExistentes = await AlumnoEstado.find({
       idAlumno: alumno._id,
-      idMateria: { $in: materiasDelPlan.map(m => m._id) }, // Asegúrate de que usas los IDs correctos
-    }).lean();
-
-    // Crear un objeto para mapear los estados existentes por materia
-    const estadosMap = estadosExistentes.reduce((map, estado) => {
-      map[estado.idMateria.toString()] = estado;
-      return map;
-    }, {});
-
-    // Crear un array con todas las materias y sus estados, incluyendo la fecha
-    const materiasConEstado = materiasDelPlan.map(materia => {
-      const estado = estadosMap[materia._id.toString()];
-      const ultimoEstado = estado?.historialEstados?.slice(-1)[0]; // Obtiene el último estado
-
-      return {
-        materia: materia.nombreMateria,
-        estado: ultimoEstado ? ultimoEstado.estado : 'Sin Estado', // Último estado del historial o 'Sin Estado'
-        fecha: ultimoEstado ? new Date(ultimoEstado.fecha).toISOString().split('T')[0] : null, // Última fecha del historial en formato 'YYYY-MM-DD'
-      };
+      idMateria: { $in: materiasDelPlan },
     });
 
+    //console.log("ACA EMPIEZAN LOS ESTADOS QUE EXISTEN " + estadosExistentes)
+
+    const materiasConEstado = estadosExistentes.map(estado => {
+      // Obtener el último estado válido del historial
+      const ultimoEstado = estado.historialEstados?.slice().reverse().find(e => e.estado);
+
+      // Encontrar el nombre de la materia asociada al estado
+      const materia = materiasDelPlan.find(m => m._id.toString() === estado.idMateria.toString());
+
+      return {
+        id: estado._id,
+        materia: materia ? materia.nombreMateria : null,
+        estado: ultimoEstado ? ultimoEstado.estado : 'Sin Estado',
+        fecha: ultimoEstado ? new Date(ultimoEstado.fecha).toISOString().split('T')[0] : null,
+      };
+    });
+    console.log(materiasConEstado)
     // Renderizar la vista con todas las materias y sus estados
     res.render('Admin_AlumnoEstado', { materiasConEstado });
   } catch (error) {
@@ -92,41 +93,6 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
     res.status(500).json({ message: "Error al buscar el alumno y sus materias" });
   }
 };
-
-
-
-
-// Controlador para obtener el estado del alumno en una materia
-exports.obtenerEstadoAlumno = async (req, res) => {
-  try {
-    const { numDocAlumn } = req.params;
-
-    // Buscar el estado del alumno en la materia
-    const alumnoEstado = await AlumnoEstado.findOne(numDocAlumn);
-
-    if (!alumnoEstado) {
-      return res.status(404).json({ mensaje: 'No se encontró el estado para este alumno y materia.' });
-    }
-
-    // Obtener el último registro de historialEstados
-    const ultimoEstado = alumnoEstado.historialEstados[alumnoEstado.historialEstados.length - 1];
-
-    // Preparar la respuesta
-    const materiasConEstado = {
-      idAlumno,
-      idMateria,
-      estado: ultimoEstado.estado,
-      fecha: ultimoEstado.fecha,
-    };
-
-    return res.status(200).json(materiasConEstado);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ mensaje: 'Error al obtener el estado del alumno.', error });
-  }
-}
-
-
 
 exports.actualizarEstadoAlumno = async (req, res) => {
   const id = req.params.id;
@@ -168,25 +134,50 @@ exports.actualizarEstadoAlumno = async (req, res) => {
 // Eliminar una carrera
 exports.eliminarEstadoAlumno = async (req, res) => {
   const id = req.params.id;
-  console.log('ID recibido:', id);
+  //console.log('ID recibido:', id);
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: 'ID de estado no válido' });
   }
-
   try {
-    const alumnoEstado = await AlumnoEstado.findByIdAndUpdate(
-      id,
-      { estado: "Sin estado" },
-      { new: true }
-    );
+    const alumnoEstado = await AlumnoEstado.findById(id);
 
     if (!alumnoEstado) {
-      return res.status(404).json({ message: 'Estado no encontrada' });
+      return res.status(404).json({ message: 'Estado no encontrado' });
     }
+
+    // Agregar un nuevo objeto en el historial con el estado "Sin estado" y la fecha actual
+    alumnoEstado.historialEstados.push({
+      estado: "sin estado",
+      fecha: new Date() //la fecha actual
+    });
+
+    // Guardar los cambios en la base de datos
+    await alumnoEstado.save();
     res.json({ message: 'Estado eliminada correctamente' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Error al eliminar estado' });
+  }
+};
+
+exports.obtenerHistorialEstados = async (req, res) => {
+  try {
+    // Obtén el ID del alumno del parámetro de la solicitud
+    const { id } = req.params;
+
+    // Busca el estado del alumno por su ID y pobla el historial
+    const alumnoEstado = await AlumnoEstado.findOne({ id })
+      .select('historialEstados') // Selecciona solo el historial de estados
+
+    if (!alumnoEstado) {
+      return res.status(404).json({ message: 'Estado no encontrado' });
+    }
+
+    // Envía el historial de estados como respuesta
+    res.status(200).json(alumnoEstado.historialEstados);
+  } catch (error) {
+    console.error('Error al obtener el historial de estados:', error);
+    res.status(500).json({ message: 'Error del servidor' });
   }
 };
 

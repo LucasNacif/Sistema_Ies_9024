@@ -153,17 +153,19 @@
 
 
                             <!-- Botón Eliminar -->
-                            <button class="btn btn-danger" data-target="#confirmDeleteModal"
-                                onclick="openDeleteModal('')">Eliminar</button>
+                            <!-- Botón para abrir el modal -->
+                            <button class="btn btn-danger" onclick="openDeleteModal('{{this.id}}')" data-toggle="modal"
+                                data-target="#confirmDeleteModal">Eliminar</button>
 
                             <!-- Modal Confirmar Baja -->
-                            <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog"
+                            <div class="modal" id="confirmDeleteModal" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Confirmar Baja</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                                onclick="closeModal()">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
@@ -172,13 +174,17 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Cancelar</button>
-                                            <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Dar De
+                                                onclick="closeModal()">Cancelar</button>
+                                            <button type="button" class="btn btn-danger" id="confirmDeleteBtn"> Dar De
                                                 Baja</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+
+                            <button id="btn-obtener-historial" onclick="obtenerHistorialEstados('{{this.id}}')">Obtener
+                                Historial</button>
 
                         </td>
 
@@ -188,7 +194,7 @@
             </table>
 
         </div>
-
+        <div class="historial-container"></div>
 
     </section>
     <!-- Scripts -->
@@ -196,51 +202,6 @@
     <script>
         // Inicialización del componente de Material Design
         $.material.init();
-
-
-        document.getElementById('BuscarAlumnoBtn').addEventListener('click', function () {
-            const numDocAlumn = document.getElementById('numDocAlumn').value;
-            window.location.href = `/alumno/buscar/${numDocAlumn}`;
-        });
-
-        /*async function buscarAlumnoYMaterias() {
-             const numDocAlumn = document.getElementById('numDocAlumn').value.trim();
- 
-             if (!numDocAlumn) {
-                 alert("Por favor, ingresa un número de documento.");
-                 return;
-             }
- 
-             try {
-                 const result = await fetch(/alumno/buscar/${numDocAlumn});
-                 if (!result.ok) {
-                     throw new Error('Alumno no encontrado');
-                 }
- 
-                 const data = await result.json();
-                 const estadosMaterias = data
- 
-                 // Limpiar la tabla antes de agregar las nuevas filas
-                 const tbody = document.querySelector('tbody');
-                 tbody.innerHTML = '';
- 
-                 // Agregar las materias a la tabla
-                 estadosMaterias.forEach(materia => {
-                     const tr = document.createElement('tr');
- 
-                     tr.innerHTML = `
-                     <td>${materia.nombreMateria}</td>
-                     <td>${materia.estadoActual}</td>
-                     <td>${materia.fecha}</td>
-                     <td><button class="btn btn-success">Guardar</button></td>`;
- 
-                     tbody.appendChild(tr);
-                 });
-             } catch (error) {
-                 console.error('Error al buscar el alumno:', error.message);
-                 alert(error.message); // Muestra un mensaje de error al usuario
-             }
-         }*/
     </script>
 
 </body>

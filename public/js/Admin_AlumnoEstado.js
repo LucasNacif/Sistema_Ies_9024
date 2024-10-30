@@ -1,3 +1,5 @@
+
+//Guardar un nuevo EstadoAlumno
 document.getElementById("alumnoForm").addEventListener("submit", async function (event) {
     event.preventDefault(); // Evita la recarga de la página
 
@@ -38,12 +40,6 @@ document.getElementById("alumnoForm").addEventListener("submit", async function 
     }
 });
 
-
-
-
-
-
-let alumnoEstadoIdToDelete;
 // Función para mostrar mensajes en pantalla
 function showMessage(message, type) {
     const messageContainer = document.createElement('div');
@@ -56,6 +52,7 @@ function showMessage(message, type) {
         messageContainer.remove();
     }, 3000);
 }
+
 
 // Variables globales para modificar
 let idAlumnoEstadoToModify;
@@ -111,30 +108,77 @@ document.getElementById('formModificarAlumnoEstado').addEventListener('submit', 
 
 
 //ELIMINAR MODAL Y TODA LA COSA
+let estadoId;
+function openDeleteModal(id) {
+    estadoId = id; // Guardar el ID del estado en la variable global
+    console.log("ID del estado a eliminar:", estadoId); // Verifica que el ID se establezca correctamente
+    const modal = document.getElementById('confirmDeleteModal');
+    modal.style.display = 'block'; // Mostrar el modal
+    modal.classList.add('show'); // Agregar clase para mostrar el modal
+}
 
-// Abrir el modal de confirmación para dar de baja carrera
+function closeModal() {
+    const modal = document.getElementById('confirmDeleteModal');
+    modal.style.display = 'none'; // Ocultar el modal
+    modal.classList.remove('show'); // Remover clase para ocultar el modal
+}
 
-// Función para abrir el modal de confirmación
+// Confirmar y realizar la solicitud fetch al hacer clic en "Dar De Baja"
+document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
+    console.log("Botón de confirmación clickeado");
+    if (estadoId) {
+        try {
+            const response = await fetch(`/alumnoEstado/eliminar/${estadoId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ estado: 'Sin estado' }),
+            });
 
-// Función para abrir el modal de confirmación
-window.openDeleteModal = function (id) {
-    console.log("ID recibido:", id); // Muestra el ID recibido en la consola
-    alumnoEstadoIdToDelete = id; // Asigna el ID al hacer clic
-    $('#confirmDeleteModal').modal('show'); // Muestra el modal
-};
-
-// Evento para confirmar la eliminación
-document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
-    console.log("Eliminando ID:", alumnoEstadoIdToDelete);
-    fetch(`/alumnoEstado/eliminar/${alumnoEstadoIdToDelete}`, { method: 'DELETE' }) // Realiza la solicitud DELETE
-        .then(response => {
-            if (response.ok) {
-                showMessage('Alumno dada de baja de su estado correctamente', 'success');
-                $('#confirmDeleteModal').modal('hide'); // Oculta el modal
-                cargarEstados(); // Opcional: recargar la lista de estados
-            } else {
-                showMessage('Error al dar de baja el estado', 'danger');
-            }
-        })
-        .catch(error => console.error('Error al dar de baja el estado:', error));
+            const result = await response.json();
+            alert(result.message); // Mostrar el mensaje de respuesta
+            closeModal();
+            location.reload(); // Recargar la página para actualizar la vista
+        } catch (error) {
+            console.error('Error al actualizar el estado:', error);
+        }
+    }
 });
+
+
+//MOSTRAR HISTORIAL 
+
+function mostrarHistorial(historial) {
+    const contenedor = document.getElementById('historial-container'); // Asegúrate de que el contenedor exista en tu HTML
+    contenedor.innerHTML = ''; // Limpiar contenido previo
+
+    if (historial.length === 0) {
+        contenedor.innerHTML = '<p>No hay historial de estados disponible.</p>';
+        return;
+    }
+
+    historial.forEach((estado) => {
+        const elemento = document.createElement('div');
+        elemento.innerHTML = `<p>Estado: ${estado.estado}, Fecha: ${new Date(estado.fecha).toLocaleDateString()}</p>`;
+        contenedor.appendChild(elemento);
+    });
+}
+
+
+async function obtenerHistorialEstados(id) {
+    try {
+        const response = await fetch(`/alumnoEstado/historial/${id}`); // Ruta de tu API
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const historial = await response.json();
+        mostrarHistorial(historial); // Llama a otra función para mostrar el historial
+    } catch (error) {
+        console.error('Error al obtener el historial de estados:', error);
+        // Aquí puedes manejar el error y mostrar un mensaje en la UI si lo deseas
+    }
+}
+
