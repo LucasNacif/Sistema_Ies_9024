@@ -15,9 +15,9 @@ router.put("/carrera/modificar/:id", controller.modificarCarrera);
 router.get('/planEstudio/:id/', controller.verPlanEstudio);
 
 // MATERIA
-router.post('/materia/nuevaMateriaPlanDeEstudio', controller.nuevaMateriaPlanDeEstudio); 
-router.get('/materia/obtener', controller.obtenerMaterias);     
-router.delete('/materia/eliminar/:id', controller.eliminarMateria);
+router.post('/materia/nuevaMateriaPlanDeEstudio', controller.nuevaMateriaPlanDeEstudio);
+router.post('/materia/eliminar', controller.eliminarMateria);
+
 router.delete('/materia/modificar/:id', controller.modificarMateria);
 
 

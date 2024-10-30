@@ -103,7 +103,6 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
   }
 
 };
-
 exports.modificarEstadoAlumno = async (req, res) => {
   try {
     const { idAlumno, idMateria } = req.params;

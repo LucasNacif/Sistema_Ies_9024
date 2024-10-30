@@ -86,9 +86,11 @@
         <div class="container mt-4">
             <h4 class="mt-4">Materias</h4>
             <div class="mb-3">
-                <button class="btn btn-success" data-toggle="modal" data-target="#agregarMateriaModal">
-                    <i class="zmdi zmdi-plus"></i> Agregar Materia
+                <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#agregarMateriaModal"
+                    style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+                    <i class="zmdi zmdi-plus-circle"></i> Añadir Materia
                 </button>
+
             </div>
             <table class="table table-striped">
                 <thead>
@@ -112,14 +114,14 @@
                             {{/if}}
                         </td>
                         <td>
-                            <button class="btn btn-outline-primary btn-sm" data-toggle="modal"
-                                data-target="#editarModal-{{this._id}}">
+                            <button class="btn btn-outline-primary btn-sm editar-btn">
                                 <i class="zmdi zmdi-edit"></i> Editar
                             </button>
-                            <button class="btn btn-outline-danger btn-sm" data-toggle="modal"
-                                data-target="#eliminarModal-{{this._id}}">
-                                <i class="zmdi zmdi-delete"></i> Eliminar
+                            <button class="btn btn-outline-danger btn-sm" onclick="eliminarMateria({{this._id}});" id="btnEliminarMateria">
+                                Eliminar
                             </button>
+
+
                         </td>
                     </tr>
                     {{/each}}
@@ -127,16 +129,20 @@
             </table>
         </div>
 
-
+        {{!-- Alumnos --}}
         <div class="container mt-4">
             <h4 class="mt-4">Alumnos</h4>
             <div class="mb-3">
-                <button class="btn btn-success" data-toggle="modal" data-target="#agregarAlumnoModal">
-                    <i class="zmdi zmdi-plus"></i> Agregar Alumno
+
+                <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#agregarAlumnoModal"
+                    style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+                    <i class="zmdi zmdi-plus-circle"></i> Añadir Alumno
                 </button>
-                <button class="btn btn-warning" data-toggle="modal" data-target="#alumnosDadoBajaModal">
-                    <i class="zmdi zmdi-eye-off"></i> Mostrar Alumnos Dados de Baja
+                <button class="btn btn-info btn-lg" data-toggle="modal" data-target="#alumnosDadoBajaModal"
+                    style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+                    <i class="zmdi zmdi-eye"></i> Ver Alumnos Dados de Baja
                 </button>
+
             </div>
             <table class="table table-st">
                 <div class="table-responsive">
@@ -212,50 +218,17 @@
                                         data-target="#editarModal-{{this._id}}">
                                         <i class="zmdi zmdi-edit"></i>
                                     </button>
-                                    <button class="btn btn-outline-danger btn-sm" data-toggle="modal"
-                                        data-target="#eliminarModal-{{this._id}}">
-                                        <i class="zmdi zmdi-delete"></i>
+                                    <button class="btn btn-outline-warning btn-sm" data-toggle="modal"
+                                        data-target="#darBajaModal-{{this._id}}">
+                                        <i class="zmdi zmdi-eye-off"></i>
                                     </button>
                                 </td>
                             </tr>
                             {{/each}}
                         </tbody>
-                    </table>
                 </div>
+            </table>
 
-        </div>
-
-        <!-- Modal para agregar materia -->
-        <div class="modal fade" id="agregarMateriaModal" tabindex="-1" aria-labelledby="agregarMateriaModalLabel"
-            style="z-index: 1231 !important;" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="agregarMateriaModalLabel">Agregar Materia</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="formMateria">
-                            <input type="hidden" id="materiaId">
-                            <div class="form-group">
-                                <label for="nombreMateria">Nombre de la Materia:</label>
-                                <input type="text" class="form-control" id="nombreMateria" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Correlativas:</label>
-                                <input type="text" id="searchCorrelativas" placeholder="Buscar correlativas...">
-                                <div id="correlativasList"></div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary">Guardar Materia</button>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- Modal para agregar alumno -->
@@ -327,83 +300,86 @@
                                 <input type="checkbox" id="antecedenPen" name="antecedenPen" value="true" />
 
                             </div>
-                            <div>
+                            <input type="hidden" name="idCarrera" value="{{carrera._id}}">
+                            <input type="hidden" name="idPlanEstudioSeleccionado" value="{{planEstudio._id}}">
+                            {{!-- <div>
                                 <input type="hidden" id="idPlanEstudioSeleccionado" name="idPlanEstudioSeleccionado"
                                     value={{planEstudio._id}} />
                             </div>
                             <div>
                                 <input type="hidden" id="idCarrera" name="idCarrera" value={{carrera._id}} />
-                            </div>
-                            <button type="submit" class="btn btn-add">Enviar</button>
+                            </div> --}}
+                            <button type="submit" class="btn btn-add">Guardar</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Modal para mostrar alumnos dados de baja -->
-        <div class="modal fade" id="alumnosDadoBajaModal" tabindex="-1" aria-labelledby="alumnosDadoBajaModalLabel"
-            aria-hidden="true">
+        <!-- Modal para agregar materia -->
+        <div class="modal fade" id="agregarMateriaModal" tabindex="-1" aria-labelledby="agregarMateriaModalLabel"
+            style="z-index: 1231 !important;" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="alumnosDadoBajaModalLabel">Alumnos Dados de Baja</h5>
+                        <h5 class="modal-title" id="agregarMateriaModalLabel">Agregar Materia</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <!-- Aquí se mostrarán los alumnos dados de baja -->
-                        <p>Listado de alumnos dados de baja aquí...</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <form action="/materia/nuevaMateriaPlanDeEstudio" method="POST">
+                            <!-- Campo para ingresar el nombre de la materia -->
+                            <label for="nombreMateria">Nombre de la Materia:</label>
+                            <input type="text" id="nombreMateria" name="nombreMateria" required>
+                            <label for="correlativas">Materias Correlativas:</label>
+                            <select id="correlativas" name="correlativas" multiple>
+                                {{#each materias}}
+                                <option value="{{this._id}}">{{this.nombreMateria}}</option>
+                                {{/each}}
+                            </select>
+                            <small>Usar Ctrl para seleccionar varias opciones</small>
+                            <input type="hidden" name="idCarrera" value="{{carrera._id}}">
+                            <input type="hidden" name="idPlanEstudioSeleccionado" value="{{planEstudio._id}}">
+                            <button type="submit">Agregar Materia</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Modal Editar -->
-        <div class="modal fade" id="editarModal-{{this._id}}" tabindex="-1" aria-labelledby="editarModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editarModalLabel">Editar Materia</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Contenido del formulario de edición -->
-                        <p>Formulario de edición aquí...</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary">Guardar Cambios</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal Eliminar -->
-        <div class="modal fade" id="eliminarModal-{{this._id}}" tabindex="-1" aria-labelledby="eliminarModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="eliminarModalLabel">Eliminar Materia</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        ¿Está seguro de que desea eliminar esta materia?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger">Eliminar</button>
-                    </div>
-                </div>
-            </div>
+     
+        <script>
+            function eliminarMateria(idMateria){
+
+                const idCarrera = $('#idCarrera').val();
+                const idPlanEstudio = $('#idPlanEstudio').val();
+
+                $.ajax({
+                    url: '/materia/eliminar',
+                    type: 'POST',
+                    data: {
+                        idMateria: idMateria,
+                        idCarrera: idCarrera,
+                        idPlanEstudio: idPlanEstudio
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        if (data.success) {
+                            alert('Materia eliminada con éxito');
+                            location.reload();
+                        } else {
+                            alert('Error al eliminar la materia');
+                        }
+                    },
+
+
+                });
+            });
+
+   }
+
+        </script>
+
 
 </html>

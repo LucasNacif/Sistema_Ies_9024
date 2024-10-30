@@ -174,17 +174,19 @@ exports.modificarAlumno = async (req, res) => {
     res.status(500).redirect("/alumno?error=Error interno del servidor");
   }
 };
-exports.obtenerAlumnosActivos = async (req, res) => {
-  try {
-    const alumnos = await Alumno.find({ banderaBooleana: true });
 
-    if (alumnos.length === 0) {
-      return res.status(200).json({ mensaje: "No hay alumnos activos" });
-    }
 
-    res.status(200).json(alumnos);
-  } catch (error) {
-    console.error("Error al obtener alumnos:", error.message);
-    res.status(500).json({ error: "Error interno del servidor" });
-  }
-};
+// exports.obtenerAlumnosActivos = async (req, res) => {
+//   try {
+//     const alumnos = await Alumno.find({ banderaBooleana: true });
+
+//     if (alumnos.length === 0) {
+//       return res.status(200).json({ mensaje: "No hay alumnos activos" });
+//     }
+
+//     res.status(200).json(alumnos);
+//   } catch (error) {
+//     console.error("Error al obtener alumnos:", error.message);
+//     res.status(500).json({ error: "Error interno del servidor" });
+//   }
+// };
