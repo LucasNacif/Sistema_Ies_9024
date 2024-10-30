@@ -5,8 +5,9 @@ const controller = require("../controllers/C_alumnoEstado");
 //RUTAS PARA EL MANEJO DE ALUMNOESTADOS
 router.post("/alumnoEstado/agregar", controller.crearAlumnoEstado);
 router.get("/alumno/buscar/:numDocAlumn", controller.buscarAlumnoYMaterias);
-router.put('/alumnoEstado/modificar/:idAlumnoEstado', controller.modificarEstadoAlumno);
+//router.put('/alumnoEstado/actualizar/:idAlumnoEstado', controller.actualizarEstadoAlumno);
 router.delete(`/alumnoEstado/eliminar/:id`, controller.eliminarEstadoAlumno);
 
 
 module.exports = router;
+

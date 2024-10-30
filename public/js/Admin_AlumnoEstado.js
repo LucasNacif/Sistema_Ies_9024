@@ -1,3 +1,48 @@
+document.getElementById("alumnoForm").addEventListener("submit", async function (event) {
+    event.preventDefault(); // Evita la recarga de la página
+
+    // Captura los valores de los campos
+    const nombreAlumno = document.getElementById("nombreAlumno").value;
+    const nombreMateria = document.getElementById("nombreMateria").value;
+    const estadoActual = document.getElementById("estadoActual").value;
+
+    // Define los datos a enviar
+    const data = {
+        nombreAlumno,
+        nombreMateria,
+        estadoActual
+    };
+
+    try {
+        // Realiza la petición fetch
+        const response = await fetch('/alumnoEstado/agregar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            // Maneja la respuesta en caso de éxito
+            const result = await response.json();
+            alert("Datos guardados correctamente");
+            console.log("Respuesta del servidor:", result);
+        } else {
+            // Maneja el error si la petición falla
+            alert("Error al guardar los datos");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Ocurrió un error al intentar guardar los datos");
+    }
+});
+
+
+
+
+
+
 let alumnoEstadoIdToDelete;
 // Función para mostrar mensajes en pantalla
 function showMessage(message, type) {
@@ -60,6 +105,10 @@ document.getElementById('formModificarAlumnoEstado').addEventListener('submit', 
         })
         .catch(error => console.error('Error al modificar el estado del alumno:', error));
 });
+
+
+
+
 
 //ELIMINAR MODAL Y TODA LA COSA
 

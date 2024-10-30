@@ -62,7 +62,6 @@
         </nav>
         <div class="container">
             <h1 style="margin-top: 68px;">Gestión Académica</h1>
-            <p>Seleccione un alumno para gestionar el estado en sus materias.</p>
 
             <h2>Formulario de Alumno</h2>
             <form id="alumnoForm">
@@ -74,10 +73,9 @@
 
                 <label for="estadoActual">Estado Actual:</label><br>
                 <select id="estadoActual" name="estadoActual" required>
-                    <option value="Acreditado">Acreditado</option>
-                    <option value="Regular">Regular</option>
-                    <option value="Aprobado">Aprobado</option>
-                    <option value="Libre">Libre</option>
+                    <option value="acreditado">Acreditado</option>
+                    <option value="regular">Regular</option>
+                    <option value="libre">Libre</option>
                 </select><br><br>
 
                 <button type="submit">Guardar</button>
@@ -108,7 +106,7 @@
                     {{#each materiasConEstado}}
                     <tr>
                         <td>{{this.materia}}</td>
-                        <td>{{this.estadoActual}}</td>
+                        <td>{{this.estado}}</td>
                         <td>{{this.fecha}}</td>
                         <td>
                             <!-- Botón Modificar -->
