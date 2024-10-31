@@ -54,7 +54,7 @@ function showMessage(message, type) {
     }, 3000);
 }
 
-
+//Modificar un EstadoAlumno
 // Variables globales para modificar
 let idAlumnoEstadoToModify;
 

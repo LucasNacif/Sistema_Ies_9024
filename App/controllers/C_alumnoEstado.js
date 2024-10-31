@@ -94,43 +94,6 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
   }
 };
 
-exports.actualizarEstadoAlumno = async (req, res) => {
-  const id = req.params.id;
-  const nuevoEstado = req.body.estado; // El nuevo estado debe venir en el cuerpo de la solicitud
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: 'ID de estado no válido' });
-  }
-  if (!['regular', 'libre', 'acreditado', 'desaprobado'].includes(nuevoEstado)) {
-    return res.status(400).json({ message: 'Estado no válido' });
-  }
-
-  try {
-    const alumnoEstado = await AlumnoEstado.findById(id);
-    if (!alumnoEstado) {
-      return res.status(404).json({ message: 'Estado no encontrado' });
-    }
-
-    // Agrega el nuevo estado y fecha actual al final de los arrays
-    alumnoEstado.estadoActual.push(nuevoEstado);
-    alumnoEstado.fecha.push(new Date());
-
-    // Guarda los cambios en el documento
-    await alumnoEstado.save();
-
-    // Devuelve el último estado y fecha cargados
-    res.json({
-      message: 'Estado actualizado correctamente',
-      estadoActual: alumnoEstado.estadoActual[alumnoEstado.estadoActual.length - 1],
-      fecha: alumnoEstado.fecha[alumnoEstado.fecha.length - 1],
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Error al actualizar el estado' });
-  }
-};
-
-
 // Eliminar una carrera
 exports.eliminarEstadoAlumno = async (req, res) => {
   const id = req.params.id;
@@ -180,6 +143,35 @@ exports.obtenerHistorialEstados = async (req, res) => {
   } catch (error) {
     console.error('Error al obtener el historial de estados:', error);
     res.status(500).json({ message: 'Error del servidor' });
+  }
+};
+
+exports.actEstadoAlumno = async (req, res) => {
+  const id = req.params.id;
+  const nuevoEstado = req.body;
+  //console.log('ID recibido:', id);
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'ID de estado no válido' });
+  }
+  try {
+    const alumnoEstado = await AlumnoEstado.findById(id);
+
+    if (!alumnoEstado) {
+      return res.status(404).json({ message: 'Estado no encontrado' });
+    }
+
+    // Agregar un nuevo objeto en el historial con el estado "Sin estado" y la fecha actual
+    alumnoEstado.historialEstados.push({
+      estado: nuevoEstado.nuevoEstado,
+      fecha: new Date() //la fecha actual
+    });
+
+    // Guardar los cambios en la base de datos
+    await alumnoEstado.save();
+    res.json({ message: 'Estado actualizado correctamente' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error al actualizar estado' });
   }
 };
 
