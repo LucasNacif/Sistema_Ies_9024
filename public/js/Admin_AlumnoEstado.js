@@ -59,50 +59,7 @@ function showMessage(message, type) {
 let idAlumnoEstadoToModify;
 
 // Función para modificar el estado del alumno
-window.modificarEstadoAlumno = function (idAlumnoEstado) {
-    fetch(`/alumnoEstado/buscar/${idAlumnoEstado}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(alumnoEstado => {
-            idAlumnoEstadoToModify = idAlumnoEstado;
 
-            // Llenar el formulario de modificación
-            document.getElementById('modificarNombreMateria').value = alumnoEstado.nombreMateria || '';
-            document.getElementById('modificarEstadoActual').value = alumnoEstado.estadoActual || '';
-            document.getElementById('idAlumnoEstado').value = idAlumnoEstado; // Asegúrate de tener un campo oculto para el ID
-
-            // Abrir el modal de modificación
-            $('#modifyAlumnoEstadoModal').modal('show');
-        })
-        .catch(error => console.error('Error al cargar los datos del estado del alumno:', error));
-};
-
-// Enviar los datos modificados al servidor
-document.getElementById('formModificarAlumnoEstado').addEventListener('submit', function (event) {
-    event.preventDefault();
-    const nombreMateria = document.getElementById('modificarNombreMateria').value;
-    const estadoActual = document.getElementById('modificarEstadoActual').value;
-
-    fetch(`/alumnoEstado/modificar/${idAlumnoEstadoToModify}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombreMateria, estadoActual })
-    })
-        .then(response => {
-            if (response.ok) {
-                showMessage('Estado del alumno modificado correctamente', 'success');
-                cargarEstadoAlumnos(); // Recargar la lista de estados de alumnos, esta función debe ser implementada
-                $('#modifyAlumnoEstadoModal').modal('hide'); // Cerrar el modal
-            } else {
-                showMessage('Error al modificar el estado del alumno', 'danger');
-            }
-        })
-        .catch(error => console.error('Error al modificar el estado del alumno:', error));
-});
 
 
 
