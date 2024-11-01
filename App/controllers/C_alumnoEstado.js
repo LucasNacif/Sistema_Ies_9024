@@ -56,7 +56,6 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
       return res.status(404).json({ message: "No se encontró el plan de estudios para este alumno" });
     }
 
-    // Obtener las materias del plan de estudios
     const materiasDelPlan = planEstudios.materias;
 
     // Buscar los estados de las materias que ya tiene cargadas el alumno
@@ -65,11 +64,9 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
       idMateria: { $in: materiasDelPlan },
     });
 
-    // Inicializar arrays para separar materias con y sin estado
     const materiasConEstado = [];
     const materiasSinEstado = [];
 
-    // Separar las materias según su estado
     estadosExistentes.forEach(estado => {
       // Obtener el último estado válido del historial
       const ultimoEstado = estado.historialEstados?.slice().reverse().find(e => e.estado);
@@ -84,21 +81,21 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
         fecha: ultimoEstado ? new Date(ultimoEstado.fecha).toISOString().split('T')[0] : null,
       };
 
-      // Clasificar según si tiene un estado válido o "Sin Estado"
-      if (materiaConEstado.estado === 'Sin Estado') {
+      // Clasificar solo los estados que tienen "sin estado"
+      if (materiaConEstado.estado.toLowerCase() === 'sin estado') {
         materiasSinEstado.push(materiaConEstado);
       } else {
         materiasConEstado.push(materiaConEstado);
       }
     });
 
-    // Renderizar la vista con las materias clasificadas por estado
     res.render("Admin_AlumnoEstado", { materiasConEstado, materiasSinEstado });
   } catch (error) {
     console.error("Error al buscar el alumno y sus materias:", error.message);
     res.status(500).json({ message: "Error al buscar el alumno y sus materias" });
   }
 };
+
 
 
 // Eliminar una carrera

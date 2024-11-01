@@ -76,6 +76,7 @@
                     <option value="acreditado">Acreditado</option>
                     <option value="regular">Regular</option>
                     <option value="libre">Libre</option>
+                    <option value="sin estado">Sin Estado</option>
                 </select><br><br>
 
                 <button type="submit">Guardar</button>
@@ -109,52 +110,39 @@
                         <td>{{this.materia}}</td>
                         <td>{{this.estado}}</td>
                         <td>{{this.fecha}}</td>
-                        <td>
+                        <button id="abrirModalBtn" onclick="abrirModal('{{this.id}}')">Ver Historial</button>
 
-
-                            <!-- Modal Confirmar Baja -->
-                            <button class="btn btn-danger" onclick="
-                                openDeleteModal('{{this.id}}')" data-toggle="modal"
-                                data-target="#confirmDeleteModal">Eliminar</button>
-
-
-                            <div class="modal" id="confirmDeleteModal" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Confirmar Baja</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                                                onclick="closeModal()">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            ¿Estás seguro de que deseas dar de baja esta carrera?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                onclick="closeModal()">Cancelar</button>
-                                            <button type="button" class="btn btn-danger" id="confirmDeleteBtn"> Dar De
-                                                Baja</button>
-                                        </div>
-                                    </div>
+                        <div id="modalHistorialEstado" class="modal">
+                            <div class="modal-content">
+                                <span id="cerrarModalBtn" class="close" onclick="cerrarModal()">&times;</span>
+                                <h2>Historial de Estados</h2>
+                                <div id="historial-container">
                                 </div>
+                                <button onclick="cerrarModal()">Cerrar</button> <!-- Botón para cerrar el modal -->
                             </div>
+                        </div>
 
-                            <!-- Modal HISTORIAL-->
-                            <button id="abrirModalBtn" onclick="abrirModal('{{this.id}}')">Ver Historial</button>
+                    </tr>
+                    {{/each}}
 
-                            <div id="modalHistorialEstado" class="modal">
-                                <div class="modal-content">
-                                    <span id="cerrarModalBtn" class="close" onclick="cerrarModal()">&times;</span>
-                                    <h2>Historial de Estados</h2>
-                                    <div id="historial-container">
-                                    </div>
-                                    <button onclick="cerrarModal()">Cerrar</button> <!-- Botón para cerrar el modal -->
-                                </div>
-                            </div>
-                        </td>
+                </tbody>
+            </table class="table table-striped">
+            <h3>Materias sin Estado</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Materia</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each materiasSinEstado}}
+                    <tr>
+                        <td>{{this.materia}}</td>
+                        <td>{{this.estado}}</td>
+                        <td>{{this.fecha}}</td>
 
                     </tr>
                     {{/each}}
