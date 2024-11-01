@@ -8,10 +8,15 @@
 		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum=scale=1.0">
 	<link rel="icon" type="image/png" href="assets/img/favicon.png" />
 	<link rel="stylesheet" href="/Styles/main.css">
+	<link rel="stylesheet" href="/Styles/bootstrap.min.css">
 	<link rel="stylesheet" href="/Styles/Admin_Mesa.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	
+	<script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
+    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
+    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
+    <script src="/js/jsBoostrap/material.min.js"></script>
+    <script src="/js/jsBoostrap/ripples.min.js"></script>
+    <script src="/js/jsBoostrap/main.js"></script>
 
 </head>
 
@@ -48,7 +53,7 @@
     </section>
 
 	<!-- Contenido de la página principal -->
-	<section class="full-box dashboard-contentPage">
+	<section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
 
 		<!-- Barra de navegación superior (NavBar) -->
 		<nav class="full-box dashboard-Navbar">
@@ -56,19 +61,6 @@
 				<li class="pull-left">
 					<!-- Botón para mostrar/ocultar el menú lateral -->
 					<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
-				</li>
-				<!-- Icono de notificaciones -->
-				<li>
-					<a href="#!" class="btn-Notifications-area">
-						<i class="zmdi zmdi-notifications-none"></i>
-						<span class="badge"></span>
-					</a>
-				</li>
-				<!-- Icono de búsqueda -->
-				<li>
-					<a href="#!" class="btn-search">
-						<i class="zmdi zmdi-search"></i>
-					</a>
 				</li>
 			</ul>
 		</nav>
