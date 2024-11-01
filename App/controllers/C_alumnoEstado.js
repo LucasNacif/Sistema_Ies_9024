@@ -40,28 +40,24 @@ exports.crearAlumnoEstado = async (req, res) => {
 exports.buscarAlumnoYMaterias = async (req, res) => {
   try {
     const { numDocAlumn } = req.params;
-    //console.log("NUMERO DE DOCUMENTO" + numDocAlumn)
+
     // Buscar al alumno por número de documento
-    const alumno = await Alumno.findOne({ numDocAlumn: numDocAlumn });
+    const alumno = await Alumno.findOne({ numDocAlumn });
     if (!alumno) {
       return res.status(404).json({ message: "Alumno no encontrado" });
     }
 
     // Buscar el plan de estudios del alumno
-    const planEstudios = await PlanEstudios.findOne({
-      alumnos: alumno._id,
-    }).select("nombre materias").populate("materias", "nombreMateria");
+    const planEstudios = await PlanEstudios.findOne({ alumnos: alumno._id })
+      .select("nombre materias")
+      .populate("materias", "nombreMateria");
 
     if (!planEstudios) {
-      return res.status(404).json({
-        message: "No se encontró el plan de estudios para este alumno",
-      });
+      return res.status(404).json({ message: "No se encontró el plan de estudios para este alumno" });
     }
-    //console.log("PLAN DE ESTUDIO" + planEstudios)
 
     // Obtener las materias del plan de estudios
     const materiasDelPlan = planEstudios.materias;
-    //console.log("ACA VAN LAS MATERIAS DEL PLAN" + materiasDelPlan)
 
     // Buscar los estados de las materias que ya tiene cargadas el alumno
     const estadosExistentes = await AlumnoEstado.find({
@@ -69,30 +65,41 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
       idMateria: { $in: materiasDelPlan },
     });
 
-    //console.log("ACA EMPIEZAN LOS ESTADOS QUE EXISTEN " + estadosExistentes)
+    // Inicializar arrays para separar materias con y sin estado
+    const materiasConEstado = [];
+    const materiasSinEstado = [];
 
-    const materiasConEstado = estadosExistentes.map(estado => {
+    // Separar las materias según su estado
+    estadosExistentes.forEach(estado => {
       // Obtener el último estado válido del historial
       const ultimoEstado = estado.historialEstados?.slice().reverse().find(e => e.estado);
 
       // Encontrar el nombre de la materia asociada al estado
       const materia = materiasDelPlan.find(m => m._id.toString() === estado.idMateria.toString());
 
-      return {
+      const materiaConEstado = {
         id: estado._id,
         materia: materia ? materia.nombreMateria : null,
         estado: ultimoEstado ? ultimoEstado.estado : 'Sin Estado',
         fecha: ultimoEstado ? new Date(ultimoEstado.fecha).toISOString().split('T')[0] : null,
       };
+
+      // Clasificar según si tiene un estado válido o "Sin Estado"
+      if (materiaConEstado.estado === 'Sin Estado') {
+        materiasSinEstado.push(materiaConEstado);
+      } else {
+        materiasConEstado.push(materiaConEstado);
+      }
     });
-    //console.log(materiasConEstado)
-    // Renderizar la vista con todas las materias y sus estados
-    res.render("Admin_AlumnoEstado", { materiasConEstado });
+
+    // Renderizar la vista con las materias clasificadas por estado
+    res.render("Admin_AlumnoEstado", { materiasConEstado, materiasSinEstado });
   } catch (error) {
     console.error("Error al buscar el alumno y sus materias:", error.message);
     res.status(500).json({ message: "Error al buscar el alumno y sus materias" });
   }
 };
+
 
 // Eliminar una carrera
 exports.eliminarEstadoAlumno = async (req, res) => {
