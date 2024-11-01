@@ -31,6 +31,7 @@ document.getElementById("alumnoForm").addEventListener("submit", async function 
             const result = await response.json();
             alert("Datos guardados correctamente");
             console.log("Respuesta del servidor:", result);
+            location.reload();
         } else {
             // Maneja el error si la petición falla
             alert("Error al guardar los datos");
@@ -99,7 +100,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', async () =
             closeModal();
             location.reload(); // Recargar la página para actualizar la vista
         } catch (error) {
-            console.error('Error al actualizar el estado:', error);
+            console.error('Error al dar baja el estado:', error);
         }
     }
 });

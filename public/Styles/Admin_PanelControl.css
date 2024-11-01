@@ -1,4 +1,3 @@
-
 /* Estilos para la alerta de eliminación */
 .alert {
     position: fixed;
@@ -10,57 +9,59 @@
     min-width: 250px;
     text-align: center;
 }
+
 .modal-backdrop {
-    z-index: -1; 
+    z-index: -1;
 }
 
 #formAgregarCarrera {
     background-color: #f8f9fa;
-    border-radius: 5px; 
-    padding: 20px; 
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 #formAgregarCarrera .form-group label {
-    font-weight: bold; 
-    color: #343a40; 
+    font-weight: bold;
+    color: #343a40;
 }
 
 #formAgregarCarrera .form-control {
-    border-radius: 4px; 
-    border: 1px solid #ced4da; 
+    border-radius: 4px;
+    border: 1px solid #ced4da;
 }
 
 #formAgregarCarrera .form-control:focus {
-    border-color: #007bff; 
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 #formAgregarCarrera button {
-    width: 100%; 
-    border-radius: 4px; 
-    margin-top: 10px; 
+    width: 100%;
+    border-radius: 4px;
+    margin-top: 10px;
 }
 
 /* Estilo del botón de agregar carrera */
 #formAgregarCarrera button.btn-success {
-    background-color: #28a745; 
-    border: none; 
+    background-color: #28a745;
+    border: none;
 }
 
 #formAgregarCarrera button.btn-success:hover {
-    background-color: #218838; 
+    background-color: #218838;
 }
+
 .card-header {
     background-color: #007bff;
-    color: white; 
-    font-size: 1.5rem; 
-    padding: 15px; 
-    border-radius: 0.25rem 0.25rem 0 0; 
+    color: white;
+    font-size: 1.5rem;
+    padding: 15px;
+    border-radius: 0.25rem 0.25rem 0 0;
 }
 
 .card-title {
-    font-size: 1.25rem; 
-    font-weight: bold; 
-    margin-bottom: 10px; 
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 10px;
 }

@@ -105,8 +105,6 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
   }
 };
 
-
-
 // Eliminar una carrera
 exports.eliminarEstadoAlumno = async (req, res) => {
   const id = req.params.id;
@@ -129,10 +127,10 @@ exports.eliminarEstadoAlumno = async (req, res) => {
 
     // Guardar los cambios en la base de datos
     await alumnoEstado.save();
-    res.json({ message: 'Estado eliminada correctamente' });
+    res.json({ message: 'Estado dado de baja correctamente' });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Error al eliminar estado' });
+    res.status(500).json({ message: 'Error al dar baja estado' });
   }
 };
 
