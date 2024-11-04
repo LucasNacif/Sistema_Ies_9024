@@ -10,20 +10,19 @@ body,
 input { 
   font-family: "Poppins", sans-serif;
 } 
-/* Estilos para el mensaje de error */
+
 #mensajeError {
   margin-top: 10px;
   padding: 10px;
   border-radius: 5px;
-  background-color: #f8d7da; /* Color de fondo rojo claro */
-  color: #721c24; /* Color del texto */
-  border: 1px solid #f5c6cb; /* Bordes más claros */
-  display: none; /* Inicialmente oculto */
+  background-color: #f8d7da; 
+  color: #721c24; 
+  border: 1px solid #f5c6cb; 
+  display: none; 
 }
 
-/* Muestra el mensaje de error */
 #mensajeError.show {
-  display: block; /* Muestra el mensaje cuando se agrega la clase 'show' */
+  display: block; 
 }
 
 .container { 

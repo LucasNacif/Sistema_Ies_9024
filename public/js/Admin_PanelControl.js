@@ -1,3 +1,5 @@
+let carreraIdmodificar;
+let carreraIDbaja;
 
 // Mostrar el modal para agregar una nueva carrera
 function agregarCarreras() {
@@ -27,7 +29,7 @@ function modificarCarrera(idCarrera) {
         })
         .catch(error => console.error('Error al cargar los datos de la carrera:', error));
 };
-// Abrir el modal de confirmación para dar de baja carrera
+// // Abrir el modal de confirmación para dar de baja carrera
 function openDeleteModal(idCarrera) {
     carreraIDbaja = idCarrera;
     $('#confirmDeleteModal').modal('show');
@@ -98,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => {
                 if (response.ok) {
-                    showMessage('Carrera agregada correctamente', 'success');
+                    showMessage('Carrera agregada con éxito', 'success');
                     cargarCarreras();
                     document.getElementById('formAgregarCarrera').reset();
                     $('#addAlumnoModal').modal('hide');
@@ -110,11 +112,6 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => console.error('Error al agregar carrera:', error));
     });
-
-    let carreraIdmodificar;
-    let carreraIDbaja;
-
-
 
     // Enviar los datos modificados al servidor
     document.getElementById('formModificarCarrera').addEventListener('submit', function (event) {
@@ -131,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => {
                 if (response.ok) {
-                    showMessage('Carrera modificada correctamente', 'success');
+                    showMessage('Carrera modificada con éxito', 'success');
                     cargarCarreras();
                     $('#modifyCareerModal').modal('hide');
                 } else {
@@ -141,21 +138,23 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error al modificar la carrera:', error));
     });
 
-
-
     // Dar de baja una carrera
     document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
-        fetch(`/carrera/baja/${carreraIDbaja}`, { method: 'POST' })
-            .then(response => {
-                if (response.ok) {
-                    showMessage('Carrera dada de baja correctamente', 'success');
-                    cargarCarreras(); // Recargar la lista de carreras
-                    $('#confirmDeleteModal').modal('hide');
-                } else {
-                    showMessage('Error al dar de baja la carrera', 'danger');
-                }
-            })
-            .catch(error => console.error('Error al dar de baja carrera:', error));
+        fetch(`/carrera/baja/${carreraIDbaja}`, { 
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => {
+            console.log(response.message);
+            if (response.ok) {
+                showMessage('Carrera dada de baja correctamente', 'success');
+                cargarCarreras(); // Recargar la lista de carreras
+                $('#confirmDeleteModal').modal('hide');
+            } else {
+                showMessage('Error al dar de baja la carrera', 'danger');
+            }
+        })
+        .catch(error => console.error('Error al dar de baja carrera:', error));
     });
 
     // Función para mostrar mensajes en pantalla

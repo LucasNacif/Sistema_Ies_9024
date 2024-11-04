@@ -7,11 +7,10 @@ body {
     margin-top: 50px;
 }
 
-/* Manteniendo el estilo de la tabla y botones como se solicitó */
 table {
-    font-family: 'Arial', sans-serif; /* Cambia el tipo de letra */
-    width: 80%; /* Reduce el ancho de la tabla, puedes ajustarlo a lo que necesites */
-    max-width: 900px; /* Establece un ancho máximo para evitar que se haga demasiado ancha */
+    font-family: 'Arial', sans-serif;
+    width: 80%;
+    max-width: 900px;
     border-collapse: collapse;
     margin-top: 20px;
     background-color: #ffffff;
@@ -19,7 +18,7 @@ table {
 
 th,
 td {
-    padding: 8px; /* Reduce el espacio interno de las celdas */
+    padding: 8px;
     border: 1px solid #ffffff;
     text-align: left;
 }
@@ -42,10 +41,11 @@ tbody tr {
     background-color: #d4edda;
     color: #155724;
 }
-.botones{  
+
+.botones {  
     text-align: right;
-    
 } 
+
 .btn {
     padding: 8px 12px;
     border: none;
@@ -150,8 +150,8 @@ h2 {
     border-radius: 25px;
     padding: 5px 15px;
     background-color: #f9f9f9;
-    width: 50%; /* Cambia este valor según lo angosto que quieras el buscador */
-    max-width: 400px; /* Puedes agregar un valor máximo para que no crezca demasiado */
+    width: 50%;
+    max-width: 400px;
 }
 
 .search-container input {
@@ -170,4 +170,3 @@ h2 {
     color: #777;
     font-size: 20px;
 }
-

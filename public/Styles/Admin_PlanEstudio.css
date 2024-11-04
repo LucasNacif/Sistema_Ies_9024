@@ -1,4 +1,3 @@
-/* Fuente general del sitio */
 body {
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
@@ -6,7 +5,6 @@ body {
     color: #212529;
 }
 
-/* Títulos */
 h3, h4 {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
@@ -14,7 +12,6 @@ h3, h4 {
     margin-top: 50px;
 }
 
-/* Tablas */
 .table {
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
@@ -35,7 +32,6 @@ h3, h4 {
     width: 100px;
 }
 
-/* Inputs, botones y tablas */
 input, button, table {
     border-radius: 5px;
     border: 1px solid #dee2e6;
@@ -54,7 +50,6 @@ input, button, table {
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Botón agregar (verde) */
 .btn-add {
     background-color: #28a745;
     border: none;
@@ -65,7 +60,6 @@ input, button, table {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Botones adicionales */
 .btn-primary {
     background-color: #007bff;
     border-color: #007bff;
@@ -81,7 +75,6 @@ input, button, table {
     border-color: #dc3545;
 }
 
-/* Contenedor principal */
 .container {
     background-color: #fff;
     padding: 20px;
@@ -127,4 +120,13 @@ input, button, table {
 
 .btn-guardar:hover {
     background-color: #66c2f0; 
+}
+
+.modal-backdrop {
+    z-index: 0 !important;
+}
+
+.modal-dialog {
+    margin: 1.75rem auto; 
+    z-index: 1060; 
 }
