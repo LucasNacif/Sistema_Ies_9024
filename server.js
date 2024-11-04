@@ -34,7 +34,10 @@ hbs.registerHelper('formatDate', function (date) {
       day: 'numeric'
   });
 });
-
+// Helper para convertir a JSON
+hbs.registerHelper("json", function(context) {
+  return JSON.stringify(context);
+});
 // Configuración del motor de vistas
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "./views"));

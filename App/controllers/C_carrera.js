@@ -120,9 +120,11 @@ exports.verPlanEstudio = async (req, res) => {
             carrera,
             planEstudio: carrera.planEstudio,
             materias: carrera.planEstudio.materias || [],
-            alumnos: carrera.planEstudio.alumnos || []
+            alumnos: carrera.planEstudio.alumnos || [],
+            planEstudioId: carrera.planEstudio._id, 
+            carreraId: carrera._id 
         });
-
+        
       
         
     } catch (error) {
@@ -188,59 +190,66 @@ exports.nuevaMateriaPlanDeEstudio = async (req, res) => {
     }
 };
 exports.eliminarMateria = async (req, res) => {
-    const { idMateria, idCarrera, idPlanEstudio } = req.body;
-
-    console.log("Datos de entrada:", req.body);
+    const { idMateria, idPlanEstudio } = req.body;
 
     try {
         // Eliminar la materia de la colección de materias
-        const materia = await Materia.findById(idMateria);
+        const materia = await Materia.findByIdAndDelete(idMateria);
         if (!materia) {
-            console.log("no se encontro la materia")
-            return res.status(404).redirect(`/planEstudio/${idCarrera}`);
+            console.log("No se encontró la materia");
+            return res.status(404).json({ success: false, message: "No se encontró la materia" });
         }
 
         // Eliminar la materia del plan de estudio
         const planEstudio = await PlanEstudio.findByIdAndUpdate(
             idPlanEstudio,
-            { $pull: { materias: idMateria } }, 
-            { new: true } 
+            { $pull: { materias: idMateria } },
+            { new: true }
         );
 
         if (!planEstudio) {
-            console.log("no se econtro el plan de estudio")
-            return res.status(404).redirect(`/planEstudio/${idCarrera}`);
+            console.log("No se encontró el plan de estudio");
+            return res.status(404).json({ success: false, message: "No se encontró el plan de estudio" });
         }
-        console.log("materia eliminada del plan de estudio")
-        return res.status(200).redirect(`/planEstudio/${idCarrera}`);;
+
+        console.log("Materia eliminada del plan de estudio");
+        return res.status(200).json({ success: true, message: "Materia eliminada del plan de estudio" });
     } catch (error) {
         console.error(error.message);
-        return res.status(500).redirect(`/planEstudio/${idCarrera}`);;
+        return res.status(500).json({ success: false, message: "Error en el servidor" });
     }
 };
-
-
-
 exports.modificarMateria = async (req, res) => {
-    const { nombre, correlativas } = req.body;
+    const { idMateria, nombreMateria, nuevasCorrelativas } = req.body;
+    const ObjectId = require("mongoose").Types.ObjectId;
+    console.log(req.body);
 
     try {
+        // Modificar la materia en la colección de materias
         const materia = await Materia.findByIdAndUpdate(
-            req.params.id,
-            { nombre, correlativas },
-            { new: true, runValidators: true }
+            new ObjectId(idMateria),  
+            {
+                $set: {
+                    nombreMateria: nombreMateria,
+                    correlativas: nuevasCorrelativas 
+                }
+            },
+            { new: true }
         );
-
         if (!materia) {
-            return res.status(404).json({ message: 'Materia no encontrada' });
+            console.log("No se encontró la materia");
+            return res.status(404).json({ success: false, message: "No se encontró la materia" });
         }
 
-        res.json(materia);
+        console.log("Materia modificada correctamente: ", materia);
+        return res.status(200).json({ success: true, message: "Materia modificada correctamente", materia });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error al modificar la materia' });
+        console.error(error.message);
+        return res.status(500).json({ success: false, message: "Error en el servidor" });
     }
 };
+
+
     // exports.obtenerMaterias = async (req, res) => {
     //     try {
     //         const materias = await Materia.find().populate('correlativas');
