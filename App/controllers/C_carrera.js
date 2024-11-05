@@ -221,13 +221,13 @@ exports.eliminarMateria = async (req, res) => {
 };
 exports.modificarMateria = async (req, res) => {
     const { idMateria, nombreMateria, nuevasCorrelativas } = req.body;
-    const ObjectId = require("mongoose").Types.ObjectId;
+  
     console.log(req.body);
 
     try {
         // Modificar la materia en la colección de materias
         const materia = await Materia.findByIdAndUpdate(
-            new ObjectId(idMateria),  
+           idMateria,  
             {
                 $set: {
                     nombreMateria: nombreMateria,

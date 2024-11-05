@@ -290,6 +290,43 @@
                 </div>
             </div>
         </div>
+         <!-- Modal de Modificación de Materia -->
+        <div class="modal fade" id="modificarMateriaModal" tabindex="-1" aria-labelledby="modificarMateriaModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modificarMateriaModalLabel">Modificar Materia</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formModificarMateria" action="/materia/modificar" method="POST">
+                            <div class="mb-3">
+                                <label for="nombreMateria" class="form-label">Nombre de la Materia</label>
+                                <input type="text" class="form-control" id="nombreMateria" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="correlativas" class="form-label">Correlativas Actuales</label>
+                                <ul id="listaCorrelativas" class="list-group mb-3"></ul>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nuevaCorrelativa" class="form-label">Agregar Nueva Correlativa</label>
+                                <select class="form-select" id="nuevaCorrelativa">
+                                    <option value="">Seleccione una materia</option>
+                                    {{#each materias}}
+                                    <option value="{{this._id}}">{{this.nombreMateria}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <input type="hidden" id="idMateria" value="{{this._id}}">
+                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </section>
 </body>
