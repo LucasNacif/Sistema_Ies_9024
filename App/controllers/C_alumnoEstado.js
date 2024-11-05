@@ -134,6 +134,9 @@ exports.modificarEstadoAlumno = async (req, res) => {
     res.status(500).json({ message: 'Error al dar baja estado' });
   }
 };
+}
+
+
 
 exports.obtenerHistorialEstados = async (req, res) => {
   try {
@@ -157,7 +160,5 @@ exports.obtenerHistorialEstados = async (req, res) => {
     res.status(500).json({ message: 'Error del servidor' });
   }
 };
-
-
 
 

@@ -53,6 +53,7 @@ const alumnoRouters = require("./App/routes/R_Alumno.js");
 const carreraRouters = require("./App/routes/R_Carrera.js");
 const loginRouters = require("./App/routes/R_login");
 const inscripcionRouters = require("./App/routes/R_InscripcionMesas");
+const superAdminRouter = require("./App/routes/R_SuperAdmin.js");
 const alumnoEstadoRoutes = require("./App/routes/R_alumnoEstado");
 const mesaRouters = require("./App/routes/R_Mesa");
 
@@ -61,9 +62,11 @@ app.use(carreraRouters);
 app.use(alumnoRouters);
 app.use(loginRouters);
 app.use(inscripcionRouters);
+app.use(superAdminRouter);
 app.use(alumnoEstadoRoutes);
 app.use(mesaRouters);
 //app.use(mesaRouters);
+
 
 
 app.get("/", (req, res) => res.render("Admin_PanelControl"));
@@ -79,6 +82,42 @@ app.get("/alumnoMesaExamen", (req, res) => res.render("Alumno_MesaExamen"));
 app.get("/alumnoEstado", (req, res) => res.render("Admin_AlumnoEstado"));
 
 // // NO BORRAR QUE ME COSTO UN HUEVO HACERLO :)
+
+const { verificarSesion, verificarRol } = require('./App/middlewares/autorizacion.js');
+
+// Ruta del index
+app.get('/', verificarSesion, (req, res) => {
+  if (req.usuario) {
+    return res.redirect(req.usuario.rol === 'alumno' ? '/mesaExamenAlumno' :
+                        req.usuario.rol === 'bedel' ? '/Administracion' :
+                        req.usuario.rol === 'superAdmin' ? '/AdministracionSuperAdmin' : '/');
+  }
+  res.render('index');
+});
+
+//Ruta de panel de administracion para el Super Admin
+app.get('/AdministracionSuperAdmin', verificarSesion, verificarRol(['superAdmin']), (req, res) => {
+  res.render("SuperAdmin_PanelControl.hbs");
+});
+
+//Rutas para bedel
+app.get('/Administracion', verificarSesion, verificarRol(['bedel', 'superAdmin']), (req, res) => {
+  res.render("Admin_PanelControl.hbs");
+});
+app.get('/mesa', verificarSesion, verificarRol(['bedel', 'superAdmin']), (req, res) => {
+  res.render('Admin_Mesa');
+});
+app.get('/alumno', verificarSesion, verificarRol(['bedel', 'superAdmin']), (req, res) => {
+  res.render("Admin_Alumno.hbs");
+});
+app.get('/materia', verificarSesion, verificarRol(['bedel', 'superAdmin']), (req, res) => {
+  res.render("Admin_Materia.hbs");
+});
+
+//Rutas para alumno
+app.get('/mesaExamenAlumno', verificarSesion, verificarRol(['alumno']), (req, res) => {
+  res.render('Alumno_MesaExamen');
+});
 
 // const { verificarSesion, verificarRol } = require('./App/middlewares/autorizacion.js');
 
