@@ -8,7 +8,6 @@
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
     <link rel="stylesheet" href="/Styles/main.css" />
     <link rel="stylesheet" href="/Styles/bootstrap.min.css" />
-
     <link rel="stylesheet" href="/Styles/Admin_PanelControl.css" />
     <script src="/js/Admin_PanelControl.js"></script>
 
@@ -19,7 +18,6 @@
     <script src="/js/jsBoostrap/ripples.min.js"></script>
     <script src="/js/jsBoostrap/main.js"></script>
 </head>
-
 <body>
     <!-- Barra lateral (SideBar) -->
     <section class="full-box cover dashboard-sideBar">
@@ -31,7 +29,8 @@
             </div>
             <div class="full-box dashboard-sideBar-UserInfo">
                 <figure class="full-box">
-                    <img src="/assets/img/logo_IES.jpg" alt="UserIcon" />
+                    <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
+                    
                 </figure>
                 <ul class="full-box list-unstyled text-center">
                     <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
@@ -55,20 +54,14 @@
         <nav class="full-box dashboard-Navbar">
             <ul class="full-box list-unstyled text-right">
                 <li class="pull-left">
-                    <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+                    <a href="#!" class="btn-menu-dashboard" style="margin-top: 15px !important;"><i class="zmdi zmdi-more-vert"></i></a>
                 </li>
             </ul>
         </nav>
 
-        <div class="container-fluid">
-            <div class="page-header" style="margin-top: 61px;">
-                <h1 class="text-titles">Carreras</h1>
-            </div>
-        </div>
 
-        <div class="container text-center">
-            <button id="toggleFormBtn" class="btn btn-primary" onclick="agregarCarreras()">Agregar nueva
-                carrera</button>
+        <div class="container text-center" style="display: flex;">
+            <button id="toggleFormBtn" class="btn btn-primary" onclick="agregarCarreras()">Agregar nueva carrera</button>
         </div>
 
         <!-- Modal para agregar carrera -->
