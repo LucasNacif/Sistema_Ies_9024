@@ -1,0 +1,172 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+table {
+    font-family: 'Arial', sans-serif;
+    width: 80%;
+    max-width: 900px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+}
+
+th,
+td {
+    padding: 8px;
+    border: 1px solid #ffffff;
+    text-align: left;
+}
+
+th {
+    background-color: #3088fa;
+    color: white;
+}
+
+tbody tr {
+    transition: background-color 0.3s ease;
+}
+
+.alumno-dado-de-baja {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.alumno-activo {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.botones {  
+    text-align: right;
+} 
+
+.btn {
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.btn-add {
+    background-color: #3498db;
+    color: white;
+}
+
+.btn-edit {
+    background-color: #f39c12;
+    color: white;
+}
+
+.btn-delete {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-volver {
+    background-color: #16c0c2;
+    color: white;
+}
+
+form {
+    margin-top: 20px;
+}
+
+form div {
+    margin-bottom: 15px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: black;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="number"],
+form input[type="checkbox"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+form input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+}
+
+form button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form .btn-add {
+    background-color: #3498db;
+    color: white;
+}
+
+form .btn-edit {
+    background-color: #f39c12;
+    color: white;
+}
+
+form .btn-delete {
+    background-color: #e74c3c;
+    color: white;
+}
+
+form .btn-volver {
+    background-color: #16c0c2;
+    color: white;
+}
+
+h2 {
+    text-align: center;
+}
+
+.alert-success,
+.alert-danger {
+    display: none;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    padding: 5px 15px;
+    background-color: #f9f9f9;
+    width: 50%;
+    max-width: 400px;
+}
+
+.search-container input {
+    flex-grow: 1;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    background-color: transparent;
+}
+
+.search-container input:focus {
+    outline: none;
+}
+
+.search-icon {
+    color: #777;
+    font-size: 20px;
+}

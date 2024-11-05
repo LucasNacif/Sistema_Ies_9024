@@ -1,28 +1,80 @@
 const Mesa = require("../../models/Mesa");
-const AlumnoEstado = require("../../models/AlumnoEstado");
+const PlanEstudio = require("../../models/PlanEstudio");
+const Alumno = require("../../models/Alumno");
+const AlumnoEstado = require("../../models/AlumnoEstado"); // Asegúrate de importar AlumnoEstado si no estaba ya importado
+const { docAlumLogueado } = require('../middlewares/autorizacion');
 
+// Función para obtener todas las mesas activas
 exports.obtenerMesasActivas = async (req, res) => {
     try {
-        const mesasDisponibles = await Mesa.find({
-            estadoActual: 'activa'
-        }).populate({
-            path: 'Materia',
-            populate: { path: 'correlativas' }
-        });
-        console.log(mesasDisponibles);
-        return res.status(200).json(mesasDisponibles);
+        const mesasDisponibles = await Mesa.find({ estadoActual: 'activa' }).populate('Materia');
+        res.render('Alumno_MesaExamen', { mesasDisponibles });
     } catch (error) {
-        console.error("Error al obtener mesas:", error.message);
-        return res.status(500).json({ error: "Error interno del servidor" });
+        console.error('Error al obtener las mesas activas:', error);
+        res.status(500).send('Error del servidor');
     }
-}
+};
+// Función para obtener mesas disponibles según el alumno y su plan de estudios
+exports.obtenerMesasSegunAlum = async (req, res) => {
+    try {
+          // Traigo el doc del alumno logueado
+          const documentoAlum = await docAlumLogueado(req, res); 
 
+          if (!documentoAlum) {
+              return res.status(401).send('No hay un alumno logueado');
+          }
 
+        // Busco el alumno por su número de documento
+        const alumno = await Alumno.findOne({ numDocAlumn: documentoAlum });
+        if (!alumno) {
+            return res.status(404).send('Alumno no encontrado');
+        }
+
+        // Obtengo el plan de estudio del alumno
+        const planEstudioDelAlumno = await PlanEstudio.findOne({ alumnos: alumno._id }).populate('materias');
+
+        // Si hay un plan de estudio le saco las materias
+        const materiasDelAlumno = planEstudioDelAlumno ? planEstudioDelAlumno.materias : [];
+
+        if (!materiasDelAlumno.length) {
+            return res.render('Alumno_MesaExamen', { mesasDisponibles: [] });
+        }
+
+        // Busco las mesas para esas materias
+        const mesasDisponibles = await Mesa.find({
+            Materia: { $in: materiasDelAlumno },
+            estadoActual: 'activa'
+        }).populate('Materia');
+
+         // Verificar el estado del alumno en la materia de la mesa
+         const estadosAlumno = await AlumnoEstado.find({ idAlumno: alumno._id }).populate('idMateria');
+
+        //renderizo la vista con las mesas diponibles y los estados en cada materia para que el alumno los pueda observar
+        res.render('Alumno_MesaExamen', { mesasDisponibles , estadosAlumno});
+    } catch (error) {
+        console.error('Error al obtener las mesas según el alumno:', error);
+        res.status(500).send('Error del servidor');
+    }
+};
+
+// Función para verificar si un alumno tiene permiso para inscribirse a una mesa de examen
 exports.verificarPermisoParaRendir = async (req, res) => {
     try {
-        const { alumnoId, mesaId } = req.params;
+        // Traigo el id del alumno logueado
+        const docAlumno = await docAlumLogueado(req, res);
+        if (!docAlumno) {
+            return res.json({ success: false, mensaje: 'No hay un alumno logueado' });
+        }
+        
+        const alumno = await Alumno.findOne({ numDocAlumn: docAlumno });
+        if(!alumno){
+            return res.json({ success: false, mensaje: 'Aun no estas cargado en la base de datos' });
+        }
+        const alumnoId = alumno._id.toString();;
+        // Traigo el id de la mesa
+        const { mesaId } = req.params;
 
-        console.log("idAlumno: ", alumnoId, "\n idMesa: ", mesaId);
+        console.log("idAlumno: ", alumnoId, "\nidMesa: ", mesaId);
 
         // Traigo la mesa con sus materias y alumnos
         const mesa = await Mesa.findById(mesaId)
@@ -33,26 +85,25 @@ exports.verificarPermisoParaRendir = async (req, res) => {
             .populate('Alumno');
 
         if (!mesa) {
-            return res.status(404).json({ mensaje: "Mesa no encontrada" });
+            return res.json({ success: false, mensaje: 'Mesa no encontrada' });
         }
 
-        if (mesa.estadoActual == 'suspendida') {
-            return res.status(404).json({ mensaje: "Mesa suspendida" });
+        if (mesa.estadoActual === 'suspendida') {
+            return res.json({ success: false, mensaje: "Mesa suspendida"});
         }
 
-        //aca habria que agregar la validacion para ver cuantas veces ya rindio la mesa
-
-        // Verificar si el alumno ya está inscrito en la mesa
+        // Verifico si el alumno ya está inscrito en la mesa
         const inscripcionExistente = await verificarInscripcionExistente(alumnoId, mesa.Alumno);
         if (inscripcionExistente) {
-            return res.status(400).json({ mensaje: "Este alumno ya está inscripto en la mesa" });
+            return res.json({ success: false, mensaje: 'Ya estas inscripto en esta mesa' });
         }
+
         console.log("Materia a rendir de la mesa: \n", mesa.Materia);
 
         // Verificar si el alumno aprobó las correlativas
         const correlativasAprobadas = await verificarCorrelativas(alumnoId, mesa.Materia);
         if (!correlativasAprobadas) {
-            return res.status(403).json({ mensaje: "No puedes inscribirte, no has aprobado todas las correlativas" });
+            return res.json({ success: false, mensaje: 'No puedes inscribirte, no has aprobado todas las correlativas' });
         }
 
         // Verificar el estado del alumno en la materia de la mesa
@@ -65,14 +116,14 @@ exports.verificarPermisoParaRendir = async (req, res) => {
 
     } catch (error) {
         console.error("Error al verificar el permiso para rendir:", error.message);
-        return res.status(500).json({ mensaje: "Error en el servidor" });
+        return res.json({ success: false, mensaje: 'Error en el servidor' });
     }
 };
 
 // Función para verificar si el alumno ya está inscrito en la mesa
-async function verificarInscripcionExistente(alumnoId, AlumnosParaVerificar) {
+async function verificarInscripcionExistente(alumnoParaVerificar, alumnosExistentesEnLaMesa) {
     try {
-        const alumnoYaInscripto = AlumnosParaVerificar.some(alumno => alumno._id.toString() === alumnoId);
+        const alumnoYaInscripto = alumnosExistentesEnLaMesa.some(alumno => alumno._id.toString() === alumnoParaVerificar);
         return alumnoYaInscripto;
     } catch (error) {
         console.error("Error al verificar la inscripción existente:", error.message);
@@ -89,7 +140,7 @@ async function verificarCorrelativas(alumnoId, materiaParaRendir) {
             const estadoAlumnoCorrelativas = await AlumnoEstado.find({
                 idAlumno: alumnoId,
                 idMateria: { $in: materiaParaRendir.correlativas },
-                estadoActual: { $in: ['acreditado'] } //Trae las que estan aprobadas solamente
+                estadoActual: { $in: ['acreditado'] } // Solo las que están aprobadas
             });
 
             console.log("\n Correlativas necesarias para rendir: \n", materiaParaRendir.correlativas);
@@ -97,7 +148,7 @@ async function verificarCorrelativas(alumnoId, materiaParaRendir) {
             console.log("\n Estado de las correlatvias del alumno logueado: \n", estadoAlumnoCorrelativas);
             console.log("---------------------------------------------------------");
 
-            // devuelvo true o false dependiedno si aprobó todas las correlativas
+            // Devuelvo true si aprobó todas las correlativas, de lo contrario false
             return estadoAlumnoCorrelativas.length === materiaParaRendir.correlativas.length;
         }
         return true; // Si no tiene correlativas, puede rendir
@@ -111,26 +162,25 @@ async function verificarCorrelativas(alumnoId, materiaParaRendir) {
 async function verificarEstadoMateriaMesa(alumEstado, alumnoId, mesa, res) {
     try {
         if (alumEstado) {
-            console.log('estado del alumno en la materia de la mesa:', alumEstado)
+            console.log('Estado del alumno en la materia de la mesa:', alumEstado);
             switch (alumEstado.estadoActual) {
                 case "libre":
                 case "regular":
                     mesa.Alumno.push(alumnoId);
                     await mesa.save();
-                    return res.status(200).json({ mensaje: "Inscripción realizada con éxito" });
+                    return res.json({ success: true, mensaje: 'Inscripción realizada con éxito' });
                 case "desaprobado":
-                    return res.status(403).json({ mensaje: "No puede inscribirse, materia desaprobada" });
+                    return res.json({ success: false, mensaje: 'No puede inscribirse, materia desaprobada' });
                 case "acreditado":
-                    return res.status(403).json({ mensaje: "No puede inscribirse, esta materia ya está acreditada" });
+                    return res.json({ success: false, mensaje: 'No puede inscribirse, esta materia ya está acreditada' });
                 default:
-                    return res.status(400).json({ mensaje: "Estado de la materia no válido" });
+                    return res.json({ success: false, mensaje: 'Estado de la materia no válido' });
             }
         } else {
-            return res.status(404).json({ mensaje: "No se encontró el estado de la materia para el alumno" });
+            return res.json({ success: false, mensaje: 'Aun no tienes cargado tu estado en esta materia' });
         }
     } catch (error) {
         console.error("Error al verificar el estado de la materia:", error.message);
-        return res.status(500).json({ mensaje: "Error al verificar el estado de la materia" });
+        return res.json({ success: false, mensaje: 'Error al verificar el estado de la materia' });
     }
 }
-

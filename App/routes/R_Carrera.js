@@ -2,39 +2,22 @@
 const express = require('express');
 const router = express.Router();
 const controller = require("../controllers/C_carrera.js");
-const Carrera = require('../../models/Carrera.js'); 
-
 
 // CARRERA
 router.get("/carrera/obtener", controller.obtenerCarreras);
+router.get("/carrera/obtener/:id", controller.obtenerCarreraPorId);
 router.post("/carrera/agregar", controller.agregarCarreras);
-router.delete("/carrera/eliminar/:id", controller.eliminarCarreras);
-router.get("/carrera/modificar/:id", controller.obtenerCarreraPorId); // Esta ruta obtiene la pagina de obtener carrera
-router.put("/carrera/modificar/:id", controller.modificarCarrera); // Esta modifica una carrera
-
+router.put("/carrera/baja/:id", controller.bajaCarreras);
+router.get("/carrera/modificar/:id", controller.obtenerCarreraPorId); 
+router.put("/carrera/modificar/:id", controller.modificarCarrera);
 
 //PLAN DE ESTUDIO
 router.get('/planEstudio/:id/', controller.verPlanEstudio);
-//router.post('/carrera/:carreraId/agregarPlan', controller.agregarPlanEstudio); 
 
 // MATERIA
-router.post('/materia/agregar', controller.agregarMateria); 
-router.get('/materia/obtener', controller.obtenerMaterias); 
-
-// Obtener carrera por ID
-router.get('/carrera/obtener/:id', async (req, res) => {
-    try {
-        const carrera = await Carrera.findById(req.params.id);
-        if (!carrera) {
-            return res.status(404).json({ message: 'Carrera no encontrada' });
-        }
-        console.log('Carrera obtenida:', carrera); // Agregar este log
-        res.json(carrera);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error al obtener la carrera' });
-    }
-});
+router.post('/materia/nuevaMateriaPlanDeEstudio', controller.nuevaMateriaPlanDeEstudio);
+router.delete('/materia/eliminar', controller.eliminarMateria);
+router.post('/materia/modificar', controller.modificarMateria);
 
 
 module.exports = router;

@@ -136,6 +136,8 @@ exports.modificarEstadoAlumno = async (req, res) => {
 };
 }
 
+
+
 exports.obtenerHistorialEstados = async (req, res) => {
   try {
     // Obtén el ID del alumno del parámetro de la solicitud
@@ -158,8 +160,5 @@ exports.obtenerHistorialEstados = async (req, res) => {
     res.status(500).json({ message: 'Error del servidor' });
   }
 };
-
-
-
 
 

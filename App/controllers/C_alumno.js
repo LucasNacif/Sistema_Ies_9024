@@ -1,9 +1,12 @@
 const Alumno = require("../../models/Alumno");
-
+const PlanEstudio = require("../../models/PlanEstudio");
 
 //METODOS PARA EL MANEJO DE ALUMNOS POR PARTE DEL ADMIN:
-exports.nuevo = async (req, res) => {
+
+exports.nuevoAlumnoPlanDeEstudio = async (req, res) => {
   try {
+    
+    //traemos los datos del alumno y el id del plan de estudi
     const {
       numDocAlumn,
       nombreCompleto,
@@ -17,14 +20,15 @@ exports.nuevo = async (req, res) => {
       dniActualizado,
       analiticoFiel,
       antecedenPen,
+      idPlanEstudioSeleccionado,
+      idCarrera,
     } = req.body;
-
+    
     // busco el alumno por este num de doc para saber si esta guardado
     const alumnoExistente = await Alumno.findOne({ numDocAlumn });
     if (alumnoExistente) {
-      return res.redirect("/alumno?error=El DNI ya está registrado");
+      return res.redirect(`/planEstudio/${idCarrera}?error=El alumno ya existe.`);
     }
-
     const alumno = new Alumno({
       numDocAlumn,
       nombreCompleto,
@@ -40,12 +44,26 @@ exports.nuevo = async (req, res) => {
       antecedenPen,
     });
 
-    await alumno.save();
-    //exito
-    res.redirect("/alumno?message=Alumno agregado correctamente");
+    //primero traer los datos del plan de estudio donde se va a guardar el alumno
+    const planEstudio =  PlanEstudio.findOneAndUpdate(
+      {_id: idPlanEstudioSeleccionado},
+      { $push: { alumnos: alumno._id, } },
+      { new: true }
+    );
+    
+    if(planEstudio){
+      //guardamos ese alumno
+      await alumno.save();
+
+      console.error("planEstudio actualizado ", (await planEstudio).toString());
+      console.error("alumno Guardado ", alumno.toString());
+
+      return res.redirect(`/planEstudio/${idCarrera}?success=Alumno agregado exitosamente.`);
+    }
+  
   } catch (error) {
-    console.log(error);
-    res.redirect("/alumno?error=Error al agregar alumno");
+    console.error(error);
+    res.redirect(`/planEstudio/${idCarrera}?error=No se pudo agregar el alumno.`);
   }
 };
 exports.traerPorDoc = async (req, res) => {
@@ -66,32 +84,27 @@ exports.traerPorDoc = async (req, res) => {
     return res.status(500).json({ error: "Error interno del servidor" });
   }
 };
-exports.darDeBaja = async (req, res) => {
-
-  const { numDocAlumn } = req.params;
-  if (!numDocAlumn) {
-    return res.status(400).json({ error: "Número de documento requerido" });
-  }
-
+exports.modificarEstado = async (req, res) => {
+  const { idAlumno, estado } = req.body;
   try {
-    const alumno = await Alumno.findOne({ numDocAlumn });
+    const alumno = await Alumno.findById( idAlumno );
 
     if (!alumno) {
+      console.log("Alumno no encontrado")
       return res.status(404).json({ error: "Alumno no encontrado" });
     }
 
-    if (!alumno.banderaBooleana) {
-      return res.status(405).json({ error: "Este alumno ya se encuentra dado de baja" });
+    if (alumno.banderaBooleana === estado) {
+      return res.status(405).json({ error: "Este alumno ya se encontraba en ese estado" });
     }
 
-    // Actualizar el estado del alumno a dado de baja
     await Alumno.findOneAndUpdate(
-      { numDocAlumn },
-      { $set: { banderaBooleana: false } },
+      { _id: idAlumno },
+      { $set: { banderaBooleana: estado } },
       { new: true }
     );
 
-    res.status(200).json({ message: "Alumno dado de baja exitosamente" });
+    res.status(200).json({ message: "Alumno modificado exitosamente" });
   } catch (error) {
     console.error("Error al dar de baja el alumno:", error.message);
     res.status(500).json({ error: "Error interno del servidor" });
@@ -153,19 +166,5 @@ exports.modificarAlumno = async (req, res) => {
   } catch (error) {
     console.error("Error al modificar el alumno:", error.message);
     res.status(500).redirect("/alumno?error=Error interno del servidor");
-  }
-};
-exports.obtenerAlumnosActivos = async (req, res) => {
-  try {
-    const alumnos = await Alumno.find({ banderaBooleana: true });
-
-    if (alumnos.length === 0) {
-      return res.status(200).json({ mensaje: "No hay alumnos activos" });
-    }
-
-    res.status(200).json(alumnos);
-  } catch (error) {
-    console.error("Error al obtener alumnos:", error.message);
-    res.status(500).json({ error: "Error interno del servidor" });
   }
 };

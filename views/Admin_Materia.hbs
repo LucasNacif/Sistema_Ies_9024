@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="/Styles/main.css">
     <link rel="stylesheet" href="/Styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/Styles/Admin_Materia.css">
 
     <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
     <script src="/js/jsBoostrap/bootstrap.min.js"></script>
@@ -16,6 +17,7 @@
     <script src="/js/jsBoostrap/material.min.js"></script>
     <script src="/js/jsBoostrap/ripples.min.js"></script>
     <script src="/js/jsBoostrap/main.js"></script>
+
     <style>
         body {
             font-size: 14px;
@@ -75,47 +77,10 @@
                 /* Espacio entre etiqueta y campo */
             }
         }
-
-        .materia-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border: 1px solid #ddd;
-            margin-bottom: 10px;
-            border-radius: 5px;
-        }
-
-        .correlativas-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-
-        .correlativa-tag {
-            background-color: #e9ecef;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.9em;
-        }
-
-        #searchCorrelativas {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-        }
-
-        #correlativasList {
-            max-height: 200px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            padding: 10px;
-        }
     </style>
 </head>
 
 <body>
-    <!-- ... (tu estructura de sidebar y navbar) ... -->
 
     <div class="container">
         <h1>Gestión de Materias</h1>
@@ -155,109 +120,221 @@
     </div>
 
     <script>
-       document.addEventListener('DOMContentLoaded', function () {
-    let materias = []; // Definir la variable materias de forma global
+        document.addEventListener('DOMContentLoaded', function () {
+            let materias = []; // Definir la variable materias de forma global
 
-    function obtenerMaterias() {
-        fetch('/materia/obtener')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error en la red');
-                }
-                return response.json(); // Convierte la respuesta en JSON
-            })
-            .then(data => {
-                materias = data; // Asignar los datos obtenidos a la variable global
-                renderMaterias(); // Renderizar las materias
-            })
-            .catch(error => {
-                console.error("Error al obtener las materias:", error);
-                var listaMaterias = $("#listaMaterias");
-                listaMaterias.html("<li class='list-group-item'>Error al cargar las materias.</li>");
-            });
-    }
+            function obtenerMaterias() {
+                fetch('/materia/obtener')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error en la red');
+                        }
+                        return response.json(); // Convierte la respuesta en JSON
+                    })
+                    .then(data => {
+                        materias = data; // Asignar los datos obtenidos a la variable global
+                        renderMaterias(); // Renderizar las materias
+                    })
+                    .catch(error => {
+                        console.error("Error al obtener las materias:", error);
+                        var listaMaterias = $("#listaMaterias");
+                        listaMaterias.html("<li class='list-group-item'>Error al cargar las materias.</li>");
+                    });
+            }
 
-    const formMateria = document.getElementById('formMateria');
-    const listaMaterias = document.getElementById('listaMaterias');
-    const searchCorrelativas = document.getElementById('searchCorrelativas');
-    const correlativasList = document.getElementById('correlativasList');
-    const btnCancelar = document.getElementById('btnCancelar');
+            const formMateria = document.getElementById('formMateria');
+            const listaMaterias = document.getElementById('listaMaterias');
+            const searchCorrelativas = document.getElementById('searchCorrelativas');
+            const correlativasList = document.getElementById('correlativasList');
+            const btnCancelar = document.getElementById('btnCancelar');
 
-    function renderMaterias() {
-        listaMaterias.innerHTML = '';
-        materias.forEach(materia => {
-            const div = document.createElement('div');
-            div.className = 'materia-item';
-            div.innerHTML = `
+            function renderMaterias() {
+                listaMaterias.innerHTML = '';
+                materias.forEach(materia => {
+                    const div = document.createElement('div');
+                    div.className = 'materia-item';
+                    div.innerHTML = `
                 <span>${materia.nombreMateria}</span>
                 <div class="correlativas-container">
                     ${materia.correlativas.map(c => `<span class="correlativa-tag">${c.nombreMateria}</span>`).join('')}
                 </div>
                 <button class="btn btn-sm btn-info" onclick="editarMateria('${materia._id}')">Editar</button>
             `;
-            listaMaterias.appendChild(div);
-        });
-    }
+                    listaMaterias.appendChild(div);
+                });
+            }
 
-    function renderCorrelativas(search = '') {
-        const filteredMaterias = materias.filter(m =>
-            m.nombreMateria.toLowerCase().includes(search.toLowerCase()));
-        correlativasList.innerHTML = filteredMaterias.map(m => `
+            function renderCorrelativas(search = '') {
+                const filteredMaterias = materias.filter(m =>
+                    m.nombreMateria.toLowerCase().includes(search.toLowerCase()));
+                correlativasList.innerHTML = filteredMaterias.map(m => `
             <div>
                 <input type="checkbox" id="corr_${m._id}" value="${m._id}">
                 <label for="corr_${m._id}">${m.nombreMateria}</label>
             </div>
         `).join('');
-    }
+            }
 
-    searchCorrelativas.addEventListener('input', (e) => renderCorrelativas(e.target.value));
+            searchCorrelativas.addEventListener('input', (e) => renderCorrelativas(e.target.value));
 
-    formMateria.addEventListener('submit', function (e) {
-        e.preventDefault();
-        const id = document.getElementById('materiaId').value;
-        const nombreMateria = document.getElementById('nombreMateria').value;
-        const correlativas = Array.from(correlativasList.querySelectorAll('input:checked'))
-            .map(input => input.value);
+            formMateria.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const id = document.getElementById('materiaId').value;
+                const nombreMateria = document.getElementById('nombreMateria').value;
+                const correlativas = Array.from(correlativasList.querySelectorAll('input:checked'))
+                    .map(input => input.value);
 
-        if (id) {
-            // Editar materia existente
-            const index = materias.findIndex(m => m._id === id);
-            materias[index] = { ...materias[index], nombreMateria, correlativas };
-        } else {
-            // Agregar nueva materia
-            materias.push({ _id: Date.now().toString(), nombreMateria, correlativas });
-        }
+                if (id) {
+                    // Editar materia existente
+                    const index = materias.findIndex(m => m._id === id);
+                    materias[index] = { ...materias[index], nombreMateria, correlativas };
+                } else {
+                    // Agregar nueva materia
+                    materias.push({ _id: Date.now().toString(), nombreMateria, correlativas });
+                }
 
-        renderMaterias();
-        formMateria.reset();
-        document.getElementById('materiaId').value = '';
-    });
-
-    btnCancelar.addEventListener('click', function () {
-        formMateria.reset();
-        document.getElementById('materiaId').value = '';
-    });
-
-    window.editarMateria = function (id) {
-        const materia = materias.find(m => m._id === id);
-        if (materia) {
-            document.getElementById('materiaId').value = materia._id;
-            document.getElementById('nombreMateria').value = materia.nombreMateria;
-            renderCorrelativas();
-            materia.correlativas.forEach(c => {
-                const checkbox = document.getElementById(`corr_${c._id}`);
-                if (checkbox) checkbox.checked = true;
+                renderMaterias();
+                formMateria.reset();
+                document.getElementById('materiaId').value = '';
             });
-        }
-    };
 
-    // Inicialización
-    obtenerMaterias(); // Llamar a obtenerMaterias para cargar las materias al iniciar
-    renderCorrelativas();
-});
+            btnCancelar.addEventListener('click', function () {
+                formMateria.reset();
+                document.getElementById('materiaId').value = '';
+            });
+
+            window.editarMateria = function (id) {
+                const materia = materias.find(m => m._id === id);
+                if (materia) {
+                    document.getElementById('materiaId').value = materia._id;
+                    document.getElementById('nombreMateria').value = materia.nombreMateria;
+                    renderCorrelativas();
+                    materia.correlativas.forEach(c => {
+                        const checkbox = document.getElementById(`corr_${c._id}`);
+                        if (checkbox) checkbox.checked = true;
+                    });
+                }
+            };
+
+            // Inicialización
+            obtenerMaterias(); // Llamar a obtenerMaterias para cargar las materias al iniciar
+            renderCorrelativas();
+        });
 
 
     </script>
 </body>
 
 </html>
+
+
+  <div class="container mt-4">
+            <h4 class="mt-4">Materia</h4>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Agregar/Editar Materia</h3>
+                </div>
+                <div class="panel-body">
+                    <form id="formMateria">
+                        <input type="hidden" id="materiaId">
+                        <div class="form-group">
+                            <label for="nombreMateria">Nombre de la Materia:</label>
+                            <input type="text" class="form-control" id="nombreMateria" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Correlativas:</label>
+                            <input type="text" id="searchCorrelativas" placeholder="Buscar correlativas...">
+                            <div id="correlativasList"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar Materia</button>
+                        <button type="button" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-4">
+            <h4 class="mt-4">Materias</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre de la Materia</th>
+                        <th>Correlativas</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="listaMaterias"></tbody>
+            </table>
+        </div>
+
+        <div class="container mt-4">
+            <h4 class="mt-4">Alumnos</h4>
+            <button id="nuevoAlumnoPlanDeEstudio" class="btn btn-add"
+                onclick="mostrarFormularioAlumno()">Agregar</button>
+            <form id="formAgregar" method="post" action="/alumno/agregarAlumnoPlanEstudio" style="display: none;">
+                <div>
+                    <label for="nombreCompleto">Nombre Completo:</label>
+                    <input type="text" id="nombreCompleto" name="nombreCompleto" required />
+                </div>
+                <div>
+                    <label for="numDocAlumn">Número de Documento:</label>
+                    <input type="number" id="numDocAlumn" name="numDocAlumn" required placeholder="Sin puntos" />
+                </div>
+                <div>
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" required />
+                </div>
+                <div>
+                    <label for="corte">Corte:</label>
+                    <input type="text" id="corte" name="corte" required>
+                </div>
+                <div>
+                    <label for="emailAlumn">Email:</label>
+                    <input type="email" id="emailAlumn" name="emailAlumn" />
+                </div>
+                <div>
+                    <label for="curso">Curso:</label>
+                    <input type="text" id="curso" name="curso" required placeholder="Primero, Segundo, etc" />
+                </div>
+                <div>
+                    <label for="tituloSecundario">Título Secundario:</label>
+                    <input type="checkbox" id="tituloSecundario" name="tituloSecundario" value="true" />
+                </div>
+                <div>
+                    <label for="psicofisico">Psicofísico:</label>
+                    <input type="checkbox" id="psicofisico" name="psicofisico" value="true" />
+                </div>
+                <div>
+                    <label for="partidaNacim">Partida de Nacimiento:</label>
+                    <input type="checkbox" id="partidaNacim" name="partidaNacim" value="true" />
+                </div>
+                <div>
+                    <label for="dniActualizado">DNI Actualizado:</label>
+                    <input type="checkbox" id="dniActualizado" name="dniActualizado" value="true" />
+                </div>
+                <div>
+                    <label for="analiticoFiel">Analítico Fiel:</label>
+                    <input type="checkbox" id="analiticoFiel" name="analiticoFiel" value="true" />
+                </div>
+                <div>
+                    <label for="antecedenPen">Antecedentes Penales:</label>
+                    <input type="checkbox" id="antecedenPen" name="antecedenPen" value="true" />
+                </div>
+                <button type="submit" class="btn btn-guardar">Guardar Alumno</button>
+                <button type="button" class="btn btn-cancelar" onclick="cancelar('formAgregar')">Cancelar</button>
+            </form>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre Completo</th>
+                        <th>Número de Documento</th>
+                        <th>Email</th>
+                        <th>Curso</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="listaAlumnos"></tbody>
+            </table>
+        </div>

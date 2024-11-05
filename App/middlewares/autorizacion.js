@@ -25,7 +25,6 @@ const verificarSesion = async (req, res, next) => {
     next();
   }
 };
-
 // Middleware para verificar roles
 const verificarRol = (rolesPermitidos) => {
   return (req, res, next) => {
@@ -41,15 +40,29 @@ const verificarRol = (rolesPermitidos) => {
 
       // Verifica si el rol pasado por parámetro es válido
       if (rolesPermitidos.length > 0 && !rolesPermitidos.includes(usuarioLogueado.rol)) {
-        return res.status(403).send({ status: "Error", message: "Acceso denegado", redirect: "/" });
+        return res.status(403).render('AccesoDenegado.hbs');
       }
 
       next(); // Si todo está bien, sigue al siguiente middleware
     } catch (error) {
       console.error('Error en verificarRol:', error);
-      return res.status(500).send({ status: "Error", message: "Ha ocurrido un error", redirect: "/" });
+      return res.status(403).render('AccesoDenegado.hbs');
     }
   };
 };
+const docAlumLogueado = async (req, res) => {
+  try {
+    const token = req.cookies.jwt; 
+    if (!token) {
+      return null; 
+    }
+    const usuarioDecodificado = jwt.verify(token, process.env.JWT_SECRET); 
+    return usuarioDecodificado.dni;
+    
+  } catch (error) {
+    console.error('Error al obtener el DNI del alumno logueado:', error);
+    return null;
+  }
+};
 
-module.exports = { verificarSesion, verificarRol };
+module.exports = { verificarSesion, verificarRol, docAlumLogueado };
