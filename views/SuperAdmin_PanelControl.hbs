@@ -70,6 +70,64 @@
         </header>
 
 
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul class="nav nav-tabs" style="margin-bottom: 15px;">
+                        <li class="active"><a href="#new" data-toggle="tab">Nuevo</a></li>
+                        <li><a href="#list" data-toggle="tab">Mostrar</a></li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade active in" id="new">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-10 col-md-offset-1">
+                                        <form id="formNuevoBedel">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Nombre</label>
+                                                <input class="form-control" type="text" name="nombre" required>
+                                            </div>
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Apellido</label>
+                                                <input class="form-control" type="text" name="apellido" required>
+                                            </div>
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Email</label>
+                                                <input class="form-control" type="email" name="email" required>
+                                            </div>
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Contraseña</label>
+                                                <input class="form-control" type="password" name="password" required>
+                                            </div>
+                                            <p class="text-center">
+                                                <button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Guardar</button>
+                                            </p>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="list">
+                            <div class="table-responsive">
+                                <table class="table table-hover text-center">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th class="text-center">Nombre</th>
+                                            <th class="text-center">Apellido</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tablaBedeles">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </body>
 

@@ -111,6 +111,30 @@ exports.registrar = async (req, res) => {
   }
 };
 
+// Metodo para eliminar usuarios
+exports.delete = async (req, res) => {
+  const { dni } = req.body;
+  try {
+    const user = await Usuario.delete(req.dni);
+      if (!Usuario ) {
+      return res.status(404).send({ status:"Error", message:"Usuario no encontrado "});
+      }
+      res.json({ message: 'Carrera eliminada correctamente' });
+    } catch ( err) {
+      console.error(err)
+      res.status(500).json( "Error al eliminar un usuario")
+  }
+}
+// dni,
+// email,
+// nombre,
+// password: hashPassword,
+// Metodo para editar usuarios
+exports.edit = async (req, res) => {
+  const { dni } = req.body;
+  
+  
+}
 // Método para cerrar sesión
 exports.exit = (req, res) => {
   res.clearCookie("jwt", { path: "/" });
