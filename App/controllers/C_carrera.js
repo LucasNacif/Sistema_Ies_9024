@@ -120,7 +120,6 @@ exports.verPlanEstudio = async (req, res) => {
             carrera,
             planEstudio: carrera.planEstudio,
             materias: carrera.planEstudio.materias || [],
-            alumnos: carrera.planEstudio.alumnos || [],
             planEstudioId: carrera.planEstudio._id, 
             carreraId: carrera._id 
         });
@@ -193,6 +192,7 @@ exports.eliminarMateria = async (req, res) => {
     const { idMateria, idPlanEstudio } = req.body;
 
     try {
+        console.log(idMateria);
         // Eliminar la materia de la colección de materias
         const materia = await Materia.findByIdAndDelete(idMateria);
         if (!materia) {
@@ -249,8 +249,6 @@ exports.modificarMateria = async (req, res) => {
     }
 };
 
-
-    // exports.obtenerMaterias = async (req, res) => {
     //     try {
     //         const materias = await Materia.find().populate('correlativas');
     //         res.json(materias);

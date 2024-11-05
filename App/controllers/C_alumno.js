@@ -1,7 +1,6 @@
 const Alumno = require("../../models/Alumno");
 const PlanEstudio = require("../../models/PlanEstudio");
 
-
 //METODOS PARA EL MANEJO DE ALUMNOS POR PARTE DEL ADMIN:
 
 exports.nuevoAlumnoPlanDeEstudio = async (req, res) => {
@@ -85,32 +84,27 @@ exports.traerPorDoc = async (req, res) => {
     return res.status(500).json({ error: "Error interno del servidor" });
   }
 };
-exports.darDeBaja = async (req, res) => {
-
-  const { numDocAlumn } = req.params;
-  if (!numDocAlumn) {
-    return res.status(400).json({ error: "Número de documento requerido" });
-  }
-
+exports.modificarEstado = async (req, res) => {
+  const { idAlumno, estado } = req.body;
   try {
-    const alumno = await Alumno.findOne({ numDocAlumn });
+    const alumno = await Alumno.findById( idAlumno );
 
     if (!alumno) {
+      console.log("Alumno no encontrado")
       return res.status(404).json({ error: "Alumno no encontrado" });
     }
 
-    if (!alumno.banderaBooleana) {
-      return res.status(405).json({ error: "Este alumno ya se encuentra dado de baja" });
+    if (alumno.banderaBooleana === estado) {
+      return res.status(405).json({ error: "Este alumno ya se encontraba en ese estado" });
     }
 
-    // Actualizar el estado del alumno a dado de baja
     await Alumno.findOneAndUpdate(
-      { numDocAlumn },
-      { $set: { banderaBooleana: false } },
+      { _id: idAlumno },
+      { $set: { banderaBooleana: estado } },
       { new: true }
     );
 
-    res.status(200).json({ message: "Alumno dado de baja exitosamente" });
+    res.status(200).json({ message: "Alumno modificado exitosamente" });
   } catch (error) {
     console.error("Error al dar de baja el alumno:", error.message);
     res.status(500).json({ error: "Error interno del servidor" });
@@ -174,19 +168,3 @@ exports.modificarAlumno = async (req, res) => {
     res.status(500).redirect("/alumno?error=Error interno del servidor");
   }
 };
-
-
-// exports.obtenerAlumnosActivos = async (req, res) => {
-//   try {
-//     const alumnos = await Alumno.find({ banderaBooleana: true });
-
-//     if (alumnos.length === 0) {
-//       return res.status(200).json({ mensaje: "No hay alumnos activos" });
-//     }
-
-//     res.status(200).json(alumnos);
-//   } catch (error) {
-//     console.error("Error al obtener alumnos:", error.message);
-//     res.status(500).json({ error: "Error interno del servidor" });
-//   }
-// };
