@@ -2,41 +2,50 @@ const AlumnoEstado = require("../../models/AlumnoEstado");
 const Alumno = require("../../models/Alumno");
 const Materia = require("../../models/Materia");
 const PlanEstudios = require("../../models/PlanEstudio");
+const mongoose = require('mongoose');
 
 exports.crearAlumnoEstado = async (req, res) => {
   try {
-    const { nombreAlumno, nombreMateria, estadoActual, fecha } = req.body;
+    const { nombreAlumno, nombreMateria, estadoActual } = req.body;
 
-    //console.log("Datos recibidos:", { nombreAlumno, nombreMateria });
-
+    // Buscar el alumno
     const alumno = await Alumno.findOne({ nombreCompleto: nombreAlumno });
     if (!alumno) {
-      console.log("Alumno no encontrada");
-      throw new Error("Alumno no encontrado");
+      console.log("Alumno no encontrado");
+      return res.status(404).json({ message: "Alumno no encontrado" });
     }
 
-    // Buscar la materia por nombre
+    // Buscar la materia
     const materia = await Materia.findOne({ nombreMateria: nombreMateria });
     if (!materia) {
       console.log("Materia no encontrada");
-      throw new Error("Materia no encontrada");
+      return res.status(404).json({ message: "Materia no encontrada" });
     }
 
-    const nuevoAlumnoEstado = new AlumnoEstado({
-      idAlumno: alumno._id,
-      idMateria: materia._id,
-      estadoActual: estadoActual,
-      fecha: new Date(),
-    });
+    // Buscar si ya existe un estado para el alumno y la materia
+    let alumnoEstado = await AlumnoEstado.findOne({ idAlumno: alumno._id, idMateria: materia._id });
 
-    await nuevoAlumnoEstado.save();
-
-    res.status(201).json({ message: "AlumnoEstado creado exitosamente" });
+    if (alumnoEstado) {
+      // Si existe, añadir el nuevo estado al historial
+      alumnoEstado.historialEstados.push({ estado: estadoActual, fecha: new Date() });
+      await alumnoEstado.save();
+      res.status(200).json({ message: "Estado actualizado exitosamente" });
+    } else {
+      // Si no existe, crear un nuevo AlumnoEstado
+      const nuevoAlumnoEstado = new AlumnoEstado({
+        idAlumno: alumno._id,
+        idMateria: materia._id,
+        historialEstados: [{ estado: estadoActual, fecha: new Date() }]
+      });
+      await nuevoAlumnoEstado.save();
+      res.status(201).json({ message: "AlumnoEstado creado exitosamente" });
+    }
   } catch (error) {
     console.log(error.message);
-    res.status(501).json({ message: "Error al crear el AlumnoEstado" });
+    res.status(500).json({ message: `Error al crear o actualizar el AlumnoEstado: ${error.message}` });
   }
 };
+
 exports.buscarAlumnoYMaterias = async (req, res) => {
   try {
     const { numDocAlumn } = req.params;
@@ -46,89 +55,109 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
     if (!alumno) {
       return res.status(404).json({ message: "Alumno no encontrado" });
     }
-    //console.log(alumno)
 
     // Buscar el plan de estudios del alumno
-    const planEstudios = await PlanEstudios.findOne({
-      alumnos: alumno._id,
-    }).select("nombre materias").populate("materias", "nombreMateria");
-
-    //console.log(planEstudios)
+    const planEstudios = await PlanEstudios.findOne({ alumnos: alumno._id })
+      .select("nombre materias")
+      .populate("materias", "nombreMateria");
 
     if (!planEstudios) {
-      return res.status(404).json({
-        message: "No se encontró el plan de estudios para este alumno",
-      });
+      return res.status(404).json({ message: "No se encontró el plan de estudios para este alumno" });
     }
 
-    // Obtener las materias del plan de estudios
     const materiasDelPlan = planEstudios.materias;
-    //console.log(materiasDelPlan)
+
     // Buscar los estados de las materias que ya tiene cargadas el alumno
     const estadosExistentes = await AlumnoEstado.find({
       idAlumno: alumno._id,
-      idMateria: { $in: materiasDelPlan }
-    }).lean();
+      idMateria: { $in: materiasDelPlan },
+    });
 
-    //console.log(estadosExistentes)
-
-    // Crear un objeto para mapear los estados existentes por materia
-    const estadosMap = {};
+    const materiasConEstado = [];
+    const materiasSinEstado = [];
 
     estadosExistentes.forEach(estado => {
-      estadosMap[estado.idMateria.toString()] = estado;
-    });
+      // Obtener el último estado válido del historial
+      const ultimoEstado = estado.historialEstados?.slice().reverse().find(e => e.estado);
 
-    //console.log(estadosMap);
+      // Encontrar el nombre de la materia asociada al estado
+      const materia = materiasDelPlan.find(m => m._id.toString() === estado.idMateria.toString());
 
-    // Crear un array con todas las materias y sus estados, incluyendo la fecha
-    const materiasConEstado = materiasDelPlan.map(materia => {
-      const estado = estadosMap[materia._id.toString()];
-      return {
-        materia: materia.nombreMateria,
-        estadoActual: estado?.estadoActual || 'Sin Estado', // Encadenamiento
-        fecha: estado?.fecha || null //encadenamiento tambien por las dudas
+      const materiaConEstado = {
+        id: estado._id,
+        materia: materia ? materia.nombreMateria : null,
+        estado: ultimoEstado ? ultimoEstado.estado : 'Sin Estado',
+        fecha: ultimoEstado ? new Date(ultimoEstado.fecha).toISOString().split('T')[0] : null,
       };
+
+      // Clasificar solo los estados que tienen "sin estado"
+      if (materiaConEstado.estado.toLowerCase() === 'sin estado') {
+        materiasSinEstado.push(materiaConEstado);
+      } else {
+        materiasConEstado.push(materiaConEstado);
+      }
     });
 
-    console.log(materiasConEstado);
-
-    // Renderizar la vista con todas las materias y sus estados
-    res.render('Admin_AlumnoEstado', { materiasConEstado });
+    res.render("Admin_AlumnoEstado", { materiasConEstado, materiasSinEstado });
   } catch (error) {
     console.error("Error al buscar el alumno y sus materias:", error.message);
-    res
-      .status(500)
-      .json({ message: "Error al buscar el alumno y sus materias" });
+    res.status(500).json({ message: "Error al buscar el alumno y sus materias" });
   }
-
 };
+
+// Eliminar una carrera
+exports.eliminarEstadoAlumno = async (req, res) => {
+  const id = req.params.id;
+  //console.log('ID recibido:', id);
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'ID de estado no válido' });
+  }
 exports.modificarEstadoAlumno = async (req, res) => {
   try {
-    const { idAlumno, idMateria } = req.params;
-    const { estadoNuevo } = req.body;
+    const alumnoEstado = await AlumnoEstado.findById(id);
 
-    // Busca el estado de la materia del alumno utilizando ambos IDs
-    const estadoMateria = await AlumnoEstado.findOne({
-      idAlumno: idAlumno,
-      idMateria: idMateria,
+    if (!alumnoEstado) {
+      return res.status(404).json({ message: 'Estado no encontrado' });
+    }
+
+    // Agregar un nuevo objeto en el historial con el estado "Sin estado" y la fecha actual
+    alumnoEstado.historialEstados.push({
+      estado: "sin estado",
+      fecha: new Date() //la fecha actual
     });
 
-    if (!estadoMateria) {
-      return res.status(404).send("No se encontró el estado de la materia para este alumno");
-    }
-    console.log(estadoMateria)
-
-    // Actualiza solo el estadoActual
-    estadoMateria.estadoActual = estadoNuevo;
-
-    await estadoMateria.save(); // Guarda los cambios en la base de datos
-
-    res.status(200).send(estadoMateria); // Devuelve el objeto actualizado
+    // Guardar los cambios en la base de datos
+    await alumnoEstado.save();
+    res.json({ message: 'Estado dado de baja correctamente' });
   } catch (err) {
-    console.error("Error al modificar el estado del alumno:", err);
-    res.status(500).send("Error al modificar el estado del alumno");
+    console.error(err);
+    res.status(500).json({ message: 'Error al dar baja estado' });
   }
 };
+
+exports.obtenerHistorialEstados = async (req, res) => {
+  try {
+    // Obtén el ID del alumno del parámetro de la solicitud
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'ID de alumno no válido' });
+    }
+    // Busca el estado del alumno por su ID y pobla el historial
+    const alumnoEstado = await AlumnoEstado.findById(id)
+      .select('historialEstados') // Selecciona solo el historial de estados
+
+    if (!alumnoEstado) {
+      return res.status(404).json({ message: 'Estado no encontrado' });
+    }
+
+    // Envía el historial de estados como respuesta
+    res.status(200).json(alumnoEstado.historialEstados);
+  } catch (error) {
+    console.error('Error al obtener el historial de estados:', error);
+    res.status(500).json({ message: 'Error del servidor' });
+  }
+};
+
+
 
 
