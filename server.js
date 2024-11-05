@@ -7,16 +7,16 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 //Esto es para usar una collecion y que mongoose la cree en la bd(forma rapida)
-const Alumno = require('./models/Alumno');
-const AlumnoEstado = require('./models/AlumnoEstado');
-const Carrera = require('./models/Carrera');  
-const Materia = require('./models/Materia');
-const Mesa = require('./models/Mesa');
-const PlanEstudio = require('./models/PlanEstudio');
-const Usuario = require('./models/Usuario');
+// const Alumno = require('./models/Alumno');
+// const AlumnoEstado = require('./models/AlumnoEstado');
+// const Carrera = require('./models/Carrera');  
+// const Materia = require('./models/Materia');
+// const Mesa = require('./models/Mesa');
+// const PlanEstudio = require('./models/PlanEstudio');
+// const Usuario = require('./models/Usuario');
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
 
@@ -34,7 +34,10 @@ hbs.registerHelper('formatDate', function (date) {
       day: 'numeric'
   });
 });
-
+// Helper para convertir a JSON
+hbs.registerHelper("json", function(context) {
+  return JSON.stringify(context);
+});
 // Configuración del motor de vistas
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "./views"));
@@ -51,6 +54,7 @@ const carreraRouters = require("./App/routes/R_Carrera.js");
 const loginRouters = require("./App/routes/R_login");
 const inscripcionRouters = require("./App/routes/R_InscripcionMesas");
 const alumnoEstadoRoutes = require("./App/routes/R_alumnoEstado");
+const mesaRouters = require("./App/routes/R_Mesa");
 
 // Zona de ruteo
 app.use(carreraRouters);
@@ -58,10 +62,13 @@ app.use(alumnoRouters);
 app.use(loginRouters);
 app.use(inscripcionRouters);
 app.use(alumnoEstadoRoutes);
+app.use(mesaRouters);
+//app.use(mesaRouters);
+
 
 app.get("/", (req, res) => res.render("Admin_PanelControl"));
 app.get("/index", (req, res) => res.render("index"));
-app.get("/alumno", (req, res) => res.render("Admin_Alumno"));
+app.get("/alumno", (req, res) => res.render("Admin_PlanEstudio"));
 app.get("/mesa", (req, res) => res.render("Admin_Mesa"));
 app.get("/materia", (req, res) => res.render("Admin_Materia"));
 app.get("/Administracion", (req, res) => res.render("Admin_PanelControl"));

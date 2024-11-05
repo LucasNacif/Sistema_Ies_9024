@@ -112,6 +112,7 @@ exports.eliminarEstadoAlumno = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: 'ID de estado no válido' });
   }
+exports.modificarEstadoAlumno = async (req, res) => {
   try {
     const alumnoEstado = await AlumnoEstado.findById(id);
 
