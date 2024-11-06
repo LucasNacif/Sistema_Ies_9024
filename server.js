@@ -63,7 +63,6 @@ app.use(loginRouters);
 app.use(inscripcionRouters);
 app.use(alumnoEstadoRoutes);
 app.use(mesaRouters);
-//app.use(mesaRouters);
 
 
 app.get("/", (req, res) => res.render("Admin_PanelControl"));
@@ -72,9 +71,7 @@ app.get("/alumno", (req, res) => res.render("Admin_PlanEstudio"));
 app.get("/mesa", (req, res) => res.render("Admin_Mesa"));
 app.get("/materia", (req, res) => res.render("Admin_Materia"));
 app.get("/Administracion", (req, res) => res.render("Admin_PanelControl"));
-app.get("/AdministracionSuperAdmin", (req, res) =>
-  res.render("SuperAdmin_PanelControl")
-);
+app.get("/AdministracionSuperAdmin", (req, res) => res.render("SuperAdmin_PanelControl"));
 app.get("/alumnoMesaExamen", (req, res) => res.render("Alumno_MesaExamen"));
 app.get("/alumnoEstado", (req, res) => res.render("Admin_AlumnoEstado"));
 
