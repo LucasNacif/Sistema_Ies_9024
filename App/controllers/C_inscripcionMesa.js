@@ -46,8 +46,11 @@ exports.obtenerMesasSegunAlum = async (req, res) => {
             estadoActual: 'activa'
         }).populate('Materia');
 
+
          // Verificar el estado del alumno en la materia de la mesa
          const estadosAlumno = await AlumnoEstado.find({ idAlumno: alumno._id }).populate('idMateria');
+         
+         console.log("Mesas y estados para este alumno: ", mesasDisponibles , estadosAlumno )
 
         //renderizo la vista con las mesas diponibles y los estados en cada materia para que el alumno los pueda observar
         res.render('Alumno_MesaExamen', { mesasDisponibles , estadosAlumno});

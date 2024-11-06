@@ -156,8 +156,8 @@
                 </button>
             </div>
             <!-- Tabla para mostrar los alumnos filtrados -->
-            <div class="table-responsive" >
-                <table class="table table-striped" id="tablaAlumnos" >
+            <div class="table-responsive">
+                <table class="table table-striped" id="tablaAlumnos">
                     <thead>
                         <tr>
                             <th>Nombre</th>
@@ -180,7 +180,7 @@
             </div>
         </div>
 
-        <!-- Modal para agregar alumno -->
+        {{!-- <!-- Modal para agregar alumno -->
         <div class="modal fade" id="agregarAlumnoModal" tabindex="-1" aria-labelledby="agregarAlumnoModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -256,39 +256,142 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Modal para agregar materia -->
-        <div class="modal fade" id="agregarMateriaModal" tabindex="-1" aria-labelledby="agregarMateriaModalLabel"
-            style="z-index: 1231 !important;" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="agregarMateriaModalLabel">Agregar Materia</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+        </div> --}}
+        <!-- Modal para agregar alumno -->
+        <div class="modal fade" id="agregarAlumnoModal" tabindex="-1" aria-labelledby="agregarAlumnoModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content shadow-lg border-0 rounded">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="agregarAlumnoModalLabel">Agregar Alumno</h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <form action="/materia/nuevaMateriaPlanDeEstudio" method="POST">
-                            <!-- Campo para ingresar el nombre de la materia -->
-                            <label for="nombreMateria">Nombre de la Materia:</label>
-                            <input type="text" id="nombreMateria" name="nombreMateria" required>
-                            <label for="correlativas">Materias Correlativas:</label>
-                            <select id="correlativas" name="correlativas" multiple>
-                                {{#each materias}}
-                                <option value="{{this._id}}">{{this.nombreMateria}}</option>
-                                {{/each}}
-                            </select>
-                            <small>Usar Ctrl para seleccionar varias opciones</small>
+                    <div class="modal-body p-4">
+                        <form id="formAgregar" method="post" action="/alumno/agregarAlumnoPlanEstudio">
+                            <!-- Nombre Completo -->
+                            <div class="form-group">
+                                <label for="nombreCompleto" class="font-weight-bold">Nombre Completo:</label>
+                                <input type="text" id="nombreCompleto" name="nombreCompleto" class="form-control"
+                                    required />
+                            </div>
+                            <!-- Número de Documento -->
+                            <div class="form-group">
+                                <label for="numDocAlumn" class="font-weight-bold">Número de Documento:</label>
+                                <input type="number" id="numDocAlumn" name="numDocAlumn" class="form-control" required
+                                    placeholder="Sin puntos" />
+                            </div>
+                            <!-- Nombre -->
+                            <div class="form-group">
+                                <label for="nombre" class="font-weight-bold">Nombre:</label>
+                                <input type="text" id="nombre" name="nombre" class="form-control" required />
+                            </div>
+                            <!-- Corte -->
+                            <div class="form-group">
+                                <label for="corte" class="font-weight-bold">Corte:</label>
+                                <input type="text" id="corte" name="corte" class="form-control" required />
+                            </div>
+                            <!-- Email -->
+                            <div class="form-group">
+                                <label for="emailAlumn" class="font-weight-bold">Email:</label>
+                                <input type="email" id="emailAlumn" name="emailAlumn" class="form-control" />
+                            </div>
+                            <!-- Curso -->
+                            <div class="form-group">
+                                <label for="curso" class="font-weight-bold">Curso:</label>
+                                <input type="text" id="curso" name="curso" class="form-control" required
+                                    placeholder="Primero, Segundo, etc" />
+                            </div>
+                            <!-- Título Secundario -->
+                            <div class="form-group form-check">
+                                <label for="tituloSecundario" class="font-weight-bold">Título Secundario:</label>
+                                <input type="checkbox" name="tituloSecundario" class="form-check-input" value="true" />
+                            </div>
+                            <!-- Psicofísico -->
+                            <div class="form-group form-check">
+                                <label for="psicofisico" class="font-weight-bold">Psicofísico:</label>
+                                <input type="checkbox" id="psicofisico" name="psicofisico" class="form-check-input"
+                                    value="true" />
+                            </div>
+                            <!-- Partida de Nacimiento -->
+                            <div class="form-group form-check">
+                                <label for="partidaNacim" class="font-weight-bold">Partida de Nacimiento:</label>
+                                <input type="checkbox" id="partidaNacim" name="partidaNacim" class="form-check-input"
+                                    value="true" />
+                            </div>
+                            <!-- DNI Actualizado -->
+                            <div class="form-group form-check">
+                                <label for="dniActualizado" class="font-weight-bold">DNI Actualizado:</label>
+                                <input type="checkbox" id="dniActualizado" name="dniActualizado"
+                                    class="form-check-input" value="true" />
+                            </div>
+                            <!-- Analítico Fiel -->
+                            <div class="form-group form-check">
+                                <label for="analiticoFiel" class="font-weight-bold">Analítico Fiel:</label>
+                                <input type="checkbox" id="analiticoFiel" name="analiticoFiel" class="form-check-input"
+                                    value="true" />
+                            </div>
+                            <!-- Antecedentes Penales -->
+                            <div class="form-group form-check">
+                                <label for="antecedenPen" class="font-weight-bold">Antecedentes Penales:</label>
+                                <input type="checkbox" id="antecedenPen" name="antecedenPen" class="form-check-input"
+                                    value="true" />
+                            </div>
+
+                            <!-- Hidden Fields -->
                             <input type="hidden" name="idCarrera" value="{{carrera._id}}">
                             <input type="hidden" name="idPlanEstudioSeleccionado" value="{{planEstudio._id}}">
-                            <button type="submit">Agregar Materia</button>
+
+                            <!-- Submit Button -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success btn-block">Guardar</button>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-         <!-- Modal de Modificación de Materia -->
+
+        <!-- Modal para agregar materia -->
+        <div class="modal fade" id="agregarMateriaModal" tabindex="-1" aria-labelledby="agregarMateriaModalLabel"
+            style="z-index: 1231 !important;" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content shadow-lg border-0 rounded">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title" id="agregarMateriaModalLabel">Agregar Materia</h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <form action="/materia/nuevaMateriaPlanDeEstudio" method="POST">
+                            <!-- Campo para ingresar el nombre de la materia -->
+                            <div class="form-group">
+                                <label for="nombreMateria" class="font-weight-bold">Nombre de la Materia:</label>
+                                <input type="text" id="nombreMateria" name="nombreMateria" class="form-control"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="correlativas" class="font-weight-bold">Materias Correlativas:</label>
+                                <select id="correlativas" name="correlativas" class="form-control" multiple>
+                                    {{#each materias}}
+                                    <option value="{{this._id}}">{{this.nombreMateria}}</option>
+                                    {{/each}}
+                                </select>
+                                <small class="text-muted">Usar Ctrl para seleccionar varias opciones</small>
+                            </div>
+                            <input type="hidden" name="idCarrera" value="{{carrera._id}}">
+                            <input type="hidden" name="idPlanEstudioSeleccionado" value="{{planEstudio._id}}">
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Agregar Materia</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal de Modificación de Materia -->
         <div class="modal fade" id="modificarMateriaModal" tabindex="-1" aria-labelledby="modificarMateriaModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">

@@ -130,3 +130,61 @@ input, button, table {
     margin: 1.75rem auto; 
     z-index: 1060; 
 }
+/* Estilo personalizado para los modales */
+.modal-content {
+    border-radius: 10px; /* Bordes más suaves */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.modal-header {
+    background-color: #007bff; /* Color de fondo azul */
+    color: white; /* Texto blanco en el encabezado */
+    border-top-left-radius: 10px; /* Bordes redondeados superiores */
+    border-top-right-radius: 10px;
+}
+
+.modal-header .close {
+    color: white !important; /* Color de la "X" para cerrar */
+}
+.modal-title {
+    font-size: 23px !important;
+    margin-bottom: 20px  !important;
+}
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    border-top: 1px solid #ddd;
+    padding: 10px;
+}
+
+.modal-footer button {
+    border-radius: 5px;
+    padding: 8px 20px;
+    font-size: 16px;
+}
+
+/* Estilo para los botones de las modales */
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    padding: 10px 20px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Ajuste para el tamaño del modal */
+.modal-dialog {
+    max-width: 600px; /* Controla el ancho */
+}
+
+.modal-dialog .modal-content {
+    border-radius: 10px;
+}

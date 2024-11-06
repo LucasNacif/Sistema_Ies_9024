@@ -31,7 +31,8 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="mensajeModalLabel" style="font-size: 21px; margin-block: 8px; margin-top: -6px; ">Estado de Inscripción</h5>
+                    <h5 class="modal-title" id="mensajeModalLabel"
+                        style="font-size: 21px; margin-block: 8px; margin-top: -6px; ">Estado de Inscripción</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="mensajeModalBody">
@@ -46,13 +47,12 @@
 
     <div class="container">
         <h1>Mesas de Examen Disponibles</h1>
-
         {{#if mesasDisponibles.length}}
         {{#each mesasDisponibles}}
         <div class="mesa-card">
             <h3>{{this.Materia.nombreMateria}}</h3>
             <p><strong>Fecha:</strong> {{formatDate this.fechaMesa}}</p>
-            <p><strong>Hora:</strong> {{this.horaMesa}}</p>
+            <p><strong>Hora:</strong> {{this.horaMesa}}:00</p>
             <p><strong>Estado:</strong> {{this.estadoActual}}</p>
             <form class="inscripcion-form" action="/inscripcion/mesa/{{this._id}}" method="POST">
                 <button class="btn btn-primary" type="submit">Inscribir</button>
@@ -63,17 +63,27 @@
         <p class="no-mesas">No hay mesas disponibles en este momento.</p>
         {{/if}}
 
-         <h1>Estado de las materias</h1>
-         {{#if estadosAlumno.length }}
-         {{#each estadosAlumno}}
-         <div class="estado-card">
+        <h1>Estado de las materias</h1>
+        {{#if estadosAlumno.length }}
+        {{#each estadosAlumno}}
+        <div class="estado-card">
             <h3>{{this.idMateria.nombreMateria}}</h3>
-            <p><strong>Estado Actual:</strong> {{this.estadoActual}}</p>
-         </div>
-         {{/each}}
-         {{else}}
-         <p class="no-mesas">No hay materias para mostrar</p>
-         {{/if}}
+
+            {{#if this.historialEstados.length}}
+            <h4>Historial de Estados:</h4>
+            <ul>
+                {{#each this.historialEstados}}
+                <li>{{this.estado}} - {{formatDate this.fecha}}</li>
+                {{/each}}
+            </ul>
+            {{else}}
+            <p>No hay historial de estados disponible.</p>
+            {{/if}}
+        </div>
+        {{/each}}
+        {{else}}
+        <p class="no-mesas">No hay materias para mostrar</p>
+        {{/if}}
     </div>
 
     <script src="/js/Alumno_Mesa.js"></script>
