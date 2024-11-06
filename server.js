@@ -16,7 +16,7 @@ const port = process.env.PORT || 3000;
 // const Usuario = require('./models/Usuario');
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
 
@@ -34,7 +34,10 @@ hbs.registerHelper('formatDate', function (date) {
       day: 'numeric'
   });
 });
-
+// Helper para convertir a JSON
+hbs.registerHelper("json", function(context) {
+  return JSON.stringify(context);
+});
 // Configuración del motor de vistas
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "./views"));
@@ -60,7 +63,6 @@ app.use(loginRouters);
 app.use(inscripcionRouters);
 app.use(alumnoEstadoRoutes);
 app.use(mesaRouters);
-//app.use(mesaRouters);
 
 
 app.get("/", (req, res) => res.render("Admin_PanelControl"));
@@ -69,9 +71,7 @@ app.get("/alumno", (req, res) => res.render("Admin_PlanEstudio"));
 app.get("/mesa", (req, res) => res.render("Admin_Mesa"));
 app.get("/materia", (req, res) => res.render("Admin_Materia"));
 app.get("/Administracion", (req, res) => res.render("Admin_PanelControl"));
-app.get("/AdministracionSuperAdmin", (req, res) =>
-  res.render("SuperAdmin_PanelControl")
-);
+app.get("/AdministracionSuperAdmin", (req, res) => res.render("SuperAdmin_PanelControl"));
 app.get("/alumnoMesaExamen", (req, res) => res.render("Alumno_MesaExamen"));
 app.get("/alumnoEstado", (req, res) => res.render("Admin_AlumnoEstado"));
 

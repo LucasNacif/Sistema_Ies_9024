@@ -25,7 +25,6 @@ const verificarSesion = async (req, res, next) => {
     next();
   }
 };
-
 // Middleware para verificar roles
 const verificarRol = (rolesPermitidos) => {
   return (req, res, next) => {

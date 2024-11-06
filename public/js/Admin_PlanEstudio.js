@@ -1,150 +1,186 @@
-document.addEventListener('DOMContentLoaded', function () {
-
-
-    const btnAgregar = document.getElementById('btnAgregar');
-    const formContainer = document.getElementById('formContainer');
-    const formMateria = document.getElementById('formMateria');
-
-    if (btnAgregar) {
-        btnAgregar.addEventListener('click', function () {
-            formContainer.style.display = 'block';
-        });
-    }
-
-
-
-    if (formMateria) {
-        formMateria.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const nombreMateria = document.getElementById('nombreMateria').value;
-            const correlativas = document.getElementById('correlativas').value;
-
-            fetch('/materia/nuevaMateriaPlanDeEstudio', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    nombreMateria,
-                    correlativas: correlativas ? correlativas.split(',').map(item => item.trim()) : []
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message) {
-                        alert(data.message);
-                        formContainer.style.display = 'none';
-                        formMateria.reset();
-                        cargarMaterias();
-                    } else if (data.error) {
-                        alert(data.error);
-                    }
-                })
-                .catch(error => console.error('Error al agregar materia:', error));
-        });
-
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    mostrarAlumnos(true);
 });
-function eliminarMateria(id) {
-    if (confirm('¿Estás seguro de que deseas dar de baja esta materia?')) {
-        fetch(`/materia/eliminar/${id}`, { method: 'DELETE' })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-                cargarMaterias();
-            })
-            .catch(error => console.error('Error al eliminar materia:', error));
-    }
+//Cargar Alumnos
+function mostrarAlumnos(esBaja) {
+    const alumnos = planEstudio && planEstudio.alumnos ? planEstudio.alumnos : [];
+    const alumnosFiltrados = alumnos.filter(alumno => alumno.banderaBooleana === esBaja);
+    const tbody = document.getElementById('alumnosFiltrados');
+    tbody.innerHTML = '';
+    alumnosFiltrados.forEach(alumno => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${alumno.nombreCompleto}</td>
+            <td>${alumno.numDocAlumn}</td>
+            <td>${alumno.emailAlumn}</td>
+            <td>${alumno.corte}</td>
+            <td>${alumno.tituloSecundario ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
+            <td>${alumno.psicofisico ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
+            <td>${alumno.partidaNacim ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
+            <td>${alumno.dniActualizado ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
+            <td>${alumno.analiticoFiel ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
+            <td>${alumno.antecedenPen ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
+            <td>
+                <button class="btn btn-outline-primary btn-sm" onclick="mostrarEditarAlumnoModal(this)"
+            data-id="${alumno._id}"
+            data-nombre="${alumno.nombreCompleto}"
+            data-numdoc="${alumno.numDocAlumn}"
+            data-email="${alumno.emailAlumn}">
+        <i class="zmdi zmdi-edit"></i>
+    </button>
+    ${alumno.banderaBooleana
+                ? `<button class="btn btn-outline-warning btn-sm" data-id="${alumno._id}" onclick="AltayBajaAlumno(false, this)">
+        <i class="zmdi zmdi-eye-off"></i>
+    </button>`
+                : `<button class="btn btn-outline-success btn-sm" data-id="${alumno._id}" onclick="AltayBajaAlumno(true, this)">
+        <i class="zmdi zmdi-check"></i>
+    </button>`
+            }
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+    document.getElementById('tablaAlumnos').style.display = 'table';
 }
-function modificarMateria(id) {
-    fetch(`/materia/modificar/${id}`)
-        .then(response => response.json())
-        .then(materia => {
-            document.getElementById('nombreMateria').value = materia.nombreMateria;
-            document.getElementById('correlativas').value = materia.correlativas.join(', ');
 
-            const formMateria = document.getElementById('formMateria');
-            formMateria.onsubmit = function (e) {
-                e.preventDefault();
+//Modificar Materias
+function mostrarModificarMateriaModal(button) {
+    const idMateria = button.getAttribute("data-id");
+    const nombreMateria = button.getAttribute("data-nombre");
+    const correlativasStr = button.getAttribute("data-correlativas") || "";
+    const correlativas = correlativasStr.split(",").map(c => c.trim()).filter(c => c);
 
-                fetch(`/materia/modificar/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        nombreMateria: document.getElementById('nombreMateria').value,
-                        correlativas: document.getElementById('correlativas').value.split(',').map(item => item.trim())
-                    })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        alert(data.message);
-                        cargarMaterias();
-                        cancelar('formContainer');
-                    })
-                    .catch(error => console.error('Error al modificar materia:', error));
-            };
+    const nombreInput = document.getElementById("nombreMateria");
+    const idInput = document.getElementById("idMateria");
+    const listaCorrelativas = document.getElementById("listaCorrelativas");
 
-            mostrarFormularioMateria();
+    if (!nombreInput || !idInput || !listaCorrelativas) return;
+
+    nombreInput.value = nombreMateria;
+    idInput.value = idMateria;
+    listaCorrelativas.innerHTML = '';
+    correlativas.forEach(correlativa => {
+        const li = document.createElement("li");
+        li.className = "list-group-item";
+        li.textContent = correlativa;
+        listaCorrelativas.appendChild(li);
+    });
+
+    $('#modificarMateriaModal').modal('show');
+}
+//Modificar Alumnos
+function mostrarEditarAlumnoModal(button) {
+    const alumnoId = button.getAttribute('data-id');
+    const nombreCompleto = button.getAttribute('data-nombre');
+    const numDocAlumn = button.getAttribute('data-numdoc');
+    const emailAlumn = button.getAttribute('data-email');
+
+    document.getElementById('nombreAlumno').value = nombreCompleto;
+    document.getElementById('numDocAlumn').value = numDocAlumn;
+    document.getElementById('emailAlumn').value = emailAlumn;
+    document.getElementById('alumnoId').value = alumnoId;
+
+    $('#editarAlumnoModal').modal('show');
+}
+// Para guardar cambios
+// function recibirDatosParaModificarAlumno() {
+//     const datosAlumno = {
+//         id: document.getElementById('alumnoId').value,
+//         nombreCompleto: document.getElementById('nombreAlumno').value,
+//         numDocAlumn: document.getElementById('numDocAlumn').value,
+//         emailAlumn: document.getElementById('emailAlumn').value
+//     };
+//     guardarCambiosEntidad('alumno', datosAlumno);
+// }
+// function recibirDatosParaModificarMateria() {
+//     const datosMateria = {
+//         id: document.getElementById('idMateria').value,
+//         nombreMateria: document.getElementById('nombreMateria').value,
+//     };
+//     guardarCambiosEntidad('materia', datosMateria);
+// }
+
+document.getElementById('formModificarMateria').addEventListener('submit', function (event) {
+    event.preventDefault(); 
+
+    const nombreMateria = document.getElementById('nombreMateria').value;
+    const idMateria = document.getElementById('idMateria').value;
+    const nuevaCorrelativa = document.getElementById('nuevaCorrelativa').value;
+
+    // Configura los datos para enviar
+    const data = {
+        nombreMateria: nombreMateria,
+        idMateria: idMateria,
+        nuevaCorrelativa: nuevaCorrelativa
+    };
+
+    fetch(`/materia/modificar`, {
+        method: 'PUT', 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Materia modificada con éxito");
+            location.reload();
+        } else {
+            alert("Hubo un problema al modificar la materia");
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Ocurrió un error al intentar modificar la materia.");
+    });
+});
+
+
+//Eliminar Materia
+function eliminarMateria() {
+    const btnEliminar = document.getElementById("btnEliminarMateria")
+    const idMateria = btnEliminar.getAttribute('data-id');
+
+    fetch("/materia/eliminar", {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ idMateria: idMateria, idPlanEstudio: planEstudio._id })
+    })
+        .then(response => {
+            if (!response.ok) throw new Error('Error en la petición');
+            return response.json();
         })
-        .catch(error => console.error('Error al obtener la materia:', error));
-}
-function modificarAlumno(id) {
-    fetch(`/alumno/modificar/${id}`)
-        .then(response => response.json())
-        .then(alumno => {
-            // Llena el formulario con la información del alumno seleccionado
-            document.getElementById('nombreAlumno').value = alumno.nombreCompleto;
-            document.getElementById('emailAlumn').value = alumno.emailAlumn; // Suponiendo que tengas un campo para el email
-            document.getElementById('curso').value = alumno.curso; // Suponiendo que tengas un campo para el curso
-            // Agrega otros campos según lo necesites
-
-            // Cambia el evento del formulario para que actúe como una actualización
-            const formAlumno = document.getElementById('formAlumno');
-            formAlumno.onsubmit = function (e) {
-                e.preventDefault(); // Evita la recarga de la página
-
-                // Realiza la petición de modificación
-                fetch(`/alumno/modificar/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        nombreCompleto: document.getElementById('nombreAlumno').value,
-                        emailAlumn: document.getElementById('emailAlumn').value, // Envía el email
-                        curso: document.getElementById('curso').value, // Envía el curso
-                        // Agrega otros campos según lo necesites
-                    })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        alert(data.message);
-                        cargarAlumnos(); // Vuelve a cargar los alumnos
-                        cancelar('formAgregar'); // Oculta el formulario
-                    })
-                    .catch(error => console.error('Error al modificar alumno:', error));
-            };
-
-            mostrarFormularioAlumno(); // Muestra el formulario
+        .then(data => {
+            mostrarAlumnos(true);
+            location.reload();
         })
-        .catch(error => console.error('Error al obtener el alumno:', error));
+        .catch(error => console.error('Error:', error));
 }
-function darDeBaja(numDocAlumn) {
-    if (confirm('¿Estás seguro de que deseas dar de baja este alumno?')) {
-        fetch(`/alumno/baja/${numDocAlumn}`, { method: 'DELETE' })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-                cargarAlumnos();
-            })
-            .catch(error => console.error('Error al dar de baja el alumno:', error));
-    }
+//Baja y alta de alumnos
+function AltayBajaAlumno(tipo, button) {
+    const idAlumno = button.getAttribute('data-id');
+    const body = tipo === true
+        ? { estado: true, idAlumno: idAlumno }
+        : { estado: false, idAlumno: idAlumno }
+
+    fetch("/alumno/estado", {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    })
+        .then(response => {
+            if (!response.ok) throw new Error('Error en la petición');
+            return response.json();
+        })
+        .then(data => {
+            location.reload();
+        })
+        .catch(error => console.error('Error:', error));
 }
-function mostrarFormularioMateria() {
-    document.getElementById('formContainer').style.display = 'block';
-}
-function mostrarFormularioAlumno() {
-    document.getElementById('formAgregar').style.display = 'block';
-}
-function cancelar(formId) {
-    document.getElementById(formId).style.display = 'none';
-    document.getElementById(formId).reset();
-}
+
 
