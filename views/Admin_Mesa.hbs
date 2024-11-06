@@ -2,22 +2,14 @@
 <html lang="es">
 
 <head>
-	<title>Mesas</title>
-	<meta charset="UTF-8">
-	<meta name="viewport"
-		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum=scale=1.0">
-	<link rel="icon" type="image/png" href="assets/img/favicon.png" />
-	<link rel="stylesheet" href="/Styles/main.css">
-	<link rel="stylesheet" href="/Styles/bootstrap.min.css">
-	<link rel="stylesheet" href="/Styles/Admin_Mesa.css">
-	
-	<script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
-    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
-    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
-    <script src="/js/jsBoostrap/material.min.js"></script>
-    <script src="/js/jsBoostrap/ripples.min.js"></script>
-    <script src="/js/jsBoostrap/main.js"></script>
-
+    <title>Mesas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    <link rel="stylesheet" href="/Styles/main.css">
+    <link rel="stylesheet" href="/Styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/Styles/Admin_Mesa.css">
+    <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
 </head>
 
 <body>
@@ -67,37 +59,90 @@
 
 		<!-- Página de Mesas -->
 		<div class="container-fluid">
-			<div class="page-header">
-				<h1 class="text-titles">Mesas <small></h1>
-			</div>
-		</div>
-		
-
-
-		<div class="botones">
-                <button id="btnAgregar" class="btn btn-add">Agregar</button>
-                <button id="btnModificar" class="btn btn-edit">Modificar</button>
-                <button id="btnDarDeBaja" class="btn btn-delete">Dar de Baja</button>
-                <button id="btnMostrarTodos" class="btn btn-edit">Mostrar Alumnos de baja</button>
+            <div class="page-header" style="margin-top: 61px;">
+                <h1 class="text-titles">Mesas</h1>
+            </div>
         </div>
-		<!-- Formulario para agregar una nueva carrera -->
-        <div class="container" id="formContainer" style="display:none; margin-top: 20px;">
-            <form id="formAgregarCarrera" style="color: #333;">
+
+
+		<!-- Botones principales -->
+        <div class="botones text-center">
+            <button id="btnAgregarMesa" class="btn btn-success">Agregar Mesa</button>
+            <button id="btnModificarMesa" class="btn btn-warning">Modificar Mesa</button>
+            <button id="btnDarDeBajaMesa" class="btn btn-danger">Dar de Baja</button>
+            <button id="btnMostrarSuspendidas" class="btn btn-info">Mostrar Mesas Suspendidas</button>
+        </div>
+
+        <!-- Formulario para agregar una nueva mesa -->
+        <div class="container" id="formAgregarMesa" style="display: none; margin-top: 20px;">
+            <form id="formAgregar" action="/mesa/agregar" method="POST">
                 <div class="form-group">
-                    <label for="nombreCarrera">Nombre de la materia:</label>
-                    <input type="text" id="nombreCarrera" class="form-control" placeholder="Nombre de la nueva carrera"
-                        required>
+                    <label for="fechaMesa">Fecha de la mesa:</label>
+                    <input type="date" id="fechaMesa" name="fechaMesa" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="cargaHoraria">Carga Horaria:</label>
-                    <input type="number" id="cargaHoraria" class="form-control" placeholder="Carga Horaria" required>
+                    <label for="horaMesa">Hora de la mesa:</label>
+                    <input type="time" id="horaMesa" name="horaMesa" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="duracion">Duración (en años):</label>
-                    <input type="number" id="duracion" class="form-control" placeholder="Duración" required>
+                    <label for="materia">Materia:</label>
+                    <select id="materia" name="Materia" class="form-control" required>
+                        <!-- Opciones de materias cargadas dinámicamente -->
+                    </select>
                 </div>
-                <button type="submit" class="btn btn-success">Agregar Materia</button>
+                <div class="form-group">
+                    <label for="alumno">Alumno:</label>
+                    <select id="alumno" name="Alumno" class="form-control">
+                        <!-- Opciones de alumnos cargadas dinámicamente -->
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Agregar Mesa</button>
             </form>
+        </div>
+
+        <!-- Formulario para modificar una mesa existente -->
+        <div class="container" id="formModificarMesa" style="display: none; margin-top: 20px;">
+            <form id="formModificar" action="/mesa/modificar" method="POST">
+                <div class="form-group">
+                    <label for="idMesa">ID de la Mesa:</label>
+                    <input type="text" id="idMesa" name="id" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="fechaMesaMod">Fecha de la mesa:</label>
+                    <input type="date" id="fechaMesaMod" name="fechaMesa" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="horaMesaMod">Hora de la mesa:</label>
+                    <input type="time" id="horaMesaMod" name="horaMesa" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="materiaMod">Materia:</label>
+                    <select id="materiaMod" name="Materia" class="form-control">
+                        <!-- Opciones de materias cargadas dinámicamente -->
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-warning">Modificar Mesa</button>
+            </form>
+        </div>
+
+        <!-- Visualización de mesas suspendidas -->
+        <div class="container" id="mesasSuspendidas" style="display: none; margin-top: 20px;">
+            <h3>Mesas Suspendidas</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Materia</th>
+                        <th>Alumno</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="suspendidasTable">
+                    <!-- Contenido dinámico cargado mediante JavaScript -->
+                </tbody>
+            </table>
         </div>
 
 		 <!-- Formulario para inscripción a una mesa de examen -->
@@ -125,7 +170,7 @@
 					<label for="alumno" class="col-sm-2 control-label">Alumno</label>
 					<div class="col-sm-10">
 						<select class="form-control" id="alumno" name="Alumno" required>
-							<!-- Opciones de alumnos dinámicas -->
+							
 						</select>
 					</div>
 				</div>
@@ -136,22 +181,17 @@
 			</form>
 		</div>
 
-
 	</section>
 
-
-	<!-- Enlaces a los scripts necesarios -->
-	<script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
-	<script src="/js/jsBoostrap/sweetalert2.min.js"></script>
-	<script src="/js/jsBoostrap/bootstrap.min.js"></script>
-	<script src="/js/jsBoostrap/material.min.js"></script>
-	<script src="/js/jsBoostrap/ripples.min.js"></script>
-	<script src="/js/jsBoostrap/jquery.mCustomScrollbar.concat.min.js"></script>
-	<script src="/js/jsBoostrap/main.js"></script>
-	<script>
-
-	</script>
-	<script src="js/Admin_Mesa.js"></script>
+<!-- Enlaces a los scripts necesarios -->
+    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
+    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
+    <script src="/js/jsBoostrap/material.min.js"></script>
+    <script src="/js/jsBoostrap/ripples.min.js"></script>
+    <script src="/js/jsBoostrap/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="/js/jsBoostrap/main.js"></script>
+    <script src="js/Admin_Mesa.js"></script>
+	
 </body>
 
 </html>
