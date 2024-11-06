@@ -100,6 +100,41 @@ function mostrarEditarAlumnoModal(button) {
 //     guardarCambiosEntidad('materia', datosMateria);
 // }
 
+document.getElementById('formModificarMateria').addEventListener('submit', function (event) {
+    event.preventDefault(); 
+
+    const nombreMateria = document.getElementById('nombreMateria').value;
+    const idMateria = document.getElementById('idMateria').value;
+    const nuevaCorrelativa = document.getElementById('nuevaCorrelativa').value;
+
+    // Configura los datos para enviar
+    const data = {
+        nombreMateria: nombreMateria,
+        idMateria: idMateria,
+        nuevaCorrelativa: nuevaCorrelativa
+    };
+
+    fetch(`/materia/modificar`, {
+        method: 'PUT', 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Materia modificada con éxito");
+            location.reload();
+        } else {
+            alert("Hubo un problema al modificar la materia");
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Ocurrió un error al intentar modificar la materia.");
+    });
+});
 
 
 //Eliminar Materia
