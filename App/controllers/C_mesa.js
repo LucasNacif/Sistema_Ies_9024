@@ -38,11 +38,11 @@ exports.crearMesa = async (req, res) => {
 exports.modificarMesa = async (req, res) => {
     try {
         const { id } = req.params;
-        const { fechaMesa, horaMesa, banderaBooleana, Materia, Alumno, estadoActual } = req.body;
+        const { fechaMesa, horaMesa, Materia, estadoActual } = req.body;
         
         const mesaModificada = await Mesa.findByIdAndUpdate(
             id,
-            { fechaMesa, horaMesa, banderaBooleana, Materia, Alumno, estadoActual },
+            { fechaMesa, horaMesa, Materia, estadoActual },
             { new: true }
         );
         
