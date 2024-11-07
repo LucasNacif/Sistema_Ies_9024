@@ -13,6 +13,28 @@
 </head>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
+
+    const botonesModificar = document.querySelectorAll(".btnModificar");
+    botonesModificar.forEach(button => {
+            button.addEventListener("click", (e) => {
+                const mesaId = e.target.getAttribute("data-id");
+                const fechaMesa = e.target.getAttribute("data-fecha");
+                const horaMesa = e.target.getAttribute("data-hora");
+                const materiaId = e.target.getAttribute("data-materia");
+                const estadoMesa = e.target.getAttribute("data-estado");
+
+                // Llenar los datos en el formulario del modal
+                document.getElementById("idMesa").value = mesaId;
+                document.getElementById("fechaMesaMod").value = fechaMesa;
+                document.getElementById("horaMesaMod").value = horaMesa;
+                document.getElementById("materiaMod").value = materiaId;
+                document.getElementById("estadoMesaMod").value = estadoMesa;
+
+                // Mostrar el modal
+                $('#modalModificarMesa').modal('show');
+            });
+        });
+
     const formAgregarMesa = document.getElementById("formAgregarMesa");
 
     formAgregarMesa.addEventListener("submit", async (event) => {
@@ -49,6 +71,46 @@
         } catch (error) {
             console.error("Error:", error);
             alert("Error al crear la mesa. Inténtalo de nuevo.");
+        }
+    });
+
+    const formModificarMesa = document.getElementById("formModificar")
+    formModificarMesa.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const mesaId = document.getElementById("idMesa").value;
+        const fechaMesa = document.getElementById("fechaMesaMod").value;
+        const horaMesa = document.getElementById("horaMesaMod").value;
+        const materiaId = document.getElementById("materiaMod").value;
+        const estadoMesa = document.getElementById("estadoMesaMod").value;
+
+        // Estructura los datos en un objeto
+        const mesaData = {
+            fechaMesa,
+            horaMesa,
+            Materia: materiaId, 
+            estadoActual: estadoMesa
+        };
+
+        try {
+            // Realiza el fetch para crear la mesa
+            const response = await fetch(`/mesa/modificar/${mesaId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(mesaData)
+            });
+
+            if (response.ok) {
+                alert("Mesa modificada exitosamente");
+                location.reload();
+            } else {
+                throw new Error("Hubo un problema al modificar la mesa");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Error al modificar la mesa. Inténtalo de nuevo.");
         }
     });
 });
@@ -126,31 +188,7 @@
                   <button type="submit" class="btn btn-add" id="btnSubmitMesa">Crear Mesa</button>
                 </div>
             </form>
-        </div>
-
-          <!-- Formulario para modificar una mesa existente -->
-        {{!-- <div class="container" id="formModificarMesa" style="margin-top: 20px;">
-            <form id="formModificar" action="/mesa/modificar" method="POST">
-                <div class="form-group">
-                    <label for="idMesa">ID de la Mesa:</label>
-                    <input type="text" id="idMesa" name="id" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="fechaMesaMod">Fecha de la mesa:</label>
-                    <input type="date" id="fechaMesaMod" name="fechaMesa" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="horaMesaMod">Hora de la mesa:</label>
-                    <input type="time" id="horaMesaMod" name="horaMesa" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="materiaMod">Materia:</label>
-                    <select id="materiaMod" name="Materia" class="form-control">
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-warning">Modificar Mesa</button>
-            </form>
-        </div> --}}
+        </div> 
 
 
         <!-- Tarjetas de mesas disponibles -->
@@ -164,15 +202,67 @@
                             <h4 class="card-title">Mesa de {{this.Materia.nombreMateria}}</h4>
                         </div>
                         <div class="card-body">
+
+                            <p><strong>Id:</strong> {{this._id}}</p>
                             <p><strong>Fecha:</strong> {{formatDate this.fechaMesa}}</p>
                             <p><strong>Hora:</strong> {{this.horaMesa}}</p>
                             <p><strong>Estado:</strong> {{this.estadoActual}}</p>
                             <p><strong>Alumnos Inscritos:</strong> {{#each this.Alumno}} {{this.nombreCompleto}},
                                 {{/each}}</p>
+                            
+                            <button class="btn btn-warning btnModificar" data-id="{{this._id}}" data-fecha="{{this.fechaMesa}}" data-hora="{{this.horaMesa}}" data-estado="{{this.estadoActual}}" data-materia="{{this.Materia._id}}">Modificar</button>
+
                         </div>
                     </div>
                 </div>
                 {{/each}}
+            </div>
+        </div>
+
+        <!-- Modal para Modificar Mesa -->
+        <div class="modal fade" id="modalModificarMesa" tabindex="-1" role="dialog"
+            aria-labelledby="modalModificarMesaLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalModificarMesaLabel">Modificar Mesa</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formModificar">
+                            <div class="form-group">
+                                <label for="idMesa">ID de la Mesa:</label>
+                                <input type="text" id="idMesa" name="id" class="form-control" required readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="fechaMesaMod">Fecha de la mesa:</label>
+                                <input type="date" id="fechaMesaMod" name="fechaMesa" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="horaMesaMod">Hora de la mesa:</label>
+                                <input type="time" id="horaMesaMod" name="horaMesa" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="estadoMesaMod">Estado:</label>
+                                <select name="estadoMesa" id="estadoMesaMod" class="form-control">
+                                    <option value="activa">Activa</option>
+                                    <option value="suspendida">Suspendida</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="materiaMod">Materia:</label>
+                                <select id="materiaMod" name="Materia" class="form-control" required>
+                                    {{#each materiasDiponibles}}
+                                    <option value="{{this._id}}">{{this.nombreMateria}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-warning">Modificar Mesa</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -180,7 +270,7 @@
     <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
     <script src="/js/jsBoostrap/bootstrap.min.js"></script>
     <script src="/js/jsBoostrap/main.js"></script>
-    <script src="js/Admin_Mesa.js"></script>
+    
 </body>
 
 </html>

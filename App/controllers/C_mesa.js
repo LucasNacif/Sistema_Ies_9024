@@ -88,9 +88,9 @@ exports.mostrarMesasSuspendidas = async (req, res) => {
 
 exports.obtenerMesa = async (req, res) =>{
     try {
-        const mesasActivas = await Mesa.find({estadoActual: "activa"}).populate("Materia").populate('Alumno');
+        const mesasActivas = await Mesa.find().populate("Materia").populate('Alumno');
         const materiasDiponibles = await Materia.find();
-        console.log(mesasActivas);
+        
         res.status(200).render("Admin_Mesa", {mesasActivas, materiasDiponibles})
     } catch (error) {
         console.error(error);
