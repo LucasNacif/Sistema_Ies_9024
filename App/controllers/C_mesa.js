@@ -1,4 +1,5 @@
 const Mesa = require("../../models/Mesa");
+const Materia = require("../../models/Materia");
 
 //Crear Mesa
 exports.crearMesa = async (req, res) => {
@@ -6,26 +7,31 @@ exports.crearMesa = async (req, res) => {
         const {
             fechaMesa,
             horaMesa,
-            banderaBooleana,
             Materia,
             Alumno,
             estadoActual
         } = req.body;
 
+        console.log(req.body)
         const nuevaMesa = new Mesa({
             fechaMesa,
             horaMesa,
-            banderaBooleana,
             Materia,
-            Alumno: Alumno || [],  
+            Alumno: Alumno || [],
             estadoActual: estadoActual || 'activa'
         });
 
         await nuevaMesa.save();
-        res.status(201).json({ message: "Mesa agregada correctamente" });
+        res.status(201).json({
+            success: true,
+            message: "Mesa creada exitosamente"
+        });
     } catch (error) {
         console.error(error);
-        res.status(400).json({ message: "Error al agregar mesa" });
+        res.status(400).json({
+            success: false,
+            message: "Error al crear la mesa"
+        });
     }
 };
 // Modificar Mesa
@@ -79,3 +85,15 @@ exports.mostrarMesasSuspendidas = async (req, res) => {
         res.status(400).json({ message: "Error al obtener mesas suspendidas" });
     }
 };
+
+exports.obtenerMesa = async (req, res) =>{
+    try {
+        const mesasActivas = await Mesa.find({estadoActual: "activa"}).populate("Materia").populate('Alumno');
+        const materiasDiponibles = await Materia.find();
+        console.log(mesasActivas);
+        res.status(200).render("Admin_Mesa", {mesasActivas, materiasDiponibles})
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: "Error al obtener mesas activas" });
+    }
+}
