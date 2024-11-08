@@ -135,7 +135,7 @@ exports.modificarEstadoAlumno = async (req, res) => {
     res.status(500).json({ message: 'Error al dar baja estado' });
   }
 };
-}
+
 
 
 
