@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     forms.forEach(form => {
         form.addEventListener('submit', async function (event) {
-            event.preventDefault();  // Evita que se envíe el formulario de forma predeterminada
+            event.preventDefault();  
 
             const formAction = form.getAttribute('action');
 

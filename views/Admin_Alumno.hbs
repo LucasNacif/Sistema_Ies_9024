@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    <title>Gestión de Alumnos - IES 9-024 Lavalle</title>
+
+    <link rel="stylesheet" href="/Styles/main.css">
+    <link rel="stylesheet" href="/Styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/Styles/Admin_Alumno.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
+    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
+    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
+    <script src="/js/jsBoostrap/material.min.js"></script>
+    <script src="/js/jsBoostrap/ripples.min.js"></script>
+    <script src="/js/jsBoostrap/main.js"></script>
+
+
+</head>
+
+<body>
+    <!-- Barra lateral (SideBar) -->
+    <section class="full-box cover dashboard-sideBar">
+        <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
+        <div class="full-box dashboard-sideBar-ct">
+            <div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
+                Bedel <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
+            </div>
+            <div class="full-box dashboard-sideBar-UserInfo">
+                <figure class="full-box">
+                    <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
+                    <h5>IES 9-024 "Lavalle"</h5>
+                </figure>
+                <ul class="full-box list-unstyled text-center">
+                    <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
+                </ul>
+            </div>
+            <ul class="list-unstyled full-box dashboard-sideBar-Menu">
+                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
+                <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Alumnos</a></li>
+                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
+                <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i> Materias</a></li>
+                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Contenido de la página principal -->
+    <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x:hidden">
+
+        <!-- Barra de navegación superior (NavBar) -->
+        <nav class="full-box dashboard-Navbar">
+            <ul class="full-box list-unstyled text-right">
+                <li class="pull-left">
+                    <!-- Botón para mostrar/ocultar el menú lateral -->
+                    <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="container">
+            <h2>Gestión de Alumnos</h2>
+            <div class="botones">
+                <button id="btnAgregar" class="btn btn-add">Agregar</button>
+                <button id="btnModificar" class="btn btn-edit">Modificar</button>
+                <button id="btnDarDeBaja" class="btn btn-delete">Dar de Baja</button>
+                <button id="btnMostrarTodos" class="btn btn-edit">Mostrar Alumnos de baja</button>
+            </div>
+            <!-- <button id="btnVolver" class="btn btn-volver">Volver</button> -->
+
+            <p id="mensajeOK" class="alert alert-success" role="alert"></p>
+            <p id="mensajeERROR" class="alert alert-danger" role="alert"></p>
+
+            <!-- Formulario para agregar alumno -->
+            {{!-- <form id="formAgregar" method="post" action="/alumno/agregarAlumnoPlanEstudio" style="display: none;"> --}}
+                <div>
+                    <label for="nombreCompleto">Nombre Completo:</label>
+                    <input type="text" id="nombreCompleto" name="nombreCompleto" required />
+                </div>
+                <div>
+                    <label for="numDocAlumn">Número de Documento:</label>
+                    <input type="number" id="numDocAlumn" name="numDocAlumn" required placeholder="Sin puntos" />
+                </div>
+                <div>
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" required />
+                </div>
+                <div>
+                    <label for="corte">Corte:</label>
+                    <input type="text" id="corte" name="corte" required>
+                </div>
+                <div>
+                    <label for="emailAlumn">Email:</label>
+                    <input type="email" id="emailAlumn" name="emailAlumn" />
+                </div>
+                <div>
+                    <label for="curso">Curso:</label>
+                    <input type="curso" id="curso" name="curso" required placeholder="Primero, Segundo, etc" />
+                </div>
+                <div>
+                    <label for="tituloSecundario">Título Secundario:</label>
+                    <input type="checkbox" name="tituloSecundario" value="true" />
+
+                </div>
+                <div>
+                    <label for="psicofisico">Psicofísico:</label>
+                    <input type="checkbox" id="psicofisico" name="psicofisico" value="true" />
+
+                </div>
+                <div>
+                    <label for="partidaNacim">Partida de Nacimiento:</label>
+                    <input type="checkbox" id="partidaNacim" name="partidaNacim" value="true" />
+
+                </div>
+                <div>
+                    <label for="dniActualizado">DNI Actualizado:</label>
+                    <input type="checkbox" id="dniActualizado" name="dniActualizado" value="true" />
+
+                </div>
+                <div>
+                    <label for="analiticoFiel">Analítico Fiel:</label>
+                    <input type="checkbox" id="analiticoFiel" name="analiticoFiel" value="true" />
+
+                </div>
+                <div>
+                    <label for="antecedenPen">Antecedentes Penales:</label>
+                    <input type="checkbox" id="antecedenPen" name="antecedenPen" value="true" />
+                </div>
+                <div>
+                    <label for="idPlanEstudioSeleccionado">idPlanDeEstudio</label>
+                    <input type="text" id="idPlanEstudioSeleccionado" name="idPlanEstudioSeleccionado" value="true" />
+                </div>
+
+                <button type="submit" class="btn btn-add">Enviar</button>
+            </form>
+
+            <!-- Formulario para modificar alumno -->
+            {{!-- <form id="formModificar" method="post" action="/alumno/modificar" style="display: none;"> --}}
+                <div>
+                    <label for="modNombreCompleto">Nombre Completo:</label>
+                    <input type="text" id="modNombreCompleto" name="nombreCompleto" required />
+                </div>
+                <div>
+                    <label for="modNumDocAlumn">Número de Documento:</label>
+                    <input type="text" id="modNumDocAlumn" name="numDocAlumn" readonly />
+                </div>
+                <div>
+                    <label for="modNombre">Nombre:</label>
+                    <input type="text" id="modNombre" name="nombre" required />
+                </div>
+                <div>
+                    <label for="modCorte">Corte:</label>
+                    <input type="text" id="modCorte" name="corte" required />
+                </div>
+                <div>
+                    <label for="modEmailAlumn">Email:</label>
+                    <input type="email" id="modEmailAlumn" name="emailAlumn" required />
+                </div>
+                <div>
+                    <label for="modTituloSecundario">Título Secundario:</label>
+                    <input type="checkbox" id="modTituloSecundario" name="tituloSecundario" value="true" />
+                </div>
+                <div>
+                    <label for="modPsicofisico">Psicofísico:</label>
+                    <input type="checkbox" id="modPsicofisico" name="psicofisico" value="true" />
+                </div>
+                <div>
+                    <label for="modPartidaNacim">Partida de Nacimiento:</label>
+                    <input type="checkbox" id="modPartidaNacim" name="partidaNacim" value="true" />
+                </div>
+                <div>
+                    <label for="modDniActualizado">DNI Actualizado:</label>
+                    <input type="checkbox" id="modDniActualizado" name="dniActualizado" value="true" />
+                </div>
+                <div>
+                    <label for="modAnaliticoFiel">Analítico Fiel:</label>
+                    <input type="checkbox" id="modAnaliticoFiel" name="analiticoFiel" value="true" />
+                </div>
+                <div>
+                    <label for="modAntecedenPen">Antecedentes Penales:</label>
+                    <input type="checkbox" id="modAntecedenPen" name="antecedenPen" value="true" />
+                </div>
+                <button type="submit" class="btn btn-edit">Guardar Cambios</button>
+            </form>
+
+            {{!-- Buscador --}}
+            <div class="search-container" style="margin-top: 14px;">
+                <input type="text" id="searchBox" placeholder="Buscar alumno" />
+                <i class="fas fa-search search-icon"></i>
+            </div>
+
+            <div class="table-responsive">
+                <table id="alumnosTable">
+                    <thead>
+                        <tr>
+                            <th>Nombre Completo</th>
+                            <th>Num Doc</th>
+                            <th>Nombre</th>
+                            <th>Corte</th>
+                            <th>Email</th>
+                            <th>Título Secundario</th>
+                            <th>Psicofísico</th>
+                            <th>Partida Nacim.</th>
+                            <th>DNI Actualizado</th>
+                            <th>Análitico Fiel</th>
+                            <th>Antecedentes Penales</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+                <p id="errorTableAlumnos" class="alert alert-danger" role="alert"></p>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    {{!-- <script src="js/Admin_Alumno.js"></script> --}}
+</body>
+
+</html>

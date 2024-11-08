@@ -104,7 +104,8 @@ exports.registrar = async (req, res) => {
     const token = crearTokenJWT(nuevoUsuario);
     configurarCookie(res, token);
 
-    return res.status(201).send({ status: "ok", message: "Usuario creado correctamente", redirect: "/mesaExamenAlumno" });
+    return redirigirSegunRol(nuevoUsuario, res);
+
 
   } catch (error) {
     console.error('Error en registro:', error);
@@ -126,6 +127,17 @@ exports.delete = async (req, res) => {
       res.status(500).json( "Error al eliminar un usuario")
   }
 }
+// dni,
+// email,
+// nombre,
+// password: hashPassword,
+// Metodo para editar usuarios
+exports.edit = async (req, res) => {
+  const { dni } = req.body;
+
+  
+}
+
 
 // Método para cerrar sesión
 exports.exit = (req, res) => {
