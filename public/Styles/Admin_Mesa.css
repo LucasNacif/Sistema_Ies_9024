@@ -1,56 +1,80 @@
+/* Base styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #f0f4f8;
+    margin: 0;
+    padding: 0;
+}
+.modal-backdrop{
+    z-index: 0 !important;
 }
 
+
+/* Container */
 .container {
-    margin-top: 50px;
+    margin: 50px auto;
+    max-width: 1000px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
+/* Table */
 table {
     font-family: 'Arial', sans-serif;
-    width: 80%;
-    max-width: 900px;
+    width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
     background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 th,
 td {
-    padding: 8px;
-    border: 1px solid #ffffff;
+    padding: 12px 15px;
+    border-bottom: 1px solid #e1e1e1;
     text-align: left;
 }
 
 th {
     background-color: #3088fa;
-    color: white;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 16px;
 }
 
 tbody tr {
     transition: background-color 0.3s ease;
 }
 
+tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
 .alumno-dado-de-baja {
-    background-color: #f8d7da;
-    color: #721c24;
+    background-color: #fdecea;
+    color: #e74c3c;
 }
 
 .alumno-activo {
-    background-color: #d4edda;
-    color: #155724;
+    background-color: #eafaf1;
+    color: #27ae60;
 }
 
-.botones {  
+/* Button styles */
+.botones {
     text-align: right;
 } 
 
 .btn {
-    padding: 8px 12px;
+    padding: 8px 16px;
     border: none;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
     margin-right: 10px;
 }
 
@@ -74,6 +98,11 @@ tbody tr {
     color: white;
 }
 
+.btn:hover {
+    opacity: 0.9;
+}
+
+/* Form styling */
 form {
     margin-top: 20px;
 }
@@ -86,7 +115,7 @@ form label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
-    color: black;
+    color: #333;
 }
 
 form input[type="text"],
@@ -96,7 +125,7 @@ form input[type="checkbox"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 5px;
     box-sizing: border-box;
 }
 
@@ -113,35 +142,48 @@ form button {
     font-size: 16px;
 }
 
+form .btn-add,
+form .btn-edit,
+form .btn-delete,
+form .btn-volver {
+    color: #ffffff;
+    font-weight: 500;
+}
+
 form .btn-add {
     background-color: #3498db;
-    color: white;
 }
 
 form .btn-edit {
     background-color: #f39c12;
-    color: white;
 }
 
 form .btn-delete {
     background-color: #e74c3c;
-    color: white;
 }
 
 form .btn-volver {
     background-color: #16c0c2;
-    color: white;
 }
 
+/* Headings */
 h2 {
     text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
 }
 
+/* Alerts */
 .alert-success,
 .alert-danger {
     display: none;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
 }
 
+/* Search Container */
 .search-container {
     display: flex;
     align-items: center;
@@ -150,8 +192,9 @@ h2 {
     border-radius: 25px;
     padding: 5px 15px;
     background-color: #f9f9f9;
-    width: 50%;
+    width: 100%;
     max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .search-container input {
@@ -169,4 +212,5 @@ h2 {
 .search-icon {
     color: #777;
     font-size: 20px;
+    margin-left: 10px;
 }

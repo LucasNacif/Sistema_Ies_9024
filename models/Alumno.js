@@ -6,7 +6,7 @@ const alumnoSchema = new Schema({
   nombreCompleto: String,
   corte: String,
   emailAlumn: String,
-  curso: { type: String, enum: ['Primero', 'Segundo', 'Tercero', 'Cuarto'] },
+  curso: String,
   tituloSecundario: { type: Boolean, default: false },
   psicofisico: { type: Boolean, default: false },
   partidaNacim: { type: Boolean, default: false },
