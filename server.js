@@ -21,23 +21,35 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
 
 const hbs = require("hbs");
+const moment = require('moment');
+
 // Registrar el helper 'and'
 hbs.registerHelper("and", function (...args) {
   return args.every(Boolean);
 });
-
-// Helper para formatear fechas
-hbs.registerHelper('formatDate', function (date) {
-  return new Date(date).toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-  });
-});
+// // Helper para formatear fechas
+// hbs.registerHelper('formatDate', function (date) {
+//   return new Date(date).toLocaleDateString('es-ES', {
+//       year: 'numeric',
+//       month: 'long',
+//       day: 'numeric'
+//   });
+// });
 // Helper para convertir a JSON
 hbs.registerHelper("json", function(context) {
   return JSON.stringify(context);
 });
+
+// Helper para mostrar la fecha formateada en la vista
+hbs.registerHelper('formatDate', (date) => {
+  return moment(date).format('DD/MM/YYYY');
+});
+// Registrar un helper para comparación de igualdad
+hbs.registerHelper('eq', function(a, b) {
+  return a === b;
+});
+
+
 // Configuración del motor de vistas
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "./views"));
