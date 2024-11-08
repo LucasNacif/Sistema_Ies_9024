@@ -104,7 +104,8 @@ exports.registrar = async (req, res) => {
     const token = crearTokenJWT(nuevoUsuario);
     configurarCookie(res, token);
 
-    return res.status(201).send({ status: "ok", message: "Usuario creado correctamente", redirect: "/mesaExamenAlumno" });
+    return redirigirSegunRol(nuevoUsuario, res);
+
 
   } catch (error) {
     console.error('Error en registro:', error);
