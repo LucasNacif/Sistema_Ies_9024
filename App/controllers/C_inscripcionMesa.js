@@ -27,7 +27,7 @@ exports.obtenerMesasSegunAlum = async (req, res) => {
         // Busco el alumno por su número de documento
         const alumno = await Alumno.findOne({ numDocAlumn: documentoAlum });
         if (!alumno) {
-            return res.status(404).send('Alumno no encontrado');
+            return res.render('Alumno_MesaExamen');
         }
 
         // Obtengo el plan de estudio del alumno
