@@ -4,16 +4,7 @@ const Alumno = require("../../models/Alumno");
 const AlumnoEstado = require("../../models/AlumnoEstado"); // Asegúrate de importar AlumnoEstado si no estaba ya importado
 const { docAlumLogueado } = require('../middlewares/autorizacion');
 
-// Función para obtener todas las mesas activas
-exports.obtenerMesasActivas = async (req, res) => {
-    try {
-        const mesasDisponibles = await Mesa.find({ estadoActual: 'activa' }).populate('Materia');
-        res.render('Alumno_MesaExamen', { mesasDisponibles });
-    } catch (error) {
-        console.error('Error al obtener las mesas activas:', error);
-        res.status(500).send('Error del servidor');
-    }
-};
+
 // Función para obtener mesas disponibles según el alumno y su plan de estudios
 exports.obtenerMesasSegunAlum = async (req, res) => {
     try {
