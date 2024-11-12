@@ -6,10 +6,10 @@ const mongoose = require('mongoose');
 
 exports.crearAlumnoEstado = async (req, res) => {
   try {
-    const { nombreAlumno, nombreMateria, estadoActual } = req.body;
-
+    const { numDocAlumn, nombreMateria, estadoActual } = req.body;
+    console.log(numDocAlumn, nombreMateria, estadoActual)
     // Buscar el alumno
-    const alumno = await Alumno.findOne({ nombreCompleto: nombreAlumno });
+    const alumno = await Alumno.findOne({ numDocAlumn });
     if (!alumno) {
       console.log("Alumno no encontrado");
       return res.status(404).json({ message: "Alumno no encontrado" });
@@ -26,8 +26,9 @@ exports.crearAlumnoEstado = async (req, res) => {
     let alumnoEstado = await AlumnoEstado.findOne({ idAlumno: alumno._id, idMateria: materia._id });
 
     if (alumnoEstado) {
-      // Si existe, añadir el nuevo estado al historial
+      // Si existe, añado el nuevo estado al historial
       alumnoEstado.historialEstados.push({ estado: estadoActual, fecha: new Date() });
+      alumnoEstado.estadoActual = estadoActual;
       await alumnoEstado.save();
       res.status(200).json({ message: "Estado actualizado exitosamente" });
     } else {
@@ -35,7 +36,8 @@ exports.crearAlumnoEstado = async (req, res) => {
       const nuevoAlumnoEstado = new AlumnoEstado({
         idAlumno: alumno._id,
         idMateria: materia._id,
-        historialEstados: [{ estado: estadoActual, fecha: new Date() }]
+        historialEstados: [{ estado: estadoActual, fecha: new Date() }],
+        estadoActual: estadoActual
       });
       await nuevoAlumnoEstado.save();
       res.status(201).json({ message: "AlumnoEstado creado exitosamente" });
@@ -64,7 +66,6 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
     if (!planEstudios) {
       return res.status(404).json({ message: "No se encontró el plan de estudios para este alumno" });
     }
-
     const materiasDelPlan = planEstudios.materias;
 
     // Buscar los estados de las materias que ya tiene cargadas el alumno
@@ -105,7 +106,7 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
   }
 };
 
-// Eliminar una carrera
+
 exports.eliminarEstadoAlumno = async (req, res) => {
   const id = req.params.id;
   //console.log('ID recibido:', id);
@@ -113,8 +114,11 @@ exports.eliminarEstadoAlumno = async (req, res) => {
     return res.status(400).json({ message: 'ID de estado no válido' });
   }
 }
+
 exports.modificarEstadoAlumno = async (req, res) => {
+
   try {
+    const { id } = req.params;
     const alumnoEstado = await AlumnoEstado.findById(id);
 
     if (!alumnoEstado) {

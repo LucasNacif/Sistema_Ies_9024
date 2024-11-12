@@ -19,6 +19,7 @@
     <script src="/js/jsBoostrap/ripples.min.js"></script>
     <script src="/js/jsBoostrap/main.js"></script>
 </head>
+
 <body>
     <!-- Barra lateral (SideBar) -->
     <section class="full-box cover dashboard-sideBar">
@@ -30,10 +31,10 @@
             </div>
             <div class="full-box dashboard-sideBar-UserInfo">
                 <figure class="full-box">
-                    <img src="/assets/img/logo_IES.jpg" alt="UserIcon"> 
+                    <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
                 </figure>
                 <ul class="full-box list-unstyled text-center">
-                    <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
+                    <li><a href="/logout"><i class="zmdi zmdi-power"></i></a></li>
                 </ul>
             </div>
             <ul class="list-unstyled full-box dashboard-sideBar-Menu">
@@ -53,18 +54,20 @@
 
     <!-- Contenido de la página principal -->
     <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
-       <!-- Barra de navegación superior (NavBar) -->
+        <!-- Barra de navegación superior (NavBar) -->
         <nav class="full-box dashboard-Navbar">
             <ul class="full-box list-unstyled text-right">
                 <li class="pull-left">
-                    <a href="#!" class="btn-menu-dashboard" style="margin-top: 15px !important;"><i class="zmdi zmdi-more-vert"></i></a>
+                    <a href="#!" class="btn-menu-dashboard" style="margin-top: 15px !important;"><i
+                            class="zmdi zmdi-more-vert"></i></a>
                 </li>
             </ul>
         </nav>
 
 
         <div class="container text-center" style="display: flex;">
-            <button id="toggleFormBtn" class="btn btn-primary" onclick="agregarCarreras()">Agregar nueva carrera</button>
+            <button id="toggleFormBtn" class="btn btn-primary" onclick="agregarCarreras()">Agregar nueva
+                carrera</button>
         </div>
 
         <!-- Modal para agregar carrera -->
