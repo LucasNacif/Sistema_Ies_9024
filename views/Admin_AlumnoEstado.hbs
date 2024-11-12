@@ -20,7 +20,7 @@
 
 <body>
     <!-- Barra lateral (SideBar) -->
-     <section class="full-box cover dashboard-sideBar">
+    <section class="full-box cover dashboard-sideBar">
         <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
         <div class="full-box dashboard-sideBar-ct">
             <div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
@@ -61,8 +61,8 @@
 
             <h2>Formulario de Alumno</h2>
             <form id="alumnoForm">
-                <label for="nombreAlumno">Nombre del Alumno:</label><br>
-                <input type="text" id="nombreAlumno" name="nombreAlumno" required><br><br>
+                <label for="docAlumno">Documento del Alumno:</label><br>
+                <input type="text" id="docAlumno" name="docAlumno" required><br><br>
 
                 <label for="nombreMateria">Nombre de la Materia:</label><br>
                 <input type="text" id="nombreMateria" name="nombreMateria" required><br><br>
@@ -90,6 +90,7 @@
             </div>
 
             <!-- Tabla de materias con estado-->
+            {{#if materiasConEstado.length}}
             <h3>Materias con Estado</h3>
             <table class="table table-striped">
                 <thead>
@@ -154,6 +155,9 @@
 
                 </tbody>
             </table>
+            {{/if}}
+
+            {{#if materiasSinEstado.length}}
             <h3>Materias sin Estado</h3>
             <table class="table table-striped">
                 <thead>
@@ -188,11 +192,11 @@
                     {{/each}}
                 </tbody>
             </table>
+            {{/if}}
 
 
     </section>
-    <!-- Scripts -->
-    <script src="/js/Admin_AlumnoEstado.js"></script>
+
     <script>
         // Inicialización del componente de Material Design
         $.material.init();
@@ -204,7 +208,8 @@
 
 
     </script>
-
+    <!-- Scripts -->
+    <script src="/js/Admin_AlumnoEstado.js"></script>
 </body>
 
 </html>
