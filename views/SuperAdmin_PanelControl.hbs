@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <title>Carreras</title>
+    <title>Panel de SuperAdmin</title>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
     <link rel="stylesheet" href="/Styles/main.css">
     <link rel="stylesheet" href="/Styles/bootstrap.min.css">
@@ -17,13 +15,13 @@
     <script src="/js/jsBoostrap/ripples.min.js"></script>
     <script src="/js/jsBoostrap/main.js"></script>
 </head>
-
 <body>
     <section class="full-box cover dashboard-sideBar">
         <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
         <div class="full-box dashboard-sideBar-ct">
             <div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
                 Bedel <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
+
             </div>
             <div class="full-box dashboard-sideBar-UserInfo">
                 <figure class="full-box">
@@ -36,8 +34,11 @@
             <ul class="list-unstyled full-box dashboard-sideBar-Menu">
                 <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
                 <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
+
                 <li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Gestión académica</a></li>
                 <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a>
+
+              
                 </li>
             </ul>
         </div>
@@ -50,18 +51,76 @@
         <nav class="full-box dashboard-Navbar">
             <ul class="full-box list-unstyled text-right">
                 <li class="pull-left">
-                    <!-- Botón para mostrar/ocultar el menú lateral -->
                     <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
                 </li>
             </ul>
         </nav>
 
-        <br>
-        <br>
-        <br>
-        <header>
-            <h1>VISTA PARA EL SUPER ADMIN</h1>
-        </header>
+
+        <div class="container-fluid">
+            <div class="page-header" style="margin-top: 61px;">
+                <h1 class="text-titles">Panel de SuperAdmin</h1>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul class="nav nav-tabs" style="margin-bottom: 15px;">
+                        <li class="active"><a href="#new" data-toggle="tab">Nuevo</a></li>
+                        <li><a href="#list" data-toggle="tab">Lista</a></li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade active in" id="new">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-10 col-md-offset-1">
+                                        <form id="formNuevoBedel">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Nombre</label>
+                                                <input class="form-control" type="text" name="nombre" required>
+                                            </div>
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Apellido</label>
+                                                <input class="form-control" type="text" name="apellido" required>
+                                            </div>
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Email</label>
+                                                <input class="form-control" type="email" name="email" required>
+                                            </div>
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Contraseña</label>
+                                                <input class="form-control" type="password" name="password" required>
+                                            </div>
+                                            <p class="text-center">
+                                                <button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Guardar</button>
+                                            </p>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="list">
+                            <div class="table-responsive">
+                                <table class="table table-hover text-center">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th class="text-center">Nombre</th>
+                                            <th class="text-center">Apellido</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tablaBedeles">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </body>
 </html>
