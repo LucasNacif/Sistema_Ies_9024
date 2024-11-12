@@ -5,6 +5,10 @@ body {
     margin: 0;
     padding: 0;
 }
+.modal-backdrop{
+    z-index: 0 !important;
+}
+
 
 /* Container */
 .container {

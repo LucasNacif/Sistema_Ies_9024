@@ -19,13 +19,11 @@
     <script src="/js/jsBoostrap/ripples.min.js"></script>
     <script src="/js/jsBoostrap/main.js"></script>
 
-    <script src="/js/Admin_PlanEstudio.js"></script>
 
 </head>
 
 <script>
     const planEstudio = {{{ json planEstudio }}};
-
 </script>
 
 <body>
@@ -127,8 +125,7 @@
                                 <i class="zmdi zmdi-edit"></i> Editar
                             </button>
                             <button class="btn btn-outline-danger btn-sm" id="btnEliminarMateria" data-id="{{this._id}}"
-                                onclick="eliminarMateria()">Eliminar</button>
-
+                                onclick="eliminarMateria(this)">Eliminar</button>
                         </td>
                     </tr>
                     {{/each}}
@@ -138,7 +135,8 @@
             No hay materias disponibles
             {{/if}}
         </div>
-
+        
+        
         <div class="container mt-4" style="width: 100%; !important">
             <h4 class="mt-4">Alumnos</h4>
             <div class="mb-3">
@@ -155,7 +153,8 @@
                     <i class="zmdi zmdi-eye"></i> Ver Alumnos Dados de Alta
                 </button>
             </div>
-            <!-- Tabla para mostrar los alumnos filtrados -->
+
+            <!-- Tabla para mostrar los alumnos -->
             <div class="table-responsive">
                 <table class="table table-striped" id="tablaAlumnos">
                     <thead>
@@ -174,89 +173,13 @@
                         </tr>
                     </thead>
                     <tbody id="alumnosFiltrados">
-                        <!-- Aquí se cargarán los alumnos filtrados -->
                     </tbody>
                 </table>
             </div>
         </div>
 
-        {{!-- <!-- Modal para agregar alumno -->
-        <div class="modal fade" id="agregarAlumnoModal" tabindex="-1" aria-labelledby="agregarAlumnoModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="agregarAlumnoModalLabel">Agregar Alumno</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="formAgregar" method="post" action="/alumno/agregarAlumnoPlanEstudio">
-                            <div>
-                                <label for="nombreCompleto">Nombre Completo:</label>
-                                <input type="text" id="nombreCompleto" name="nombreCompleto" required />
-                            </div>
-                            <div>
-                                <label for="numDocAlumn">Número de Documento:</label>
-                                <input type="number" id="numDocAlumn" name="numDocAlumn" required
-                                    placeholder="Sin puntos" />
-                            </div>
-                            <div>
-                                <label for="nombre">Nombre:</label>
-                                <input type="text" id="nombre" name="nombre" required />
-                            </div>
-                            <div>
-                                <label for="corte">Corte:</label>
-                                <input type="text" id="corte" name="corte" required>
-                            </div>
-                            <div>
-                                <label for="emailAlumn">Email:</label>
-                                <input type="email" id="emailAlumn" name="emailAlumn" />
-                            </div>
-                            <div>
-                                <label for="curso">Curso:</label>
-                                <input type="curso" id="curso" name="curso" required
-                                    placeholder="Primero, Segundo, etc" />
-                            </div>
-                            <div>
-                                <label for="tituloSecundario">Título Secundario:</label>
-                                <input type="checkbox" name="tituloSecundario" value="true" />
 
-                            </div>
-                            <div>
-                                <label for="psicofisico">Psicofísico:</label>
-                                <input type="checkbox" id="psicofisico" name="psicofisico" value="true" />
 
-                            </div>
-                            <div>
-                                <label for="partidaNacim">Partida de Nacimiento:</label>
-                                <input type="checkbox" id="partidaNacim" name="partidaNacim" value="true" />
-
-                            </div>
-                            <div>
-                                <label for="dniActualizado">DNI Actualizado:</label>
-                                <input type="checkbox" id="dniActualizado" name="dniActualizado" value="true" />
-
-                            </div>
-                            <div>
-                                <label for="analiticoFiel">Analítico Fiel:</label>
-                                <input type="checkbox" id="analiticoFiel" name="analiticoFiel" value="true" />
-
-                            </div>
-                            <div>
-                                <label for="antecedenPen">Antecedentes Penales:</label>
-                                <input type="checkbox" id="antecedenPen" name="antecedenPen" value="true" />
-
-                            </div>
-                            <input type="hidden" name="idCarrera" value="{{carrera._id}}">
-                            <input type="hidden" name="idPlanEstudioSeleccionado" value="{{planEstudio._id}}">
-                            <button type="submit" class="btn btn-add">Guardar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
         <!-- Modal para agregar alumno -->
         <div class="modal fade" id="agregarAlumnoModal" tabindex="-1" aria-labelledby="agregarAlumnoModalLabel"
             aria-hidden="true">
@@ -270,80 +193,64 @@
                     </div>
                     <div class="modal-body p-4">
                         <form id="formAgregar" method="post" action="/alumno/agregarAlumnoPlanEstudio">
-                            <!-- Nombre Completo -->
                             <div class="form-group">
                                 <label for="nombreCompleto" class="font-weight-bold">Nombre Completo:</label>
                                 <input type="text" id="nombreCompleto" name="nombreCompleto" class="form-control"
                                     required />
                             </div>
-                            <!-- Número de Documento -->
                             <div class="form-group">
                                 <label for="numDocAlumn" class="font-weight-bold">Número de Documento:</label>
                                 <input type="number" id="numDocAlumn" name="numDocAlumn" class="form-control" required
                                     placeholder="Sin puntos" />
                             </div>
-                            <!-- Nombre -->
                             <div class="form-group">
                                 <label for="nombre" class="font-weight-bold">Nombre:</label>
                                 <input type="text" id="nombre" name="nombre" class="form-control" required />
                             </div>
-                            <!-- Corte -->
                             <div class="form-group">
                                 <label for="corte" class="font-weight-bold">Corte:</label>
                                 <input type="text" id="corte" name="corte" class="form-control" required />
                             </div>
-                            <!-- Email -->
                             <div class="form-group">
                                 <label for="emailAlumn" class="font-weight-bold">Email:</label>
                                 <input type="email" id="emailAlumn" name="emailAlumn" class="form-control" />
                             </div>
-                            <!-- Curso -->
                             <div class="form-group">
                                 <label for="curso" class="font-weight-bold">Curso:</label>
                                 <input type="text" id="curso" name="curso" class="form-control" required
                                     placeholder="Primero, Segundo, etc" />
                             </div>
-                            <!-- Título Secundario -->
                             <div class="form-group form-check">
                                 <label for="tituloSecundario" class="font-weight-bold">Título Secundario:</label>
                                 <input type="checkbox" name="tituloSecundario" class="form-check-input" value="true" />
                             </div>
-                            <!-- Psicofísico -->
                             <div class="form-group form-check">
                                 <label for="psicofisico" class="font-weight-bold">Psicofísico:</label>
                                 <input type="checkbox" id="psicofisico" name="psicofisico" class="form-check-input"
                                     value="true" />
                             </div>
-                            <!-- Partida de Nacimiento -->
                             <div class="form-group form-check">
                                 <label for="partidaNacim" class="font-weight-bold">Partida de Nacimiento:</label>
                                 <input type="checkbox" id="partidaNacim" name="partidaNacim" class="form-check-input"
                                     value="true" />
                             </div>
-                            <!-- DNI Actualizado -->
                             <div class="form-group form-check">
                                 <label for="dniActualizado" class="font-weight-bold">DNI Actualizado:</label>
                                 <input type="checkbox" id="dniActualizado" name="dniActualizado"
                                     class="form-check-input" value="true" />
                             </div>
-                            <!-- Analítico Fiel -->
                             <div class="form-group form-check">
                                 <label for="analiticoFiel" class="font-weight-bold">Analítico Fiel:</label>
                                 <input type="checkbox" id="analiticoFiel" name="analiticoFiel" class="form-check-input"
                                     value="true" />
                             </div>
-                            <!-- Antecedentes Penales -->
                             <div class="form-group form-check">
                                 <label for="antecedenPen" class="font-weight-bold">Antecedentes Penales:</label>
                                 <input type="checkbox" id="antecedenPen" name="antecedenPen" class="form-check-input"
                                     value="true" />
                             </div>
-
-                            <!-- Hidden Fields -->
                             <input type="hidden" name="idCarrera" value="{{carrera._id}}">
                             <input type="hidden" name="idPlanEstudioSeleccionado" value="{{planEstudio._id}}">
-
-                            <!-- Submit Button -->
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success btn-block">Guardar</button>
                             </div>
@@ -352,6 +259,8 @@
                 </div>
             </div>
         </div>
+        <!-- Modal de Modificación de alumno -->
+
 
         <!-- Modal para agregar materia -->
         <div class="modal fade" id="agregarMateriaModal" tabindex="-1" aria-labelledby="agregarMateriaModalLabel"
@@ -366,7 +275,6 @@
                     </div>
                     <div class="modal-body p-4">
                         <form action="/materia/nuevaMateriaPlanDeEstudio" method="POST">
-                            <!-- Campo para ingresar el nombre de la materia -->
                             <div class="form-group">
                                 <label for="nombreMateria" class="font-weight-bold">Nombre de la Materia:</label>
                                 <input type="text" id="nombreMateria" name="nombreMateria" class="form-control"
@@ -402,7 +310,7 @@
                     <div class="modal-body">
                         <form id="formModificarMateria">
                             <div class="mb-3">
-                                <label for="nombreMateria" class="form-label">Nombre de la Materia</label>
+                                <label for="nombreMateria" class="form-label">Nuevo Nombre de la Materia</label>
                                 <input type="text" class="form-control" id="nombreMateria" required>
                             </div>
                             <div class="mb-3">
@@ -429,7 +337,10 @@
             </div>
         </div>
 
+
     </section>
+
+    <script src="/js/Admin_PlanEstudio.js"></script>
 </body>
 
 </html>
