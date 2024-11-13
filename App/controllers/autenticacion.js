@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const bcryptjs = require('bcryptjs');
 const Usuario = require('../../models/Usuario');
-const async = require('hbs/lib/async');
 dotenv.config();
 
 
@@ -71,6 +70,44 @@ exports.login = async (req, res) => {
   }
 };
 
+// Método para cerrar sesión
+exports.exit = (req, res) => {
+  res.clearCookie("jwt", { path: "/" });
+  return res.redirect("/");
+};
+// Método de login
+exports.login = async (req, res) => {
+  const { dni, password } = req.body;
+
+  if (!dni || !password) {
+    return res.status(400).send({ status: "Error", message: "Los campos están incompletos" });
+  }
+
+  try {
+    const usuario = await Usuario.findOne({ dni });
+    if (!usuario) {
+      return res.status(400).send({ status: "Error", message: "Nombre de usuario o contraseña incorrectos" });
+    }
+
+    // Comparar contraseñas
+    const loginCorrecto = await bcryptjs.compare(password, usuario.password);
+    if (!loginCorrecto) {
+      return res.status(400).send({ status: "Error", message: "Nombre de usuario o contraseña incorrectos" });
+    }
+
+    // Creo el token JWT y configuro la cookie
+    const token = crearTokenJWT(usuario);
+    configurarCookie(res, token);
+
+    // Redirigir
+    return redirigirSegunRol(usuario, res);
+
+  } catch (error) {
+    console.error('Error en login:', error);
+    return res.status(500).send({ status: "Error", message: "Ha ocurrido un error interno" });
+  }
+};
+
 // Método de registro
 exports.registrar = async (req, res) => {
   const { dni, email, nombre, password, rol } = req.body;
@@ -88,7 +125,7 @@ exports.registrar = async (req, res) => {
     // Hashear contraseña
     const salt = await bcryptjs.genSalt(10);
     const hashPassword = await bcryptjs.hash(password, salt);
-
+    
     // Crear nuevo usuario
     const nuevoUsuario = new Usuario({
       dni,
@@ -97,16 +134,15 @@ exports.registrar = async (req, res) => {
       password: hashPassword,
       rol: rol === "bedel" ? "bedel" : "alumno"
     });
-
+    console.log(nuevoUsuario)
     await nuevoUsuario.save();
-
+    
     // Creo el token JWT y configuro la cookie
     const token = crearTokenJWT(nuevoUsuario);
     configurarCookie(res, token);
-
-    return redirigirSegunRol(nuevoUsuario, res);
-
-
+    
+    return res.status(201).send({ status: "ok", message: "Usuario creado correctamente", redirect: "/mesaExamenAlumno" });
+    
   } catch (error) {
     console.error('Error en registro:', error);
     return res.status(500).send({ status: "Error", message: "Error interno del servidor" });
@@ -119,28 +155,60 @@ exports.delete = async (req, res) => {
   try {
     const user = await Usuario.delete(req.dni);
       if (!Usuario ) {
-      return res.status(404).send({ status:"Error", message:"Usuario no encontrado "});
+        return res.status(404).send({ status:"Error", message:"Usuario no encontrado "});
       }
       res.json({ message: 'Carrera eliminada correctamente' });
     } catch ( err) {
       console.error(err)
       res.status(500).json( "Error al eliminar un usuario")
-  }
-}
-// dni,
-// email,
-// nombre,
-// password: hashPassword,
-// Metodo para editar usuarios
-exports.edit = async (req, res) => {
-  const { dni } = req.body;
-
+    }
+  };
   
-}
 
 
-// Método para cerrar sesión
-exports.exit = (req, res) => {
-  res.clearCookie("jwt", { path: "/" });
-  return res.redirect("/");
+exports.crearBedel = async (req, res) => {
+    try {
+        const { nombre, apellido, email, password } = req.body;
+
+        if (!nombre || !apellido || !email || !password) {
+            return res.status(400).json({
+                status: "error",
+                message: "Todos los campos son obligatorios"
+            });
+        }
+
+        const usuarioExistente = await Usuario.findOne({ email });
+        if (usuarioExistente) {
+            return res.status(400).json({
+                status: "error",
+                message: "Ya existe un usuario con ese email"
+            });
+        }
+
+        const salt = await bcryptjs.genSalt(10);
+        const hashPassword = await bcryptjs.hash(password, salt);
+
+        // Crear el nuevo bedel
+ 
+        const nuevoBedel = new Usuario({
+            nombre: `${nombre} ${apellido}`,
+            email,
+            password: hashPassword,
+            rol: 'bedel' 
+        });
+        console.log(nuevoBedel)
+        await nuevoBedel.save();
+
+        res.status(201).json({
+            status: "success",
+            message: "Bedel creado exitosamente"
+        });
+
+    } catch (error) {
+        console.error('Error al crear bedel:', error);
+        res.status(500).json({
+            status: "error",
+            message: "Error al crear el bedel"
+        });
+    }
 };

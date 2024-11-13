@@ -38,20 +38,7 @@
                 <li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Gestion academica</a></li>
                 <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a>
                 </li>
-                {{!-- <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i> Materias</a></li>
-                <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Alumnos</a></li> --}}
-            </ul>
 
-                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i>
-                        Carreras</a></li>
-                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i>
-                        Mesas</a></li>
-                <li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i>
-                        Gestión académica</a></li>
-                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i>
-                        Super Admin</a>
-                </li>
-            </ul>
         </div>
     </section>
 
@@ -86,25 +73,23 @@
                                 <div class="row">
                                     <div class="col-xs-12 col-md-10 col-md-offset-1">
                                         <form id="formNuevoBedel">
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Nombre</label>
-                                                <input class="form-control" type="text" name="nombre" required>
+                                            <div class="form-group">
+                                                <label for="nombre">Nombre</label>
+                                                <input type="text" class="form-control" id="nombre" name="nombre" required>
                                             </div>
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Apellido</label>
-                                                <input class="form-control" type="text" name="apellido" required>
+                                            <div class="form-group">
+                                                <label for="apellido">Apellido</label>
+                                                <input type="text" class="form-control" id="apellido" name="apellido" required>
                                             </div>
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Email</label>
-                                                <input class="form-control" type="email" name="email" required>
+                                            <div class="form-group">
+                                                <label for="email">Email</label>
+                                                <input type="email" class="form-control" id="email" name="email" required>
                                             </div>
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Contraseña</label>
-                                                <input class="form-control" type="password" name="password" required>
+                                            <div class="form-group">
+                                                <label for="password">Contraseña</label>
+                                                <input type="password" class="form-control" id="password" name="password" required>
                                             </div>
-                                            <p class="text-center">
-                                                <button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Guardar</button>
-                                            </p>
+                                            <button type="submit" class="btn btn-primary">Crear Bedel</button>
                                         </form>
                                     </div>
                                 </div>
