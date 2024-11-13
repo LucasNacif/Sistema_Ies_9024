@@ -5,13 +5,13 @@ document.getElementById("alumnoForm").addEventListener("submit", async function 
     event.preventDefault(); // Evita la recarga de la página
 
     // Captura los valores de los campos
-    const nombreAlumno = document.getElementById("nombreAlumno").value;
+    const numDocAlumn = document.getElementById("docAlumno").value;
     const nombreMateria = document.getElementById("nombreMateria").value;
     const estadoActual = document.getElementById("estadoActual").value;
 
     // Define los datos a enviar
     const data = {
-        nombreAlumno,
+        numDocAlumn,
         nombreMateria,
         estadoActual
     };
@@ -59,7 +59,6 @@ function showMessage(message, type) {
 // Variables globales para modificar
 let idAlumnoEstadoToModify;
 
-// Función para modificar el estado del alumno
 
 
 
@@ -68,7 +67,6 @@ let idAlumnoEstadoToModify;
 
 //ELIMINAR MODAL Y TODA LA COSA
 let estadoId;
-//Abrir modal
 function openDeleteModal(id) {
     estadoId = id; // Guardar el ID del estado en la variable global
     console.log("ID del estado a eliminar:", estadoId); // Verifica que el ID se establezca correctamente
@@ -76,15 +74,15 @@ function openDeleteModal(id) {
     modal.style.display = 'block'; // Mostrar el modal
     modal.classList.add('show'); // Agregar clase para mostrar el modal
 }
-//Cerrar modal
+
 function closeModal() {
     const modal = document.getElementById('confirmDeleteModal');
     modal.style.display = 'none'; // Ocultar el modal
     modal.classList.remove('show'); // Remover clase para ocultar el modal
 }
+
 // Confirmar y realizar la solicitud fetch al hacer clic en "Dar De Baja"
 document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
-    //console.log("Botón de confirmación clickeado");
     if (estadoId) {
         try {
             const response = await fetch(`/alumnoEstado/eliminar/${estadoId}`, {
@@ -95,15 +93,32 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', async () =
                 body: JSON.stringify({ estado: 'Sin estado' }),
             });
 
-            const result = await response.json();
-            alert(result.message); // Mostrar el mensaje de respuesta
-            closeModal();
-            location.reload(); // Recargar la página para actualizar la vista
+            // Verificar la respuesta
+            if (response.ok) {
+                const result = await response.json();
+                alert(result.message); // Mostrar el mensaje de respuesta
+                closeModal(); // Cerrar el modal
+
+                // Recargar solo si la actualización fue exitosa
+                location.reload(); // Recargar la página para actualizar la vista
+            } else {
+                console.error("Error en la respuesta del servidor:", response.statusText);
+                alert("Hubo un error al procesar la solicitud.");
+            }
         } catch (error) {
             console.error('Error al dar baja el estado:', error);
+            alert("Error de conexión o problema en el servidor.");
         }
     }
 });
+
+// Opcional: Cerrar el modal si se hace clic fuera de él
+window.onclick = function (event) {
+    const modal = document.getElementById('confirmDeleteModal');
+    if (event.target == modal) {
+        closeModal();
+    }
+};
 
 
 //MOSTRAR HISTORIAL 

@@ -16,7 +16,6 @@
     <script src="/js/jsBoostrap/main.js"></script>
 </head>
 <body>
-    <!-- Barra lateral (SideBar) -->
     <section class="full-box cover dashboard-sideBar">
         <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
         <div class="full-box dashboard-sideBar-ct">
@@ -29,14 +28,16 @@
                     <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
                 </figure>
                 <ul class="full-box list-unstyled text-center">
-                    <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
+                    <li><a href="/logout"><i class="zmdi zmdi-power"></i></a></li>
                 </ul>
             </div>
             <ul class="list-unstyled full-box dashboard-sideBar-Menu">
                 <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
                 <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
+
                 <li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Gestion academica</a></li>
                 <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a>
+
                 </li>
 
         </div>
@@ -73,6 +74,7 @@
                                 <div class="row">
                                     <div class="col-xs-12 col-md-10 col-md-offset-1">
                                         <form id="formNuevoBedel">
+
                                             <div class="form-group">
                                                 <label for="nombre">Nombre</label>
                                                 <input type="text" class="form-control" id="nombre" name="nombre" required>
@@ -90,6 +92,7 @@
                                                 <input type="password" class="form-control" id="password" name="password" required>
                                             </div>
                                             <button type="submit" class="btn btn-primary">Crear Bedel</button>
+
                                         </form>
                                     </div>
                                 </div>

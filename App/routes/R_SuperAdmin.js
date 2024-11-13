@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+
 const autenticacion = require('../controllers/autenticacion');
 
 // Ruta para crear un bedel
@@ -13,5 +14,6 @@ router.post("/AdministracionSuperAdmin/crearBedel", (req, res) => {
     // Usar la función de registro existente
     return autenticacion.registrar({ body: bodyConRol }, res);
 });
+
 
 module.exports = router;

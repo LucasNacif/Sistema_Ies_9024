@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const bcryptjs = require('bcryptjs');
 const Usuario = require('../../models/Usuario');
+const async = require('hbs/lib/async');
 dotenv.config();
 
 
@@ -155,7 +156,9 @@ exports.delete = async (req, res) => {
   try {
     const user = await Usuario.delete(req.dni);
       if (!Usuario ) {
-        return res.status(404).send({ status:"Error", message:"Usuario no encontrado "});
+
+      return res.status(404).send({ status:"Error", message:"Usuario no encontrado "});
+
       }
       res.json({ message: 'Carrera eliminada correctamente' });
     } catch ( err) {
@@ -211,4 +214,13 @@ exports.crearBedel = async (req, res) => {
             message: "Error al crear el bedel"
         });
     }
+
+  }
+}
+
+// Método para cerrar sesión
+exports.exit = (req, res) => {
+  res.clearCookie("jwt", { path: "/" });
+  return res.redirect("/");
+
 };

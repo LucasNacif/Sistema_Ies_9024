@@ -23,23 +23,16 @@ app.use(cookieParser());
 const hbs = require("hbs");
 const moment = require('moment');
 
+
+//HELPERS
 // Registrar el helper 'and'
 hbs.registerHelper("and", function (...args) {
   return args.every(Boolean);
 });
-// // Helper para formatear fechas
-// hbs.registerHelper('formatDate', function (date) {
-//   return new Date(date).toLocaleDateString('es-ES', {
-//       year: 'numeric',
-//       month: 'long',
-//       day: 'numeric'
-//   });
-// });
 // Helper para convertir a JSON
 hbs.registerHelper("json", function(context) {
   return JSON.stringify(context);
 });
-
 // Helper para mostrar la fecha formateada en la vista
 hbs.registerHelper('formatDate', (date) => {
   return moment(date).format('DD/MM/YYYY');
@@ -49,18 +42,17 @@ hbs.registerHelper('eq', function(a, b) {
   return a === b;
 });
 
-
 // Configuración del motor de vistas
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "./views"));
 
-// Conectar a MongoDB
+// Conexion a MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {})
   .then(() => console.log("Conectado a MongoDB Atlas"))
   .catch((err) => console.error("Error al conectar a MongoDB Atlas:", err));
 
-// Rutas individuales
+// Zona de ruteo
 const alumnoRouters = require("./App/routes/R_Alumno.js");
 const carreraRouters = require("./App/routes/R_Carrera.js");
 const loginRouters = require("./App/routes/R_login");
@@ -68,8 +60,6 @@ const inscripcionRouters = require("./App/routes/R_InscripcionMesas");
 const superAdminRouter = require("./App/routes/R_SuperAdmin.js");
 const alumnoEstadoRoutes = require("./App/routes/R_alumnoEstado");
 const mesaRouters = require("./App/routes/R_Mesa");
-
-// Zona de ruteo
 app.use(carreraRouters);
 app.use(alumnoRouters);
 app.use(loginRouters);
@@ -91,12 +81,15 @@ app.get("/AdministracionSuperAdmin", (req, res) => res.render("SuperAdmin_PanelC
 
 // // NO BORRAR QUE ME COSTO UN HUEVO HACERLO :)
 
+
 const { verificarSesion, verificarRol } = require('./App/middlewares/autorizacion.js');
 
 // Ruta del index
 app.get('/', verificarSesion, (req, res) => {
   if (req.usuario) {
-    return res.redirect(req.usuario.rol === 'alumno' ? '/mesaExamenAlumno' :
+
+    return res.redirect(req.usuario.rol === 'alumno' ? '/inscripcion/obtenerMesasSegunAlum' :
+
                         req.usuario.rol === 'bedel' ? '/Administracion' :
                         req.usuario.rol === 'superAdmin' ? '/AdministracionSuperAdmin' : '/');
   }
@@ -115,6 +108,7 @@ app.get('/Administracion', verificarSesion, verificarRol(['bedel', 'superAdmin']
 app.get('/mesa', verificarSesion, verificarRol(['bedel', 'superAdmin']), (req, res) => {
   res.render('Admin_Mesa');
 });
+
 app.get('/alumno', verificarSesion, verificarRol(['bedel', 'superAdmin']), (req, res) => {
   res.render("Admin_Alumno.hbs");
 });
@@ -126,6 +120,11 @@ app.get('/materia', verificarSesion, verificarRol(['bedel', 'superAdmin']), (req
 app.get('/mesaExamenAlumno', verificarSesion, verificarRol(['alumno']), (req, res) => {
   res.render('Alumno_MesaExamen');
 });
+
+
+app.get('/alumnoEstado', verificarSesion, verificarRol(['bedel', 'superAdmin']), (req, res) => {
+  res.render("Admin_AlumnoEstado");
+})
 
 
 app.listen(port, () => {
