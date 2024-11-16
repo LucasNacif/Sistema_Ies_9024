@@ -239,7 +239,7 @@ function mostrarToast(mensaje, tipo = "info") {
     const texto = document.getElementById("mensajeTexto");
   
     texto.textContent = mensaje;
-    toast.className = `toast-container ${tipo}`; // Añade la clase según el tipo (success, error, info)
+    toast.className = `toast-container ${tipo}`; 
     toast.style.display = "block";
   
     // Ocultar automáticamente después de 3 segundos

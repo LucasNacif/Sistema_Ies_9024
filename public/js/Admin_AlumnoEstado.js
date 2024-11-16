@@ -2,7 +2,7 @@
 
 //Guardar un nuevo EstadoAlumno
 document.getElementById("alumnoForm").addEventListener("submit", async function (event) {
-    event.preventDefault(); // Evita la recarga de la página
+    event.preventDefault(); 
 
     // Captura los valores de los campos
     const numDocAlumn = document.getElementById("docAlumno").value;
@@ -58,12 +58,6 @@ function showMessage(message, type) {
 //Modificar un EstadoAlumno
 // Variables globales para modificar
 let idAlumnoEstadoToModify;
-
-
-
-
-
-
 
 //ELIMINAR MODAL Y TODA LA COSA
 let estadoId;

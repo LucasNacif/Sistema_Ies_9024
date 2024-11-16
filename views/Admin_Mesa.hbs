@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="/Styles/main.css">
     <link rel="stylesheet" href="/Styles/bootstrap.min.css">
     <link rel="stylesheet" href="/Styles/Admin_Mesa.css">
+    <link rel="stylesheet" href="/Styles/estilosGlobales.css" />
     <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
     <script src="/js/Admin_Mesa.js"></script>
 </head>
@@ -40,6 +42,9 @@
 
     <!-- Contenido principal -->
     <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
+          <div id="mensajeToast" class="toast-container" style="display: none;">
+            <p id="mensajeTexto"></p>
+        </div>
         <nav class="full-box dashboard-Navbar">
             <ul class="full-box list-unstyled text-right">
                 <li class="pull-left">
@@ -55,27 +60,27 @@
         </div>
 
         <!-- Formulario para agregar una nueva mesa -->
-        <div class="container" id="formAgregarMesa" style=" margin-top: 20px;">
+        <div class="container" id="formAgregarMesa" style="margin-top: 20px;">
             <h2>Crear Mesa</h2>
             <form>
-                <div>
+                <div class="form-group">
                     <label for="fechaMesa">Fecha de la Mesa:</label>
-                    <input type="date" id="fechaMesa" name="fechaMesa" required>
+                    <input type="date" id="fechaMesa" name="fechaMesa" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="horaMesa">Hora de la mesa:</label>
                     <input type="time" id="horaMesa" name="horaMesa" class="form-control" required>
                 </div>
-                <div>
+                <div class="form-group">
                     <label for="Materia">Materia:</label>
-                    <select id="Materia" name="Materia" required>
+                    <select id="Materia" name="Materia" class="form-control" required>
                         {{#each materiasDiponibles}}
                         <option value="{{this._id}}">{{this.nombreMateria}}</option>
                         {{/each}}
                     </select>
                 </div>
                 <div class="botones">
-                    <button type="submit" class="btn btn-add" id="btnSubmitMesa">Crear Mesa</button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmitMesa">Crear Mesa</button>
                 </div>
             </form>
         </div>
@@ -117,16 +122,13 @@
         </div>
 
 
-        <!-- Modal para Modificar Mesa -->
+         <!-- Modal para Modificar Mesa -->
         <div class="modal fade" id="modalModificarMesa" tabindex="-1" role="dialog"
             aria-labelledby="modalModificarMesaLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-primary text-white" style="background-color: orange;">
                         <h5 class="modal-title" id="modalModificarMesaLabel">Modificar Mesa</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
                     </div>
                     <div class="modal-body">
                         <form id="formModificar">
@@ -155,6 +157,7 @@
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-warning">Modificar Mesa</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         </form>
                     </div>
                 </div>
