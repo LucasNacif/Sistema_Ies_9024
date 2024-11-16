@@ -1,3 +1,4 @@
+/* Global styles */
 body {
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
@@ -12,6 +13,7 @@ h3, h4 {
     margin-top: 50px;
 }
 
+/* Table styles */
 .table {
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
@@ -32,13 +34,15 @@ h3, h4 {
     width: 100px;
 }
 
+/* Input, button, and table common styles */
 input, button, table {
     border-radius: 5px;
     border: 1px solid #dee2e6;
     padding: 10px;
 }
 
-.btn-add, .btn-edit, .btn-delete {
+/* Button styles */
+.btn-add, .btn-edit, .btn-delete, .btn-sm {
     display: inline-block;
     font-size: 16px;
     padding: 10px 20px;
@@ -50,6 +54,12 @@ input, button, table {
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.btn-sm {
+    padding: 5px 8px;
+    font-size: 0.875rem;
+}
+
+/* Specific button styles */
 .btn-add {
     background-color: #28a745;
     border: none;
@@ -73,23 +83,6 @@ input, button, table {
 .btn-danger {
     background-color: #dc3545;
     border-color: #dc3545;
-}
-
-.container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.btn-sm {
-    padding: 5px 8px;
-    font-size: 0.875rem; 
-}
-
-.btn-add {
-    background-color: #28a745;
-    color: white;
 }
 
 .btn-edit {
@@ -119,53 +112,18 @@ input, button, table {
 }
 
 .btn-guardar:hover {
-    background-color: #66c2f0; 
+    background-color: #66c2f0;
 }
 
-.modal-backdrop {
-    z-index: 0 !important;
-}
-
-.modal-dialog {
-    margin: 1.75rem auto; 
-    z-index: 1060; 
-}
-/* Estilo personalizado para los modales */
-.modal-content {
-    border-radius: 10px; /* Bordes más suaves */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
-}
-
-.modal-header {
-    background-color: #007bff; /* Color de fondo azul */
-    color: white; /* Texto blanco en el encabezado */
-    border-top-left-radius: 10px; /* Bordes redondeados superiores */
-    border-top-right-radius: 10px;
-}
-
-.modal-header .close {
-    color: white !important; /* Color de la "X" para cerrar */
-}
-.modal-title {
-    font-size: 23px !important;
-    margin-bottom: 20px  !important;
-}
-.modal-body {
+/* Container styles */
+.container {
+    background-color: #fff;
     padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.modal-footer {
-    border-top: 1px solid #ddd;
-    padding: 10px;
-}
-
-.modal-footer button {
-    border-radius: 5px;
-    padding: 8px 20px;
-    font-size: 16px;
-}
-
-/* Estilo para los botones de las modales */
+/* Submit button styles */
 button[type="submit"] {
     background-color: #007bff;
     color: white;
@@ -178,13 +136,4 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
     background-color: #0056b3;
-}
-
-/* Ajuste para el tamaño del modal */
-.modal-dialog {
-    max-width: 600px; /* Controla el ancho */
-}
-
-.modal-dialog .modal-content {
-    border-radius: 10px;
 }

@@ -192,11 +192,8 @@ exports.eliminarMateria = async (req, res) => {
     const { idMateria, idPlanEstudio } = req.body;
 
     try {
-        console.log("Materia para eliminar: ",await Materia.findById(idMateria));
-        // Eliminar la materia de la colección de materias
         const materia = await Materia.findByIdAndDelete(idMateria);
         if (!materia) {
-            console.log("No se encontró la materia");
             return res.status(404).json({ success: false, message: "No se encontró la materia" });
         }
 
@@ -208,11 +205,8 @@ exports.eliminarMateria = async (req, res) => {
         );
 
         if (!planEstudio) {
-            console.log("No se encontró el plan de estudio");
             return res.status(404).json({ success: false, message: "No se encontró el plan de estudio" });
         }
-
-        console.log("Materia eliminada del plan de estudio");
         return res.status(200).json({ success: true, message: "Materia eliminada del plan de estudio" });
     } catch (error) {
         console.error(error.message);
@@ -221,9 +215,6 @@ exports.eliminarMateria = async (req, res) => {
 };
 exports.modificarMateria = async (req, res) => {
     const { idMateria, nombreMateria, nuevaCorrelativa } = req.body;
-
-    console.log("Datos recibidos: ", req.body);
-  
     try {
         console.log("Materia antes: ", await Materia.findById(idMateria));
        
@@ -235,14 +226,9 @@ exports.modificarMateria = async (req, res) => {
             },
             { new: true }
         );
-
-        console.log("Materia despues: ", await Materia.findById(idMateria));
-
         if (!materia) {
-            console.log("No se encontró la materia");
             return res.status(404).json({ success: false, message: "No se encontró la materia" });
         }
-
         return res.status(200).json({ success: true, message: "Materia modificada correctamente", materia });
     } catch (error) {
         console.error(error.message);

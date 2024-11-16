@@ -1,7 +1,7 @@
 const Mesa = require("../../models/Mesa");
 const PlanEstudio = require("../../models/PlanEstudio");
 const Alumno = require("../../models/Alumno");
-const AlumnoEstado = require("../../models/AlumnoEstado"); // Asegúrate de importar AlumnoEstado si no estaba ya importado
+const AlumnoEstado = require("../../models/AlumnoEstado");
 const { docAlumLogueado } = require('../middlewares/autorizacion');
 
 

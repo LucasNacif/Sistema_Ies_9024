@@ -24,20 +24,31 @@ function mostrarAlumnos(esBaja) {
             <td>${alumno.analiticoFiel ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
             <td>${alumno.antecedenPen ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
             <td>
-                <button class="btn btn-outline-primary btn-sm" onclick="mostrarEditarAlumnoModal(this)"
-            data-id="${alumno._id}"
-            data-nombre="${alumno.nombreCompleto}"
-            data-numdoc="${alumno.numDocAlumn}"
-            data-email="${alumno.emailAlumn}">
-        <i class="zmdi zmdi-edit"></i>
-    </button>
-    ${alumno.banderaBooleana
+                <button class="btn btn-outline-primary btn-sm editar-btn"
+                onclick="mostrarModificarAlumnoModal(this)"
+                data-id="${alumno._id}"
+                data-nombre="${alumno.nombreCompleto}"
+                data-numdoc="${alumno.numDocAlumn}"
+                data-email="${alumno.emailAlumn}"
+                data-corte="${alumno.corte}"
+                data-tituloSecundario="${alumno.tituloSecundario}"
+                data-psicofisico="${alumno.psicofisico}"
+                data-partidaNacim="${alumno.partidaNacim}"
+                data-dniActualizado="${alumno.dniActualizado}"
+                data-analiticoFiel="${alumno.analiticoFiel}"
+                data-antecedenPen="${alumno.antecedenPen}">
+                  <i class="zmdi zmdi-edit"></i>
+                </button>
+
+            <!-- dependiendo de la bandera booleana te muestra un boton o el otro -->
+            
+            ${alumno.banderaBooleana
                 ? `<button class="btn btn-outline-warning btn-sm" data-id="${alumno._id}" onclick="AltayBajaAlumno(false, this)">
-        <i class="zmdi zmdi-eye-off"></i>
-    </button>`
+                    <i class="zmdi zmdi-eye-off"></i>
+                 </button>`
                 : `<button class="btn btn-outline-success btn-sm" data-id="${alumno._id}" onclick="AltayBajaAlumno(true, this)">
-        <i class="zmdi zmdi-check"></i>
-    </button>`
+                    <i class="zmdi zmdi-check"></i>
+                 </button>`
             }
             </td>
         `;
@@ -46,19 +57,75 @@ function mostrarAlumnos(esBaja) {
     document.getElementById('tablaAlumnos').style.display = 'table';
 }
 //Modificar Alumnos
-function mostrarEditarAlumnoModal(button) {
+function mostrarModificarAlumnoModal(button) {
     const alumnoId = button.getAttribute('data-id');
-    const nombreCompleto = button.getAttribute('data-nombre');
-    const numDocAlumn = button.getAttribute('data-numdoc');
-    const emailAlumn = button.getAttribute('data-email');
+    const nombre = button.getAttribute('data-nombre');
+    const numDoc = button.getAttribute('data-numdoc');
+    const email = button.getAttribute('data-email');
+    const corte = button.getAttribute('data-corte');
 
-    document.getElementById('nombreAlumno').value = nombreCompleto;
-    document.getElementById('numDocAlumn').value = numDocAlumn;
-    document.getElementById('emailAlumn').value = emailAlumn;
-    document.getElementById('alumnoId').value = alumnoId;
+    const tituloSecundario = button.getAttribute('data-tituloSecundario') === "true";
+    const psicofisico = button.getAttribute('data-psicofisico') === "true";
+    const partidaNacim = button.getAttribute('data-partidaNacim') === "true";
+    const dniActualizado  = button.getAttribute('data-dniActualizado') === "true";
+    const analiticoFiel = button.getAttribute('data-analiticoFiel') === "true";
+    const antecedentesPenales = button.getAttribute('data-antecedenPen') === "true";
 
-    $('#editarAlumnoModal').modal('show');
+    // Rellenar los campos del formulario del modal
+    $('#nombreCompletoModificar').val(nombre);
+    $('#numDocAlumnModificar').val(numDoc);
+    $('#emailAlumnModificar').val(email);
+    $('#corteModificar').val(corte);
+    $('#tituloSecundarioModificar').prop('checked', tituloSecundario);
+    $('#psicofisicoModificar').prop('checked', psicofisico);
+    $('#partidaNacimModificar').prop('checked', partidaNacim);
+    $('#dniActualizadoModificar').prop('checked', dniActualizado);
+    $('#analiticoFielModificar').prop('checked', analiticoFiel);
+    $('#antecedenPenModificar').prop('checked', antecedentesPenales);
+    $('#idAlumnoModificar').val(alumnoId);
+
+    // Mostrar el modal
+    $('#modificarAlumnoModal').modal('show');
 }
+
+document.getElementById("formModificarAlumno").addEventListener("submit", async function (e) {
+    e.preventDefault(); 
+  
+    const data = {
+        nombreCompleto: document.getElementById("nombreCompletoModificar").value,
+        numDocAlumn: document.getElementById("numDocAlumnModificar").value,
+        corte: document.getElementById("corteModificar").value,
+        emailAlumn: document.getElementById("emailAlumnModificar").value,
+        tituloSecundario: document.getElementById("tituloSecundarioModificar").checked, 
+        psicofisico: document.getElementById("psicofisicoModificar").checked, 
+        partidaNacim: document.getElementById("partidaNacimModificar").checked, 
+        dniActualizado: document.getElementById("dniActualizadoModificar").checked, 
+        analiticoFiel: document.getElementById("analiticoFielModificar").checked, 
+        antecedenPen: document.getElementById("antecedenPenModificar").checked, 
+    };
+    try {
+      const response = await fetch("/alumno/modificar", {
+        method: "PUT", 
+        headers: {
+          "Content-Type": "application/json", 
+        },
+        body: JSON.stringify(data), 
+      });
+  
+      const result = await response.json();
+      if (response.ok) {
+          $('#modificarAlumnoModal').modal('hide');
+          mostrarToast(result.message, "success"); 
+      } else {
+        mostrarToast(result.error || "Hubo un error al modificar el alumno.", "error"); 
+      }
+    } catch (error) {
+      console.error("Error al enviar la solicitud:", error);
+      mostrarToast(result.error || "Error al enviar la solicitud.", "error");
+    }
+  });
+  
+
 //Baja y alta de alumnos
 function AltayBajaAlumno(tipo, button) {
     const idAlumno = button.getAttribute('data-id');
@@ -78,9 +145,12 @@ function AltayBajaAlumno(tipo, button) {
             return response.json();
         })
         .then(data => {
-            location.reload();
+            mostrarToast(data.message || "Estado del alumno actualizado correctamente.", "success");
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            mostrarToast("Error al actualizar el estado del alumno.", "error");
+        });
 }
 
 //_____MATERIAS_______
@@ -109,15 +179,14 @@ document.getElementById('formModificarMateria').addEventListener('submit', funct
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                location.reload();
-                alert("Materia modificada con éxito");
+                mostrarToast("Materia modificada con éxito.", "success");
             } else {
-                alert("Hubo un problema al modificar la materia");
+                mostrarToast("Hubo un problema al modificar la materia.", "error");
             }
         })
         .catch(error => {
             console.error("Error:", error);
-            alert("Ocurrió un error al intentar modificar la materia.");
+            mostrarToast("Ocurrió un error al intentar modificar la materia.", "error");
         });
 });
 //funcion para mostrar el modal de materias
@@ -142,26 +211,43 @@ function mostrarModificarMateriaModal(element) {
     $('#modificarMateriaModal').modal('show');
 }
 //Eliminar Materia
-function eliminarMateria() {
-    const btnEliminar = document.getElementById("btnEliminarMateria")
-    const idMateria = btnEliminar.getAttribute('data-id');
-
+function eliminarMateria(button) {
+    const idMateria = button.getAttribute('data-id'); 
     fetch("/materia/eliminar", {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ idMateria: idMateria, idPlanEstudio: planEstudio._id })
+        body: JSON.stringify({idMateria: idMateria, idPlanEstudio: planEstudio._id })
     })
-        .then(response => {
-            if (!response.ok) throw new Error('Error en la petición');
-            return response.json();
-        })
-        .then(data => {
-            mostrarAlumnos(true);
-            location.reload();
-        })
-        .catch(error => console.error('Error:', error));
+    .then(response => {
+        if (!response.ok) throw new Error('Error en la petición');
+        return response.json();
+    })
+    .then(data => {
+        mostrarToast(data.message || "Materia eliminada con éxito.", "success");
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        mostrarToast("Error al eliminar la materia.", "error");
+    });
 }
 
-
+//Para mostrar mensajes
+function mostrarToast(mensaje, tipo = "info") {
+    const toast = document.getElementById("mensajeToast");
+    const texto = document.getElementById("mensajeTexto");
+  
+    texto.textContent = mensaje;
+    toast.className = `toast-container ${tipo}`; // Añade la clase según el tipo (success, error, info)
+    toast.style.display = "block";
+  
+    // Ocultar automáticamente después de 3 segundos
+    setTimeout(() => {
+      toast.style.display = "none";
+      mostrarAlumnos(true);
+      location.reload();
+    }, 1500);
+    
+  }
+  

@@ -67,30 +67,5 @@
     }
 }
 
-.modal {
-    backdrop-filter: blur(5px);
-    z-index: 1050 !important;
-}
 
-.modal-backdrop {
-    z-index: 0 !important;
-}
 
-.modal-dialog {
-    margin: 1.75rem auto;
-    z-index: 1060;
-}
-
-.modal-content {
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.close {
-    color: #000;
-    opacity: 0.8;
-}
-
-.close:hover {
-    opacity: 1;
-}

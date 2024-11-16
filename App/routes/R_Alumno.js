@@ -6,6 +6,6 @@ router.post("/alumno/agregarAlumnoPlanEstudio", controller.nuevoAlumnoPlanDeEstu
 
 router.put("/alumno/estado", controller.modificarEstado);
 
-router.post("/alumno/modificar/:id", controller.modificarAlumno);
+router.put("/alumno/modificar", controller.modificarAlumno);
 
 module.exports = router;

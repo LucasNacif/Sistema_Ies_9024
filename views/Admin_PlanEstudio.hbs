@@ -20,6 +20,9 @@
     <script src="/js/jsBoostrap/main.js"></script>
 
 
+    <link rel="stylesheet" href="/Styles/estilosGlobales.css" />
+
+
 </head>
 
 <script>
@@ -53,6 +56,10 @@
 
     <!-- Contenido de la página principal -->
     <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
+        <div id="mensajeToast" class="toast-container" style="display: none;">
+            <p id="mensajeTexto"></p>
+        </div>
+
         <nav class="full-box dashboard-Navbar">
             <ul class="full-box list-unstyled text-right">
                 <li class="pull-left">
@@ -76,11 +83,11 @@
                     </tr>
                     <tr>
                         <th>Carga horaria</th>
-                        <td>{{carrera.cargaHoraria}}</td>
+                        <td>{{carrera.cargaHoraria}} hrs</td>
                     </tr>
                     <tr>
                         <th>Duracion</th>
-                        <td>{{carrera.duracion}}</td>
+                        <td>{{carrera.duracion}} años</td>
                     </tr>
                 </tbody>
             </table>
@@ -178,8 +185,6 @@
             </div>
         </div>
 
-
-
         <!-- Modal para agregar alumno -->
         <div class="modal fade" id="agregarAlumnoModal" tabindex="-1" aria-labelledby="agregarAlumnoModalLabel"
             aria-hidden="true">
@@ -204,21 +209,12 @@
                                     placeholder="Sin puntos" />
                             </div>
                             <div class="form-group">
-                                <label for="nombre" class="font-weight-bold">Nombre:</label>
-                                <input type="text" id="nombre" name="nombre" class="form-control" required />
-                            </div>
-                            <div class="form-group">
-                                <label for="corte" class="font-weight-bold">Corte:</label>
+                                <label for="corte" class="font-weight-bold">Cohrte:</label>
                                 <input type="text" id="corte" name="corte" class="form-control" required />
                             </div>
                             <div class="form-group">
                                 <label for="emailAlumn" class="font-weight-bold">Email:</label>
                                 <input type="email" id="emailAlumn" name="emailAlumn" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <label for="curso" class="font-weight-bold">Curso:</label>
-                                <input type="text" id="curso" name="curso" class="form-control" required
-                                    placeholder="Primero, Segundo, etc" />
                             </div>
                             <div class="form-group form-check">
                                 <label for="tituloSecundario" class="font-weight-bold">Título Secundario:</label>
@@ -260,8 +256,77 @@
             </div>
         </div>
         <!-- Modal de Modificación de alumno -->
-
-
+        <div class="modal fade" id="modificarAlumnoModal" tabindex="-1" aria-labelledby="modificarAlumnoModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content shadow-lg border-0 rounded">
+                    <div class="modal-header bg-warning text-white">
+                        <h5 class="modal-title" id="modificarAlumnoModalLabel">Modificar Alumno</h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <form id="formModificarAlumno">
+                            <div class="form-group">
+                                <label for="nombreCompletoModificar" class="font-weight-bold">Nombre Completo:</label>
+                                <input type="text" id="nombreCompletoModificar" name="nombreCompleto"
+                                    class="form-control" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="numDocAlumnModificar" class="font-weight-bold">Número de Documento:</label>
+                                <input type="number" id="numDocAlumnModificar" name="numDocAlumn" class="form-control"
+                                    required placeholder="Sin puntos" readonly />
+                            </div>
+                            <div class="form-group">
+                                <label for="corteModificar" class="font-weight-bold">Corte:</label>
+                                <input type="text" id="corteModificar" name="corte" class="form-control" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="emailAlumnModificar" class="font-weight-bold">Email:</label>
+                                <input type="email" id="emailAlumnModificar" name="emailAlumn" class="form-control" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="tituloSecundarioModificar" class="font-weight-bold">Título
+                                    Secundario:</label>
+                                <input type="checkbox" name="tituloSecundario" id="tituloSecundarioModificar"
+                                    class="form-check-input" value="true" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="psicofisicoModificar" class="font-weight-bold">Psicofísico:</label>
+                                <input type="checkbox" id="psicofisicoModificar" name="psicofisico"
+                                    class="form-check-input" value="true" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="partidaNacimModificar" class="font-weight-bold">Partida de
+                                    Nacimiento:</label>
+                                <input type="checkbox" id="partidaNacimModificar" name="partidaNacim"
+                                    class="form-check-input" value="true" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="dniActualizadoModificar" class="font-weight-bold">DNI Actualizado:</label>
+                                <input type="checkbox" id="dniActualizadoModificar" name="dniActualizado"
+                                    class="form-check-input" value="true" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="analiticoFielModificar" class="font-weight-bold">Analítico Fiel:</label>
+                                <input type="checkbox" id="analiticoFielModificar" name="analiticoFiel"
+                                    class="form-check-input" value="true" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="antecedenPenModificar" class="font-weight-bold">Antecedentes
+                                    Penales:</label>
+                                <input type="checkbox" id="antecedenPenModificar" name="antecedenPen"
+                                    class="form-check-input" value="true" />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-warning btn-block">Modificar Alumno</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Modal para agregar materia -->
         <div class="modal fade" id="agregarMateriaModal" tabindex="-1" aria-labelledby="agregarMateriaModalLabel"
             style="z-index: 1231 !important;" aria-hidden="true">
@@ -336,6 +401,7 @@
                 </div>
             </div>
         </div>
+
 
 
     </section>
