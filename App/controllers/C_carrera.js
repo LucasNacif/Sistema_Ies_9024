@@ -115,7 +115,7 @@ exports.verPlanEstudio = async (req, res) => {
             await crearPlanEstudioVacio(carrera);
             carrera = await obtenerPlanEstudio(id); // Vuelvo a buscar la carrera con el nuevo plan de estudio
         }
-
+        
         res.render('Admin_PlanEstudio', {
             carrera,
             planEstudio: carrera.planEstudio,
@@ -123,8 +123,6 @@ exports.verPlanEstudio = async (req, res) => {
             planEstudioId: carrera.planEstudio._id, 
             carreraId: carrera._id 
         });
-        
-      
         
     } catch (error) {
         console.error(error);

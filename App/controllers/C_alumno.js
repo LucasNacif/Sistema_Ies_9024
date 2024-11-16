@@ -4,7 +4,6 @@ const PlanEstudio = require("../../models/PlanEstudio");
 exports.nuevoAlumnoPlanDeEstudio = async (req, res) => {
   try {
 
-    //traemos los datos del alumno y el id del plan de estudio
     const {
       numDocAlumn,
       nombreCompleto,
@@ -21,7 +20,6 @@ exports.nuevoAlumnoPlanDeEstudio = async (req, res) => {
       idCarrera,
     } = req.body;
 
-    // busco el alumno por este num de doc para saber si esta guardado
     const alumnoExistente = await Alumno.findOne({ numDocAlumn });
     if (alumnoExistente) {
       return res.redirect(`/planEstudio/${idCarrera}?error=El alumno ya existe.`);
@@ -40,23 +38,27 @@ exports.nuevoAlumnoPlanDeEstudio = async (req, res) => {
       antecedenPen,
     });
 
-    //primero traer los datos del plan de estudio donde se va a guardar el alumno
-    const planEstudio = PlanEstudio.findOneAndUpdate(
+    await alumno.save();
+
+    // Ahora actualizo el plan de estudio y le agrego el alumno
+    const planEstudio = await PlanEstudio.findOneAndUpdate(
       { _id: idPlanEstudioSeleccionado },
-      { $push: { alumnos: alumno._id, } },
-      { new: true }
+      { $push: { alumnos: alumno._id } },
+      { new: true } 
     );
 
     if (planEstudio) {
-      //guardamos ese alumno
-      await alumno.save();
       return res.redirect(`/planEstudio/${idCarrera}?success=Alumno agregado exitosamente.`);
+    } else {
+      return res.redirect(`/planEstudio/${idCarrera}?error=No se encontró el plan de estudio.`);
     }
+    
   } catch (error) {
     console.error(error);
-    res.redirect(`/planEstudio/${idCarrera}?error=No se pudo agregar el alumno.`);
+    return res.redirect(`/planEstudio/${idCarrera}?error=No se pudo agregar el alumno.`);
   }
 };
+
 exports.modificarEstado = async (req, res) => {
   const { idAlumno, estado } = req.body;
   try {
