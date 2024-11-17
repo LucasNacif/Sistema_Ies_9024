@@ -64,10 +64,22 @@
         </nav>
 
 
-        <div class="container text-center" style="display: flex;">
+        {{!-- <div class="container text-center" style="display: flex;">
             <button id="toggleFormBtn" class="btn btn-primary" onclick="agregarCarreras()">Agregar nueva
                 carrera</button>
-        </div>
+        </div> --}}
+
+<div class="dashboard-header">
+    <div class="header-content">
+        <h1 class="dashboard-title">Gestión de Carreras</h1>
+        <p class="dashboard-subtitle">Instituto de Educación Superior</p>
+        <button id="toggleFormBtn" class="add-career-btn" onclick="agregarCarreras()">
+            <i class="zmdi zmdi-plus"></i>
+            Nueva Carrera
+        </button>
+    </div>
+</div>
+
         {{!-- Contenedor donde se mostrarán las carreras --}}
         <div class="full-box text-center carrera-container" id="listaCarreras" style="padding: 30px 10px;">
         </div>

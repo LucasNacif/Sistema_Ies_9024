@@ -20,7 +20,7 @@
 }
 
 .modal-header {
-    background-color: #007bff; /* Azul de fondo */
+    background: linear-gradient(135deg, #2c3e50, #3498db);
     color: white;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -57,19 +57,37 @@
 }
 
 /* Estilos para los botones */
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    color: white;
+}
+.btn:hover {
+    transform: scale(1.05);
+}
 .btn-primary {
-    background-color: #007bff;
+    background: linear-gradient(135deg, #2c3e50, #3498db);
     border-color: #007bff;
     color: white;
 }
+.btn-warning {
+    background-color: #f1c40f;
+    color: #2c3e50;
+}
 
+/* 
 .btn-primary:hover {
     background-color: #0056b3;
     border-color: #0056b3;
-}
+} */
 
 .btn-secondary {
-    background-color: #6c757d;
+    background-color: #95a5a6;
     border-color: #6c757d;
     color: white;
 }
@@ -128,6 +146,45 @@
     border: 1px solid #ccc;
     width: 100%;
     height: 100%;
-    
-    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Añadido para dar sombra similar al modal */
+}
+
+.form-control:focus {
+    border-color: #007bff; /* Color del borde al enfocar, igual al modal */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Efecto de sombra similar al del modal */
+}
+
+label {
+    font-size: 16px;
+    color: #333;
+}
+
+.input-group-text {
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px 0 0 5px;
+}
+
+.input-group {
+    margin-bottom: 1rem;
+}
+
+select.form-control {
+    padding: 0.75rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+    padding: 8px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
 }

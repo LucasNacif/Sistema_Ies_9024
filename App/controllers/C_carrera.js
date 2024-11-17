@@ -115,7 +115,7 @@ exports.verPlanEstudio = async (req, res) => {
             await crearPlanEstudioVacio(carrera);
             carrera = await obtenerPlanEstudio(id); // Vuelvo a buscar la carrera con el nuevo plan de estudio
         }
-        
+
         res.render('Admin_PlanEstudio', {
             carrera,
             planEstudio: carrera.planEstudio,
@@ -214,7 +214,6 @@ exports.eliminarMateria = async (req, res) => {
 exports.modificarMateria = async (req, res) => {
     const { idMateria, nombreMateria, nuevaCorrelativa } = req.body;
     try {
-        console.log("Materia antes: ", await Materia.findById(idMateria));
        
         const materia = await Materia.findByIdAndUpdate(
             idMateria,
@@ -234,22 +233,3 @@ exports.modificarMateria = async (req, res) => {
     }
 };
 
-
-    //     try {
-    //         const materias = await Materia.find().populate('correlativas');
-    //         res.json(materias);
-    //     } catch (err) {
-    //         console.error(err);
-    //         res.status(500).json({ message: 'Error al obtener las materias' });
-    //     }
-    // };
-    // exports.obtenerMateriaPorID = async (req, res) => {
-    //     try {
-    //         const id = req.params.materiaId;
-    //         const materia = await Materia.findById(id).populate('correlativas');
-    //         res.json(materia);
-    //     } catch (err) {
-    //         console.error(err);
-    //         res.status(500).json({ message: 'Error al obtener las materias' });
-    //     }
-    // };

@@ -99,7 +99,7 @@
             <div class="mb-3">
                 <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#agregarMateriaModal"
                     style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
-                    <i class="zmdi zmdi-plus-circle"></i> Añadir Materia
+                    <i class="zmdi zmdi-plus-circle"></i> Añadir
                 </button>
             </div>
             {{#if materias}}
@@ -149,15 +149,15 @@
             <div class="mb-3">
                 <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#agregarAlumnoModal"
                     style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
-                    <i class="zmdi zmdi-plus-circle"></i> Añadir Alumno
+                    <i class="zmdi zmdi-plus-circle"></i> Añadir
                 </button>
                 <button class="btn btn-info btn-lg" onclick="mostrarAlumnos(false)"
                     style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
-                    <i class="zmdi zmdi-eye"></i> Ver Alumnos Dados de Baja
+                    <i class="zmdi zmdi-eye"></i> Ver Alumnos de Baja
                 </button>
                 <button class="btn btn-primary btn-lg" onclick="mostrarAlumnos(true)"
                     style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
-                    <i class="zmdi zmdi-eye"></i> Ver Alumnos Dados de Alta
+                    <i class="zmdi zmdi-eye"></i> Ver Alumnos de Alta
                 </button>
             </div>
 
@@ -367,12 +367,12 @@
                     <div class="modal-body">
                         <form id="formModificarMateria" style="color: #333;">
                             <div class="mb-3">
-                                <label for="nombreMateria" class="form-label">Nuevo Nombre de la Materia</label>
-                                <input type="text" class="form-control" id="nombreMateria" required>
+                                <label for="nombreMateriaMod" class="form-label">Nuevo Nombre de la Materia</label>
+                                <input type="text" class="form-control" id="nombreMateriaMod" required>
                             </div>
                             <div class="mb-3">
                                 <label for="correlativas" class="form-label">Correlativas Actuales</label>
-                                <ul id="listaCorrelativas" class="list-group mb-3"></ul>
+                                <ul id="listaCorrelativasMod" class="list-group mb-3"></ul>
                             </div>
                             <div class="mb-3">
                                 <label for="nuevaCorrelativa" class="form-label">Agregar Nueva Correlativa</label>

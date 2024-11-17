@@ -78,7 +78,12 @@ exports.modificarEstado = async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json({ message: "Alumno modificado exitosamente" });
+    if(estado){
+      res.status(200).json({ message: "Alta exitosa" });
+    }else{
+      res.status(200).json({ message: "Baja exitosa" });
+
+    }
   } catch (error) {
     console.error("Error al dar de baja el alumno:", error.message);
     res.status(500).json({ error: "Error interno del servidor" });

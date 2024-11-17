@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -42,7 +41,7 @@
 
     <!-- Contenido principal -->
     <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
-          <div id="mensajeToast" class="toast-container" style="display: none;">
+        <div id="mensajeToast" class="toast-container" style="display: none;">
             <p id="mensajeTexto"></p>
         </div>
         <nav class="full-box dashboard-Navbar">
@@ -53,9 +52,45 @@
             </ul>
         </nav>
 
-        <div class="container-fluid">
-            <div class="page-header" style="margin-top: 61px;">
-                <h1 class="text-titles">Mesas de examen</h1>
+        <div class="dashboard-header">
+            <div class="header-content">
+                <h1 class="dashboard-title">Mesas de Examen</h1>
+                <p class="dashboard-subtitle">Gestión de Mesas Examinadoras</p>
+            </div>
+        </div>
+
+        <!-- Tarjetas de mesas disponibles -->
+        <div class="container" style="margin-top: 20px;">
+            <div class="row">
+                {{#if mesasActivas}}
+                {{#each mesasActivas}}
+                <div class="col-md-4">
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            {{#if estadoActual}}
+                            <div class="card-header {{estadoActual}}">
+                                <h4 class="card-title">Mesa de {{this.Materia.nombreMateria}}</h4>
+                            </div>
+                            {{/if}}
+                            <div class="card-body">
+                                <p><strong>Fecha:</strong> {{formatDate this.fechaMesa}}</p>
+                                <p><strong>Hora:</strong> {{this.horaMesa}}</p>
+                                <p><strong>Estado:</strong> {{this.estadoActual}}</p>
+                                <p><strong>Alumnos Inscritos:</strong> {{#each this.Alumno}} {{this.nombreCompleto}},
+                                    {{/each}}</p>
+                              <button class="btn btn-warning btnModificar" data-id="{{this._id}}"
+                                data-fecha="{{this.fechaMesa}}" data-hora="{{this.horaMesa}}"
+                                data-estado="{{this.estadoActual}}" data-materia="{{this.Materia._id}}">
+                                Modificar
+                            </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+                {{else}}
+                No hay mesas disponibles
+                {{/if}}
             </div>
         </div>
 
@@ -85,44 +120,8 @@
             </form>
         </div>
 
-        <!-- Tarjetas de mesas disponibles -->
-        <div class="container" style="margin-top: 20px;">
-            <h2>Mesas disponibles</h2>
-            <div class="row">
-                {{#each mesasActivas}}
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        {{#if estadoActual}}
-                        {{#if (eq estadoActual "activa")}}
-                        <div class="card-header" style="background-color: rgb(20, 96, 168);">
-                            <h4 class="card-title">Mesa de {{this.Materia.nombreMateria}}</h4>
-                        </div>
-                        {{else}}
-                        <div class="card-header" style="background-color: rgb(219, 106, 1);">
-                            <h4 class="card-title">Mesa de {{this.Materia.nombreMateria}}</h4>
-                        </div>
-                        {{/if}}
-                        {{/if}}
-                        <div class="card-body">
-                            <p><strong>Fecha:</strong> {{formatDate this.fechaMesa}}</p>
-                            <p><strong>Hora:</strong> {{this.horaMesa}}</p>
-                            <p><strong>Estado:</strong> {{this.estadoActual}}</p>
-                            <p><strong>Alumnos Inscritos:</strong> {{#each this.Alumno}} {{this.nombreCompleto}},
-                                {{/each}}</p>
-                            <button class="btn btn-warning btnModificar" data-id="{{this._id}}"
-                                data-fecha="{{this.fechaMesa}}" data-hora="{{this.horaMesa}}"
-                                data-estado="{{this.estadoActual}}" data-materia="{{this.Materia._id}}">
-                                Modificar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                {{/each}}
-            </div>
-        </div>
 
-
-         <!-- Modal para Modificar Mesa -->
+        <!-- Modal para Modificar Mesa -->
         <div class="modal fade" id="modalModificarMesa" tabindex="-1" role="dialog"
             aria-labelledby="modalModificarMesaLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -157,7 +156,7 @@
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-warning">Modificar Mesa</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         </form>
                     </div>
                 </div>
