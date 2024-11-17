@@ -6,11 +6,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
-    <link rel="stylesheet" href="/Styles/main.css">
-    <link rel="stylesheet" href="/Styles/bootstrap.min.css">
+    
     <link rel="stylesheet" href="/Styles/Admin_Mesa.css">
     <link rel="stylesheet" href="/Styles/estilosGlobales.css" />
+
+     <link rel="stylesheet" href="/Styles/main.css" />
+    <link rel="stylesheet" href="/Styles/bootstrap.min.css" />
     <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
+    <script src="/js/jsBoostrap/material.min.js"></script>
+    <script src="/js/jsBoostrap/ripples.min.js"></script>
+    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
+    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
+    <script src="/js/jsBoostrap/main.js"></script>
+
     <script src="/js/Admin_Mesa.js"></script>
 </head>
 
@@ -41,6 +49,7 @@
 
     <!-- Contenido principal -->
     <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
+
         <div id="mensajeToast" class="toast-container" style="display: none;">
             <p id="mensajeTexto"></p>
         </div>
@@ -78,11 +87,11 @@
                                 <p><strong>Estado:</strong> {{this.estadoActual}}</p>
                                 <p><strong>Alumnos Inscritos:</strong> {{#each this.Alumno}} {{this.nombreCompleto}},
                                     {{/each}}</p>
-                              <button class="btn btn-warning btnModificar" data-id="{{this._id}}"
-                                data-fecha="{{this.fechaMesa}}" data-hora="{{this.horaMesa}}"
-                                data-estado="{{this.estadoActual}}" data-materia="{{this.Materia._id}}">
-                                Modificar
-                            </button>
+                                <button class="btn btn-warning btnModificar" data-id="{{this._id}}"
+                                    data-fecha="{{this.fechaMesa}}" data-hora="{{this.horaMesa}}"
+                                    data-estado="{{this.estadoActual}}" data-materia="{{this.Materia._id}}">
+                                    Modificar
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -97,7 +106,7 @@
         <!-- Formulario para agregar una nueva mesa -->
         <div class="container" id="formAgregarMesa" style="margin-top: 20px;">
             <h2>Crear Mesa</h2>
-            <form>
+            <form  class="bg-light p-4 rounded shadow-sm">
                 <div class="form-group">
                     <label for="fechaMesa">Fecha de la Mesa:</label>
                     <input type="date" id="fechaMesa" name="fechaMesa" class="form-control" required>
@@ -122,15 +131,15 @@
 
 
         <!-- Modal para Modificar Mesa -->
-        <div class="modal fade" id="modalModificarMesa" tabindex="-1" role="dialog"
-            aria-labelledby="modalModificarMesaLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <div class="modal fade" id="modalModificarMesa" tabindex="-1" aria-labelledby="modalModificarMesaLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header bg-primary text-white" style="background-color: orange;">
+                    <div class="modal-header" style="background-color: orange;">
                         <h5 class="modal-title" id="modalModificarMesaLabel">Modificar Mesa</h5>
                     </div>
                     <div class="modal-body">
-                        <form id="formModificar">
+                        <form id="formModificar" >
                             <input type="hidden" id="idMesa" name="id" class="form-control">
                             <div class="form-group">
                                 <label for="fechaMesaMod">Fecha de la mesa:</label>
@@ -155,7 +164,7 @@
                                     {{/each}}
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-warning">Modificar Mesa</button>
+                            <button type="submit" class="btn btn-primary">Modificar Mesa</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         </form>
                     </div>
@@ -165,9 +174,7 @@
 
     </section>
 
-    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
-    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
-    <script src="/js/jsBoostrap/main.js"></script>
+
 
 </body>
 

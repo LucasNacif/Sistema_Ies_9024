@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/Styles/main.css">
     <link rel="stylesheet" href="/Styles/bootstrap.min.css">
     <link rel="stylesheet" href="/Styles/Admin_AlumnoEstado.css">
+    <link rel="stylesheet" href="/Styles/estilosGlobales.css" />
     <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
     <script src="/js/jsBoostrap/bootstrap.min.js"></script>
     <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
@@ -44,48 +45,62 @@
         </div>
     </section>
 
-    <!-- Contenido de la página principal -->
     <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
-
-        <!-- Barra de navegación superior (NavBar) -->
+        <div id="mensajeToast" class="toast-container" style="display: none;">
+            <p id="mensajeTexto"></p>
+        </div>
         <nav class="full-box dashboard-Navbar">
             <ul class="full-box list-unstyled text-right">
                 <li class="pull-left">
-                    <!-- Botón para mostrar/ocultar el menú lateral -->
                     <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
                 </li>
             </ul>
         </nav>
-        <div class="container">
-            <h1>Gestión Académica</h1>
+        <div class="dashboard-header">
+            <div class="header-content">
+                <h1 class="dashboard-title">Gestión Académica</h1>
+                <p class="dashboard-subtitle">Administración de Estado de Alumnos</p>
+            </div>
+        </div>
+            <div class="container">
+                <form id="alumnoForm" class="bg-light p-4 rounded shadow-sm">
+                <h2 class="my-4 text-center">Formulario de Alumno</h2>
+                    <div class="form-group">
+                        <label for="docAlumno">Documento del Alumno:</label>
+                        <input type="text" id="docAlumno" name="docAlumno" class="form-control" required>
+                        <div class="error-message" style="display:none;">Documento inválido.</div>
+                    </div>
 
-            <h2>Formulario de Alumno</h2>
-            <form id="alumnoForm">
-                <label for="docAlumno">Documento del Alumno:</label><br>
-                <input type="text" id="docAlumno" name="docAlumno" required><br><br>
+                    <div class="form-group">
+                        <label for="nombreMateria">Nombre de la Materia:</label>
+                        <input type="text" id="nombreMateria" name="nombreMateria" class="form-control" required>
+                        <div class="error-message" style="display:none;">Nombre de la materia requerido.</div>
+                    </div>
 
-                <label for="nombreMateria">Nombre de la Materia:</label><br>
-                <input type="text" id="nombreMateria" name="nombreMateria" required><br><br>
+                    <div class="form-group">
+                        <label for="estadoActual">Estado Actual:</label>
+                        <select id="estadoActual" name="estadoActual" class="form-control" required>
+                            <option value="acreditado">Acreditado</option>
+                            <option value="regular">Regular</option>
+                            <option value="libre">Libre</option>
+                            <option value="sin estado">Sin Estado</option>
+                        </select>
+                        <div class="error-message" style="display:none;">Seleccione un estado.</div>
+                    </div>
 
-                <label for="estadoActual">Estado Actual:</label><br>
-                <select id="estadoActual" name="estadoActual" required>
-                    <option value="acreditado">Acreditado</option>
-                    <option value="regular">Regular</option>
-                    <option value="libre">Libre</option>
-                    <option value="sin estado">Sin Estado</option>
-                </select><br><br>
+                    <button type="submit" class="btn btn-primary btn-block">Guardar/Modificar estado</button>
+                </form>
 
-                <button type="submit">Guardar/Modificar estado</button>
-            </form>
 
-            <!-- Filtros para buscar alumnos -->
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <input id="numDocAlumn" type="text" class="form-control"
-                        placeholder="Buscar por nombre o documento">
-                </div>
-                <div class="col-md-2">
-                    <button id="BuscarAlumnoBtn" class="btn btn-primary">Buscar</button>
+                <!-- Filtros para buscar alumnos -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <input id="numDocAlumn" type="text" class="form-control"
+                            placeholder="Buscar por nombre o documento">
+                    </div>
+                    <div class="col-md-2">
+                        <button id="BuscarAlumnoBtn" class="btn btn-primary btn-block">Buscar</button>
+                    </div>
                 </div>
             </div>
 
@@ -194,7 +209,6 @@
             </table>
             {{/if}}
 
-
     </section>
 
     <script>
@@ -206,9 +220,7 @@
             window.location.href = `/alumnoEstado/buscar/${numDocAlumn}`;
         });
 
-
     </script>
-    <!-- Scripts -->
     <script src="/js/Admin_AlumnoEstado.js"></script>
 </body>
 

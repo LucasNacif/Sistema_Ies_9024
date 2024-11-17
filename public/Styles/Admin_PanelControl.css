@@ -6,7 +6,7 @@
     margin: 0 auto;
     max-width: 1400px;
 }
-
+ 
 .container {
     margin-top: 70px;
 }
@@ -14,7 +14,7 @@
 .card {
     position: relative;
     border: none;
-    border-radius: 15px;
+    border-radius: 15px !important;
     overflow: hidden;
     background: white;
     box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
@@ -117,48 +117,6 @@
         transform: translateX(-50%);
         opacity: 1;
     }
-}
-/* Estilos para el encabezado */
-.dashboard-header {
-    background: linear-gradient(135deg, #2c3e50, #3498db);
-    padding: 40px 20px;
-    margin-top: 48px; /* Agregado para la barra de navegación */
-    margin-bottom: 30px;
-    position: relative;
-    overflow: hidden;
-    z-index: 0;
-}
-
-.dashboard-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
-    opacity: 0.2;
-}
-
-.header-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-}
-
-.dashboard-title {
-    color: white;
-    font-size: 2.5em;
-    margin: 0;
-    font-weight: 600;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-}
-
-.dashboard-subtitle {
-    color: rgba(255,255,255,0.9);
-    font-size: 1.1em;
-    margin: 10px 0 25px 0;
 }
 
 .add-career-btn {

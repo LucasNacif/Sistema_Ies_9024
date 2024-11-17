@@ -7,14 +7,20 @@
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
-    <link rel="stylesheet" href="/Styles/main.css" />
-    <link rel="stylesheet" href="/Styles/bootstrap.min.css" />
+   
     <link rel="stylesheet" href="/Styles/Admin_PanelControl.css" />
     <link rel="stylesheet" href="/Styles/estilosGlobales.css" />
-    <script src="/js/Admin_PanelControl.js"></script>
+
+    <link rel="stylesheet" href="/Styles/main.css" />
+    <link rel="stylesheet" href="/Styles/bootstrap.min.css" />
     <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
     <script src="/js/jsBoostrap/material.min.js"></script>
     <script src="/js/jsBoostrap/ripples.min.js"></script>
+    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
+    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
+    <script src="/js/jsBoostrap/main.js"></script>
+
+    <script src="/js/Admin_PanelControl.js"></script>
 </head>
 
 <body>
@@ -47,10 +53,10 @@
             </ul>
         </div>
     </section>
-    
-  <div id="mensajeToast" class="toast-container" style="display: none;">
-            <p id="mensajeTexto"></p>
-        </div>
+
+    <div id="mensajeToast" class="toast-container" style="display: none;">
+        <p id="mensajeTexto"></p>
+    </div>
 
     <!-- Contenido de la página principal -->
     <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
@@ -63,22 +69,16 @@
             </ul>
         </nav>
 
-
-        {{!-- <div class="container text-center" style="display: flex;">
-            <button id="toggleFormBtn" class="btn btn-primary" onclick="agregarCarreras()">Agregar nueva
-                carrera</button>
-        </div> --}}
-
-<div class="dashboard-header">
-    <div class="header-content">
-        <h1 class="dashboard-title">Gestión de Carreras</h1>
-        <p class="dashboard-subtitle">Instituto de Educación Superior</p>
-        <button id="toggleFormBtn" class="add-career-btn" onclick="agregarCarreras()">
-            <i class="zmdi zmdi-plus"></i>
-            Nueva Carrera
-        </button>
-    </div>
-</div>
+        <div class="dashboard-header">
+            <div class="header-content">
+                <h1 class="dashboard-title">Gestión de Carreras</h1>
+                <p class="dashboard-subtitle">Instituto de Educación Superior</p>
+                <button id="toggleFormBtn" class="add-career-btn" onclick="agregarCarreras()">
+                    <i class="zmdi zmdi-plus"></i>
+                    Nueva Carrera
+                </button>
+            </div>
+        </div>
 
         {{!-- Contenedor donde se mostrarán las carreras --}}
         <div class="full-box text-center carrera-container" id="listaCarreras" style="padding: 30px 10px;">
@@ -111,7 +111,7 @@
                                 <input type="number" class="form-control" id="duracion" required />
                             </div>
                             <button type="submit" class="btn btn-primary">Agregar</button>
-                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         </form>
                     </div>
                 </div>
@@ -172,9 +172,7 @@
         </div>
 
     </section>
-    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
-    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
-    <script src="/js/jsBoostrap/main.js"></script>
+
 </body>
 
 </html>
