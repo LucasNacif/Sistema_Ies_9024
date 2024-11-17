@@ -6,7 +6,7 @@ router.post("/alumnoEstado/agregar", controller.crearAlumnoEstado);
 
 router.get("/alumnoEstado/buscar/:numDocAlumn", controller.buscarAlumnoYMaterias);
 
-router.put(`/alumnoEstado/eliminar/:id`, controller.eliminarEstadoAlumno);
+router.put(`/alumnoEstado/eliminar/:id`, controller.modificarEstadoAlumno);
 
 router.get('/alumnoEstado/historial/:id', controller.obtenerHistorialEstados);
 

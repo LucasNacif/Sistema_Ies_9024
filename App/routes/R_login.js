@@ -6,6 +6,6 @@ router.post('/index/login', autentificador.login);
 
 router.post('/index/registrar', autentificador.registrar);
 
-router.get('/index/logout', autentificador.exit);
+router.get('/logout', autentificador.exit);
 
 module.exports = router;

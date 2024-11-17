@@ -24,19 +24,18 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (response.ok) {
-                alert("Mesa creada exitosamente");
-                location.reload();
+                mostrarToast("Mesa creada exitosamente", "success");
             } else {
                 throw new Error("Hubo un problema al crear la mesa");
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Error al crear la mesa. Inténtalo de nuevo.");
+            mostrarToast("Error al crear la mesa. Inténtalo de nuevo.", "error");
         }
     });
 
     //Modificar mesa
-    const formModificarMesa = document.getElementById("formModificar")
+    const formModificarMesa = document.getElementById("formModificar");
     formModificarMesa.addEventListener("submit", async (event) => {
         event.preventDefault();
 
@@ -63,14 +62,13 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (response.ok) {
-                alert("Mesa modificada exitosamente");
-                location.reload();
+                mostrarToast("Mesa modificada exitosamente", "success");
             } else {
                 throw new Error("Hubo un problema al modificar la mesa");
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Error al modificar la mesa. Inténtalo de nuevo.");
+            mostrarToast("Error al modificar la mesa. Inténtalo de nuevo.", "error");
         }
     });
 
@@ -78,14 +76,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const botonesModificar = document.querySelectorAll(".btnModificar");
     botonesModificar.forEach(button => {
         button.addEventListener("click", (e) => {
-
             const mesaId = e.target.getAttribute("data-id");
             const horaMesa = e.target.getAttribute("data-hora");
             const materiaId = e.target.getAttribute("data-materia");
             const estadoMesa = e.target.getAttribute("data-estado");
             const fechaMesa = e.target.getAttribute("data-fecha");
-
-            console.log(fechaMesa)
 
             // Llenar los datos en el formulario del modal
             document.getElementById("idMesa").value = mesaId;
@@ -97,5 +92,19 @@ document.addEventListener("DOMContentLoaded", () => {
             $('#modalModificarMesa').modal('show');
         });
     });
-
 });
+
+// Para mostrar mensajes
+function mostrarToast(mensaje, tipo = "info") {
+    const toast = document.getElementById("mensajeToast");
+    const texto = document.getElementById("mensajeTexto");
+
+    texto.textContent = mensaje;
+    toast.className = `toast-container ${tipo}`;
+    toast.style.display = "block";
+
+    setTimeout(() => {
+        toast.style.display = "none";
+        location.reload();
+    }, 1500);
+}

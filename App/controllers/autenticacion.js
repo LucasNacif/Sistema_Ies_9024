@@ -71,18 +71,19 @@ exports.login = async (req, res) => {
   }
 };
 
-// Método de registro
+
+// Método de registro para alumnos y bedeles
 exports.registrar = async (req, res) => {
   const { dni, email, nombre, password, rol } = req.body;
 
   if (!dni || !password) {
-    return res.status(400).send({ status: "Error", message: "Los campos están incompletos" });
+    return res.status(400).json({ message: "Los campos están incompletos" });
   }
 
   try {
     const usuarioExistente = await Usuario.findOne({ dni });
     if (usuarioExistente) {
-      return res.status(400).send({ status: "Error", message: "Este usuario ya existe" });
+      return res.status(400).json({ message: "Este usuario ya existe" });
     }
 
     // Hashear contraseña
@@ -97,39 +98,51 @@ exports.registrar = async (req, res) => {
       password: hashPassword,
       rol: rol === "bedel" ? "bedel" : "alumno"
     });
-
     await nuevoUsuario.save();
 
     // Creo el token JWT y configuro la cookie
     const token = crearTokenJWT(nuevoUsuario);
     configurarCookie(res, token);
-
-    return redirigirSegunRol(nuevoUsuario, res);
-
+    return res.status(201).json({ message: "Usuario creado correctamente" });
 
   } catch (error) {
     console.error('Error en registro:', error);
-    return res.status(500).send({ status: "Error", message: "Error interno del servidor" });
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
+//Metodo para traer bedeles
+exports.traerBedel = async (req, res) => {
+  try {
+    const bedel = await Usuario.find({ rol: "bedel" });
+    if (!bedel) {
+      return res.status(404).json({ message: "No hay bedeles registrados" });
+    }
+    return res.status(200).json(bedel);
+  } catch (error) {
+    console.error('Error en traerBedel:', error);
+    return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
 // Metodo para eliminar usuarios
 exports.delete = async (req, res) => {
-  const { dni } = req.body;
+  const { id } = req.params;
   try {
-    const user = await Usuario.delete(req.dni);
-      if (!Usuario ) {
-      return res.status(404).send({ status:"Error", message:"Usuario no encontrado "});
-      }
-      res.json({ message: 'Carrera eliminada correctamente' });
-    } catch ( err) {
-      console.error(err)
-      res.status(500).json( "Error al eliminar un usuario")
+    const user = await Usuario.findByIdAndDelete(id);
+    if (!user) {
+      return res.status(404).send({ status: "Error", message: "Bedel no encontrado " });
+    }
+    res.json({ message: 'Bedel eliminado correctamente' });
+  } catch (err) {
+    console.error(err)
+    res.status(500).json("Error al eliminar un usuario")
   }
-}
+};
 
 // Método para cerrar sesión
 exports.exit = (req, res) => {
   res.clearCookie("jwt", { path: "/" });
   return res.redirect("/");
+
 };

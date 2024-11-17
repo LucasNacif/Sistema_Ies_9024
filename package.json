@@ -30,6 +30,7 @@
     "mongodb": "^6.7.0",
     "mongoose": "^8.4.4",
     "nodemon": "^3.1.0",
-    "proyectonode": "file:"
+    "proyectonode": "file:",
+    "sweetalert2": "^11.14.5"
   }
 }

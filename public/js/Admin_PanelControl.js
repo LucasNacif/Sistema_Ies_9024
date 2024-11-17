@@ -9,6 +9,7 @@ function agregarCarreras() {
     document.getElementById('duracion').value = '';
     $('#addAlumnoModal').modal('show');
 };
+
 // Función para modificar una carrera
 function modificarCarrera(idCarrera) {
     fetch(`/carrera/obtener/${idCarrera}`)
@@ -29,7 +30,8 @@ function modificarCarrera(idCarrera) {
         })
         .catch(error => console.error('Error al cargar los datos de la carrera:', error));
 };
-// // Abrir el modal de confirmación para dar de baja carrera
+
+// Abrir el modal de confirmación para dar de baja carrera
 function openDeleteModal(idCarrera) {
     carreraIDbaja = idCarrera;
     $('#confirmDeleteModal').modal('show');
@@ -56,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                      <h5 class="card-title">${carrera.titulo}</h5>
                                      <p class="card-text"><strong>Carga Horaria:</strong> ${carrera.cargaHoraria} horas</p>
                                      <p class="card-text"><strong>Duración:</strong> ${carrera.duracion} años</p>
-                                     <a href="/planEstudio/${carrera._id}" class="btn btn-info">Informacion</a>
+                                     <a href="/planEstudio/${carrera._id}" class="btn btn-info">Información</a>
                                      <button type="button" class="btn btn-warning" onclick="modificarCarrera('${carrera._id}')">Modificar</button>
                                      <button type="button" class="btn btn-danger" onclick="openDeleteModal('${carrera._id}')">Dar de baja</button>
                                  </div>
@@ -80,7 +82,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-
     // Evento de envío del formulario para agregar una nueva carrera
     document.getElementById('formAgregarCarrera').addEventListener('submit', function (event) {
         event.preventDefault();
@@ -90,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const duracion = parseInt(document.getElementById('duracion').value, 10) || 0;
 
         if (!nombreCarrera) {
-            showMessage('El nombre de la carrera es obligatorio', 'danger');
+            mostrarToast('El nombre de la carrera es obligatorio', 'danger');
             return;
         }
         fetch('/carrera/agregar', {
@@ -100,13 +101,13 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => {
                 if (response.ok) {
-                    showMessage('Carrera agregada con éxito', 'success');
+                    mostrarToast('Carrera agregada con éxito', 'success');
                     cargarCarreras();
                     document.getElementById('formAgregarCarrera').reset();
                     $('#addAlumnoModal').modal('hide');
                 } else {
                     response.json().then(data => {
-                        showMessage(data.message || 'Error al agregar la carrera', 'danger');
+                        mostrarToast(data.message || 'Error al agregar la carrera', 'danger');
                     });
                 }
             })
@@ -128,11 +129,11 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => {
                 if (response.ok) {
-                    showMessage('Carrera modificada con éxito', 'success');
+                    mostrarToast('Carrera modificada con éxito', 'success');
                     cargarCarreras();
                     $('#modifyCareerModal').modal('hide');
                 } else {
-                    showMessage('Error al modificar la carrera', 'danger');
+                    mostrarToast('Error al modificar la carrera', 'danger');
                 }
             })
             .catch(error => console.error('Error al modificar la carrera:', error));
@@ -145,41 +146,32 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: { 'Content-Type': 'application/json' }
         })
         .then(response => {
-            console.log(response.message);
             if (response.ok) {
-                showMessage('Carrera dada de baja correctamente', 'success');
-                cargarCarreras(); // Recargar la lista de carreras
+                mostrarToast('Carrera dada de baja correctamente', 'success');
+                cargarCarreras(); 
                 $('#confirmDeleteModal').modal('hide');
             } else {
-                showMessage('Error al dar de baja la carrera', 'danger');
+                mostrarToast('Error al dar de baja la carrera', 'danger');
             }
         })
         .catch(error => console.error('Error al dar de baja carrera:', error));
     });
 
-    // Función para mostrar mensajes en pantalla
-    function showMessage(message, type) {
-        const messageContainer = document.createElement('div');
-        messageContainer.className = `alert alert-${type}`;
-        messageContainer.textContent = message;
-        document.body.appendChild(messageContainer);
-
-        // Eliminar el mensaje después de 3 segundos
-        setTimeout(() => {
-            messageContainer.remove();
-        }, 3000);
-    }
-
-    // Cerrar sesión
-    document.getElementById('logout-button').addEventListener('click', function (e) {
-        e.preventDefault(); // Evitar que se recargue la página
-        fetch('/index/logout', { method: 'POST', credentials: 'include' })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'ok') {
-                    window.location.href = data.redirect;
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    });
 });
+
+// Para mostrar mensajes
+function mostrarToast(mensaje, tipo = "info") {
+    const toast = document.getElementById("mensajeToast");
+    const texto = document.getElementById("mensajeTexto");
+  
+    texto.textContent = mensaje;
+    toast.className = `toast-container ${tipo}`;
+    toast.style.display = "block";
+  
+    // Ocultar automáticamente después de 3 segundos
+    setTimeout(() => {
+      toast.style.display = "none";
+      mostrarAlumnos(true);
+      location.reload();
+    }, 1500);
+}

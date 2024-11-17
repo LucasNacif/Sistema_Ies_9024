@@ -1,17 +1,16 @@
 
-
-//Guardar un nuevo EstadoAlumno
+// Guardar un nuevo EstadoAlumno
 document.getElementById("alumnoForm").addEventListener("submit", async function (event) {
-    event.preventDefault(); // Evita la recarga de la página
+    event.preventDefault(); 
 
     // Captura los valores de los campos
-    const nombreAlumno = document.getElementById("nombreAlumno").value;
+    const numDocAlumn = document.getElementById("docAlumno").value;
     const nombreMateria = document.getElementById("nombreMateria").value;
     const estadoActual = document.getElementById("estadoActual").value;
 
     // Define los datos a enviar
     const data = {
-        nombreAlumno,
+        numDocAlumn,
         nombreMateria,
         estadoActual
     };
@@ -29,46 +28,19 @@ document.getElementById("alumnoForm").addEventListener("submit", async function 
         if (response.ok) {
             // Maneja la respuesta en caso de éxito
             const result = await response.json();
-            alert("Datos guardados correctamente");
-            console.log("Respuesta del servidor:", result);
-            location.reload();
+            mostrarToast("Datos guardados correctamente", "success"); 
         } else {
             // Maneja el error si la petición falla
-            alert("Error al guardar los datos");
+            mostrarToast("Error al guardar los datos", "error"); // Muestra el mensaje de error
         }
     } catch (error) {
         console.error("Error:", error);
-        alert("Ocurrió un error al intentar guardar los datos");
+        mostrarToast("Ocurrió un error al intentar guardar los datos", "error"); // Muestra el mensaje de error
     }
 });
 
-// Función para mostrar mensajes en pantalla
-function showMessage(message, type) {
-    const messageContainer = document.createElement('div');
-    messageContainer.className = `alert alert-${type}`;
-    messageContainer.textContent = message;
-    document.body.appendChild(messageContainer);
-
-    // Eliminar el mensaje después de 3 segundos
-    setTimeout(() => {
-        messageContainer.remove();
-    }, 3000);
-}
-
-//Modificar un EstadoAlumno
-// Variables globales para modificar
-let idAlumnoEstadoToModify;
-
-// Función para modificar el estado del alumno
-
-
-
-
-
-
-//ELIMINAR MODAL Y TODA LA COSA
+// Modificar un EstadoAlumno
 let estadoId;
-//Abrir modal
 function openDeleteModal(id) {
     estadoId = id; // Guardar el ID del estado en la variable global
     console.log("ID del estado a eliminar:", estadoId); // Verifica que el ID se establezca correctamente
@@ -76,15 +48,15 @@ function openDeleteModal(id) {
     modal.style.display = 'block'; // Mostrar el modal
     modal.classList.add('show'); // Agregar clase para mostrar el modal
 }
-//Cerrar modal
+
 function closeModal() {
     const modal = document.getElementById('confirmDeleteModal');
     modal.style.display = 'none'; // Ocultar el modal
     modal.classList.remove('show'); // Remover clase para ocultar el modal
 }
+
 // Confirmar y realizar la solicitud fetch al hacer clic en "Dar De Baja"
 document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
-    //console.log("Botón de confirmación clickeado");
     if (estadoId) {
         try {
             const response = await fetch(`/alumnoEstado/eliminar/${estadoId}`, {
@@ -95,18 +67,31 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', async () =
                 body: JSON.stringify({ estado: 'Sin estado' }),
             });
 
-            const result = await response.json();
-            alert(result.message); // Mostrar el mensaje de respuesta
-            closeModal();
-            location.reload(); // Recargar la página para actualizar la vista
+            // Verificar la respuesta
+            if (response.ok) {
+                const result = await response.json();
+                mostrarToast(result.message, "success"); 
+                closeModal(); 
+            } else {
+                console.error("Error en la respuesta del servidor:", response.statusText);
+                mostrarToast("Hubo un error al procesar la solicitud", "error"); // Muestra el mensaje de error
+            }
         } catch (error) {
             console.error('Error al dar baja el estado:', error);
+            mostrarToast("Error de conexión o problema en el servidor", "error"); // Muestra el mensaje de error
         }
     }
 });
 
+// Opcional: Cerrar el modal si se hace clic fuera de él
+window.onclick = function (event) {
+    const modal = document.getElementById('confirmDeleteModal');
+    if (event.target == modal) {
+        closeModal();
+    }
+};
 
-//MOSTRAR HISTORIAL 
+// MOSTRAR HISTORIAL 
 
 function abrirModal(id) {
     idHist = id
@@ -137,7 +122,6 @@ function mostrarHistorial(historial) {
     });
 }
 
-
 async function obtenerHistorialEstados(id) {
     try {
         const response = await fetch(`/alumnoEstado/historial/${id}`);
@@ -150,7 +134,21 @@ async function obtenerHistorialEstados(id) {
         mostrarHistorial(historial); // Llama a otra función para mostrar el historial
     } catch (error) {
         console.error('Error al obtener el historial de estados:', error);
-        // Aquí puedes manejar el error y mostrar un mensaje en la UI si lo deseas
+        mostrarToast("Error al obtener el historial", "error"); // Muestra el mensaje de error
     }
 }
 
+// Función para mostrar el toast
+function mostrarToast(mensaje, tipo = "info") {
+    const toast = document.getElementById("mensajeToast");
+    const texto = document.getElementById("mensajeTexto");
+
+    texto.textContent = mensaje;
+    toast.className = `toast-container ${tipo}`;
+    toast.style.display = "block";
+
+    setTimeout(() => {
+        toast.style.display = "none";
+        location.reload();
+    }, 1500);
+}
