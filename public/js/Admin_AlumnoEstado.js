@@ -1,8 +1,7 @@
 
-
-//Guardar un nuevo EstadoAlumno
+// Guardar un nuevo EstadoAlumno
 document.getElementById("alumnoForm").addEventListener("submit", async function (event) {
-    event.preventDefault(); // Evita la recarga de la página
+    event.preventDefault(); 
 
     // Captura los valores de los campos
     const numDocAlumn = document.getElementById("docAlumno").value;
@@ -29,43 +28,18 @@ document.getElementById("alumnoForm").addEventListener("submit", async function 
         if (response.ok) {
             // Maneja la respuesta en caso de éxito
             const result = await response.json();
-            alert("Datos guardados correctamente");
-            console.log("Respuesta del servidor:", result);
-            location.reload();
+            mostrarToast("Datos guardados correctamente", "success"); 
         } else {
             // Maneja el error si la petición falla
-            alert("Error al guardar los datos");
+            mostrarToast("Error al guardar los datos", "error"); // Muestra el mensaje de error
         }
     } catch (error) {
         console.error("Error:", error);
-        alert("Ocurrió un error al intentar guardar los datos");
+        mostrarToast("Ocurrió un error al intentar guardar los datos", "error"); // Muestra el mensaje de error
     }
 });
 
-// Función para mostrar mensajes en pantalla
-function showMessage(message, type) {
-    const messageContainer = document.createElement('div');
-    messageContainer.className = `alert alert-${type}`;
-    messageContainer.textContent = message;
-    document.body.appendChild(messageContainer);
-
-    // Eliminar el mensaje después de 3 segundos
-    setTimeout(() => {
-        messageContainer.remove();
-    }, 3000);
-}
-
-//Modificar un EstadoAlumno
-// Variables globales para modificar
-let idAlumnoEstadoToModify;
-
-
-
-
-
-
-
-//ELIMINAR MODAL Y TODA LA COSA
+// Modificar un EstadoAlumno
 let estadoId;
 function openDeleteModal(id) {
     estadoId = id; // Guardar el ID del estado en la variable global
@@ -96,18 +70,15 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', async () =
             // Verificar la respuesta
             if (response.ok) {
                 const result = await response.json();
-                alert(result.message); // Mostrar el mensaje de respuesta
-                closeModal(); // Cerrar el modal
-
-                // Recargar solo si la actualización fue exitosa
-                location.reload(); // Recargar la página para actualizar la vista
+                mostrarToast(result.message, "success"); 
+                closeModal(); 
             } else {
                 console.error("Error en la respuesta del servidor:", response.statusText);
-                alert("Hubo un error al procesar la solicitud.");
+                mostrarToast("Hubo un error al procesar la solicitud", "error"); // Muestra el mensaje de error
             }
         } catch (error) {
             console.error('Error al dar baja el estado:', error);
-            alert("Error de conexión o problema en el servidor.");
+            mostrarToast("Error de conexión o problema en el servidor", "error"); // Muestra el mensaje de error
         }
     }
 });
@@ -120,8 +91,7 @@ window.onclick = function (event) {
     }
 };
 
-
-//MOSTRAR HISTORIAL 
+// MOSTRAR HISTORIAL 
 
 function abrirModal(id) {
     idHist = id
@@ -152,7 +122,6 @@ function mostrarHistorial(historial) {
     });
 }
 
-
 async function obtenerHistorialEstados(id) {
     try {
         const response = await fetch(`/alumnoEstado/historial/${id}`);
@@ -165,7 +134,21 @@ async function obtenerHistorialEstados(id) {
         mostrarHistorial(historial); // Llama a otra función para mostrar el historial
     } catch (error) {
         console.error('Error al obtener el historial de estados:', error);
-        // Aquí puedes manejar el error y mostrar un mensaje en la UI si lo deseas
+        mostrarToast("Error al obtener el historial", "error"); // Muestra el mensaje de error
     }
 }
 
+// Función para mostrar el toast
+function mostrarToast(mensaje, tipo = "info") {
+    const toast = document.getElementById("mensajeToast");
+    const texto = document.getElementById("mensajeTexto");
+
+    texto.textContent = mensaje;
+    toast.className = `toast-container ${tipo}`;
+    toast.style.display = "block";
+
+    setTimeout(() => {
+        toast.style.display = "none";
+        location.reload();
+    }, 1500);
+}

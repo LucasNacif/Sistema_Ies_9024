@@ -1,216 +1,125 @@
-/* Base styling */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f4f8;
-    margin: 0;
-    padding: 0;
-}
-.modal-backdrop{
-    z-index: 0 !important;
-}
 
-
-/* Container */
-.container {
-    margin: 50px auto;
-    max-width: 1000px;
+/* Estilo para el contenedor del formulario */
+#formAgregarMesa {
+    max-width: 600px;
+    margin: 20px auto;
     padding: 20px;
-    background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
 }
 
-/* Table */
-table {
-    font-family: 'Arial', sans-serif;
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
+
+body {  
+    font-family: Arial, sans-serif;  
+    background-color: #f0f4f8;  
+    margin: 0;  
+    padding: 0;  
+}  
+
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+/* Contenedor principal */
+.container {  
+    margin: 30px auto;  
+    max-width: 1200px;  
+    padding: 25px;  
+    background-color: #ffffff;  
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
+    border-radius: 15px;  
+    width: 99%;
+}  
+
+/* Estilos para las tarjetas */
+.card {
+    position: relative;
+    border: none;
+    border-radius: 15px;
     overflow: hidden;
+    background: white;
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+    flex: 1 1 calc(33.33% - 20px);
+    min-width: 300px;
 }
 
-th,
-td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #e1e1e1;
-    text-align: left;
-}
 
-th {
-    background-color: #3088fa;
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 16px;
-}
-
-tbody tr {
-    transition: background-color 0.3s ease;
-}
-
-tbody tr:hover {
-    background-color: #f1f5f9;
-}
-
-.alumno-dado-de-baja {
-    background-color: #fdecea;
-    color: #e74c3c;
-}
-
-.alumno-activo {
-    background-color: #eafaf1;
-    color: #27ae60;
-}
-
-/* Button styles */
-.botones {
-    text-align: right;
-} 
-
-.btn {
-    padding: 8px 16px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-    margin-right: 10px;
-}
-
-.btn-add {
-    background-color: #3498db;
+.card-header {
+    background: linear-gradient(135deg, #2c3e50, #3498db);
     color: white;
-}
-
-.btn-edit {
-    background-color: #f39c12;
-    color: white;
-}
-
-.btn-delete {
-    background-color: #e74c3c;
-    color: white;
-}
-
-.btn-volver {
-    background-color: #16c0c2;
-    color: white;
-}
-
-.btn:hover {
-    opacity: 0.9;
-}
-
-/* Form styling */
-form {
-    margin-top: 20px;
-}
-
-form div {
-    margin-bottom: 15px;
-}
-
-form label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #333;
-}
-
-form input[type="text"],
-form input[type="email"],
-form input[type="number"],
-form input[type="checkbox"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-form input[type="checkbox"] {
-    width: auto;
-    margin-right: 10px;
-}
-
-form button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-form .btn-add,
-form .btn-edit,
-form .btn-delete,
-form .btn-volver {
-    color: #ffffff;
+    padding: 20px;
+    font-size: 1.4em;
     font-weight: 500;
+    letter-spacing: 0.5px;
+    border: none;
 }
 
-form .btn-add {
-    background-color: #3498db;
+.card-header.activa {
+    background: linear-gradient(135deg, #2c3e50, #3498db);
 }
 
-form .btn-edit {
-    background-color: #f39c12;
+.card-header.suspendida {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
 }
 
-form .btn-delete {
-    background-color: #e74c3c;
+.card-body {
+    padding: 25px;
+    background: #ffffff;
 }
 
-form .btn-volver {
-    background-color: #16c0c2;
-}
-
-/* Headings */
-h2 {
-    text-align: center;
-    color: #333;
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-/* Alerts */
-.alert-success,
-.alert-danger {
-    display: none;
-    padding: 10px;
-    border-radius: 5px;
+.card-body p {
+    color: #636e72;
+    line-height: 1.6;
     margin-bottom: 15px;
 }
 
-/* Search Container */
-.search-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 25px;
-    padding: 5px 15px;
-    background-color: #f9f9f9;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+.card-body strong {
+    color: #2d3436;
+    font-weight: 600;
 }
 
-.search-container input {
-    flex-grow: 1;
-    border: none;
-    padding: 10px;
-    font-size: 16px;
-    background-color: transparent;
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(-50%);
+        opacity: 1;
+    }
 }
 
-.search-container input:focus {
-    outline: none;
+/* Media queries */
+@media (max-width: 1200px) {
+    .container {
+        margin: 20px;
+    }
 }
 
-.search-icon {
-    color: #777;
-    font-size: 20px;
-    margin-left: 10px;
+@media (max-width: 768px) {
+    .dashboard-header {
+        padding: 30px 15px;
+    }
+
+    .dashboard-title {
+        font-size: 2em;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .card {
+        margin: 10px;
+    }
+
+    .col-md-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
 }

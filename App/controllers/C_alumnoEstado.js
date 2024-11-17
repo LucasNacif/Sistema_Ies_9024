@@ -7,18 +7,15 @@ const mongoose = require('mongoose');
 exports.crearAlumnoEstado = async (req, res) => {
   try {
     const { numDocAlumn, nombreMateria, estadoActual } = req.body;
-    console.log(numDocAlumn, nombreMateria, estadoActual)
     // Buscar el alumno
     const alumno = await Alumno.findOne({ numDocAlumn });
     if (!alumno) {
-      console.log("Alumno no encontrado");
       return res.status(404).json({ message: "Alumno no encontrado" });
     }
 
     // Buscar la materia
     const materia = await Materia.findOne({ nombreMateria: nombreMateria });
     if (!materia) {
-      console.log("Materia no encontrada");
       return res.status(404).json({ message: "Materia no encontrada" });
     }
 
@@ -43,7 +40,7 @@ exports.crearAlumnoEstado = async (req, res) => {
       res.status(201).json({ message: "AlumnoEstado creado exitosamente" });
     }
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(500).json({ message: `Error al crear o actualizar el AlumnoEstado: ${error.message}` });
   }
 };
@@ -109,7 +106,6 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
 
 exports.eliminarEstadoAlumno = async (req, res) => {
   const id = req.params.id;
-  //console.log('ID recibido:', id);
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: 'ID de estado no válido' });
   }
