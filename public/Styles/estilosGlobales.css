@@ -174,22 +174,19 @@ select.form-control {
 }
 
 button[type="submit"] {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: white;
+    background: linear-gradient(135deg, #2c3e50, #3498db);
     padding: 8px 20px;
     font-size: 16px;
     border-radius: 5px;
 }
 
 button[type="submit"]:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+    background: linear-gradient(300deg, #2c3e50, #3498db);
 }
 
 /* Estilos para el encabezado */
 .dashboard-header {
-    background: linear-gradient(135deg, #2c3e50, #3498db);
+    background: linear-gradient(135deg, #292d31, #1d48d6);
     padding: 40px 20px;
     margin-top: 50px;
     margin-bottom: 30px;

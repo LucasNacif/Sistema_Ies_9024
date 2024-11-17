@@ -14,9 +14,6 @@ body {
     padding: 0;
 }
 
-
-
-/* Estilos para los filtros de búsqueda */
 .row.mb-4 .form-control {
     border-radius: 4px;
     padding: 10px;
@@ -26,7 +23,6 @@ body {
     border-color: #007bff;
 }
 
-/* Estilos de las tarjetas */
 .card {
     border: 1px solid #ddd;
     border-radius: 8px;
