@@ -46,28 +46,33 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(carreras => {
                 const listaCarreras = document.getElementById('listaCarreras');
-                listaCarreras.innerHTML = '';
+                listaCarreras.innerHTML = ''; 
+                const row = document.createElement('div');
                 carreras.forEach(carrera => {
-                    listaCarreras.innerHTML += `
-                         <div class="col-md-4">
-                             <div class="card" style="margin: 10px;">
-                                 <div class="card-header text-center">
-                                     ${carrera.nombreCarrera}
-                                 </div>
-                                 <div class="card-body">
-                                     <h5 class="card-title">${carrera.titulo}</h5>
-                                     <p class="card-text"><strong>Carga Horaria:</strong> ${carrera.cargaHoraria} horas</p>
-                                     <p class="card-text"><strong>Duración:</strong> ${carrera.duracion} años</p>
-                                     <a href="/planEstudio/${carrera._id}" class="btn btn-info">Información</a>
-                                     <button type="button" class="btn btn-warning" onclick="modificarCarrera('${carrera._id}')">Modificar</button>
-                                     <button type="button" class="btn btn-danger" onclick="openDeleteModal('${carrera._id}')">Dar de baja</button>
-                                 </div>
-                             </div>
-                         </div>`;
+                    const col = document.createElement('div');
+                    col.innerHTML = `
+                        <div class="card" style="margin: 10px;">
+                            <div class="card-header text-center">
+                                ${carrera.nombreCarrera}
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">${carrera.titulo}</h5>
+                                <p class="card-text"><strong>Carga Horaria:</strong> ${carrera.cargaHoraria} horas</p>
+                                <p class="card-text"><strong>Duración:</strong> ${carrera.duracion} años</p>
+                                <a href="/planEstudio/${carrera._id}" class="btn btn-info">Información</a>
+                                <button type="button" class="btn btn-warning" onclick="modificarCarrera('${carrera._id}')">Modificar</button>
+                                <button type="button" class="btn btn-danger" onclick="openDeleteModal('${carrera._id}')">Dar de baja</button>
+                            </div>
+                        </div>
+                    `;
+                    row.appendChild(col);
                 });
+                listaCarreras.appendChild(row); // Agregar todas las cards dentro del contenedor row
             })
             .catch(error => console.error('Error al cargar carreras:', error));
     }
+    
+    
 
     // Mostrar/Ocultar formulario de agregar carrera
     const toggleFormBtn = document.getElementById('toggleFormBtn');
@@ -141,20 +146,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Dar de baja una carrera
     document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
-        fetch(`/carrera/baja/${carreraIDbaja}`, { 
+        fetch(`/carrera/baja/${carreraIDbaja}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' }
         })
-        .then(response => {
-            if (response.ok) {
-                mostrarToast('Carrera dada de baja correctamente', 'success');
-                cargarCarreras(); 
-                $('#confirmDeleteModal').modal('hide');
-            } else {
-                mostrarToast('Error al dar de baja la carrera', 'danger');
-            }
-        })
-        .catch(error => console.error('Error al dar de baja carrera:', error));
+            .then(response => {
+                if (response.ok) {
+                    mostrarToast('Carrera dada de baja correctamente', 'success');
+                    cargarCarreras();
+                    $('#confirmDeleteModal').modal('hide');
+                } else {
+                    mostrarToast('Error al dar de baja la carrera', 'danger');
+                }
+            })
+            .catch(error => console.error('Error al dar de baja carrera:', error));
     });
 
 });
@@ -163,15 +168,15 @@ document.addEventListener('DOMContentLoaded', function () {
 function mostrarToast(mensaje, tipo = "info") {
     const toast = document.getElementById("mensajeToast");
     const texto = document.getElementById("mensajeTexto");
-  
+
     texto.textContent = mensaje;
     toast.className = `toast-container ${tipo}`;
     toast.style.display = "block";
-  
+
     // Ocultar automáticamente después de 3 segundos
     setTimeout(() => {
-      toast.style.display = "none";
-      mostrarAlumnos(true);
-      location.reload();
+        toast.style.display = "none";
+        mostrarAlumnos(true);
+        location.reload();
     }, 1500);
 }

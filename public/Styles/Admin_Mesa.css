@@ -37,7 +37,7 @@ body {
 .card {
     position: relative;
     border: none;
-    border-radius: 15px;
+    border-radius: 15px !important;
     overflow: hidden;
     background: white;
     box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;

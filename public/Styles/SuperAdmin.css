@@ -1,4 +1,3 @@
-
 .nav-tabs {
     display: flex;
     justify-content: space-around;
@@ -9,13 +8,13 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.nav-tabs>li {
+.nav-tabs > li {
     flex: 1;
     margin: 0 5px;
     text-align: center;
 }
 
-.nav-tabs>li>a {
+.nav-tabs > li > a {
     display: block;
     color: #ffffff;
     font-size: 16px;
@@ -27,30 +26,72 @@
     background-color: transparent;
 }
 
-.nav-tabs>li>a:hover {
+.nav-tabs > li > a:hover {
     background-color: rgba(255, 255, 255, 0.2);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-.nav-tabs>li.active>a {
+.nav-tabs > li.active > a {
     background-color: #2f3694;
     font-weight: bold;
     color: #ffffff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
-/* Ajustes adicionales para responsive */
+
+/* Ajustes para pantallas pequeñas */
 @media (max-width: 767px) {
     .nav-tabs {
         flex-direction: column;
         padding: 10px;
     }
 
-    .nav-tabs>li {
+    .nav-tabs > li {
         margin-bottom: 10px;
     }
 
-    .nav-tabs>li>a {
+    .nav-tabs > li > a {
         font-size: 14px;
+    }
+
+    .table thead {
+        display: none;
+    }
+
+    .table tbody tr {
+        display: block;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    .table tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 15px;
+        text-align: left;
+        font-size: 13px;
+    }
+
+    .table tbody td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #34495e;
+        text-transform: uppercase;
+    }
+
+    .dashboard-sideBar {
+        width: 100%;
+        position: fixed;
+        transform: translateX(-100%);
+        transition: all 0.3s ease;
+    }
+
+    .dashboard-contentPage {
+        margin-left: 0;
+    }
+
+    .show-sidebar {
+        transform: translateX(0);
     }
 }
 
@@ -135,57 +176,12 @@
     background-color: #c0392b;
 }
 
-/* Responsividad para tablas */
-@media (max-width: 767px) {
-    .table thead {
-        display: none;
-    }
-
-    .table tbody tr {
-        display: block;
-        margin-bottom: 15px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-    }
-
-    .table tbody td {
-        display: flex;
-        justify-content: space-between;
-        padding: 12px 15px;
-        text-align: left;
-        font-size: 13px;
-    }
-
-    .table tbody td::before {
-        content: attr(data-label);
-        font-weight: bold;
-        color: #34495e;
-        text-transform: uppercase;
-    }
-}
-
-
-/* Responsive */
-@media (max-width: 767px) {
-    .dashboard-sideBar {
-        width: 100%;
-        position: fixed;
-        transform: translateX(-100%);
-        transition: all 0.3s ease;
-    }
-
-    .dashboard-contentPage {
-        margin-left: 0;
-    }
-
-    .show-sidebar {
-        transform: translateX(0);
-    }
-}
-
+/* Formulario */
 #formNuevoBedel {
     max-width: 600px;
     margin: 20px auto;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 14px;
 }

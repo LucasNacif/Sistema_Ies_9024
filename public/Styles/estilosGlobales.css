@@ -1,7 +1,5 @@
 
-body {  
-    background-color: #e7e7e7 !important;  
-} 
+
 /* Estilos comunes para todos los modales */
 .modal {
     backdrop-filter: none; /* Eliminamos el fondo difuso */
@@ -186,7 +184,7 @@ button[type="submit"]:hover {
 
 /* Estilos para el encabezado */
 .dashboard-header {
-    background: linear-gradient(135deg, #292d31, #1d48d6);
+    background: linear-gradient(135deg, #000000, #1d48d6);
     padding: 40px 20px;
     margin-top: 50px;
     margin-bottom: 30px;
