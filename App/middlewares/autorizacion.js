@@ -14,6 +14,7 @@ const verificarSesion = async (req, res, next) => {
     }
 
     const usuarioDecodificado = jwt.verify(token, process.env.JWT_SECRET);
+   
     usuarioLogueado = await Usuario.findOne({ dni: usuarioDecodificado.dni });
 
     console.log("\n Rol del usuario log: ", usuarioLogueado.rol);
