@@ -37,7 +37,7 @@ body {
 .card {
     position: relative;
     border: none;
-    border-radius: 15px;
+    border-radius: 15px !important;
     overflow: hidden;
     background: white;
     box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
@@ -63,7 +63,7 @@ body {
 }
 
 .card-header.suspendida {
-    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    background: linear-gradient(135deg, #502c2c, #db3434);
 }
 
 .card-body {

@@ -1,16 +1,26 @@
-.carrera-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 30px;
-    padding: 20px;
-    margin: 0 auto;
-    max-width: 1400px;
-}
- 
+/* Ajustar el contenedor principal */
 .container {
-    margin-top: 70px;
+    margin: 30px auto;  /* Centra el contenedor horizontalmente */
+    max-width: 1200px;   /* Limita el ancho máximo */
+    padding: 25px;       /* Relleno interno */
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    width: 95%;  /* Ajusta el ancho a un 95% del contenedor padre */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 30px;
+    justify-items: center; 
 }
 
+/* Responsividad: Contenedor de tarjetas */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;  /* Ajustar padding para dispositivos pequeños */
+    }
+}
+
+/* Ajustes específicos a las cards */
 .card {
     position: relative;
     border: none;
@@ -19,15 +29,24 @@
     background: white;
     box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
     transition: all 0.3s ease;
-    min-width: 350px;
+    min-width: 300px; /* Ajuste de tamaño */
     height: auto;
     margin: 0 auto;
+    width: 100%; /* Asegura que ocupe todo el espacio disponible */
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: rgba(17, 12, 46, 0.25) 0px 48px 100px 0px;
+
+/* Responsividad para cards en pantallas pequeñas */
+@media (max-width: 768px) {
+    .card {
+        min-width: 280px;
+        width: 100%;
+    }
 }
+
+
+
+
 
 .card-header {
     background: linear-gradient(135deg, #2193b0, #6dd5ed);
@@ -59,7 +78,7 @@
 
 .card-footer {
     background: #f8f9fa;
-    border-top: 1px solid rgba(0,0,0,0.05);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
     padding: 15px;
     display: flex;
     justify-content: center;
@@ -101,11 +120,6 @@
         grid-template-columns: 1fr;
         padding: 15px;
     }
-    
-    .card {
-        min-width: 280px;
-        width: 100%;
-    }
 }
 
 @keyframes slideIn {
@@ -113,6 +127,7 @@
         transform: translateX(100%);
         opacity: 0;
     }
+
     to {
         transform: translateX(-50%);
         opacity: 1;
@@ -131,13 +146,13 @@
     align-items: center;
     gap: 8px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
 
 .add-career-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     background: #f8f9fa;
 }
 

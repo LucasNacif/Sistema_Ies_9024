@@ -18,6 +18,7 @@ exports.obtenerMesasSegunAlum = async (req, res) => {
         // Busco el alumno por su número de documento
         const alumno = await Alumno.findOne({ numDocAlumn: documentoAlum });
         if (!alumno) {
+            // Si el alumno logueado aun no lo han registrado en un plan de estudio renderiza la vista vacia
             return res.render('Alumno_MesaExamen');
         }
 
@@ -96,6 +97,7 @@ exports.verificarPermisoParaRendir = async (req, res) => {
 
         // Verificar si el alumno aprobó las correlativas
         const correlativasAprobadas = await verificarCorrelativas(alumnoId, mesa.Materia);
+    
         if (!correlativasAprobadas) {
             return res.json({ success: false, mensaje: 'No puedes inscribirte, no has aprobado todas las correlativas' });
         }
@@ -163,8 +165,8 @@ async function verificarEstadoMateriaMesa(alumEstado, alumnoId, mesa, res) {
                     mesa.Alumno.push(alumnoId);
                     await mesa.save();
                     return res.json({ success: true, mensaje: 'Inscripción realizada con éxito' });
-                case "desaprobado":
-                    return res.json({ success: false, mensaje: 'No puede inscribirse, materia desaprobada' });
+                case "sin estado":
+                    return res.json({ success: false, mensaje: 'No puede inscribirse, aun no tiene un estado registrado' });
                 case "acreditado":
                     return res.json({ success: false, mensaje: 'No puede inscribirse, esta materia ya está acreditada' });
                 default:
