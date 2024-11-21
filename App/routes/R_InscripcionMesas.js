@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("../controllers/C_inscripcionMesa");
+//Middlewares
 const { verificarSesion, verificarRol } = require('../middlewares/autorizacion');
-
 
 router.get('/inscripcion/obtenerMesasSegunAlum/', verificarSesion, verificarRol(['alumno']), controller.obtenerMesasSegunAlum);
 

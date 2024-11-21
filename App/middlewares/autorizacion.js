@@ -16,12 +16,14 @@ const verificarSesion = async (req, res, next) => {
     const usuarioDecodificado = jwt.verify(token, process.env.JWT_SECRET);
     usuarioLogueado = await Usuario.findOne({ dni: usuarioDecodificado.dni });
 
+    console.log("\n Rol del usuario log: ", usuarioLogueado.rol);
+
     if (usuarioLogueado) {
       req.usuario = usuarioLogueado;
     }
     next();
   } catch (error) {
-    console.error('Error en verificar Sesion:', error);
+    console.error('Error en verificar Sesion:', error.message);
     next();
   }
 };
@@ -45,7 +47,7 @@ const verificarRol = (rolesPermitidos) => {
 
       next(); // Si todo está bien, sigue al siguiente middleware
     } catch (error) {
-      console.error('Error en verificarRol:', error);
+      console.error('Error en verificarRol:', error.message);
       return res.status(403).render('AccesoDenegado.hbs');
     }
   };
@@ -60,7 +62,7 @@ const docAlumLogueado = async (req, res) => {
     return usuarioDecodificado.dni;
     
   } catch (error) {
-    console.error('Error al obtener el DNI del alumno logueado:', error);
+    console.error('Error al obtener el DNI del alumno logueado:', error.message);
     return null;
   }
 };
