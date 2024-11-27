@@ -52,6 +52,9 @@ mongoose
   .then(() => console.log("Conectado a MongoDB Atlas"))
   .catch((err) => console.error("Error al conectar a MongoDB Atlas:", err));
 
+
+
+
 // Zona de ruteo
 const alumnoRouters = require("./App/routes/R_Alumno.js");
 const carreraRouters = require("./App/routes/R_Carrera.js");
@@ -60,53 +63,59 @@ const inscripcionRouters = require("./App/routes/R_InscripcionMesas");
 const alumnoEstadoRoutes = require("./App/routes/R_alumnoEstado");
 const mesaRouters = require("./App/routes/R_Mesa");
 const superAdminRouters = require("./App/routes/R_SuperAdmin.js");
+
+//Middlewares
+const { verificarSesion, verificarRol } = require('./App/middlewares/autorizacion.js');
+
+app.use(loginRouters);
+// app.use( verificarSesion, verificarRol(['alumno']), inscripcionRouters);
+// app.use( verificarSesion, verificarRol(['bedel', 'superAdmin']), carreraRouters);
+// app.use( verificarSesion, verificarRol(['bedel', 'superAdmin']), alumnoRouters);
+// app.use( verificarSesion, verificarRol(['bedel', 'superAdmin']), alumnoEstadoRoutes);
+//app.use( verificarSesion, verificarRol(['bedel', 'superAdmin']), mesaRouters);
+// app.use( verificarSesion, verificarRol(['superAdmin']), superAdminRouters);
+
+
+app.use(inscripcionRouters);
 app.use(carreraRouters);
 app.use(alumnoRouters);
-app.use(loginRouters);
-app.use(inscripcionRouters);
 app.use(alumnoEstadoRoutes);
 app.use(mesaRouters);
 app.use(superAdminRouters);
 
-app.get("/", (req, res) => res.render("Admin_PanelControl"));
-app.get("/index", (req, res) => res.render("index"));
-app.get("/alumno", (req, res) => res.render("Admin_PlanEstudio"));
-app.get("/materia", (req, res) => res.render("Admin_Materia"));
-app.get("/Administracion", (req, res) => res.render("Admin_PanelControl"));
-app.get("/AdministracionSuperAdmin", (req, res) => res.render("SuperAdmin_PanelControl"));
-app.get("/alumnoMesaExamen", (req, res) => res.render("Alumno_MesaExamen"));
-app.get("/alumnoEstado", (req, res) => res.render("Admin_AlumnoEstado"));
+// app.get("/", (req, res) => res.render("Admin_PanelControl"));
+// app.get("/index", (req, res) => res.render("index"));
+// app.get("/alumno", (req, res) => res.render("Admin_PlanEstudio"));
+// app.get("/materia", (req, res) => res.render("Admin_Materia"));
+// app.get("/Administracion", (req, res) => res.render("Admin_PanelControl"));
+// app.get("/AdministracionSuperAdmin", (req, res) => res.render("SuperAdmin_PanelControl"));
+// app.get("/alumnoMesaExamen", (req, res) => res.render("Alumno_MesaExamen"));
+// app.get("/alumnoEstado", (req, res) => res.render("Admin_AlumnoEstado"));
 
 
-// // NO BORRAR QUE ME COSTO UN HUEVO HACERLO :)
+// Ruta del index
+app.get('/', verificarSesion, (req, res) => {
+  if (req.usuario) {
+    return res.redirect(req.usuario.rol === 'alumno' ? '/inscripcion/obtenerMesasSegunAlum' :
+                        req.usuario.rol === 'bedel' ? '/Administracion' :
+                        req.usuario.rol === 'superAdmin' ? '/AdministracionSuperAdmin' : '/');
+  }
+  res.render('index');
+});
 
-// const { verificarSesion, verificarRol } = require('./App/middlewares/autorizacion.js');
+//Ruta de panel de administracion para el Super Admin
+app.get('/AdministracionSuperAdmin', verificarSesion, verificarRol(['superAdmin']), (req, res) => {
+  res.render("SuperAdmin_PanelControl.hbs");
+});
 
-// // Ruta del index
-// app.get('/', verificarSesion, (req, res) => {
-//   if (req.usuario) {
-//     return res.redirect(req.usuario.rol === 'alumno' ? '/inscripcion/obtenerMesasSegunAlum' :
-//                         req.usuario.rol === 'bedel' ? '/Administracion' :
-//                         req.usuario.rol === 'superAdmin' ? '/AdministracionSuperAdmin' : '/');
-//   }
-//   res.render('index');
-// });
+//Rutas para bedel
+app.get('/Administracion', verificarSesion, verificarRol(['bedel', 'superAdmin']), (req, res) => {
+  res.render("Admin_PanelControl.hbs");
+});
 
-// //Ruta de panel de administracion para el Super Admin
-// app.get('/AdministracionSuperAdmin', verificarSesion, verificarRol(['superAdmin']), (req, res) => {
-//   res.render("SuperAdmin_PanelControl.hbs");
-// });
-
-// //Rutas para bedel
-// app.get('/Administracion', verificarSesion, verificarRol(['bedel', 'superAdmin']), (req, res) => {
-//   res.render("Admin_PanelControl.hbs");
-// });
-// app.get('/mesa', verificarSesion, verificarRol(['bedel', 'superAdmin']), (req, res) => {
-//   res.render('Admin_Mesa');
-// });
-// app.get('/alumnoEstado', verificarSesion, verificarRol(['bedel', 'superAdmin']), (req, res) => {
-//   res.render("Admin_AlumnoEstado");
-// })
+app.get('/alumnoEstado', verificarSesion, verificarRol(['bedel', 'superAdmin']), (req, res) => {
+  res.render("Admin_AlumnoEstado");
+})
 
 app.listen(port, () => {
   console.log(`Escuchando en el puerto ${port}`);
