@@ -46,9 +46,11 @@
     </section>
 
     <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
+
         <div id="mensajeToast" class="toast-container" style="display: none;">
             <p id="mensajeTexto"></p>
         </div>
+
         <nav class="full-box dashboard-Navbar">
             <ul class="full-box list-unstyled text-right">
                 <li class="pull-left">
@@ -62,152 +64,159 @@
                 <p class="dashboard-subtitle">Administración de Estado de Alumnos</p>
             </div>
         </div>
-            <div class="container">
-                <form id="alumnoForm" class="bg-light p-4 rounded shadow-sm">
+        {{#if msjBack}}
+        <div id="error-message" class="alert alert-danger" style="position: absolute;" role="alert">
+            <p id="mensajeBack">{{msjBack}}</p>
+        </div>
+        {{/if}}
+
+        <div class="container">
+            <form id="alumnoForm" class="bg-light p-4 rounded shadow-sm">
                 <h2 class="my-4 text-center">Formulario de Alumno</h2>
-                    <div class="form-group">
-                        <label for="docAlumno">Documento del Alumno:</label>
-                        <input type="text" id="docAlumno" name="docAlumno" class="form-control" required>
-                        <div class="error-message" style="display:none;">Documento inválido.</div>
-                    </div>
+                <div class="form-group">
+                    <label for="docAlumno">Documento del Alumno:</label>
+                    <input type="text" id="docAlumno" name="docAlumno" class="form-control" required>
+                    <div class="error-message" style="display:none;">Documento inválido.</div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="nombreMateria">Nombre de la Materia:</label>
-                        <input type="text" id="nombreMateria" name="nombreMateria" class="form-control" required>
-                        <div class="error-message" style="display:none;">Nombre de la materia requerido.</div>
-                    </div>
+                <div class="form-group">
+                    <label for="nombreMateria">Nombre de la Materia:</label>
+                    <input type="text" id="nombreMateria" name="nombreMateria" class="form-control" required>
+                    <div class="error-message" style="display:none;">Nombre de la materia requerido.</div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="estadoActual">Estado Actual:</label>
-                        <select id="estadoActual" name="estadoActual" class="form-control" required>
-                            <option value="acreditado">Acreditado</option>
-                            <option value="regular">Regular</option>
-                            <option value="libre">Libre</option>
-                            <option value="sin estado">Sin Estado</option>
-                        </select>
-                        <div class="error-message" style="display:none;">Seleccione un estado.</div>
-                    </div>
+                <div class="form-group">
+                    <label for="estadoActual">Estado Actual:</label>
+                    <select id="estadoActual" name="estadoActual" class="form-control" required>
+                        <option value="acreditado">Acreditado</option>
+                        <option value="regular">Regular</option>
+                        <option value="libre">Libre</option>
+                        <option value="sin estado">Sin Estado</option>
+                    </select>
+                    <div class="error-message" style="display:none;">Seleccione un estado.</div>
+                </div>
 
-                    <button type="submit" class="btn btn-primary btn-block">Guardar/Modificar estado</button>
-                </form>
+                <button type="submit" class="btn btn-warningEstadoAlum">Guardar o Modificar estado</button>
+            </form>
 
 
-                <!-- Filtros para buscar alumnos -->
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <input id="numDocAlumn" type="text" class="form-control"
-                            placeholder="Buscar por nombre o documento">
-                    </div>
-                    <div class="col-md-2">
-                        <button id="BuscarAlumnoBtn" class="btn btn-primary btn-block">Buscar</button>
-                    </div>
+            <!-- Filtros para buscar alumnos -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <input id="numDocAlumn" type="text" class="form-control"
+                        placeholder="Buscar por nombre o documento">
+                </div>
+                <div class="col-md-2">
+                    <button id="BuscarAlumnoBtn" class="btn btn-tertiary btn-block">Buscar</button>
                 </div>
             </div>
 
-            <!-- Tabla de materias con estado-->
-            {{#if materiasConEstado.length}}
-            <h3>Materias con Estado</h3>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Materia</th>
-                        <th>Estado Actual</th>
-                        <th>Fecha</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each materiasConEstado}}
-                    <tr>
-                        <td>{{this.materia}}</td>
-                        <td>{{this.estado}}</td>
-                        <td>{{this.fecha}}</td>
-                        <td>
-                            <!-- Botón para Eliminar con Modal -->
-                            <button class="btn btn-danger" onclick="openDeleteModal('{{this.id}}')" data-toggle="modal"
-                                data-target="#confirmDeleteModal">Dar de Baja</button>
+        </div>
 
-                            <!-- Modal Confirmar Baja -->
-                            <div class="modal" id="confirmDeleteModal" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Confirmar Baja</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                                                onclick="closeModal()">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            ¿Estás seguro de que deseas dar de baja esta materia?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                onclick="closeModal()">Cancelar</button>
-                                            <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
-                                                Confirmar Baja
-                                            </button>
-                                        </div>
+        <!-- Tabla de materias con estado-->
+        {{#if materiasConEstado.length}}
+        <h3>Materias con Estado</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Materia</th>
+                    <th>Estado Actual</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each materiasConEstado}}
+                <tr>
+                    <td>{{this.materia}}</td>
+                    <td>{{this.estado}}</td>
+                    <td>{{this.fecha}}</td>
+                    <td>
+                        <!-- Botón para Eliminar con Modal -->
+                        <button class="btn btn-danger" onclick="openDeleteModal('{{this.id}}')" data-toggle="modal"
+                            data-target="#confirmDeleteModal">Dar de Baja</button>
+
+                        <!-- Modal Confirmar Baja -->
+                        <div class="modal" id="confirmDeleteModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Confirmar Baja</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                            onclick="closeModal()">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ¿Estás seguro de que deseas dar de baja esta materia?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            onclick="closeModal()">Cancelar</button>
+                                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                                            Confirmar Baja
+                                        </button>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Botón y Modal Historial -->
-                            <button class="btn btn-info" onclick="abrirModal('{{this.id}}')">Ver Historial</button>
-                            <div id="modalHistorialEstado" class="modal">
-                                <div class="modal-content">
-                                    <span class="close" onclick="cerrarModal()">&times;</span>
-                                    <h2>Historial de Estados</h2>
-                                    <div id="historial-container"></div>
-                                    <button onclick="cerrarModal()">Cerrar</button>
-                                </div>
+                        <!-- Botón y Modal Historial -->
+                        <button class="btn btn-info" onclick="abrirModal('{{this.id}}')">Ver Historial</button>
+                        <div id="modalHistorialEstado" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="cerrarModal()">&times;</span>
+                                <h2>Historial de Estados</h2>
+                                <div id="historial-container"></div>
+                                <button onclick="cerrarModal()">Cerrar</button>
                             </div>
-                        </td>
+                        </div>
+                    </td>
 
-                    </tr>
-                    {{/each}}
+                </tr>
+                {{/each}}
 
-                </tbody>
-            </table>
-            {{/if}}
+            </tbody>
+        </table>
+        {{/if}}
 
-            {{#if materiasSinEstado.length}}
-            <h3>Materias sin Estado</h3>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Materia</th>
-                        <th>Estado Actual</th>
-                        <th>Fecha</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each materiasSinEstado}}
-                    <tr>
-                        <td>{{this.materia}}</td>
-                        <td>{{this.estado}}</td>
-                        <td>{{this.fecha}}</td>
-                        <td>
-                            <button class="btn btn-info" id="abrirModalBtn" onclick="abrirModal('{{this.id}}')">Ver
-                                Historial</button>
+        {{#if materiasSinEstado.length}}
+        <h3>Materias sin Estado</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Materia</th>
+                    <th>Estado Actual</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each materiasSinEstado}}
+                <tr>
+                    <td>{{this.materia}}</td>
+                    <td>{{this.estado}}</td>
+                    <td>{{this.fecha}}</td>
+                    <td>
+                        <button class="btn btn-info" id="abrirModalBtn" onclick="abrirModal('{{this.id}}')">Ver
+                            Historial</button>
 
-                            <div id="modalHistorialEstado" class="modal">
-                                <div class="modal-content">
-                                    <span id="cerrarModalBtn" class="close" onclick="cerrarModal()">&times;</span>
-                                    <h2>Historial de Estados</h2>
-                                    <div id="historial-container">
-                                    </div>
-                                    <button onclick="cerrarModal()">Cerrar</button> <!-- Botón para cerrar el modal -->
+                        <div id="modalHistorialEstado" class="modal">
+                            <div class="modal-content">
+                                <span id="cerrarModalBtn" class="close" onclick="cerrarModal()">&times;</span>
+                                <h2>Historial de Estados</h2>
+                                <div id="historial-container">
                                 </div>
+                                <button onclick="cerrarModal()">Cerrar</button> <!-- Botón para cerrar el modal -->
                             </div>
-                        </td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-            {{/if}}
+                        </div>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{/if}}
 
     </section>
 
@@ -219,6 +228,15 @@
             const numDocAlumn = document.getElementById('numDocAlumn').value;
             window.location.href = `/alumnoEstado/buscar/${numDocAlumn}`;
         });
+
+        window.onload = function () {
+            const errorMessage = document.getElementById('error-message');
+            if (errorMessage) {
+                setTimeout(function () {
+                    errorMessage.style.display = 'none'; 
+                }, 5000);
+            }
+        };
 
     </script>
     <script src="/js/Admin_AlumnoEstado.js"></script>

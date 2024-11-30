@@ -6,7 +6,8 @@ body {
     color: #212529;
 }
 
-h3, h4 {
+h3,
+h4 {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     color: #343a40;
@@ -20,7 +21,8 @@ h3, h4 {
     color: #212529;
 }
 
-.table th, .table td {
+.table th,
+.table td {
     vertical-align: middle;
     white-space: nowrap;
     padding: 5px;
@@ -35,105 +37,19 @@ h3, h4 {
 }
 
 /* Input, button, and table common styles */
-input, button, table {
+input,
+button,
+table {
     border-radius: 5px;
     border: 1px solid #dee2e6;
     padding: 10px;
 }
 
-/* Button styles */
-.btn-add, .btn-edit, .btn-delete, .btn-sm {
-    display: inline-block;
-    font-size: 16px;
-    padding: 10px 20px;
-    margin: 10px;
-    border-radius: 8px;
-    color: #fff;
-    text-align: center;
-    text-decoration: none;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.btn-sm {
-    padding: 5px 8px;
-    font-size: 0.875rem;
-}
-
-/* Specific button styles */
-.btn-add {
-    background-color: #28a745;
-    border: none;
-}
-
-.btn-add:hover {
-    background-color: #218838;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-}
-
-.btn-info {
-    background-color: #17a2b8;
-    border-color: #17a2b8;
-}
-
-.btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-}
-
-.btn-edit {
-    background-color: #007bff;
-    color: white;
-}
-
-.btn-delete {
-    background-color: #dc3545;
-    color: white;
-}
-
-.btn-cancelar {
-    background-color: #d65b5b;
-    color: white;
-    border: none;
-}
-
-.btn-cancelar:hover {
-    background-color: #d65b5b;
-}
-
-.btn-guardar {
-    background-color: #66c2f0;
-    color: black;
-    border: none;
-}
-
-.btn-guardar:hover {
-    background-color: #66c2f0;
-}
-
 /* Container styles */
 .container {
+    width: 97% !important;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* Submit button styles */
-button[type="submit"] {
-    background-color: #007bff;
-    color: white;
-    border-radius: 5px;
-    padding: 10px 20px;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-button[type="submit"]:hover {
-    background-color: #0056b3;
 }

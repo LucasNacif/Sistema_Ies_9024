@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
-   
+
     <link rel="stylesheet" href="/Styles/Admin_PlanEstudio.css">
     <link rel="stylesheet" href="/Styles/estilosGlobales.css" />
 
@@ -20,11 +20,7 @@
     <script src="/js/jsBoostrap/ripples.min.js"></script>
     <script src="/js/jsBoostrap/main.js"></script>
 
-
-
-
 </head>
-
 <script>
     const planEstudio = {{{ json planEstudio }}};
 </script>
@@ -56,6 +52,7 @@
 
     <!-- Contenido de la página principal -->
     <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
+  
         <div id="mensajeToast" class="toast-container" style="display: none;">
             <p id="mensajeTexto"></p>
         </div>
@@ -68,9 +65,11 @@
             </ul>
         </nav>
 
-        <div class="container mt-4" style=" margin-top: 66px !important;">
-            <!-- Información de la Carrera -->
-            <h3>Información de la Carrera</h3>
+      <div class="dashboard-header">
+            <div class="header-content">
+                <h1 class="dashboard-title">Información de la Carrera</h1>
+            </div>
+           <div class="container w-auto" style=" margin-top: 66px !important;">
             <table class="table table-bordered">
                 <tbody>
                     <tr>
@@ -92,9 +91,10 @@
                 </tbody>
             </table>
         </div>
+        </div>
 
         <!-- Materias -->
-        <div class="container mt-4" style="width: 100%; !important">
+        <div class="container mt-4">
             <h4 class="mt-4">Materias</h4>
             <div class="mb-3">
                 <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#agregarMateriaModal"
@@ -143,19 +143,18 @@
             {{/if}}
         </div>
 
-
-        <div class="container mt-4" style="width: 100%; !important">
+        <div class="container mt-4">
             <h4 class="mt-4">Alumnos</h4>
             <div class="mb-3">
                 <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#agregarAlumnoModal"
                     style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
                     <i class="zmdi zmdi-plus-circle"></i> Añadir
                 </button>
-                <button class="btn btn-info btn-lg" onclick="mostrarAlumnos(false)"
+                <button class="btn btn-warning btn-lg" onclick="mostrarAlumnos(false)"
                     style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
                     <i class="zmdi zmdi-eye"></i> Ver Alumnos de Baja
                 </button>
-                <button class="btn btn-primary btn-lg" onclick="mostrarAlumnos(true)"
+                <button class="btn btn-secondary btn-lg" onclick="mostrarAlumnos(true)"
                     style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
                     <i class="zmdi zmdi-eye"></i> Ver Alumnos de Alta
                 </button>
@@ -244,8 +243,8 @@
                                     class="form-check-input" value="true" />
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-warning btn-block">Modificar Alumno</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Modificar Alumno</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                             </div>
                         </form>
                     </div>
@@ -314,7 +313,7 @@
                             <input type="hidden" name="idPlanEstudioSeleccionado" value="{{planEstudio._id}}">
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary">Guardar</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                             </div>
                         </form>
                     </div>
@@ -349,7 +348,7 @@
                             <input type="hidden" name="idPlanEstudioSeleccionado" value="{{planEstudio._id}}">
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary">Agregar Materia</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                             </div>
                         </form>
                     </div>
@@ -386,7 +385,7 @@
                             <input type="hidden" id="idMateria" value="{{this._id}}">
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                             </div>
                         </form>
                     </div>
@@ -395,7 +394,7 @@
         </div>
 
     </section>
-
+  
     <script src="/js/Admin_PlanEstudio.js"></script>
 </body>
 

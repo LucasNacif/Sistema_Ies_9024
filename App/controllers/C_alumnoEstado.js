@@ -52,7 +52,7 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
     // Buscar al alumno por número de documento
     const alumno = await Alumno.findOne({ numDocAlumn });
     if (!alumno) {
-      return res.status(404).json({ message: "Alumno no encontrado" });
+      return res.status(404).render("Admin_AlumnoEstado", { msjBack: "Alumno no encontrado"});
     }
 
     // Buscar el plan de estudios del alumno
@@ -61,7 +61,7 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
       .populate("materias", "nombreMateria");
 
     if (!planEstudios) {
-      return res.status(404).json({ message: "No se encontró el plan de estudios para este alumno" });
+      return res.status(404).render("Admin_AlumnoEstado", { msjBack: "No se encontró el plan de estudios para este alumno"});
     }
     const materiasDelPlan = planEstudios.materias;
 
@@ -96,10 +96,11 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
       }
     });
 
-    res.render("Admin_AlumnoEstado", { materiasConEstado, materiasSinEstado });
+    return res.render("Admin_AlumnoEstado", { materiasConEstado, materiasSinEstado, msjBack:"" });
+
   } catch (error) {
     console.error("Error al buscar el alumno y sus materias:", error.message);
-    res.status(500).json({ message: "Error al buscar el alumno y sus materias" });
+    return res.status(404).render("Admin_AlumnoEstado", { msjBack: "Error al buscar el alumno y sus materias"});
   }
 };
 

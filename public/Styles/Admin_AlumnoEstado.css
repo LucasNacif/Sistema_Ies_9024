@@ -1,4 +1,11 @@
-/* Estilo para el contenedor del formulario */
+/* Estilos globales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f8;
+    margin: 0;
+    padding: 0;
+}
+
 #alumnoForm {
     max-width: 600px;
     margin: 20px auto;
@@ -6,12 +13,6 @@
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
-}
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f4f8;
-    margin: 0;
-    padding: 0;
 }
 
 .row.mb-4 .form-control {
@@ -23,6 +24,7 @@ body {
     border-color: #007bff;
 }
 
+/* Estilos de tarjetas */
 .card {
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -51,8 +53,7 @@ body {
     padding: 18px;
 }
 
-
-/* Estilos generales */
+/* Estilos de modales */
 .modal-dialog {
     max-width: 600px;
     margin: 30px auto;
@@ -79,7 +80,7 @@ body {
     padding: 10px;
 }
 
-/* Estilo responsive */
+/* Estilos responsive */
 @media (max-width: 768px) {
     .dashboard-header {
         padding: 30px 15px;

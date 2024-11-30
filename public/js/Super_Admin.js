@@ -76,20 +76,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
-//Para mostrar mensajes
-function mostrarToast(mensaje, tipo = "info") {
-    const toast = document.getElementById("mensajeToast");
-    const texto = document.getElementById("mensajeTexto");
-
-    texto.textContent = mensaje;
-    toast.className = `toast-container ${tipo}`;
-    toast.style.display = "block";
-    setTimeout(() => {
-        toast.style.display = "none";
-        location.reload();
-    }, 1500);
-
-}
 // Función para eliminar un bedel
 async function eliminarBedel(bedelId) {
     try {
@@ -106,4 +92,18 @@ async function eliminarBedel(bedelId) {
         console.error("Error al eliminar el bedel:", error);
         mostrarToast("No se pudo eliminar el bedel", "error");
     }
+}
+//Para mostrar mensajes
+function mostrarToast(mensaje, tipo = "info") {
+    const toast = document.getElementById("mensajeToast");
+    const texto = document.getElementById("mensajeTexto");
+
+    texto.textContent = mensaje;
+    toast.className = `toast-container ${tipo}`;
+    toast.style.display = "block";
+    setTimeout(() => {
+        toast.style.display = "none";
+        location.reload();
+    }, 1500);
+
 }

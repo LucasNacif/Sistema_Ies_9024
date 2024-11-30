@@ -100,16 +100,16 @@ exports.registrar = async (req, res) => {
     });
     await nuevoUsuario.save();
 
-  //  Se hace este if porque si el rol es bedel significa que un super admin esta creando el usuario
-  //  por lo que no necesita volver a genera un token ya que ya se encuentra logueado
-   if(nuevoUsuario.rol === "alumno"){
-     // Creo el token JWT y configuro la cookie
-     const token = crearTokenJWT(nuevoUsuario);
-     configurarCookie(res, token);
-    return redirigirSegunRol(nuevoUsuario, res);
-   }else{
-     return res.status(200).json({ message: "Bedel creado exitosamente" });
-   }
+    //  Se hace este if porque si el rol es bedel significa que un super admin esta creando el usuario
+    //  por lo que no necesita volver a genera un token ya que ya se encuentra logueado
+    if (nuevoUsuario.rol === "alumno") {
+      // Creo el token JWT y configuro la cookie
+      const token = crearTokenJWT(nuevoUsuario);
+      configurarCookie(res, token);
+      return redirigirSegunRol(nuevoUsuario, res);
+    } else {
+      return res.status(200).json({ message: "Bedel creado exitosamente" });
+    }
   } catch (error) {
     console.error('Error en registro:', error);
     return res.status(500).json({ message: "Error interno del servidor" });

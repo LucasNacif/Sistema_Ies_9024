@@ -84,7 +84,6 @@ function mostrarModificarAlumnoModal(button) {
     $('#antecedenPenModificar').prop('checked', antecedentesPenales);
     $('#idAlumnoModificar').val(alumnoId);
 
-    // Mostrar el modal
     $('#modificarAlumnoModal').modal('show');
 }
 document.getElementById("formModificarAlumno").addEventListener("submit", async function (e) {

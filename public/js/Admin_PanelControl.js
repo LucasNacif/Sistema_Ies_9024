@@ -176,7 +176,6 @@ function mostrarToast(mensaje, tipo = "info") {
     // Ocultar automáticamente después de 3 segundos
     setTimeout(() => {
         toast.style.display = "none";
-        mostrarAlumnos(true);
         location.reload();
     }, 1500);
 }
