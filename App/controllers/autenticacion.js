@@ -76,9 +76,15 @@ exports.login = async (req, res) => {
 exports.registrar = async (req, res) => {
   const { dni, email, nombre, password, rol } = req.body;
 
-  if (!dni || !password) {
+  if (!password) {
     return res.status(400).json({ message: "Los campos están incompletos" });
   }
+
+    // Validación del DNI
+    const dniRegex = /^\d{7,8}$/;
+    if (!dni || !dniRegex.test(dni)) {
+      return res.status(400).json({ message: "DNI inválido" });
+    }
 
   try {
     const usuarioExistente = await Usuario.findOne({ dni });
@@ -103,10 +109,13 @@ exports.registrar = async (req, res) => {
     //  Se hace este if porque si el rol es bedel significa que un super admin esta creando el usuario
     //  por lo que no necesita volver a genera un token ya que ya se encuentra logueado
     if (nuevoUsuario.rol === "alumno") {
+
       // Creo el token JWT y configuro la cookie
       const token = crearTokenJWT(nuevoUsuario);
       configurarCookie(res, token);
+
       return redirigirSegunRol(nuevoUsuario, res);
+
     } else {
       return res.status(200).json({ message: "Bedel creado exitosamente" });
     }

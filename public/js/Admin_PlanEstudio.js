@@ -112,6 +112,7 @@ document.getElementById("formModificarAlumno").addEventListener("submit", async 
 
         const result = await response.json();
         if (response.ok) {
+            //oculta el modal y muestra la tostada
             $('#modificarAlumnoModal').modal('hide');
             mostrarToast(result.message, "success");
         } else {

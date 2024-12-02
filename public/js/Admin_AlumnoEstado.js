@@ -139,5 +139,5 @@ function mostrarToast(mensaje, tipo = "info") {
     setTimeout(() => {
         toast.style.display = "none";
         location.reload();
-    }, 1500);
+    }, 3500);
 }

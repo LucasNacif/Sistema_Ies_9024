@@ -3,6 +3,9 @@ const express = require('express');
 const router = express.Router();
 const controller = require("../controllers/C_carrera.js");
 
+//Middlewares
+const { verificarSesion, verificarRol } = require('../middlewares/autorizacion.js');
+
 // CARRERA
 router.get("/carrera/obtener", controller.obtenerCarreras);
 
@@ -18,7 +21,7 @@ router.put("/carrera/modificar/:id", controller.modificarCarrera);
 
 
 //PLAN DE ESTUDIO
-router.get('/planEstudio/:id/', controller.verPlanEstudio);
+router.get('/planEstudio/:id/',  verificarSesion, verificarRol(['bedel', 'superAdmin']), controller.verPlanEstudio);
 
 
 // MATERIA
