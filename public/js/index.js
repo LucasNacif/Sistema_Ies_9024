@@ -90,7 +90,6 @@ function mostrarToast(mensaje, tipo = "info") {
   toast.style.display = "block";
   setTimeout(() => {
     toast.style.display = "none";
-    location.reload();
   }, 3500);
 
 }

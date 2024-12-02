@@ -20,7 +20,12 @@ body {
     position: relative;
     z-index: 1;
 }
-
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Espaciado entre columnas */
+    justify-content: center;
+}
 .container {  
     margin: 30px auto;  
     max-width: 1200px;  

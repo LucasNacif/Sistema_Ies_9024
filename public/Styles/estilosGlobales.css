@@ -189,17 +189,6 @@ select.form-control {
     border-radius: 5px;
     border: 1px solid #ccc;
 }
-/* 
-button[type="submit"] {
-    background: linear-gradient(135deg, #2c3e50, #3498db);
-    padding: 8px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-}
-
-button[type="submit"]:hover {
-    background: linear-gradient(300deg, #2c3e50, #3498db);
-} */
 
 /* Estilos para el encabezado */
 .dashboard-header {

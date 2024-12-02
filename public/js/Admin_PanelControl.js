@@ -40,40 +40,34 @@ function openDeleteModal(idCarrera) {
 document.addEventListener('DOMContentLoaded', function () {
     cargarCarreras();
     $.material.init();
-
     function cargarCarreras() {
         fetch('/carrera/obtener')
             .then(response => response.json())
             .then(carreras => {
                 const listaCarreras = document.getElementById('listaCarreras');
-                listaCarreras.innerHTML = ''; 
-                const row = document.createElement('div');
+                listaCarreras.innerHTML = '';
                 carreras.forEach(carrera => {
-                    const col = document.createElement('div');
-                    col.innerHTML = `
+                    listaCarreras.innerHTML += `
+                    <div class="col-md-4">
                         <div class="card" style="margin: 10px;">
                             <div class="card-header text-center">
-                                ${carrera.nombreCarrera}
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">${carrera.titulo}</h5>
-                                <p class="card-text"><strong>Carga Horaria:</strong> ${carrera.cargaHoraria} horas</p>
-                                <p class="card-text"><strong>Duración:</strong> ${carrera.duracion} años</p>
-                                <a href="/planEstudio/${carrera._id}" class="btn btn-info">Información</a>
-                                <button type="button" class="btn btn-warning" onclick="modificarCarrera('${carrera._id}')">Modificar</button>
-                                <button type="button" class="btn btn-danger" onclick="openDeleteModal('${carrera._id}')">Dar de baja</button>
-                            </div>
+                            ${carrera.nombreCarrera}
                         </div>
-                    `;
-                    row.appendChild(col);
+                           <div class="card-body">
+                            <h5 class="card-title">${carrera.titulo}</h5>
+                            <p class="card-text"><strong>Carga Horaria:</strong> ${carrera.cargaHoraria} horas</p>
+                            <p class="card-text"><strong>Duración:</strong> ${carrera.duracion} años</p>
+                            <a href="/planEstudio/${carrera._id}" class="btn btn-info">Información</a>
+                            <button type="button" class="btn btn-warning" onclick="modificarCarrera('${carrera._id}')">Modificar</button>
+                            <button type="button" class="btn btn-danger" onclick="openDeleteModal('${carrera._id}')">Dar de baja</button>
+                        </div>
+                        </div>
+                    </div>`;
                 });
-                listaCarreras.appendChild(row); // Agregar todas las cards dentro del contenedor row
             })
             .catch(error => console.error('Error al cargar carreras:', error));
     }
     
-    
-
     // Mostrar/Ocultar formulario de agregar carrera
     const toggleFormBtn = document.getElementById('toggleFormBtn');
     const formContainer = document.getElementById('formContainer');
@@ -176,6 +170,5 @@ function mostrarToast(mensaje, tipo = "info") {
     // Ocultar automáticamente después de 3 segundos
     setTimeout(() => {
         toast.style.display = "none";
-        location.reload();
     }, 1500);
 }
