@@ -51,6 +51,21 @@ document.addEventListener('DOMContentLoaded', function () {
         // Validación de campos vacíos
         if (!data.nombre || !data.dni || !data.email || !data.password) {
             mostrarToast("Todos los campos son obligatorios", "error");
+            return;
+        }
+
+        // Validación del nombre (solo letras y espacios)
+        const nombreRegex = /^[a-zA-Z\s]+$/;
+        if (!nombreRegex.test(data.nombre)) {
+            mostrarToast("El nombre solo puede contener letras y espacios", "error");
+            return;
+        }
+
+        // Validación del DNI (debe ser un número de 7 u 8 dígitos)
+        const dniRegex = /^\d{7,8}$/;
+        if (!dniRegex.test(data.dni)) {
+            mostrarToast("El DNI debe tener entre 7 y 8 dígitos", "error");
+            return;
         }
 
         try {

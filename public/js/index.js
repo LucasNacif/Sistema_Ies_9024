@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const sign_in_btn = document.querySelector("#sign-in-btn");
   const sign_up_btn = document.querySelector("#sign-up-btn");
   const container = document.querySelector(".container");
+  //expresiones regulares
+  const dniRegex = /^\d{7,8}$/;
+  const nombreRegex = /^[a-zA-Z\s]+$/;
 
   sign_up_btn.addEventListener("click", () => {
     container.classList.add("sign-up-mode");
@@ -17,6 +20,11 @@ document.addEventListener("DOMContentLoaded", function () {
     e.preventDefault();
     const dni = e.target.dni.value;
     const password = e.target.pass.value;
+
+    if (!dniRegex.test(dni)) {
+      mostrarToast("El DNI debe tener entre 7 y 8 dígitos", "error");
+      return;
+    }
 
     try {
       const res = await fetch("/index/login", {
@@ -52,6 +60,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const email = e.target.email.value;
     const password = e.target.pass.value;
 
+    if (!dniRegex.test(dni)) {
+      mostrarToast('DNI inválido', 'error');
+      return;
+    }
+
+    if (!nombre || !nombreRegex.test(nombre)) {
+      mostrarToast('El nombre no puede contener símbolos especiales', 'error');
+      return;
+    }
+
     try {
       const res = await fetch("/index/registrar", {
         method: "POST",
@@ -79,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 });
-     
+
 //Para mostrar mensajes
 function mostrarToast(mensaje, tipo = "info") {
   const toast = document.getElementById("mensajeToast");
