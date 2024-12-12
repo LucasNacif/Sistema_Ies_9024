@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     forms.forEach(form => {
         form.addEventListener('submit', async function (event) {
-            event.preventDefault();  
+            event.preventDefault();
 
             const formAction = form.getAttribute('action');
 
@@ -26,14 +26,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.log(data);
 
                     const mensajeModalText = document.getElementById('mensajeModalText');
-                    mensajeModalText.innerText = data.mensaje; 
+                    mensajeModalText.innerText = data.mensaje;
 
                     const modalElement = document.getElementById('mensajeModal');
-                    if (modalElement) {
-                        $(modalElement).modal('show'); 
-                    } else {
-                        console.error('No se encontró el modal en el DOM');
-                    }
+                    $(modalElement).modal('show');
+                    console.error('No se encontró el modal en el DOM');
                 } else {
                     throw new Error('La respuesta no es JSON');
                 }

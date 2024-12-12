@@ -1,5 +1,12 @@
+/* Estilos globales */
+body {  
+    font-family: Arial, sans-serif;  
+    background-color: #f0f4f8;  
+    margin: 0;  
+    padding: 0;  
+}
 
-/* Estilo para el contenedor del formulario */
+/* Contenedores principales */
 #formAgregarMesa {
     max-width: 600px;
     margin: 20px auto;
@@ -7,22 +14,18 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-
-body {  
-    font-family: Arial, sans-serif;  
-    background-color: #f0f4f8;  
-    margin: 0;  
-    padding: 0;  
-}  
-
-
 .header-content {
     max-width: 1400px;
     margin: 0 auto;
     position: relative;
     z-index: 1;
 }
-/* Contenedor principal */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Espaciado entre columnas */
+    justify-content: center;
+}
 .container {  
     margin: 30px auto;  
     max-width: 1200px;  
@@ -30,8 +33,8 @@ body {
     background-color: #ffffff;  
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
     border-radius: 15px;  
-    width: 99%;
-}  
+    width: 97% !important;
+}
 
 /* Estilos para las tarjetas */
 .card {
@@ -46,7 +49,6 @@ body {
     flex: 1 1 calc(33.33% - 20px);
     min-width: 300px;
 }
-
 
 .card-header {
     background: linear-gradient(135deg, #2c3e50, #3498db);
@@ -82,7 +84,7 @@ body {
     font-weight: 600;
 }
 
-
+/* Animaciones */
 @keyframes slideIn {
     from {
         transform: translateX(100%);

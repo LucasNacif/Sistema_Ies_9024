@@ -7,44 +7,54 @@ const mongoose = require('mongoose');
 exports.crearAlumnoEstado = async (req, res) => {
   try {
     const { numDocAlumn, nombreMateria, estadoActual } = req.body;
+
     // Buscar el alumno
     const alumno = await Alumno.findOne({ numDocAlumn });
     if (!alumno) {
       return res.status(404).json({ message: "Alumno no encontrado" });
     }
 
-    // Buscar la materia
-    const materia = await Materia.findOne({ nombreMateria: nombreMateria });
-    if (!materia) {
-      return res.status(404).json({ message: "Materia no encontrada" });
+    // Buscar el plan de estudio que contiene al alumno
+    const planEstudio = await PlanEstudios.findOne({ alumnos: alumno._id }).populate('materias');
+    if (!planEstudio) {
+      return res.status(404).json({ message: "Plan de estudio no encontrado para este alumno" });
     }
 
-    // Buscar si ya existe un estado para el alumno y la materia
-    let alumnoEstado = await AlumnoEstado.findOne({ idAlumno: alumno._id, idMateria: materia._id });
+        // Buscar la materia dentro de las materias del plan de estudio
+        const materiaEnElPlan = planEstudio.materias.find(m => m.nombreMateria === nombreMateria);
+
+        if (!materiaEnElPlan) {
+          return res.status(404).json({ message: `La materia ${nombreMateria} no pertenece al plan de estudio del alumno` });
+        }
+
+      // Verificar si ya existe un estado para el alumno y la materia
+      let alumnoEstado = await AlumnoEstado.findOne({
+        idAlumno: alumno._id,
+        idMateria: materiaEnElPlan._id
+      });
 
     if (alumnoEstado) {
       // Si existe, añado el nuevo estado al historial
       alumnoEstado.historialEstados.push({ estado: estadoActual, fecha: new Date() });
       alumnoEstado.estadoActual = estadoActual;
       await alumnoEstado.save();
-      res.status(200).json({ message: "Estado actualizado exitosamente" });
+      return res.status(200).json({ message: "Estado actualizado exitosamente" });
     } else {
       // Si no existe, crear un nuevo AlumnoEstado
       const nuevoAlumnoEstado = new AlumnoEstado({
         idAlumno: alumno._id,
-        idMateria: materia._id,
+        idMateria: materiaEnElPlan._id,
         historialEstados: [{ estado: estadoActual, fecha: new Date() }],
         estadoActual: estadoActual
       });
       await nuevoAlumnoEstado.save();
-      res.status(201).json({ message: "AlumnoEstado creado exitosamente" });
+      return res.status(201).json({ message: "Estado guardado exitosamente" });
     }
   } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ message: `Error al crear o actualizar el AlumnoEstado: ${error.message}` });
+    console.error(error);
+    return res.status(500).json({ message: `Error al crear o actualizar el AlumnoEstado` });
   }
 };
-
 exports.buscarAlumnoYMaterias = async (req, res) => {
   try {
     const { numDocAlumn } = req.params;
@@ -52,7 +62,7 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
     // Buscar al alumno por número de documento
     const alumno = await Alumno.findOne({ numDocAlumn });
     if (!alumno) {
-      return res.status(404).json({ message: "Alumno no encontrado" });
+      return res.status(404).render("Admin_AlumnoEstado", { msjBack: "Alumno no encontrado" });
     }
 
     // Buscar el plan de estudios del alumno
@@ -61,7 +71,7 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
       .populate("materias", "nombreMateria");
 
     if (!planEstudios) {
-      return res.status(404).json({ message: "No se encontró el plan de estudios para este alumno" });
+      return res.status(404).render("Admin_AlumnoEstado", { msjBack: "No se encontró el plan de estudios para este alumno" });
     }
     const materiasDelPlan = planEstudios.materias;
 
@@ -96,21 +106,19 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
       }
     });
 
-    res.render("Admin_AlumnoEstado", { materiasConEstado, materiasSinEstado });
+    return res.render("Admin_AlumnoEstado", { materiasConEstado, materiasSinEstado, msjBack: "" });
+
   } catch (error) {
     console.error("Error al buscar el alumno y sus materias:", error.message);
-    res.status(500).json({ message: "Error al buscar el alumno y sus materias" });
+    return res.status(404).render("Admin_AlumnoEstado", { msjBack: "Error al buscar el alumno y sus materias" });
   }
 };
-
-
 exports.eliminarEstadoAlumno = async (req, res) => {
   const id = req.params.id;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: 'ID de estado no válido' });
   }
 }
-
 exports.modificarEstadoAlumno = async (req, res) => {
 
   try {
@@ -135,10 +143,6 @@ exports.modificarEstadoAlumno = async (req, res) => {
     res.status(500).json({ message: 'Error al dar baja estado' });
   }
 };
-
-
-
-
 exports.obtenerHistorialEstados = async (req, res) => {
   try {
     // Obtén el ID del alumno del parámetro de la solicitud

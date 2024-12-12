@@ -12,13 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
     container.classList.remove("sign-up-mode");
   });
 
-  // Función para mostrar el mensaje de error
-  const mensajeError = document.getElementById("mensajeError");
-  function mostrarError(mensaje) {
-    mensajeError.textContent = mensaje;
-    mensajeError.classList.add("show");
-  }
-
   //FORMULARIO PARA INICIAR SESION
   document.getElementById("FormLogin").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -38,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Manejo de mensajes de error
       if (!res.ok) {
-        mostrarError(resJson.message || 'Error al iniciar sesión');
+        mostrarToast(resJson.message || 'Error al iniciar sesión', 'error');
         return;
       }
 
@@ -47,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     } catch (error) {
       console.error('Error:', error);
-      mostrarError('Error al iniciar sesión');
+      mostrarToast('Error al iniciar sesión', 'error');
     }
   });
 
@@ -70,19 +63,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const resJson = await res.json();
 
-  // Manejo de mensajes de error
-  if (!res.ok) {
-    mostrarError(resJson.message || 'Error al iniciar sesión');
-    return;
-  }
+      // Manejo de mensajes de error
+      if (!res.ok) {
+        mostrarToast(resJson.message || 'Error al registrarse', 'error');
+        return;
+      }
 
-  if (resJson.redirect) {
-    window.location.href = resJson.redirect;
-  }
-} catch (error) {
-  console.error('Error:', error);
-  mostrarError('Error al iniciar sesión');
-}
+      if (resJson.redirect) {
+        window.location.href = resJson.redirect;
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      mostrarToast('Error al registrarse', 'error');
+    }
   });
 
-});  
+});
+     
+//Para mostrar mensajes
+function mostrarToast(mensaje, tipo = "info") {
+  const toast = document.getElementById("mensajeToast");
+  const texto = document.getElementById("mensajeTexto");
+
+  texto.textContent = mensaje;
+  toast.className = `toast-container ${tipo}`;
+  toast.style.display = "block";
+  setTimeout(() => {
+    toast.style.display = "none";
+  }, 3500);
+
+}

@@ -1,96 +1,131 @@
-/* Estilo para el contenedor del formulario */
-#alumnoForm {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-}
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f4f8;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fc;
     margin: 0;
     padding: 0;
 }
 
+#alumnoForm {
+    max-width: 650px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+#alumnoForm h2 {
+    color: #000000;
+    text-align: center;
+}
+
 .row.mb-4 .form-control {
-    border-radius: 4px;
-    padding: 10px;
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    transition: border-color 0.3s ease;
 }
 
 .row.mb-4 .form-control:focus {
     border-color: #007bff;
 }
 
-.card {
-    border: 1px solid #ddd;
+#BuscarAlumnoBtn {
+    background-color: #007bff !important;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px;
+    width: 100%;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#BuscarAlumnoBtn:hover {
+    background-color: #3b7fc7 !important;
+}
+
+table.table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background-color: white;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: white;
-    transition: transform 0.3s, box-shadow 0.3s;
-    width: 100%;
-    max-width: 300px;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.card-header {
+table.table thead {
     background-color: #007bff;
     color: white;
-    padding: 15px;
-    text-align: center;
-    font-size: 1.2em;
 }
 
-.card-body {
-    padding: 18px;
+table.table th, table.table td {
+    padding: 12px 15px;
+    text-align: left;
 }
 
-
-/* Estilos generales */
-.modal-dialog {
-    max-width: 600px;
-    margin: 30px auto;
+table.table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
 }
 
-.modal-header {
-    background-color: #007bff;
-    color: white;
-    font-size: 1.5em;
-    padding: 15px;
-    border-radius: 5px;
-}
-
-.modal-content {
-    padding: 20px;
-}
-
-.modal-body {
-    padding: 20px;
-}
-
-.modal-footer {
+table.table tbody tr:hover {
     background-color: #f1f1f1;
-    padding: 10px;
+    cursor: pointer;
 }
 
-/* Estilo responsive */
+table.table tbody td button {
+    padding: 8px 15px;
+    margin-right: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+table.table tbody td button:hover {
+    opacity: 0.8;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
 @media (max-width: 768px) {
     .dashboard-header {
-        padding: 30px 15px;
+        padding: 20px 10px;
     }
 
     .dashboard-title {
-        font-size: 2em;
+        font-size: 1.8em;
     }
 
     .container {
         padding: 15px;
+    }
+
+    .row.mb-4 .form-control {
+        width: 100%;
+    }
+
+    .col-md-2 {
+        padding: 0;
     }
 
     .card {
@@ -100,5 +135,70 @@ body {
     .col-md-4 {
         flex: 0 0 100%;
         max-width: 100%;
+    }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
+    width: 80%;
+    max-width: 600px;
+    height: auto;
+    max-height: 80vh;
+    overflow: hidden;
+}
+
+
+
+.modal-content-hist {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh;
+    position: relative;
+} 
+
+#historial-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: 60vh;
+    padding: 10px;
+}
+
+#historial-container p {
+    background-color: #f1f1f1;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    font-size: 14px;
+    border-left: 5px solid #007bff;
+}
+
+#cerrarModalBtn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    align-self: center;
+}
+
+#cerrarModalBtn:hover {
+    background-color: #c82333;
+}
+
+@media (max-width: 767px) {
+    .modal-dialog {
+        max-width: 90%;
     }
 }

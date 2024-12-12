@@ -1,79 +1,64 @@
-/* Ajustar el contenedor principal */
 .container {
-    margin: 30px auto;  /* Centra el contenedor horizontalmente */
-    max-width: 1200px;   /* Limita el ancho máximo */
-    padding: 25px;       /* Relleno interno */
+    margin: 30px auto;
+    max-width: 97%;
+    padding: 25px;
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
-    width: 95%;  /* Ajusta el ancho a un 95% del contenedor padre */
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
     gap: 30px;
-    justify-items: center; 
+    justify-items: center;
 }
 
-/* Responsividad: Contenedor de tarjetas */
+.card {
+    border: none;
+    border-radius: 5px !important;
+    margin-bottom: 43px !important;
+    min-width: 300px;
+    min-height: 350px;
+}
 @media (max-width: 768px) {
     .container {
-        padding: 15px;  /* Ajustar padding para dispositivos pequeños */
+        grid-template-columns: 1fr;
+        padding: 15px;
     }
-}
 
-/* Ajustes específicos a las cards */
-.card {
-    position: relative;
-    border: none;
-    border-radius: 15px !important;
-    overflow: hidden;
-    background: white;
-    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
-    transition: all 0.3s ease;
-    min-width: 300px; /* Ajuste de tamaño */
-    height: auto;
-    margin: 0 auto;
-    width: 100%; /* Asegura que ocupe todo el espacio disponible */
-}
-
-
-/* Responsividad para cards en pantallas pequeñas */
-@media (max-width: 768px) {
     .card {
-        min-width: 280px;
-        width: 100%;
+        min-width: 100%;
+        margin-bottom: 20px;
     }
 }
-
-
-
-
-
 .card-header {
-    background: linear-gradient(135deg, #2193b0, #6dd5ed);
+    background: linear-gradient(135deg, #2c3e50, #3498db);
     color: white;
     padding: 20px;
     font-size: 1.4em;
     font-weight: 500;
+    text-align: center;
     letter-spacing: 0.5px;
-    border: none;
 }
 
 .card-body {
-    padding: 25px;
+    padding: 20px;
     background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
 .card-title {
     color: #2d3436;
     font-size: 1.2em;
     font-weight: 600;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
 .card-text {
     color: #636e72;
     line-height: 1.6;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    text-align: center;
 }
 
 .card-footer {
@@ -86,41 +71,19 @@
 }
 
 .card-footer button {
-    padding: 8px 20px;
+    padding: 8px 15px;
     border-radius: 8px;
     border: none;
     font-weight: 500;
     transition: all 0.2s ease;
+    font-size: 0.9em;
 }
 
 .card-footer button:hover {
     transform: scale(1.05);
 }
 
-/* Botones específicos */
-.btn-edit {
-    background-color: #ffd43b;
-    color: #000;
-}
 
-.btn-delete {
-    background-color: #ff6b6b;
-    color: white;
-}
-
-/* Responsividad */
-@media (max-width: 1200px) {
-    .carrera-container {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    }
-}
-
-@media (max-width: 768px) {
-    .carrera-container {
-        grid-template-columns: 1fr;
-        padding: 15px;
-    }
-}
 
 @keyframes slideIn {
     from {
@@ -160,28 +123,5 @@
     font-size: 1.2em;
 }
 
-/* Actualizar también los colores de las cards para mantener coherencia */
-.card-header {
-    background: linear-gradient(135deg, #2c3e50, #3498db);
-    color: white;
-    padding: 20px;
-    font-size: 1.4em;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    border: none;
-}
 
-/* Media query para dispositivos móviles */
-@media (max-width: 768px) {
-    .dashboard-header {
-        padding: 30px 15px;
-    }
 
-    .dashboard-title {
-        font-size: 2em;
-    }
-
-    .dashboard-subtitle {
-        font-size: 1em;
-    }
-}
