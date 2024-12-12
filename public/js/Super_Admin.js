@@ -51,6 +51,21 @@ document.addEventListener('DOMContentLoaded', function () {
         // Validación de campos vacíos
         if (!data.nombre || !data.dni || !data.email || !data.password) {
             mostrarToast("Todos los campos son obligatorios", "error");
+            return;
+        }
+
+        // Validación del nombre (solo letras y espacios)
+        const nombreRegex = /^[a-zA-Z\s]+$/;
+        if (!nombreRegex.test(data.nombre)) {
+            mostrarToast("El nombre solo puede contener letras y espacios", "error");
+            return;
+        }
+
+        // Validación del DNI (debe ser un número de 7 u 8 dígitos)
+        const dniRegex = /^\d{7,8}$/;
+        if (!dniRegex.test(data.dni)) {
+            mostrarToast("El DNI debe tener entre 7 y 8 dígitos", "error");
+            return;
         }
 
         try {
@@ -76,20 +91,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
-//Para mostrar mensajes
-function mostrarToast(mensaje, tipo = "info") {
-    const toast = document.getElementById("mensajeToast");
-    const texto = document.getElementById("mensajeTexto");
-
-    texto.textContent = mensaje;
-    toast.className = `toast-container ${tipo}`;
-    toast.style.display = "block";
-    setTimeout(() => {
-        toast.style.display = "none";
-        location.reload();
-    }, 1500);
-
-}
 // Función para eliminar un bedel
 async function eliminarBedel(bedelId) {
     try {
@@ -106,4 +107,18 @@ async function eliminarBedel(bedelId) {
         console.error("Error al eliminar el bedel:", error);
         mostrarToast("No se pudo eliminar el bedel", "error");
     }
+}
+//Para mostrar mensajes
+function mostrarToast(mensaje, tipo = "info") {
+    const toast = document.getElementById("mensajeToast");
+    const texto = document.getElementById("mensajeTexto");
+
+    texto.textContent = mensaje;
+    toast.className = `toast-container ${tipo}`;
+    toast.style.display = "block";
+    setTimeout(() => {
+        toast.style.display = "none";
+        location.reload();
+    }, 1500);
+
 }

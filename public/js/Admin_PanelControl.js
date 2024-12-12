@@ -40,40 +40,37 @@ function openDeleteModal(idCarrera) {
 document.addEventListener('DOMContentLoaded', function () {
     cargarCarreras();
     $.material.init();
-
+    
     function cargarCarreras() {
         fetch('/carrera/obtener')
             .then(response => response.json())
             .then(carreras => {
                 const listaCarreras = document.getElementById('listaCarreras');
-                listaCarreras.innerHTML = ''; 
-                const row = document.createElement('div');
+                listaCarreras.innerHTML = '';
                 carreras.forEach(carrera => {
-                    const col = document.createElement('div');
-                    col.innerHTML = `
-                        <div class="card" style="margin: 10px;">
-                            <div class="card-header text-center">
+                    listaCarreras.innerHTML += `
+                    <div class="col-md-4">
+                        <div class="custom-card" style="margin: 10px;">
+                            <div class="custom-card-header text-center" title="${carrera.nombreCarrera}">
                                 ${carrera.nombreCarrera}
                             </div>
-                            <div class="card-body">
-                                <h5 class="card-title">${carrera.titulo}</h5>
-                                <p class="card-text"><strong>Carga Horaria:</strong> ${carrera.cargaHoraria} horas</p>
-                                <p class="card-text"><strong>Duración:</strong> ${carrera.duracion} años</p>
+                            <div class="custom-card-body">
+                                <h5 class="custom-card-title" title="${carrera.titulo}">${carrera.titulo}</h5>
+                                <p class="custom-card-text"><strong>Carga Horaria:</strong> ${carrera.cargaHoraria} horas</p>
+                                <p class="custom-card-text"><strong>Duración:</strong> ${carrera.duracion} años</p>
                                 <a href="/planEstudio/${carrera._id}" class="btn btn-info">Información</a>
                                 <button type="button" class="btn btn-warning" onclick="modificarCarrera('${carrera._id}')">Modificar</button>
                                 <button type="button" class="btn btn-danger" onclick="openDeleteModal('${carrera._id}')">Dar de baja</button>
                             </div>
                         </div>
-                    `;
-                    row.appendChild(col);
+                    </div>`;
                 });
-                listaCarreras.appendChild(row); // Agregar todas las cards dentro del contenedor row
             })
             .catch(error => console.error('Error al cargar carreras:', error));
     }
-    
-    
 
+
+    
     // Mostrar/Ocultar formulario de agregar carrera
     const toggleFormBtn = document.getElementById('toggleFormBtn');
     const formContainer = document.getElementById('formContainer');
@@ -173,10 +170,7 @@ function mostrarToast(mensaje, tipo = "info") {
     toast.className = `toast-container ${tipo}`;
     toast.style.display = "block";
 
-    // Ocultar automáticamente después de 3 segundos
     setTimeout(() => {
         toast.style.display = "none";
-        mostrarAlumnos(true);
-        location.reload();
     }, 1500);
 }

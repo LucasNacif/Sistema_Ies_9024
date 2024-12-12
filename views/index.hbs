@@ -7,6 +7,7 @@
   <link rel="icon" type="image/png" href="assets/img/favicon.png" />
   <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="Styles/index.css" />
+  <link rel="stylesheet" href="/Styles/estilosGlobales.css" />
   <title>SISTEMA IES</title>
 </head>
 
@@ -14,10 +15,12 @@
   <div class="container">
     <div class="forms-container">
       <div class="signin-signup">
-        <div id="mensajeError" class="escondido" style="color: red;"></div>
+        <div id="mensajeToast" class="toast-container" style="display: none;">
+          <p id="mensajeTexto"></p>
+        </div>
 
         <form class="sign-in-form" id="FormLogin">
-          <img src="assets/img/logo_IES.jpg" alt="Logo IES">
+          <img src="assets/img/logo_IES.jpg" alt="Logo IES" style="width: 160px;">
           <h2 class="title">Bienvenido</h2>
           <div class="input-field">
             <i class="fas fa-user"></i>
@@ -31,7 +34,7 @@
         </form>
 
         <form class="sign-up-form" id="FormRegistro">
-          <img src="assets/img/logo_IES.jpg">
+          <img src="assets/img/logo_IES.jpg" alt="Logo IES" style="width: 160px;">
           <h2 class="title">Registrarse</h2>
           <div class="input-field">
             <i class="fas fa-user"></i>
@@ -67,7 +70,7 @@
         <div class="content">
           <h3>Ya tienes una cuenta?</h3>
           <p></p>
-          <button class="btn transparent" id="sign-in-btn">Inicia Sesion</button>
+          <button style="width: auto;" class="btn transparent" id="sign-in-btn">Inicia Sesion</button>
         </div>
       </div>
     </div>

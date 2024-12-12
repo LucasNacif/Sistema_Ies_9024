@@ -84,7 +84,6 @@ function mostrarModificarAlumnoModal(button) {
     $('#antecedenPenModificar').prop('checked', antecedentesPenales);
     $('#idAlumnoModificar').val(alumnoId);
 
-    // Mostrar el modal
     $('#modificarAlumnoModal').modal('show');
 }
 document.getElementById("formModificarAlumno").addEventListener("submit", async function (e) {
@@ -113,6 +112,7 @@ document.getElementById("formModificarAlumno").addEventListener("submit", async 
 
         const result = await response.json();
         if (response.ok) {
+            //oculta el modal y muestra la tostada
             $('#modificarAlumnoModal').modal('hide');
             mostrarToast(result.message, "success");
         } else {

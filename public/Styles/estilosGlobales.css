@@ -2,7 +2,7 @@
 
 /* Estilos comunes para todos los modales */
 .modal {
-    backdrop-filter: none; /* Eliminamos el fondo difuso */
+    backdrop-filter: none; 
     z-index: 1050 !important;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .modal-content {
-    border-radius: 10px;
+    border-radius: 18px !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -73,35 +73,51 @@
     transform: scale(1.05);
 }
 .btn-primary {
-    background: linear-gradient(135deg, #2c3e50, #3498db);
-    border-color: #007bff;
+    background-color: #3498db !important;
+    border-color: #3498db;
     color: white;
 }
+.btn-primary:hover {
+    background-color: #d4d4d4 !important;
+    border-color: #3498db;
+}
+
+
+.btn-secondary {
+    background-color: #0f71f1 !important;
+    border-color: #db3434;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #d4d4d4 !important;
+    border-color: #db3434;
+}
+
 .btn-warning {
     background-color: #f1c40f;
     color: #2c3e50;
 }
 
-.btn-secondary {
-    background-color: #95a5a6;
-    border-color: #6c757d;
-    color: white;
-}
-
-.btn-secondary:hover {
-    background-color: #5a6368;
-    border-color: #5a6368;
-}
 
 .btn-danger {
-    background-color: #dc3545;
+    background-color: #dc3545 !important;
     border-color: #dc3545;
     color: white;
 }
 
 .btn-danger:hover {
-    background-color: #c82333;
+    background-color: #d4d4d4  !important;
     border-color: #c82333;
+}
+
+.btn-tertiary {
+    background-color: #1bad4c  !important;
+    border-color: #1bad4c;
+}
+.btn-tertiary:hover {
+    background-color: #d4d4d4  !important;
+    border-color: #1bad4c ;
 }
 
 /* Estilos para las notificaciones Toast */
@@ -142,12 +158,12 @@
     border: 1px solid #ccc;
     width: 100%;
     height: 100% !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Añadido para dar sombra similar al modal */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .form-control:focus {
-    border-color: #007bff; /* Color del borde al enfocar, igual al modal */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Efecto de sombra similar al del modal */
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 label {
@@ -171,17 +187,6 @@ select.form-control {
     border: 1px solid #ccc;
 }
 
-button[type="submit"] {
-    background: linear-gradient(135deg, #2c3e50, #3498db);
-    padding: 8px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-}
-
-button[type="submit"]:hover {
-    background: linear-gradient(300deg, #2c3e50, #3498db);
-}
-
 /* Estilos para el encabezado */
 .dashboard-header {
     background: linear-gradient(135deg, #000000, #1d48d6);
@@ -200,7 +205,6 @@ button[type="submit"]:hover {
     right: 0;
     bottom: 0;
     left: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
     opacity: 0.2;
 }
 .dashboard-title {

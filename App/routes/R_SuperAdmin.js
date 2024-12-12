@@ -5,6 +5,7 @@ const autenticacion = require('../controllers/autenticacion');
 
 router.post("/AdministracionSuperAdmin/crearBedel", (req, res) => {
     // Modificar el body para incluir el rol
+    
     const bodyConRol = {
         ...req.body,
         rol: 'bedel'  // Forzar el rol a 'bedel'

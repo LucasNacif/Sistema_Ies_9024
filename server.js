@@ -6,15 +6,6 @@ const path = require("path");
 const app = express();
 const port = process.env.PORT || 3000;
 
-//Esto es para usar una collecion y que mongoose la cree en la bd(forma rapida)
-// const Alumno = require('./models/Alumno');
-// const AlumnoEstado = require('./models/AlumnoEstado');
-// const Carrera = require('./models/Carrera');  
-// const Materia = require('./models/Materia');
-// const Mesa = require('./models/Mesa');
-// const PlanEstudio = require('./models/PlanEstudio');
-// const Usuario = require('./models/Usuario');
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -23,20 +14,27 @@ app.use(cookieParser());
 const hbs = require("hbs");
 const moment = require('moment');
 
-
 //HELPERS
 // Registrar el helper 'and'
 hbs.registerHelper("and", function (...args) {
   return args.every(Boolean);
 });
+
 // Helper para convertir a JSON
 hbs.registerHelper("json", function(context) {
   return JSON.stringify(context);
 });
+
 // Helper para mostrar la fecha formateada en la vista
 hbs.registerHelper('formatDate', (date) => {
   return moment(date).format('DD/MM/YYYY');
 });
+
+// Helper para mostrar la hora y fecha formateada en la vista
+hbs.registerHelper('formatDateAndHours', function(date) {
+  return moment(date).format('DD/MM/YYYY - HH:mm:ss');  
+});
+
 // Registrar un helper para comparación de igualdad
 hbs.registerHelper('eq', function(a, b) {
   return a === b;
@@ -52,9 +50,6 @@ mongoose
   .then(() => console.log("Conectado a MongoDB Atlas"))
   .catch((err) => console.error("Error al conectar a MongoDB Atlas:", err));
 
-
-
-
 // Zona de ruteo
 const alumnoRouters = require("./App/routes/R_Alumno.js");
 const carreraRouters = require("./App/routes/R_Carrera.js");
@@ -64,18 +59,7 @@ const alumnoEstadoRoutes = require("./App/routes/R_alumnoEstado");
 const mesaRouters = require("./App/routes/R_Mesa");
 const superAdminRouters = require("./App/routes/R_SuperAdmin.js");
 
-//Middlewares
-const { verificarSesion, verificarRol } = require('./App/middlewares/autorizacion.js');
-
 app.use(loginRouters);
-// app.use( verificarSesion, verificarRol(['alumno']), inscripcionRouters);
-// app.use( verificarSesion, verificarRol(['bedel', 'superAdmin']), carreraRouters);
-// app.use( verificarSesion, verificarRol(['bedel', 'superAdmin']), alumnoRouters);
-// app.use( verificarSesion, verificarRol(['bedel', 'superAdmin']), alumnoEstadoRoutes);
-//app.use( verificarSesion, verificarRol(['bedel', 'superAdmin']), mesaRouters);
-// app.use( verificarSesion, verificarRol(['superAdmin']), superAdminRouters);
-
-
 app.use(inscripcionRouters);
 app.use(carreraRouters);
 app.use(alumnoRouters);
@@ -83,14 +67,8 @@ app.use(alumnoEstadoRoutes);
 app.use(mesaRouters);
 app.use(superAdminRouters);
 
-// app.get("/", (req, res) => res.render("Admin_PanelControl"));
-// app.get("/index", (req, res) => res.render("index"));
-// app.get("/alumno", (req, res) => res.render("Admin_PlanEstudio"));
-// app.get("/materia", (req, res) => res.render("Admin_Materia"));
-// app.get("/Administracion", (req, res) => res.render("Admin_PanelControl"));
-// app.get("/AdministracionSuperAdmin", (req, res) => res.render("SuperAdmin_PanelControl"));
-// app.get("/alumnoMesaExamen", (req, res) => res.render("Alumno_MesaExamen"));
-// app.get("/alumnoEstado", (req, res) => res.render("Admin_AlumnoEstado"));
+//Middlewares
+const { verificarSesion, verificarRol } = require('./App/middlewares/autorizacion.js');
 
 
 // Ruta del index
@@ -118,5 +96,5 @@ app.get('/alumnoEstado', verificarSesion, verificarRol(['bedel', 'superAdmin']),
 })
 
 app.listen(port, () => {
-  console.log(`Escuchando en el puerto ${port}`);
+  console.log(`Escuchando en el  puerto ${port}`);
 });

@@ -3,11 +3,9 @@ const PlanEstudio = require("../../models/PlanEstudio");
 
 exports.nuevoAlumnoPlanDeEstudio = async (req, res) => {
   try {
-
     const {
       numDocAlumn,
       nombreCompleto,
-      nombre,
       corte,
       emailAlumn,
       tituloSecundario,
@@ -27,7 +25,6 @@ exports.nuevoAlumnoPlanDeEstudio = async (req, res) => {
     const alumno = new Alumno({
       numDocAlumn,
       nombreCompleto,
-      nombre,
       corte,
       emailAlumn,
       tituloSecundario,
@@ -44,7 +41,7 @@ exports.nuevoAlumnoPlanDeEstudio = async (req, res) => {
     const planEstudio = await PlanEstudio.findOneAndUpdate(
       { _id: idPlanEstudioSeleccionado },
       { $push: { alumnos: alumno._id } },
-      { new: true } 
+      { new: true }
     );
 
     if (planEstudio) {
@@ -52,7 +49,7 @@ exports.nuevoAlumnoPlanDeEstudio = async (req, res) => {
     } else {
       return res.redirect(`/planEstudio/${idCarrera}?error=No se encontró el plan de estudio.`);
     }
-    
+
   } catch (error) {
     console.error(error);
     return res.redirect(`/planEstudio/${idCarrera}?error=No se pudo agregar el alumno.`);
@@ -78,9 +75,9 @@ exports.modificarEstado = async (req, res) => {
       { new: true }
     );
 
-    if(estado){
+    if (estado) {
       res.status(200).json({ message: "Alta exitosa" });
-    }else{
+    } else {
       res.status(200).json({ message: "Baja exitosa" });
 
     }
@@ -121,13 +118,13 @@ exports.modificarAlumno = async (req, res) => {
     );
 
     if (alumnoActualizado) {
-       return res.status(200).json({ message: "Alumno modificado correctamente" });
+      return res.status(200).json({ message: "Alumno modificado correctamente" });
     } else {
       return res.status(500).json({ message: "Error al modificar alumno" });
     }
   } catch (error) {
     console.error("Error al modificar el alumno:", error.message);
-    return res.status(500).json({ message: "Error interno del servidor" }); 
+    return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
