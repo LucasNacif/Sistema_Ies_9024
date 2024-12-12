@@ -1,67 +1,82 @@
 .container {
-    margin: 30px auto;
-    max-width: 97%;
-    padding: 25px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-    gap: 30px;
-    justify-items: center;
+    background-color: #f0f4f8;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px;
+    width: 97% !important;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
-.card {
+.custom-card {
     border: none;
-    border-radius: 5px !important;
-    margin-bottom: 43px !important;
-    min-width: 300px;
-    min-height: 350px;
+    border-radius: 12px;
+    background: white;
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
 }
-@media (max-width: 768px) {
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+@media (max-width: 1024px) {
     .container {
-        grid-template-columns: 1fr;
         padding: 15px;
     }
-
-    .card {
-        min-width: 100%;
-        margin-bottom: 20px;
+    .custom-card {
+        max-width: 100%;
+    }
+    .row {
+        justify-content: flex-start;
     }
 }
-.card-header {
+
+@media (max-width: 768px) {
+    .custom-card {
+        max-width: 100%;
+    }
+    .container {
+        padding: 10px;
+    }
+    .row {
+        justify-content: center;
+    }
+}
+
+.custom-card-header {
     background: linear-gradient(135deg, #2c3e50, #3498db);
     color: white;
+    font-weight: bold !important;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 15px;
+}
+
+.custom-card-body {
     padding: 20px;
-    font-size: 1.4em;
-    font-weight: 500;
-    text-align: center;
-    letter-spacing: 0.5px;
 }
 
-.card-body {
-    padding: 20px;
-    background: #ffffff;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
+.custom-card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
 }
 
-.card-title {
-    color: #2d3436;
-    font-size: 1.2em;
-    font-weight: 600;
-    margin-bottom: 10px;
-    text-align: center;
+.custom-card-text {
+    font-size: 1rem;
+    color: #6c757d;
 }
 
-.card-text {
-    color: #636e72;
-    line-height: 1.6;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.card-footer {
+.custom-card-footer {
     background: #f8f9fa;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
     padding: 15px;
@@ -70,31 +85,32 @@
     gap: 10px;
 }
 
-.card-footer button {
-    padding: 8px 15px;
+.custom-card-footer button {
+    padding: 8px 20px;
     border-radius: 8px;
     border: none;
     font-weight: 500;
     transition: all 0.2s ease;
-    font-size: 0.9em;
 }
 
-.card-footer button:hover {
+.custom-card-footer button:hover {
     transform: scale(1.05);
 }
 
+.custom-card .btn {
+    margin-right: 10px;
+}
 
+.custom-card .btn-info {
+    background-color: #17a2b8;
+}
 
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
+.custom-card .btn-warning {
+    background-color: #ffc107;
+}
 
-    to {
-        transform: translateX(-50%);
-        opacity: 1;
-    }
+.custom-card .btn-danger {
+    background-color: #dc3545;
 }
 
 .add-career-btn {
@@ -122,6 +138,3 @@
 .add-career-btn i {
     font-size: 1.2em;
 }
-
-
-
