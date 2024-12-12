@@ -2,14 +2,12 @@ const express = require("express");
 const router = express.Router();
 const controller = require("../controllers/C_alumno");
 
-router.post("/alumno/agregar", controller.nuevo);
+//no hay get de alumnos porque los traemos junto con el plan de estudio en /planEstudio/:id/
 
-router.get("/alumno/traerPorDoc/:numDocAlumn", controller.traerPorDoc);
+router.post("/alumno/agregarAlumnoPlanEstudio", controller.nuevoAlumnoPlanDeEstudio);
 
-router.delete("/alumno/baja/:numDocAlumn", controller.darDeBaja);
+router.put("/alumno/estado", controller.modificarEstado);
 
-router.post("/alumno/modificar", controller.modificarAlumno);
-
-router.get('/alumno/obtenerAlumnos', controller.obtenerAlumnosActivos);
+router.put("/alumno/modificar", controller.modificarAlumno);
 
 module.exports = router;

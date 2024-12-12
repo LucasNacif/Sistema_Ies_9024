@@ -2,72 +2,147 @@
 <html lang="es">
 
 <head>
-    <title>Carreras</title>
+    <title>Panel de SuperAdmin</title>
     <meta charset="UTF-8">
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
-    <link rel="stylesheet" href="/Styles/main.css">
-    <link rel="stylesheet" href="/Styles/bootstrap.min.css">
-    <link rel="stylesheet" href="/Styles/Admin_PanelControl.css">
 
+    <link rel="stylesheet" href="/Styles/SuperAdmin.css">
+    <link rel="stylesheet" href="/Styles/estilosGlobales.css" />
+
+    <link rel="stylesheet" href="/Styles/main.css" />
+    <link rel="stylesheet" href="/Styles/bootstrap.min.css" />
     <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
-    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
-    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
     <script src="/js/jsBoostrap/material.min.js"></script>
     <script src="/js/jsBoostrap/ripples.min.js"></script>
+    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
+    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
     <script src="/js/jsBoostrap/main.js"></script>
+
+    <script src="/js/Super_Admin.js"></script>
+
 </head>
 
 <body>
-    <!-- Barra lateral (SideBar) -->
     <section class="full-box cover dashboard-sideBar">
         <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
         <div class="full-box dashboard-sideBar-ct">
             <div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
-                Super Admin <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
+                Super admin <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
+
             </div>
             <div class="full-box dashboard-sideBar-UserInfo">
                 <figure class="full-box">
                     <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
                 </figure>
                 <ul class="full-box list-unstyled text-center">
-                    <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
+                    <li><a href="/logout"><i class="zmdi zmdi-power"></i></a></li>
                 </ul>
             </div>
             <ul class="list-unstyled full-box dashboard-sideBar-Menu">
                 <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
-                <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Alumnos</a></li>
                 <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
-                <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i> Materias</a></li>
-                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a></li>
+                <li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Gestión académica</a></li>
+                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a>
+                </li>
             </ul>
-
-
         </div>
     </section>
 
     <!-- Contenido de la página principal -->
     <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
 
-        <!-- Barra de navegación superior (NavBar) -->
+        <div id="mensajeToast" class="toast-container" style="display: none;">
+            <p id="mensajeTexto"></p>
+        </div>
         <nav class="full-box dashboard-Navbar">
             <ul class="full-box list-unstyled text-right">
                 <li class="pull-left">
-                    <!-- Botón para mostrar/ocultar el menú lateral -->
                     <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
                 </li>
             </ul>
         </nav>
 
-        <br>
-        <br>
-        <br>
-        <header>
-            <h1>VISTA PARA EL SUPER ADMIN</h1>
-        </header>
+        <div class="dashboard-header">
+            <div class="header-content">
+                <h1 class="dashboard-title">Panel de SuperAdmin</h1>
+                <p class="dashboard-subtitle">Gestión de usuarios bedeles</p>
+            </div>
+        </div>
 
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul class="nav nav-tabs" style="margin-bottom: 15px;">
+                        <li class="active"><a href="#new" data-toggle="tab">Nuevo</a></li>
+                        <li><a href="#list" data-toggle="tab">Lista</a></li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade active in" id="new">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-10 col-md-offset-1">
+                                        <form id="formNuevoBedel" class="bg-light p-4 rounded shadow-sm">
+                                            <h2 class="my-4 text-center">Crear Nuevo Bedel</h2>
 
+                                            <div class="form-group">
+                                                <label for="nombre">Nombre</label>
+                                                <input type="text" class="form-control" id="nombre" name="nombre"
+                                                    required>
+                                                <div class="error-message" style="display:none;">Nombre inválido.</div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="dni">DNI</label>
+                                                <input type="text" class="form-control" id="dni" name="dni" required>
+                                                <div class="error-message" style="display:none;">Dni inválido.
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="email">Email</label>
+                                                <input type="email" class="form-control" id="email" name="email"
+                                                    required>
+                                                <div class="error-message" style="display:none;">Correo inválido.</div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="password">Contraseña</label>
+                                                <input type="password" class="form-control" id="password"
+                                                    name="password" required>
+                                                <div class="error-message" style="display:none;">Contraseña inválida.
+                                                </div>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-primary">Crear Bedel</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="list">
+                            <div class="table-responsive">
+                                <table class="table table-hover text-center">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">DNI</th>
+                                            <th class="text-center">Nombre</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tablaBedeles">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </body>
 

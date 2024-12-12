@@ -1,0 +1,55 @@
+/* Global styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+h3,
+h4 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: #343a40;
+    margin-top: 50px;
+}
+
+/* Table styles */
+.table {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #212529;
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
+    white-space: nowrap;
+    padding: 5px;
+}
+
+.table th {
+    width: 150px;
+}
+
+.table td {
+    width: 100px;
+}
+
+/* Input, button, and table common styles */
+input,
+button,
+table {
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+    padding: 10px;
+}
+
+/* Container styles */
+.container {
+    width: 97% !important;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}

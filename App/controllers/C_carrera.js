@@ -1,138 +1,235 @@
 const Carrera = require("../../models/Carrera");
 const Materia = require('../../models/Materia');
+const PlanEstudio = require("../../models/PlanEstudio");
+const mongoose = require('mongoose');
 
-
-//CARRERAS
-
-// Obtener todas las carreras
+// CARRERAS
 exports.obtenerCarreras = async (req, res) => {
     try {
-        const carreras = await Carrera.find({});
+        const carreras = await Carrera.find({ estado: true });
         res.json(carreras);
     } catch (err) {
-        res.status(500).send('Error al obtener las carreras');
+        console.error(err);
+        res.status(500).json({ message: 'Error al obtener las carreras' });
     }
 };
-// Agregar una nueva carrera
-exports.agregarCarreras = async (req, res) => {
+exports.obtenerCarreraPorId = async (req, res) => {
     try {
-        const {
-            nombreCarrera,
-            titulo,
-            cargaHoraria,
-            duracion,
-        } = req.body;
-
-        if (!nombreCarrera) {
-            return res.status(400).send('El nombre de la carrera es obligatorio');
+        const carrera = await Carrera.findById(req.params.id);
+        if (!carrera) {
+            return res.status(404).json({ message: 'Carrera no encontrada' });
         }
-
-        const nuevaCarrera = new Carrera({
-            nombreCarrera,
-            titulo,
-            cargaHoraria,
-            duracion,
-            planEstudio: [],
-            alumnos: []
-        });
-
-        await nuevaCarrera.save();
-        res.status(201).send('Carrera agregada correctamente');
+        return res.json(carrera);
     } catch (error) {
-        console.log(error);
-        res.status(400).send('Error al agregar la carrera');
+        console.error(error);
+        return res.status(500).json({ message: 'Error al obtener la carrera' });
     }
 };
-// Eliminar una carrera
-exports.eliminarCarreras = async (req, res) => {
+exports.agregarCarreras = async (req, res) => {
+    const { nombreCarrera, titulo, cargaHoraria, duracion, planEstudio } = req.body;
+
+    if (!nombreCarrera) {
+        return res.status(400).json({ message: 'El nombre de la carrera es obligatorio' });
+    }
+
+    const nuevaCarrera = new Carrera({
+        nombreCarrera,
+        titulo,
+        cargaHoraria,
+        duracion,
+        planEstudio: planEstudio || null
+    });
+
     try {
-        await Carrera.findByIdAndDelete(req.params.id);
-        res.send('Carrera eliminada correctamente');
-    } catch (err) {
-        res.status(500).send('Error al eliminar la carrera');
+        await nuevaCarrera.save();
+        res.status(201).json({ message: 'Carrera agregada correctamente' });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: 'Error al agregar la carrera' });
     }
 };
+exports.modificarCarrera = async (req, res) => {
+    const { id } = req.params;
+    const { nombreCarrera, titulo, cargaHoraria, duracion } = req.body;
 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'ID de carrera no válido' });
+    }
 
-//PLAN DE ESTUDIO
-
-// Ver plan de estudio de una carrera
-exports.verPlanEstudio = async (req, res) => {
     try {
-        const carreraId = req.params.id;
-        const carrera = await Carrera.findById(carreraId).populate('planEstudio');
+        const carrera = await Carrera.findByIdAndUpdate(
+            id,
+            { nombreCarrera, titulo, cargaHoraria, duracion },
+            { new: true }
+        );
 
         if (!carrera) {
-            return res.status(404).send('Carrera no encontrada');
+            return res.status(404).json({ message: 'Carrera no encontrada' });
         }
-        res.render('Admin_PlanEstudio', {
-            carrera: carrera,
-            tienePlan: carrera.planEstudio.length > 0
-        });
+
+        res.json({ message: 'Carrera modificada correctamente' });
     } catch (error) {
-        console.log(error);
-        res.status(500).send('Error al obtener el plan de estudio');
+        console.error(error);
+        res.status(500).json({ message: 'Error al modificar la carrera' });
     }
 };
-// // Agregar un plan de estudio a una carrera existente
-// exports.agregarPlanEstudio = async (req, res) => {
-//     try {
-//         const { carreraId } = req.params;
-//         const { materias } = req.body;
+exports.bajaCarreras = async (req, res) => {
+    const { id } = req.params;
+    let carrera = null;
 
-//         // Verifico si existe la carrera
-//         const carrera = await Carrera.findById(carreraId);
-//         if (!carrera) {
-//             return res.status(404).send('Carrera no encontrada');
-//         }
-
-//         const nuevoPlanEstudio = {
-//             materias: materias || [] // Si no hay materias queda vacío
-//         };
-
-//         // Asociar el nuevo plan de estudio a la carrera
-//         carrera.plan.push(nuevoPlanEstudio);
-//         await carrera.save(); // Actualizar la carrera
-
-//         res.status(200).send('Plan de estudio agregado correctamente');
-//     } catch (error) {
-//         console.log(error);
-//         res.status(400).send('Error al agregar el plan de estudio');
-//     }
-// };
-
-
-//MATERIAS
-
-// Agregar una nueva materia
-exports.agregarMateria = async (req, res) => {
     try {
-        const { nombreMateria, correlativas } = req.body;
+        if (id) {
+            carrera = await Carrera.findOneAndUpdate(
+                { _id: id },
+                { estado: false },
+                { new: true }
+            );
+        } else {
+            return res.status(400).json({ message: 'ID no proporcionado' });
+        }
+
+        if (!carrera) {
+            return res.status(404).json({ message: 'Carrera no encontrada' });
+        }
+
+        return res.json({ message: 'Carrera dada de baja correctamente' });
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({ message: 'Error al eliminar la carrera' });
+    }
+};
+
+// PLAN DE ESTUDIO
+exports.verPlanEstudio = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        let carrera = await obtenerPlanEstudio(id);
+
+        if (!carrera) {
+            return res.status(404).json({ message: 'Carrera no encontrada' });
+        }
+
+        // Si la carrera no tiene un plan de estudio, se crea uno vacío
+        if (!carrera.planEstudio) {
+            await crearPlanEstudioVacio(carrera);
+            carrera = await obtenerPlanEstudio(id); // Vuelvo a buscar la carrera con el nuevo plan de estudio
+        }
+
+        res.render('Admin_PlanEstudio', {
+            carrera,
+            planEstudio: carrera.planEstudio,
+            materias: carrera.planEstudio.materias || [],
+            planEstudioId: carrera.planEstudio._id, 
+            carreraId: carrera._id 
+        });
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al obtener el plan de estudio' });
+    }
+};
+const obtenerPlanEstudio = async (carreraId) => {
+    const carrera = await Carrera.findById(carreraId).populate({
+        path: 'planEstudio',
+        populate: [
+            {
+                path: 'materias',
+                populate: {
+                    path: 'correlativas'
+                }
+            },
+            { path: 'alumnos' }
+        ]
+    });
+    return carrera;
+};
+const crearPlanEstudioVacio = async (carrera) => {
+    const nuevoPlanEstudio = new PlanEstudio({
+        carrera: carrera._id,
+        materias: [],
+        alumnos: []
+    });
+    await nuevoPlanEstudio.save();
+    carrera.planEstudio = nuevoPlanEstudio._id;
+    await carrera.save();
+};
+
+// MATERIAS 
+exports.nuevaMateriaPlanDeEstudio = async (req, res) => {
+    try {
+        const { nombreMateria, correlativas, idCarrera, idPlanEstudioSeleccionado } = req.body;
 
         if (!nombreMateria) {
-            return res.status(400).send('El nombre de la materia es obligatorio');
+            return res.status(400).json({ error: "El nombre de la materia es obligatorio" });
+        }
+        const nuevaMateria = new Materia({
+            nombreMateria,
+            correlativas
+        });
+   
+        const planEstudio = await PlanEstudio.findById(idPlanEstudioSeleccionado);
+    
+        if (!planEstudio) {
+            return res.status(404).json({ error: "Plan de estudio no encontrado" });
         }
 
-        const materia = new Materia({
-            nombreMateria: nombreMateria,
-            correlativas: correlativas || []
-        });
-        console.log(materia);
-        await materia.save();
-        res.status(201).send('Materia agregada correctamente');
+        const materiaGuardada = await nuevaMateria.save();
+
+        await planEstudio.updateOne(
+            { $push: { materias: materiaGuardada._id } }
+        );
+
+        return res.redirect(`/planEstudio/${idCarrera}?success=Materia creada exitosamente`);
     } catch (error) {
-        console.log(error);
-        res.status(400).send('Error al agregar la materia');
+        console.error(error);
+        res.status(500).json({ error: "Error al crear la materia" });
     }
 };
-// Obtener todas las materias
-exports.obtenerMaterias = async (req, res) => {
+exports.eliminarMateria = async (req, res) => {
+    const { idMateria, idPlanEstudio } = req.body;
+
     try {
-        const materia = await Materia.find().populate('correlativas');
-        // console.log(materia); 
-        res.json(materia);
-    } catch (err) {
-        res.status(500).send('Error al obtener las materias');
+        const materia = await Materia.findByIdAndDelete(idMateria);
+        if (!materia) {
+            return res.status(404).json({ success: false, message: "No se encontró la materia" });
+        }
+
+        // Eliminar la materia del plan de estudio
+        const planEstudio = await PlanEstudio.findByIdAndUpdate(
+            idPlanEstudio,
+            { $pull: { materias: idMateria } },
+            { new: true }
+        );
+
+        if (!planEstudio) {
+            return res.status(404).json({ success: false, message: "No se encontró el plan de estudio" });
+        }
+        return res.status(200).json({ success: true, message: "Materia eliminada del plan de estudio" });
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).json({ success: false, message: "Error en el servidor" });
     }
 };
-//falta modificar y eliminar materia por si alguien lo quiere hacer :)
+exports.modificarMateria = async (req, res) => {
+    const { idMateria, nombreMateria, nuevaCorrelativa } = req.body;
+    try {
+       
+        const materia = await Materia.findByIdAndUpdate(
+            idMateria,
+            {
+                $set: { nombreMateria },
+                $addToSet: { correlativas: nuevaCorrelativa }
+            },
+            { new: true }
+        );
+        if (!materia) {
+            return res.status(404).json({ success: false, message: "No se encontró la materia" });
+        }
+        return res.status(200).json({ success: true, message: "Materia modificada correctamente", materia });
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).json({ success: false, message: "Error en el servidor" });
+    }
+};
+
