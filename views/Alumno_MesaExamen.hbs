@@ -57,6 +57,18 @@
             <p><strong>Fecha:</strong> {{formatDate this.fechaMesa}}</p>
             <p><strong>Hora:</strong> {{this.horaMesa}}:00</p>
             <p><strong>Estado:</strong> {{this.estadoActual}}</p>
+
+            {{#if this.Materia.correlativas.length}}
+            <p><strong>Correlativas:</strong></p>
+            <ul>
+                {{#each this.Materia.correlativas}}
+                <li>{{this.nombreMateria}}</li>
+                {{/each}}
+            </ul>
+            {{else}}
+            <p>No tiene correlativas.</p>
+            {{/if}}
+
             <form class="inscripcion-form" action="/inscripcion/mesa/{{this._id}}" method="POST">
                 <button class="btn btn-primary" type="submit">Inscribir</button>
             </form>
@@ -66,28 +78,29 @@
         <p class="no-mesas">No hay mesas disponibles en este momento.</p>
         {{/if}}
 
-        <h1>Estado de las materias</h1>
-        {{#if estadosAlumno.length }}
-        {{#each estadosAlumno}}
-        <div class="estado-card">
-            <h3>{{this.idMateria.nombreMateria}}</h3>
 
-            {{#if this.historialEstados.length}}
-            <h4>Historial de Estados:</h4>
-            <ul>
-                {{#each this.historialEstados}}
-                <li>{{this.estado}} - {{formatDate this.fecha}}</li>
-                {{/each}}
-            </ul>
-            {{else}}
-            <p>No hay historial de estados disponible.</p>
-            {{/if}}
-        </div>
-        {{/each}}
-        {{else}}
-        <p class="no-mesas">No hay materias para mostrar</p>
-        {{/if}}
+ <h1>Estado de las materias</h1>
+{{#if estadosAlumno.length}}
+  {{#each estadosAlumno}}
+    <div class="estado-card">
+      <h3>{{this.idMateria.nombreMateria}}</h3>
+
+      {{#if this.historialEstados.length}}
+        <h4>Historial de Estados:</h4>
+        <ul>
+          {{#each this.historialEstados}}
+            <li>{{this.estado}} - {{formatDateAndHours this.fecha}}</li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <p>No hay historial de estados disponible.</p>
+      {{/if}}
     </div>
+  {{/each}}
+{{else}}
+  <p class="no-mesas">No hay materias para mostrar</p>
+{{/if}}
+
 
     <script src="/js/Alumno_Mesa.js"></script>
 </body>

@@ -20,18 +20,18 @@ exports.crearAlumnoEstado = async (req, res) => {
       return res.status(404).json({ message: "Plan de estudio no encontrado para este alumno" });
     }
 
-        // Buscar la materia dentro de las materias del plan de estudio
-        const materiaEnElPlan = planEstudio.materias.find(m => m.nombreMateria === nombreMateria);
+    // Buscar la materia dentro de las materias del plan de estudio
+    const materiaEnElPlan = planEstudio.materias.find(m => m.nombreMateria === nombreMateria);
 
-        if (!materiaEnElPlan) {
-          return res.status(404).json({ message: `La materia ${nombreMateria} no pertenece al plan de estudio del alumno` });
-        }
+    if (!materiaEnElPlan) {
+      return res.status(404).json({ message: `La materia ${nombreMateria} no pertenece al plan de estudio del alumno` });
+    }
 
-      // Verificar si ya existe un estado para el alumno y la materia
-      let alumnoEstado = await AlumnoEstado.findOne({
-        idAlumno: alumno._id,
-        idMateria: materiaEnElPlan._id
-      });
+    // Verificar si ya existe un estado para el alumno y la materia
+    let alumnoEstado = await AlumnoEstado.findOne({
+      idAlumno: alumno._id,
+      idMateria: materiaEnElPlan._id
+    });
 
     if (alumnoEstado) {
       // Si existe, añado el nuevo estado al historial
@@ -95,7 +95,7 @@ exports.buscarAlumnoYMaterias = async (req, res) => {
         id: estado._id,
         materia: materia ? materia.nombreMateria : null,
         estado: ultimoEstado ? ultimoEstado.estado : 'Sin Estado',
-        fecha: ultimoEstado ? new Date(ultimoEstado.fecha).toISOString().split('T')[0] : null,
+        fecha: ultimoEstado ? new Date(ultimoEstado.fecha).toLocaleString('es-ES') : null,
       };
 
       // Clasificar solo los estados que tienen "sin estado"
