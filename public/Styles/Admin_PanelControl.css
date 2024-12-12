@@ -20,37 +20,9 @@
     margin-left: auto;
     margin-right: auto;
     box-sizing: border-box;
-}
-
-.row {
+    min-height: 300px; /* Ajusta según el tamaño que necesites */
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-}
-
-@media (max-width: 1024px) {
-    .container {
-        padding: 15px;
-    }
-    .custom-card {
-        max-width: 100%;
-    }
-    .row {
-        justify-content: flex-start;
-    }
-}
-
-@media (max-width: 768px) {
-    .custom-card {
-        max-width: 100%;
-    }
-    .container {
-        padding: 10px;
-    }
-    .row {
-        justify-content: center;
-    }
+    flex-direction: column;
 }
 
 .custom-card-header {
@@ -60,16 +32,26 @@
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     padding: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Evita que el nombre largo se salga de la card */
 }
 
 .custom-card-body {
     padding: 20px;
+    flex-grow: 1; /* Asegura que la card se estire correctamente */
 }
 
 .custom-card-title {
     font-size: 1.25rem;
     font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Evita que el título se desborde */
+    max-width: 100%; /* Asegúrate de que el título no se corte antes de tiempo */
+    cursor: pointer; /* Cambia el cursor para indicar que es interactivo */
 }
+
 
 .custom-card-text {
     font-size: 1rem;
@@ -137,4 +119,35 @@
 
 .add-career-btn i {
     font-size: 1.2em;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+@media (max-width: 1024px) {
+    .container {
+        padding: 15px;
+    }
+    .custom-card {
+        max-width: 100%;
+    }
+    .row {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .custom-card {
+        max-width: 100%;
+    }
+    .container {
+        padding: 10px;
+    }
+    .row {
+        justify-content: center;
+    }
 }

@@ -51,18 +51,17 @@ document.addEventListener('DOMContentLoaded', function () {
                     listaCarreras.innerHTML += `
                     <div class="col-md-4">
                         <div class="custom-card" style="margin: 10px;">
-                            <div class="custom-card-header text-center">
-                            ${carrera.nombreCarrera}
-                        </div>
-                           <div class="custom-card-body">
-                            <h5 class="custom-card-title">${carrera.titulo}</h5>
-                            <p class="custom-card-text"><strong>Carga Horaria:</strong> ${carrera.cargaHoraria} horas</p>
-                            <p class="custom-card-text"><strong>Duración:</strong> ${carrera.duracion} años</p>
-                           
-                            <a href="/planEstudio/${carrera._id}" class="btn btn-info">Información</a>
-                            <button type="button" class="btn btn-warning" onclick="modificarCarrera('${carrera._id}')">Modificar</button>
-                            <button type="button" class="btn btn-danger" onclick="openDeleteModal('${carrera._id}')">Dar de baja</button>
-                        </div>
+                            <div class="custom-card-header text-center" title="${carrera.nombreCarrera}">
+                                ${carrera.nombreCarrera}
+                            </div>
+                            <div class="custom-card-body">
+                                <h5 class="custom-card-title" title="${carrera.titulo}">${carrera.titulo}</h5>
+                                <p class="custom-card-text"><strong>Carga Horaria:</strong> ${carrera.cargaHoraria} horas</p>
+                                <p class="custom-card-text"><strong>Duración:</strong> ${carrera.duracion} años</p>
+                                <a href="/planEstudio/${carrera._id}" class="btn btn-info">Información</a>
+                                <button type="button" class="btn btn-warning" onclick="modificarCarrera('${carrera._id}')">Modificar</button>
+                                <button type="button" class="btn btn-danger" onclick="openDeleteModal('${carrera._id}')">Dar de baja</button>
+                            </div>
                         </div>
                     </div>`;
                 });
