@@ -2,113 +2,177 @@
 <html lang="es">
 
 <head>
-	<title>Mesas</title>
-	<meta charset="UTF-8">
-	<meta name="viewport"
-		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum=scale=1.0">
-	<link rel="icon" type="image/png" href="assets/img/favicon.png" />
-	<!-- Enlace al archivo CSS principal -->
-	<link rel="stylesheet" href="/Styles/main.css">
+    <title>Mesas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+
+    <link rel="stylesheet" href="/Styles/Admin_Mesa.css">
+    <link rel="stylesheet" href="/Styles/estilosGlobales.css" />
+
+    <link rel="stylesheet" href="/Styles/main.css" />
+    <link rel="stylesheet" href="/Styles/bootstrap.min.css" />
+    <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
+    <script src="/js/jsBoostrap/material.min.js"></script>
+    <script src="/js/jsBoostrap/ripples.min.js"></script>
+    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
+    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
+    <script src="/js/jsBoostrap/main.js"></script>
+
+    <script src="/js/Admin_Mesa.js"></script>
 </head>
 
 <body>
-	<!-- Barra lateral (SideBar) -->
-	<section class="full-box cover dashboard-sideBar">
-		<!-- Fondo del menú lateral, se muestra en dispositivos pequeños -->
-		<div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
-		<!-- Contenedor del contenido del menú lateral -->
-		<div class="full-box dashboard-sideBar-ct">
-			<!-- Título del menú lateral -->
-			<div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
-				Bedel <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
-			</div>
-			<!-- Información del usuario en el menú lateral -->
-			<div class="full-box dashboard-sideBar-UserInfo">
-				<figure class="full-box">
-					<!-- Imagen del usuario (logo) -->
-					<img src="./assets/img/logo_IES.jpg" alt="UserIcon">
-				</figure>
-				<!-- Opciones de configuración y salir -->
-				<ul class="full-box list-unstyled text-center">
-					<li>
-						<a href="#" id="logout-button">
-							<i class="zmdi zmdi-power"></i>
-						</a>
-					</li>
-				</ul>
-			</div>
-			<!-- Menú principal -->
-	      <ul class="list-unstyled full-box dashboard-sideBar-Menu">
+    <!-- Barra lateral -->
+    <section class="full-box cover dashboard-sideBar">
+        <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
+        <div class="full-box dashboard-sideBar-ct">
+            <div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">Bedel <i
+                    class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i></div>
+            <div class="full-box dashboard-sideBar-UserInfo">
+                <figure class="full-box">
+                    <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
+                </figure>
+                <ul class="full-box list-unstyled text-center">
+                    <li><a href="/logout"><i class="zmdi zmdi-power"></i></a></li>
+                </ul>
+            </div>
+            <ul class="list-unstyled full-box dashboard-sideBar-Menu">
                 <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
-                <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Alumnos</a></li>
                 <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
-                <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i> Materias</a></li>
-                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a></li>
+                <li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Gestión académica</a></li>
+                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a>
+                </li>
             </ul>
-		</div>
-	</section>
+        </div>
+    </section>
 
-	<!-- Contenido de la página principal -->
-	<section class="full-box dashboard-contentPage">
+    <!-- Contenido principal -->
+    <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
 
-		<!-- Barra de navegación superior (NavBar) -->
-		<nav class="full-box dashboard-Navbar">
-			<ul class="full-box list-unstyled text-right">
-				<li class="pull-left">
-					<!-- Botón para mostrar/ocultar el menú lateral -->
-					<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
-				</li>
-				<!-- Icono de notificaciones -->
-				<li>
-					<a href="#!" class="btn-Notifications-area">
-						<i class="zmdi zmdi-notifications-none"></i>
-						<span class="badge"></span>
-					</a>
-				</li>
-				<!-- Icono de búsqueda -->
-				<li>
-					<a href="#!" class="btn-search">
-						<i class="zmdi zmdi-search"></i>
-					</a>
-				</li>
-			</ul>
-		</nav>
+        <div id="mensajeToast" class="toast-container" style="display: none;">
+            <p id="mensajeTexto"></p>
+        </div>
+        <nav class="full-box dashboard-Navbar">
+            <ul class="full-box list-unstyled text-right">
+                <li class="pull-left">
+                    <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+                </li>
+            </ul>
+        </nav>
 
-		<!-- Página de Mesas -->
-		<div class="container-fluid">
-			<div class="page-header">
-				<!-- Título de la sección -->
-				<h1 class="text-titles">Mesas <small></h1>
-			</div>
-		</div>
+        <div class="dashboard-header">
+            <div class="header-content">
+                <h1 class="dashboard-title">Mesas de Examen</h1>
+                <p class="dashboard-subtitle">Gestión de Mesas Examinadoras</p>
+            </div>
+        </div>
 
-		<!-- Contenido de Mesas, se muestra en una grilla de artículos -->
-		<div class="full-box text-center" style="padding: 30px 10px;">
-			<!-- Mesa: Desarrollo de Software -->
-			<article class="full-box tile">
-				<div class="full-box tile-title text-center text-titles text-uppercase">
-					Desarrollo de Software
-				</div>
-				<div class="full-box tile-icon text-center">
-					<i class="zmdi zmdi-account"></i>
-				</div>
-			</article>
-		</div>
-	</section>
+            <!-- Tarjetas de mesas disponibles -->
+        <div class="container mt-4" style="margin-top: 20px;">
+            <div class="row g-3">
+                {{#if mesasActivas}}
+                {{#each mesasActivas}}
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header {{estadoActual}}">
+                            <h4 class="card-title">Mesa de {{this.Materia.nombreMateria}}</h4>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Fecha:</strong> {{formatDate this.fechaMesa}}</p>
+                            <p><strong>Hora:</strong> {{this.horaMesa}}</p>
+                            <p><strong>Estado:</strong> {{this.estadoActual}}</p>
+                            <p><strong>Alumnos Inscritos:</strong>
+                                {{#each this.Alumno}} {{this.nombreCompleto}}, {{/each}}
+                            </p>
+                            <button class="btn btn-warning btnModificar" data-id="{{this._id}}"
+                                    data-fecha="{{this.fechaMesa}}" data-hora="{{this.horaMesa}}"
+                                    data-estado="{{this.estadoActual}}" data-materia="{{this.Materia._id}}">
+                                    Modificar
+                                </button>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+                {{else}}
+                <p>No hay mesas disponibles</p>
+                {{/if}}
+            </div>
+        </div>
+
+        <!-- Formulario para agregar una nueva mesa -->
+        <div class="container" id="formAgregarMesa" style="margin-top: 20px;">
+            <h2>Crear Mesa</h2>
+            <form class="bg-light p-4 rounded shadow-sm">
+                <div class="form-group">
+                    <label for="fechaMesa">Fecha de la Mesa:</label>
+                    <input type="date" id="fechaMesa" name="fechaMesa" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="horaMesa">Hora de la mesa:</label>
+                    <input type="time" id="horaMesa" name="horaMesa" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="Materia">Materia:</label>
+                    <select id="Materia" name="Materia" class="form-control" required>
+                        {{#each materiasDiponibles}}
+                        <option value="{{this._id}}">{{this.nombreMateria}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="botones">
+                    <button type="submit" class="btn btn-primary" id="btnSubmitMesa">Crear Mesa</button>
+                </div>
+            </form>
+        </div>
 
 
-	<!-- Enlaces a los scripts necesarios -->
-	<script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
-	<script src="/js/jsBoostrap/sweetalert2.min.js"></script>
-	<script src="/js/jsBoostrap/bootstrap.min.js"></script>
-	<script src="/js/jsBoostrap/material.min.js"></script>
-	<script src="/js/jsBoostrap/ripples.min.js"></script>
-	<script src="/js/jsBoostrap/jquery.mCustomScrollbar.concat.min.js"></script>
-	<script src="/js/jsBoostrap/main.js"></script>
-	<script>
+        <!-- Modal para Modificar Mesa -->
+        <div class="modal fade" id="modalModificarMesa" tabindex="-1" aria-labelledby="modalModificarMesaLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: orange;">
+                        <h5 class="modal-title" id="modalModificarMesaLabel">Modificar Mesa</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formModificar">
+                            <input type="hidden" id="idMesa" name="id" class="form-control">
+                            <div class="form-group">
+                                <label for="fechaMesaMod">Fecha de la mesa:</label>
+                                <input type="date" id="fechaMesaMod" name="fechaMesa" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="horaMesaMod">Hora de la mesa:</label>
+                                <input type="time" id="horaMesaMod" name="horaMesa" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="estadoMesaMod">Estado:</label>
+                                <select name="estadoMesa" id="estadoMesaMod" class="form-control">
+                                    <option value="activa">Activa</option>
+                                    <option value="suspendida">Suspendida</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="materiaMod">Materia:</label>
+                                <select id="materiaMod" name="Materia" class="form-control" required>
+                                    {{#each materiasDiponibles}}
+                                    <option value="{{this._id}}">{{this.nombreMateria}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Modificar Mesa</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-	</script>
-	<script src="js/Admin_Mesa.js"></script>
+    </section>
+
+
+
 </body>
 
 </html>

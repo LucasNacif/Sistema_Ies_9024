@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Gestion Academica</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    <link rel="stylesheet" href="/Styles/main.css">
+    <link rel="stylesheet" href="/Styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/Styles/Admin_AlumnoEstado.css">
+    <link rel="stylesheet" href="/Styles/estilosGlobales.css" />
+    <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
+    <script src="/js/jsBoostrap/bootstrap.min.js"></script>
+    <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
+    <script src="/js/jsBoostrap/material.min.js"></script>
+    <script src="/js/jsBoostrap/ripples.min.js"></script>
+    <script src="/js/jsBoostrap/main.js"></script>
+</head>
+
+<body>
+    <!-- Barra lateral (SideBar) -->
+    <section class="full-box cover dashboard-sideBar">
+        <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
+        <div class="full-box dashboard-sideBar-ct">
+            <div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
+                Bedel <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
+            </div>
+            <div class="full-box dashboard-sideBar-UserInfo">
+                <figure class="full-box">
+                    <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
+                </figure>
+                <ul class="full-box list-unstyled text-center">
+                    <li><a href="/logout"><i class="zmdi zmdi-power"></i></a></li>
+                </ul>
+            </div>
+            <ul class="list-unstyled full-box dashboard-sideBar-Menu">
+                <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
+                <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
+                <li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Gestión académica</a></li>
+                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
+
+        <div id="mensajeToast" class="toast-container" style="display: none;">
+            <p id="mensajeTexto"></p>
+        </div>
+
+        <nav class="full-box dashboard-Navbar">
+            <ul class="full-box list-unstyled text-right">
+                <li class="pull-left">
+                    <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="dashboard-header">
+            <div class="header-content">
+                <h1 class="dashboard-title">Gestión Académica</h1>
+                <p class="dashboard-subtitle">Administración de Estado de Alumnos</p>
+            </div>
+            {{#if msjBack}}
+            <div id="error-message" class="alert alert-danger" style="position: absolute right: 9px " role="alert">
+                <p id="mensajeBack">{{msjBack}}</p>
+            </div>
+            {{/if}}
+        </div>
+
+
+        <div class="container">
+
+            <!-- Filtros para buscar alumnos -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <input id="numDocAlumn" type="text" class="form-control"
+                        placeholder="Buscar por nombre o documento">
+                </div>
+                <div class="col-md-2">
+                    <button id="BuscarAlumnoBtn" class="btn btn-tertiary btn-block">Buscar</button>
+                </div>
+            </div>
+
+            <!-- Tabla de materias con estado-->
+            {{#if materiasConEstado.length}}
+            <h3>Materias con Estado</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Materia</th>
+                        <th>Estado Actual</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each materiasConEstado}}
+                    <tr>
+                        <td>{{this.materia}}</td>
+                        <td>{{this.estado}}</td>
+                        <td>{{formatDateAndHours this.fecha}}</td>
+                        <td>
+                            <!-- Botón para Eliminar con Modal -->
+                            <button class="btn btn-danger" onclick="openDeleteModal('{{this.id}}')" data-toggle="modal"
+                                data-target="#confirmDeleteModal">Dar de Baja</button>
+
+                            <!-- Botón  Historial -->
+                            <button class="btn btn-info" onclick="abrirModal('{{this.id}}')">Ver Historial</button>
+
+                        </td>
+
+                    </tr>
+                    {{/each}}
+
+                </tbody>
+            </table>
+            {{/if}}
+
+            {{#if materiasSinEstado.length}}
+            <h3>Materias sin Estado</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Materia</th>
+                        <th>Estado Actual</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each materiasSinEstado}}
+                    <tr>
+                        <td>{{this.materia}}</td>
+                        <td>{{this.estado}}</td>
+                        <td>{{formatDateAndHours this.fecha}}</td>
+                        <td>
+                            <button class="btn btn-info" id="abrirModalBtn" onclick="abrirModal('{{this.id}}')">Ver
+                                Historial</button>
+
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            {{/if}}
+            {{!-- Formulario para guardar estado --}}
+            <form id="alumnoForm" class="bg-light p-4 rounded shadow-sm">
+                <h2 class="my-4 text-center">Guardar o cambiar estado</h2>
+                <div class="form-group">
+                    <label for="docAlumno">Documento del Alumno:</label>
+                    <input type="text" id="docAlumno" name="docAlumno" class="form-control" required>
+                    <div class="error-message" style="display:none;">Documento inválido.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nombreMateria">Nombre de la Materia:</label>
+                    <input type="text" id="nombreMateria" name="nombreMateria" class="form-control" required>
+                    <div class="error-message" style="display:none;">Nombre de la materia requerido.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="estadoActual">Estado Actual:</label>
+                    <select id="estadoActual" name="estadoActual" class="form-control" required>
+                        <option value="acreditado">Acreditado</option>
+                        <option value="regular">Regular</option>
+                        <option value="libre">Libre</option>
+                        <option value="sin estado">Sin Estado</option>
+                    </select>
+                    <div class="error-message" style="display:none;">Seleccione un estado.</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Aceptar</button>
+            </form>
+        </div>
+    </section>
+
+
+    <!-- Modal para confirmar eliminación -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog"
+        aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Baja</h5>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas dar de baja este estado?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" id="confirmDeleteBtn">Dar De
+                        Baja</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para el Historial de Estado -->
+    <div id="modalHistorialEstado" class="modal">
+        <div class="modal-content-hist">
+            <h2>Historial de Estados</h2>
+            <div id="historial-container">
+                <!-- Aquí se llenará el historial -->
+            </div>
+            <button class="btn-close" id="cerrarModalBtn" onclick="cerrarModal()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        // Inicialización del componente de Material Design
+        $.material.init();
+
+        document.getElementById('BuscarAlumnoBtn').addEventListener('click', function () {
+            const numDocAlumn = document.getElementById('numDocAlumn').value;
+            window.location.href = `/alumnoEstado/buscar/${numDocAlumn}`;
+        });
+
+        window.onload = function () {
+            const errorMessage = document.getElementById('error-message');
+            if (errorMessage) {
+                setTimeout(function () {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            }
+        };
+
+    </script>
+    <script src="/js/Admin_AlumnoEstado.js"></script>
+</body>
+
+</html>

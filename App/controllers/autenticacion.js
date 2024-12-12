@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const bcryptjs = require('bcryptjs');
 const Usuario = require('../../models/Usuario');
+const async = require('hbs/lib/async');
 dotenv.config();
 
 
@@ -27,7 +28,7 @@ const configurarCookie = (res, token) => {
 const redirigirSegunRol = (usuario, res) => {
   switch (usuario.rol) {
     case 'alumno':
-      return res.status(200).send({ status: "ok", redirect: "/mesaExamenAlumno" });
+      return res.status(200).send({ status: "ok", redirect: "/inscripcion/obtenerMesasSegunAlum/" });
     case 'bedel':
       return res.status(200).send({ status: "ok", redirect: "/Administracion" });
     case 'superAdmin':
@@ -70,18 +71,25 @@ exports.login = async (req, res) => {
   }
 };
 
-// Método de registro
-exports.registrar = async (req, res) => {
-  const { dni, email, nombre, password } = req.body;
 
-  if (!dni || !password) {
-    return res.status(400).send({ status: "Error", message: "Los campos están incompletos" });
+// Método de registro para alumnos y bedeles
+exports.registrar = async (req, res) => {
+  const { dni, email, nombre, password, rol } = req.body;
+
+  if (!password) {
+    return res.status(400).json({ message: "Los campos están incompletos" });
   }
+
+    // Validación del DNI
+    const dniRegex = /^\d{7,8}$/;
+    if (!dni || !dniRegex.test(dni)) {
+      return res.status(400).json({ message: "DNI inválido" });
+    }
 
   try {
     const usuarioExistente = await Usuario.findOne({ dni });
     if (usuarioExistente) {
-      return res.status(400).send({ status: "Error", message: "Este usuario ya existe" });
+      return res.status(400).json({ message: "Este usuario ya existe" });
     }
 
     // Hashear contraseña
@@ -94,20 +102,55 @@ exports.registrar = async (req, res) => {
       email,
       nombre,
       password: hashPassword,
-      rol: 'alumno' //tecnicamente este metodo es solo para registrar alumnos, pero capaz lo hago para que un superAdmin registre un bedel
+      rol: rol === "bedel" ? "bedel" : "alumno"
     });
-
     await nuevoUsuario.save();
 
-    // Creo el token JWT y configuro la cookie
-    const token = crearTokenJWT(nuevoUsuario);
-    configurarCookie(res, token);
+    //  Se hace este if porque si el rol es bedel significa que un super admin esta creando el usuario
+    //  por lo que no necesita volver a genera un token ya que ya se encuentra logueado
+    if (nuevoUsuario.rol === "alumno") {
 
-    return res.status(201).send({ status: "ok", message: "Usuario creado correctamente", redirect: "/mesaExamenAlumno" });
+      // Creo el token JWT y configuro la cookie
+      const token = crearTokenJWT(nuevoUsuario);
+      configurarCookie(res, token);
 
+      return redirigirSegunRol(nuevoUsuario, res);
+
+    } else {
+      return res.status(200).json({ message: "Bedel creado exitosamente" });
+    }
   } catch (error) {
     console.error('Error en registro:', error);
-    return res.status(500).send({ status: "Error", message: "Error interno del servidor" });
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
+//Metodo para traer bedeles
+exports.traerBedel = async (req, res) => {
+  try {
+    const bedel = await Usuario.find({ rol: "bedel" });
+    if (!bedel) {
+      return res.status(404).json({ message: "No hay bedeles registrados" });
+    }
+    return res.status(200).json(bedel);
+  } catch (error) {
+    console.error('Error en traerBedel:', error);
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
+// Metodo para eliminar usuarios
+exports.delete = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await Usuario.findByIdAndDelete(id);
+    if (!user) {
+      return res.status(404).send({ status: "Error", message: "Bedel no encontrado " });
+    }
+    res.json({ message: 'Bedel eliminado correctamente' });
+  } catch (err) {
+    console.error(err)
+    res.status(500).json("Error al eliminar un usuario")
   }
 };
 
@@ -115,4 +158,5 @@ exports.registrar = async (req, res) => {
 exports.exit = (req, res) => {
   res.clearCookie("jwt", { path: "/" });
   return res.redirect("/");
+
 };

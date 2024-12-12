@@ -3,23 +3,30 @@
 
 <head>
     <title>Plan de Estudio</title>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
-    <link rel="stylesheet" href="/Styles/main.css">
-    <link rel="stylesheet" href="/Styles/bootstrap.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
 
+    <link rel="stylesheet" href="/Styles/Admin_PlanEstudio.css">
+    <link rel="stylesheet" href="/Styles/estilosGlobales.css" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Styles/main.css" />
+    <link rel="stylesheet" href="/Styles/bootstrap.min.css">
     <script src="/js/jsBoostrap/jquery-3.1.1.min.js"></script>
     <script src="/js/jsBoostrap/bootstrap.min.js"></script>
     <script src="/js/jsBoostrap/sweetalert2.min.js"></script>
     <script src="/js/jsBoostrap/material.min.js"></script>
     <script src="/js/jsBoostrap/ripples.min.js"></script>
     <script src="/js/jsBoostrap/main.js"></script>
+
 </head>
+<script>
+    //esto es para que se pueda usar el plan de estudio en el js de Admin_planEstudio
+    const planEstudio = {{{ json planEstudio }}};
+</script>
 
 <body>
-    <!-- Barra lateral (SideBar) -->
     <section class="full-box cover dashboard-sideBar">
         <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
         <div class="full-box dashboard-sideBar-ct">
@@ -31,115 +38,366 @@
                     <img src="/assets/img/logo_IES.jpg" alt="UserIcon">
                 </figure>
                 <ul class="full-box list-unstyled text-center">
-                    <li><a href="#" class="btn-exit-system" id="logout-button"><i class="zmdi zmdi-power"></i></a></li>
+                    <li><a href="/logout"><i class="zmdi zmdi-power"></i></a></li>
                 </ul>
             </div>
             <ul class="list-unstyled full-box dashboard-sideBar-Menu">
                 <li><a href="/Administracion"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Carreras</a></li>
-                <li><a href="/alumno"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Alumnos</a></li>
                 <li><a href="/mesa"><i class="zmdi zmdi-calendar-check zmdi-hc-fw"></i> Mesas</a></li>
-                <li><a href="/materia"><i class="zmdi zmdi-library zmdi-hc-fw"></i> Materias</a></li>
-                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a></li>
+                <li><a href="/alumnoEstado"><i class="zmdi zmdi-accounts zmdi-hc-fw"></i> Gestión académica</a></li>
+                <li><a href="/AdministracionSuperAdmin"><i class="zmdi zmdi-settings zmdi-hc-fw"></i> Super Admin</a>
+                </li>
             </ul>
         </div>
     </section>
 
     <!-- Contenido de la página principal -->
-    <section class="full-box dashboard-contentPage">
-        <!-- Barra de navegación superior (NavBar) -->
+    <section class="full-box dashboard-contentPage" style="overflow-y: auto; overflow-x: hidden;">
+  
+        <div id="mensajeToast" class="toast-container" style="display: none;">
+            <p id="mensajeTexto"></p>
+        </div>
+
         <nav class="full-box dashboard-Navbar">
             <ul class="full-box list-unstyled text-right">
                 <li class="pull-left">
-                    <!-- Botón para mostrar/ocultar el menú lateral -->
                     <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
                 </li>
             </ul>
         </nav>
 
-        <!-- Página de Plan de Estudio -->
-        <div class="container-fluid">
-            <div class="page-header">
-                <h1 class="text-titles">Plan de Estudio de {{carrera.nombreCarrera}}</h1>
-                <h4>Título: {{carrera.titulo}}</h4>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarPlan">
-                    Agregar Plan de Estudio
+      <div class="dashboard-header">
+            <div class="header-content">
+                <h1 class="dashboard-title">Información de la Carrera</h1>
+            </div>
+           <div class="container w-auto" style=" margin-top: 66px !important;">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th>Nombre</th>
+                        <td>{{carrera.nombreCarrera}}</td>
+                    </tr>
+                    <tr>
+                        <th>Titulo</th>
+                        <td>{{carrera.titulo}}</td>
+                    </tr>
+                    <tr>
+                        <th>Carga horaria</th>
+                        <td>{{carrera.cargaHoraria}} hrs</td>
+                    </tr>
+                    <tr>
+                        <th>Duracion</th>
+                        <td>{{carrera.duracion}} años</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+
+        <!-- Materias -->
+        <div class="container mt-4">
+            <h4 class="mt-4">Materias</h4>
+            <div class="mb-3">
+                <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#agregarMateriaModal"
+                    style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+                    <i class="zmdi zmdi-plus-circle"></i> Añadir
                 </button>
+            </div>
+            {{#if materias}}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre de la Materia</th>
+                        <th>Correlativas</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each materias}}
+                    <tr data-id="{{this._id}}" data-plan-id="{{planEstudio._id}}" data-carrera-id="{{carrera._id}}">
+                        <td>{{this.nombreMateria}}</td>
+                        <td>
+                            {{#if this.correlativas}}
+                            {{#each this.correlativas}}
+                            {{this.nombreMateria}}<br>
+                            {{/each}}
+                            {{else}}
+                            Sin correlativas
+                            {{/if}}
+                        </td>
+                        <td>
+                            <button class="btn btn-outline-primary btn-sm editar-btn"
+                                onclick="mostrarModificarMateriaModal(this)" data-id="{{this._id}}"
+                                data-nombre="{{this.nombreMateria}}"
+                                data-correlativas="{{#each this.correlativas}}{{this.nombreMateria}},{{/each}}">
+                                <i class="zmdi zmdi-edit"></i> Editar
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm" id="btnEliminarMateria" data-id="{{this._id}}"
+                                onclick="eliminarMateria(this)">Eliminar</button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            {{else}}
+            No hay materias disponibles
+            {{/if}}
+        </div>
+
+        <div class="container mt-4">
+            <h4 class="mt-4">Alumnos</h4>
+            <div class="mb-3">
+                <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#agregarAlumnoModal"
+                    style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+                    <i class="zmdi zmdi-plus-circle"></i> Añadir
+                </button>
+                <button class="btn btn-warning btn-lg" onclick="mostrarAlumnos(false)"
+                    style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+                    <i class="zmdi zmdi-eye"></i> Ver Alumnos de Baja
+                </button>
+                <button class="btn btn-secondary btn-lg" onclick="mostrarAlumnos(true)"
+                    style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+                    <i class="zmdi zmdi-eye"></i> Ver Alumnos de Alta
+                </button>
+            </div>
+
+            <!-- Tabla para mostrar los alumnos -->
+            <div class="table-responsive">
+                <table class="table table-striped" id="tablaAlumnos">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Documento</th>
+                            <th>Email</th>
+                            <th>Cohorte</th>
+                            <th>Título</th>
+                            <th>Psicofísico</th>
+                            <th>Partida</th>
+                            <th>DNI</th>
+                            <th>Analítico</th>
+                            <th>Penales</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="alumnosFiltrados">
+                        {{!-- Aca se cargan los alumnos --}}
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <div class="full-box text-center" style="padding: 30px 10px;">
-            <h5>Cursos y Materias</h5>
-            <ul class="list-group mb-4">
-                {{#each carrera.plan.cursos}}
-                <li class="list-group-item">
-                    <strong>{{this.nombreCurso}}</strong>
-                    <ul>
-                        {{#each this.materias}}
-                        <li>
-                            {{this.nombreMateria}}
-                            <span>(Correlativas: {{#if this.correlativas}}{{join this.correlativas ',
-                                '}}{{else}}Ninguna{{/if}})</span>
-                        </li>
-                        {{/each}}
-                    </ul>
-                </li>
-                {{/each}}
-            </ul>
-
-            <h5>Alumnos Inscritos</h5>
-            <ul class="list-group">
-                {{#each carrera.alumnos}}
-                <li class="list-group-item">{{this.nombre}} - {{this.matricula}}</li>
-                {{else}}
-                <li class="list-group-item">No hay alumnos inscritos.</li>
-                {{/each}}
-            </ul>
-
-            <a href="/carrera" class="btn btn-info mt-4">Volver a Carreras</a>
-        </div>
-
-        <!-- Modal para agregar plan de estudio -->
-        <div class="modal fade" id="modalAgregarPlan" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
-            <div class="modal-dialog" role="document">
+        <!-- Modal de Modificación de alumno -->
+        <div class="modal fade" id="modificarAlumnoModal" tabindex="-1" aria-labelledby="modificarAlumnoModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel">Agregar Plan de Estudio</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <h5 class="modal-title" id="modificarAlumnoModalLabel">Modificar Alumno</h5>
                     </div>
                     <div class="modal-body">
-                        <form id="formAgregarPlan">
+                        <form id="formModificarAlumno" style="color: #333;">
                             <div class="form-group">
-                                <label for="curso">Curso</label>
-                                <input type="text" class="form-control" id="curso"
-                                    placeholder="Nombre del curso (Ej. Primer Año)" required>
+                                <label for="nombreCompletoModificar">Nombre Completo:</label>
+                                <input type="text" id="nombreCompletoModificar" name="nombreCompleto"
+                                    class="form-control" required />
                             </div>
                             <div class="form-group">
-                                <label for="materia">Materia</label>
-                                <input type="text" class="form-control" id="materia" placeholder="Nombre de la materia"
+                                <label for="numDocAlumnModificar">Número de Documento:</label>
+                                <input type="number" id="numDocAlumnModificar" name="numDocAlumn" class="form-control"
+                                    required placeholder="Sin puntos" readonly />
+                            </div>
+                            <div class="form-group">
+                                <label for="corteModificar">Cohorte:</label>
+                                <input type="text" id="corteModificar" name="corte" class="form-control" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="emailAlumnModificar">Email:</label>
+                                <input type="email" id="emailAlumnModificar" name="emailAlumn" class="form-control" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="tituloSecundarioModificar">Título Secundario:</label>
+                                <input type="checkbox" name="tituloSecundario" id="tituloSecundarioModificar"
+                                    class="form-check-input" value="true" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="psicofisicoModificar">Psicofísico:</label>
+                                <input type="checkbox" id="psicofisicoModificar" name="psicofisico"
+                                    class="form-check-input" value="true" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="partidaNacimModificar">Partida de Nacimiento:</label>
+                                <input type="checkbox" id="partidaNacimModificar" name="partidaNacim"
+                                    class="form-check-input" value="true" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="dniActualizadoModificar">DNI Actualizado:</label>
+                                <input type="checkbox" id="dniActualizadoModificar" name="dniActualizado"
+                                    class="form-check-input" value="true" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="analiticoFielModificar">Analítico Fiel:</label>
+                                <input type="checkbox" id="analiticoFielModificar" name="analiticoFiel"
+                                    class="form-check-input" value="true" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="antecedenPenModificar">Antecedentes Penales:</label>
+                                <input type="checkbox" id="antecedenPenModificar" name="antecedenPen"
+                                    class="form-check-input" value="true" />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Modificar Alumno</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal para agregar alumno -->
+        <div class="modal fade" id="agregarAlumnoModal" tabindex="-1" aria-labelledby="agregarAlumnoModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="agregarAlumnoModalLabel">Agregar Alumno</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formAgregar" method="post" action="/alumno/agregarAlumnoPlanEstudio"
+                            style="color: #333;">
+                            <div class="form-group">
+                                <label for="nombreCompleto">Nombre Completo:</label>
+                                <input type="text" id="nombreCompleto" name="nombreCompleto" class="form-control"
+                                    required />
+                            </div>
+                            <div class="form-group">
+                                <label for="numDocAlumn">Número de Documento:</label>
+                                <input type="number" id="numDocAlumn" name="numDocAlumn" class="form-control" required
+                                    placeholder="Sin puntos" />
+                            </div>
+                            <div class="form-group">
+                                <label for="corte">Cohorte:</label>
+                                <input type="text" id="corte" name="corte" class="form-control" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="emailAlumn">Email:</label>
+                                <input type="email" id="emailAlumn" name="emailAlumn" class="form-control" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="tituloSecundario">Título Secundario:</label>
+                                <input type="checkbox" name="tituloSecundario" class="form-check-input" value="true" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="psicofisico">Psicofísico:</label>
+                                <input type="checkbox" id="psicofisico" name="psicofisico" class="form-check-input"
+                                    value="true" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="partidaNacim">Partida de Nacimiento:</label>
+                                <input type="checkbox" id="partidaNacim" name="partidaNacim" class="form-check-input"
+                                    value="true" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="dniActualizado">DNI Actualizado:</label>
+                                <input type="checkbox" id="dniActualizado" name="dniActualizado"
+                                    class="form-check-input" value="true" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="analiticoFiel">Analítico Fiel:</label>
+                                <input type="checkbox" id="analiticoFiel" name="analiticoFiel" class="form-check-input"
+                                    value="true" />
+                            </div>
+                            <div class="form-group form-check">
+                                <label for="antecedenPen">Antecedentes Penales:</label>
+                                <input type="checkbox" id="antecedenPen" name="antecedenPen" class="form-check-input"
+                                    value="true" />
+                            </div>
+                            <input type="hidden" name="idCarrera" value="{{carrera._id}}">
+                            <input type="hidden" name="idPlanEstudioSeleccionado" value="{{planEstudio._id}}">
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal para agregar materia -->
+        <div class="modal fade" id="agregarMateriaModal" tabindex="-1" aria-labelledby="agregarMateriaModalLabel"
+            style="z-index: 1231 !important;" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="agregarMateriaModalLabel">Agregar Materia</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/materia/nuevaMateriaPlanDeEstudio" method="POST" style="color: #333;">
+                            <div class="form-group">
+                                <label for="nombreMateria">Nombre de la Materia:</label>
+                                <input type="text" id="nombreMateria" name="nombreMateria" class="form-control"
                                     required>
                             </div>
                             <div class="form-group">
-                                <label for="correlativas">Correlativas</label>
-                                <select id="correlativas" class="form-control" multiple>
-                                    <!-- Aquí listarás las materias existentes para seleccionar como correlativas -->
+                                <label for="correlativas">Materias Correlativas:</label>
+                                <select id="correlativas" name="correlativas" class="form-control" multiple>
+                                    {{#each materias}}
+                                    <option value="{{this._id}}">{{this.nombreMateria}}</option>
+                                    {{/each}}
                                 </select>
+                                <small class="text-muted">Usar Ctrl para seleccionar varias opciones</small>
                             </div>
-                            <button type="button" class="btn btn-primary" id="agregarMateria">Agregar Materia</button>
-                            <ul id="listaMaterias" class="list-group mt-3"></ul>
+                            <input type="hidden" name="idCarrera" value="{{carrera._id}}">
+                            <input type="hidden" name="idPlanEstudioSeleccionado" value="{{planEstudio._id}}">
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Agregar Materia</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                            </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary" id="guardarPlan">Guardar Plan</button>
+                </div>
+            </div>
+        </div>
+        <!-- Modal de Modificación de Materia -->
+        <div class="modal fade" id="modificarMateriaModal" tabindex="-1" aria-labelledby="modificarMateriaModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modificarMateriaModalLabel">Modificar Materia</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formModificarMateria" style="color: #333;">
+                            <div class="mb-3">
+                                <label for="nombreMateriaMod" class="form-label">Nuevo Nombre de la Materia</label>
+                                <input type="text" class="form-control" id="nombreMateriaMod" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="correlativas" class="form-label">Correlativas Actuales</label>
+                                <ul id="listaCorrelativasMod" class="list-group mb-3"></ul>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nuevaCorrelativa" class="form-label">Agregar Nueva Correlativa</label>
+                                <select class="form-select" id="nuevaCorrelativa">
+                                    <option value="">Seleccione una materia</option>
+                                    {{#each materias}}
+                                    <option value="{{this._id}}">{{this.nombreMateria}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <input type="hidden" id="idMateria" value="{{this._id}}">
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
 
     </section>
-    <script src="js/Admin_PlanEstudio.js"></script>
+  
+    <script src="/js/Admin_PlanEstudio.js"></script>
 </body>
 
 </html>
