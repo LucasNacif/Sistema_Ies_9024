@@ -19,14 +19,22 @@ const moment = require('moment');
 hbs.registerHelper("and", function (...args) {
   return args.every(Boolean);
 });
+
 // Helper para convertir a JSON
 hbs.registerHelper("json", function(context) {
   return JSON.stringify(context);
 });
+
 // Helper para mostrar la fecha formateada en la vista
 hbs.registerHelper('formatDate', (date) => {
   return moment(date).format('DD/MM/YYYY');
 });
+
+// Helper para mostrar la hora y fecha formateada en la vista
+hbs.registerHelper('formatDateAndHours', function(date) {
+  return moment(date).format('DD/MM/YYYY - HH:mm:ss');  
+});
+
 // Registrar un helper para comparación de igualdad
 hbs.registerHelper('eq', function(a, b) {
   return a === b;

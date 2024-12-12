@@ -102,7 +102,7 @@
                     <tr>
                         <td>{{this.materia}}</td>
                         <td>{{this.estado}}</td>
-                        <td>{{this.fecha}}</td>
+                        <td>{{formatDateAndHours this.fecha}}</td>
                         <td>
                             <!-- Botón para Eliminar con Modal -->
                             <button class="btn btn-danger" onclick="openDeleteModal('{{this.id}}')" data-toggle="modal"
@@ -136,7 +136,7 @@
                     <tr>
                         <td>{{this.materia}}</td>
                         <td>{{this.estado}}</td>
-                        <td>{{this.fecha}}</td>
+                        <td>{{formatDateAndHours this.fecha}}</td>
                         <td>
                             <button class="btn btn-info" id="abrirModalBtn" onclick="abrirModal('{{this.id}}')">Ver
                                 Historial</button>
@@ -204,7 +204,7 @@
         <div class="modal-content-hist">
             <h2>Historial de Estados</h2>
             <div id="historial-container">
-                <!-- Aquí se llenará dinámicamente el historial -->
+                <!-- Aquí se llenará el historial -->
             </div>
             <button class="btn-close" id="cerrarModalBtn" onclick="cerrarModal()">Cerrar</button>
         </div>

@@ -8,12 +8,12 @@ const { docAlumLogueado } = require('../middlewares/autorizacion');
 // Función para obtener mesas disponibles según el alumno y su plan de estudios
 exports.obtenerMesasSegunAlum = async (req, res) => {
     try {
-          // Traigo el doc del alumno logueado
-          const documentoAlum = await docAlumLogueado(req, res); 
+        // Traigo el doc del alumno logueado
+        const documentoAlum = await docAlumLogueado(req, res);
 
-          if (!documentoAlum) {
-              return res.status(401).send('No hay un alumno logueado');
-          }
+        if (!documentoAlum) {
+            return res.status(401).send('No hay un alumno logueado');
+        }
 
         // Busco el alumno por su número de documento
         const alumno = await Alumno.findOne({ numDocAlumn: documentoAlum });
@@ -36,16 +36,16 @@ exports.obtenerMesasSegunAlum = async (req, res) => {
         const mesasDisponibles = await Mesa.find({
             Materia: { $in: materiasDelAlumno },
             estadoActual: 'activa'
-        }).populate('Materia');
+        }).populate({
+            path: 'Materia',
+            populate: { path: 'correlativas' }
+        });
 
-
-         // Verificar el estado del alumno en la materia de la mesa
-         const estadosAlumno = await AlumnoEstado.find({ idAlumno: alumno._id }).populate('idMateria');
-         
-         console.log("Mesas y estados para este alumno: ", mesasDisponibles , estadosAlumno )
+        // Verificar el estado del alumno en la materia de la mesa
+        const estadosAlumno = await AlumnoEstado.find({ idAlumno: alumno._id }).populate('idMateria');
 
         //renderizo la vista con las mesas diponibles y los estados en cada materia para que el alumno los pueda observar
-        res.render('Alumno_MesaExamen', { mesasDisponibles , estadosAlumno});
+        res.render('Alumno_MesaExamen', { mesasDisponibles, estadosAlumno });
     } catch (error) {
         console.error('Error al obtener las mesas según el alumno:', error);
         res.status(500).send('Error del servidor');
@@ -60,16 +60,14 @@ exports.verificarPermisoParaRendir = async (req, res) => {
         if (!docAlumno) {
             return res.json({ success: false, mensaje: 'No hay un alumno logueado' });
         }
-        
+
         const alumno = await Alumno.findOne({ numDocAlumn: docAlumno });
-        if(!alumno){
+        if (!alumno) {
             return res.json({ success: false, mensaje: 'Aun no estas cargado en la base de datos' });
         }
         const alumnoId = alumno._id.toString();;
         // Traigo el id de la mesa
         const { mesaId } = req.params;
-
-        console.log("idAlumno: ", alumnoId, "\nidMesa: ", mesaId);
 
         // Traigo la mesa con sus materias y alumnos
         const mesa = await Mesa.findById(mesaId)
@@ -84,7 +82,7 @@ exports.verificarPermisoParaRendir = async (req, res) => {
         }
 
         if (mesa.estadoActual === 'suspendida') {
-            return res.json({ success: false, mensaje: "Mesa suspendida"});
+            return res.json({ success: false, mensaje: "Mesa suspendida" });
         }
 
         // Verifico si el alumno ya está inscrito en la mesa
@@ -93,11 +91,9 @@ exports.verificarPermisoParaRendir = async (req, res) => {
             return res.json({ success: false, mensaje: 'Ya estas inscripto en esta mesa' });
         }
 
-        console.log("Materia a rendir de la mesa: \n", mesa.Materia);
-
         // Verificar si el alumno aprobó las correlativas
         const correlativasAprobadas = await verificarCorrelativas(alumnoId, mesa.Materia);
-    
+
         if (!correlativasAprobadas) {
             return res.json({ success: false, mensaje: 'No puedes inscribirte, no has aprobado todas las correlativas' });
         }
@@ -139,11 +135,6 @@ async function verificarCorrelativas(alumnoId, materiaParaRendir) {
                 estadoActual: { $in: ['acreditado'] } // Solo las que están aprobadas
             });
 
-            console.log("\n Correlativas necesarias para rendir: \n", materiaParaRendir.correlativas);
-            console.log("---------------------------------------------------------");
-            console.log("\n Estado de las correlatvias del alumno logueado: \n", estadoAlumnoCorrelativas);
-            console.log("---------------------------------------------------------");
-
             // Devuelvo true si aprobó todas las correlativas, de lo contrario false
             return estadoAlumnoCorrelativas.length === materiaParaRendir.correlativas.length;
         }
@@ -158,7 +149,6 @@ async function verificarCorrelativas(alumnoId, materiaParaRendir) {
 async function verificarEstadoMateriaMesa(alumEstado, alumnoId, mesa, res) {
     try {
         if (alumEstado) {
-            console.log('Estado del alumno en la materia de la mesa:', alumEstado);
             switch (alumEstado.estadoActual) {
                 case "libre":
                 case "regular":

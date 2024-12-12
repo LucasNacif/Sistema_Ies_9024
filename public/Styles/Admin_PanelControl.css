@@ -20,7 +20,7 @@
     margin-left: auto;
     margin-right: auto;
     box-sizing: border-box;
-    min-height: 300px; /* Ajusta según el tamaño que necesites */
+    min-height: 300px; 
     display: flex;
     flex-direction: column;
 }
@@ -34,12 +34,12 @@
     padding: 15px;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* Evita que el nombre largo se salga de la card */
+    text-overflow: ellipsis;
 }
 
 .custom-card-body {
     padding: 20px;
-    flex-grow: 1; /* Asegura que la card se estire correctamente */
+    flex-grow: 1; 
 }
 
 .custom-card-title {
@@ -47,9 +47,9 @@
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* Evita que el título se desborde */
-    max-width: 100%; /* Asegúrate de que el título no se corte antes de tiempo */
-    cursor: pointer; /* Cambia el cursor para indicar que es interactivo */
+    text-overflow: ellipsis; 
+    max-width: 100%; 
+    cursor: pointer; 
 }
 
 

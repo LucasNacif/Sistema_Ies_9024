@@ -41,13 +41,11 @@ function openDeleteModal(id) {
     console.log("ID del estado a eliminar:", estadoId);
     const modal = document.getElementById('confirmDeleteModal');
     modal.style.display = 'block';
-    modal.classList.add('show');
 }
 
 function closeModal() {
     const modal = document.getElementById('confirmDeleteModal');
     modal.style.display = 'none';
-    modal.classList.remove('show');
 }
 
 // Dar De Baja
@@ -103,7 +101,15 @@ function mostrarHistorial(historial) {
 
     historial.forEach((estado) => {
         const elemento = document.createElement('div');
-        elemento.innerHTML = `<p>Estado: ${estado.estado}, Fecha: ${new Date(estado.fecha).toLocaleDateString()}</p>`;
+        elemento.innerHTML = `<p>Estado: ${estado.estado}, Fecha: ${new Date(estado.fecha).toLocaleString('es-ES', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        })}</p>`;
+        
         contenedor.appendChild(elemento);
     });
 }
@@ -139,5 +145,5 @@ function mostrarToast(mensaje, tipo = "info") {
     setTimeout(() => {
         toast.style.display = "none";
         location.reload();
-    }, 3500);
+    }, 5500);
 }

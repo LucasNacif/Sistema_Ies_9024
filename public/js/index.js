@@ -21,10 +21,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const dni = e.target.dni.value;
     const password = e.target.pass.value;
 
-    if (!dniRegex.test(dni)) {
-      mostrarToast("El DNI debe tener entre 7 y 8 dígitos", "error");
-      return;
-    }
+    // if (!dniRegex.test(dni)) {
+    //   mostrarToast("El DNI debe tener entre 7 y 8 dígitos", "error");
+    //   return;
+    // }
 
     try {
       const res = await fetch("/index/login", {
