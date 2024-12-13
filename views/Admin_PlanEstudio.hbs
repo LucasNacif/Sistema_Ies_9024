@@ -58,6 +58,11 @@
             <p id="mensajeTexto"></p>
         </div>
 
+    {{#if error}}
+    <div class="alert alert-danger">{{error}}</div>
+    {{/if}}
+
+
         <nav class="full-box dashboard-Navbar">
             <ul class="full-box list-unstyled text-right">
                 <li class="pull-left">
@@ -153,11 +158,11 @@
                 </button>
                 <button class="btn btn-warning btn-lg" onclick="mostrarAlumnos(false)"
                     style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
-                    <i class="zmdi zmdi-eye"></i> Ver Alumnos de Baja
+                    <i class="zmdi zmdi-eye-off"></i> Alumnos de Baja
                 </button>
                 <button class="btn btn-secondary btn-lg" onclick="mostrarAlumnos(true)"
                     style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
-                    <i class="zmdi zmdi-eye"></i> Ver Alumnos de Alta
+                    <i class="zmdi zmdi-eye"></i> Alumnos de Alta
                 </button>
             </div>
 
@@ -214,6 +219,7 @@
                                 <label for="emailAlumnModificar">Email:</label>
                                 <input type="email" id="emailAlumnModificar" name="emailAlumn" class="form-control" />
                             </div>
+                             <label>Legajo: </label>
                             <div class="form-group form-check">
                                 <label for="tituloSecundarioModificar">Título Secundario:</label>
                                 <input type="checkbox" name="tituloSecundario" id="tituloSecundarioModificar"
@@ -282,6 +288,7 @@
                                 <label for="emailAlumn">Email:</label>
                                 <input type="email" id="emailAlumn" name="emailAlumn" class="form-control" />
                             </div>
+                             <label>Legajo: </label>
                             <div class="form-group form-check">
                                 <label for="tituloSecundario">Título Secundario:</label>
                                 <input type="checkbox" name="tituloSecundario" class="form-check-input" value="true" />

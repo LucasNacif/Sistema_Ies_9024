@@ -120,7 +120,7 @@ document.getElementById("formModificarAlumno").addEventListener("submit", async 
         }
     } catch (error) {
         console.error("Error al enviar la solicitud:", error);
-        mostrarToast(result.error || "Error al enviar la solicitud.", "error");
+        mostrarToast(error.message  || "Error al enviar la solicitud.", "error");
     }
 });
 
@@ -242,7 +242,6 @@ function mostrarToast(mensaje, tipo = "info") {
     toast.className = `toast-container ${tipo}`;
     toast.style.display = "block";
 
-    // Ocultar automáticamente después de 3 segundos
     setTimeout(() => {
         toast.style.display = "none";
         mostrarAlumnos(true);

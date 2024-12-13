@@ -18,10 +18,18 @@ exports.nuevoAlumnoPlanDeEstudio = async (req, res) => {
       idCarrera,
     } = req.body;
 
+    // Validaciones con expresiones regulares
+    const docRegex = /^[0-9]{7,8}$/;
+
+    if (!docRegex.test(numDocAlumn)) {
+      return res.redirect(`/planEstudio/${idCarrera}?error=El número de documento no es válido.`);
+    }
+
     const alumnoExistente = await Alumno.findOne({ numDocAlumn });
     if (alumnoExistente) {
       return res.redirect(`/planEstudio/${idCarrera}?error=El alumno ya existe.`);
     }
+    
     const alumno = new Alumno({
       numDocAlumn,
       nombreCompleto,
@@ -52,7 +60,7 @@ exports.nuevoAlumnoPlanDeEstudio = async (req, res) => {
 
   } catch (error) {
     console.error(error);
-    return res.redirect(`/planEstudio/${idCarrera}?error=No se pudo agregar el alumno.`);
+    return res.redirect(`/Administracion`);
   }
 };
 
