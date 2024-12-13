@@ -41,39 +41,51 @@ document.addEventListener('DOMContentLoaded', function () {
     cargarCarreras();
     $.material.init();
 
-    function cargarCarreras() {
-        fetch('/carrera/obtener')
-            .then(response => response.json())
-            .then(carreras => {
-                const listaCarreras = document.getElementById('listaCarreras');
-                listaCarreras.innerHTML = '';
-                carreras.forEach(carrera => {
-                    listaCarreras.innerHTML += `
-                <div class="col-md-4">
-                    <div class="custom-card" style="margin: 10px;">
-                        <div class="custom-card-header text-center" title="${carrera.nombreCarrera}">
-                            ${carrera.nombreCarrera}
-                        </div>
-                        <div class="custom-card-body">
-                            <h5 class="custom-card-title" title="${carrera.titulo}">${carrera.titulo}</h5>
-                            <p class="custom-card-text"><strong>Carga Horaria:</strong> ${carrera.cargaHoraria} horas</p>
-                            <p class="custom-card-text"><strong>Duración:</strong> ${carrera.duracion} años</p>
-                            <a href="/planEstudio/${carrera._id}" class="btn btn-info">
-                                <i class="fas fa-info-circle"></i> Información
-                            </a>
-                            <button type="button" class="btn btn-warning" onclick="modificarCarrera('${carrera._id}')">
-                                <i class="fas fa-edit"></i> Modificar
-                            </button>
-                            <button type="button" class="btn btn-danger" onclick="openDeleteModal('${carrera._id}')">
-                                <i class="fas fa-trash-alt"></i> Dar de baja
-                            </button>
-                        </div>
-                    </div>
-                </div>`;
-                });
-            })
-            .catch(error => console.error('Error al cargar carreras:', error));
-    }
+    async function cargarCarreras() {
+        try {
+          const response = await fetch('/carrera/obtener');
+          const carreras = await response.json();
+          
+          const listaCarreras = document.getElementById('listaCarreras');
+          listaCarreras.innerHTML = '';
+
+          console.log(carreras)
+
+          if (carreras && carreras.length > 0) {
+            carreras.forEach(carrera => {
+                listaCarreras.innerHTML += `
+                  <div class="col-md-4">
+                      <div class="custom-card" style="margin: 10px;">
+                          <div class="custom-card-header text-center" title="${carrera.nombreCarrera}">
+                              ${carrera.nombreCarrera}
+                          </div>
+                          <div class="custom-card-body">
+                              <h5 class="custom-card-title" title="${carrera.titulo}">${carrera.titulo}</h5>
+                              <p class="custom-card-text"><strong>Carga Horaria:</strong> ${carrera.cargaHoraria} horas</p>
+                              <p class="custom-card-text"><strong>Duración:</strong> ${carrera.duracion} años</p>
+                              <a href="/planEstudio/${carrera._id}" class="btn btn-info">
+                                  <i class="fas fa-info-circle"></i> Información
+                              </a>
+                              <button type="button" class="btn btn-warning" onclick="modificarCarrera('${carrera._id}')">
+                                  <i class="fas fa-edit"></i> Modificar
+                              </button>
+                              <button type="button" class="btn btn-danger" onclick="openDeleteModal('${carrera._id}')">
+                                  <i class="fas fa-trash-alt"></i> Dar de baja
+                              </button>
+                          </div>
+                      </div>
+                  </div>`;
+              });
+          }else{
+            listaCarreras.innerHTML += `<p>No hay carreras disponibles</p>`;
+          }
+          
+       
+        } catch (error) {
+          console.error('Error al cargar carreras:', error);
+        }
+      }
+      
 
 
 

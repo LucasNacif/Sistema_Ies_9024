@@ -10,52 +10,63 @@ function mostrarAlumnos(esBaja) {
     const alumnosFiltrados = alumnos.filter(alumno => alumno.banderaBooleana === esBaja);
     const tbody = document.getElementById('alumnosFiltrados');
     tbody.innerHTML = '';
-    alumnosFiltrados.forEach(alumno => {
+
+    // En el caso de que no hayan alumnos crea una fila con el mensaje
+    if (alumnosFiltrados.length === 0) {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${alumno.nombreCompleto}</td>
-            <td>${alumno.numDocAlumn}</td>
-            <td>${alumno.emailAlumn}</td>
-            <td>${alumno.corte}</td>
-            <td>${alumno.tituloSecundario ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
-            <td>${alumno.psicofisico ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
-            <td>${alumno.partidaNacim ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
-            <td>${alumno.dniActualizado ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
-            <td>${alumno.analiticoFiel ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
-            <td>${alumno.antecedenPen ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
-            <td>
-                <button class="btn btn-outline-primary btn-sm editar-btn"
-                onclick="mostrarModificarAlumnoModal(this)"
-                data-id="${alumno._id}"
-                data-nombre="${alumno.nombreCompleto}"
-                data-numdoc="${alumno.numDocAlumn}"
-                data-email="${alumno.emailAlumn}"
-                data-corte="${alumno.corte}"
-                data-tituloSecundario="${alumno.tituloSecundario}"
-                data-psicofisico="${alumno.psicofisico}"
-                data-partidaNacim="${alumno.partidaNacim}"
-                data-dniActualizado="${alumno.dniActualizado}"
-                data-analiticoFiel="${alumno.analiticoFiel}"
-                data-antecedenPen="${alumno.antecedenPen}">
-                  <i class="zmdi zmdi-edit"></i>
-                </button>
-
-            <!-- dependiendo de la bandera booleana te muestra un boton o el otro -->
-            
-            ${alumno.banderaBooleana
-                ? `<button class="btn btn-outline-warning btn-sm" data-id="${alumno._id}" onclick="AltayBajaAlumno(false, this)">
-                    <i class="zmdi zmdi-eye-off"></i>
-                 </button>`
-                : `<button class="btn btn-outline-success btn-sm" data-id="${alumno._id}" onclick="AltayBajaAlumno(true, this)">
-                    <i class="zmdi zmdi-check"></i>
-                 </button>`
-            }
-            </td>
+            <td colspan="11" class="text-center">No hay alumnos disponibles</td>
         `;
         tbody.appendChild(row);
-    });
+    } else {
+        // En el caso de que si hayan alumnos
+        alumnosFiltrados.forEach(alumno => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${alumno.nombreCompleto}</td>
+                <td>${alumno.numDocAlumn}</td>
+                <td>${alumno.emailAlumn}</td>
+                <td>${alumno.corte}</td>
+                <td>${alumno.tituloSecundario ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
+                <td>${alumno.psicofisico ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
+                <td>${alumno.partidaNacim ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
+                <td>${alumno.dniActualizado ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
+                <td>${alumno.analiticoFiel ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
+                <td>${alumno.antecedenPen ? '<i class="zmdi zmdi-check-circle text-success"></i>' : '<i class="zmdi zmdi-close-circle text-danger"></i>'}</td>
+                <td>
+                    <button class="btn btn-outline-primary btn-sm editar-btn"
+                    onclick="mostrarModificarAlumnoModal(this)"
+                    data-id="${alumno._id}"
+                    data-nombre="${alumno.nombreCompleto}"
+                    data-numdoc="${alumno.numDocAlumn}"
+                    data-email="${alumno.emailAlumn}"
+                    data-corte="${alumno.corte}"
+                    data-tituloSecundario="${alumno.tituloSecundario}"
+                    data-psicofisico="${alumno.psicofisico}"
+                    data-partidaNacim="${alumno.partidaNacim}"
+                    data-dniActualizado="${alumno.dniActualizado}"
+                    data-analiticoFiel="${alumno.analiticoFiel}"
+                    data-antecedenPen="${alumno.antecedenPen}">
+                      <i class="zmdi zmdi-edit"></i>
+                    </button>
+
+                    ${alumno.banderaBooleana
+                        ? `<button class="btn btn-outline-warning btn-sm" data-id="${alumno._id}" onclick="AltayBajaAlumno(false, this)">
+                            <i class="zmdi zmdi-eye-off"></i>
+                         </button>`
+                        : `<button class="btn btn-outline-success btn-sm" data-id="${alumno._id}" onclick="AltayBajaAlumno(true, this)">
+                            <i class="zmdi zmdi-check"></i>
+                         </button>`
+                    }
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
     document.getElementById('tablaAlumnos').style.display = 'table';
 }
+
 //Modificar Alumnos
 function mostrarModificarAlumnoModal(button) {
     const alumnoId = button.getAttribute('data-id');
